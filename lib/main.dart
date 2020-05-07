@@ -5,27 +5,20 @@ import 'tld_tabbar_page.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
-  MyApp({Key key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key key}) : super(key: key);
 
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
+    return MaterialApp(
       title : '屠龙刀',
-      theme: CupertinoThemeData(
+      theme: ThemeData(
         primaryColor : Color.fromARGB(255, 242, 242, 242),
-        barBackgroundColor: Color.fromARGB(255, 242, 242, 242)
       ),
       home: TLDTabbarPage(),
     );
   }
 }
-
 
 
 

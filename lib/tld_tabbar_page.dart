@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import './Buy/Page/tld_buy_page.dart';
+import './Buy/FirstPage/Page/tld_buy_page.dart';
 import './Exchange/Page/tld_exchange_page.dart';
-import './Purse/Page/tld_purse_page.dart';
+import './Purse/FirstPage/Page/tld_purse_page.dart';
 import './Sale/Page/tld_sale_page.dart';
 
 class TLDTabbarPage extends StatefulWidget {
