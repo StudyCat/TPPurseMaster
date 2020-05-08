@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
+import '../View/tld_exchange_normalCell.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../View/tld_exchange_input_cell.dart';
+import '../View/tld_exchange_input_slider_cell.dart';
+
+
 
 class TLDExchangePage extends StatefulWidget {
   TLDExchangePage({Key key}) : super(key: key);
@@ -10,6 +16,9 @@ class TLDExchangePage extends StatefulWidget {
 }
 
 class _TLDExchangePageState extends State<TLDExchangePage> {
+  
+  List titleList = ['钱包', '钱包余额', '兑换量', '限额设置', '手续费率', '手续费', '实际到账', '收款方式'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,13 +44,21 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
     );
   }
 
-  Widget _getBody(BuildContext context){
+  Widget _getBody(BuildContext context) {
     return ListView.builder(
-      itemCount: 9,
+      itemCount: titleList.length,
       itemBuilder: (BuildContext context, int index) {
-      return ;
-     },
+        String title = titleList[index];
+        if (index == 0){
+          return TLDExchangeNormalCell(type: TLDExchangeNormalCellType.normalArrow,title: title,content: 'dqwdqdqd',contentStyle: TextStyle(fontSize : 12),top: 15,);
+        }else if (index == 2){
+          return TLDExchangeInputSliderCell(title : title);
+        }else if (index == 3){
+          return TLDExchangeInputCell(title: title,);
+        }else{
+          return TLDExchangeNormalCell(type: TLDExchangeNormalCellType.normal,title: title,content: 'dqwdqdqd',contentStyle: TextStyle(fontSize : 12),top: 1,);
+        }
+      },
     );
   }
-
 }
