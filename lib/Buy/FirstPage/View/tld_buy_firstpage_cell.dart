@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'tld_buy_button.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'tld_buy_info_label.dart';
+import 'tld_buy_cell_bottom.dart';
+import 'package:dragon_sword_purse/CommonWidget/ltd_sale_buy_cell_header.dart';
 
 class TLDBuyFirstPageCell extends StatefulWidget {
   TLDBuyFirstPageCell({Key key}) : super(key: key);
@@ -24,18 +28,8 @@ class _TLDBuyFirstPageCellState extends State<TLDBuyFirstPageCell> {
            padding: EdgeInsets.only(top : 10,bottom : 17),
            child: Column(
              children : <Widget>[
-               Row(
-                 mainAxisAlignment: MainAxisAlignment.start,
-                 crossAxisAlignment: CrossAxisAlignment.center,
-                 children: <Widget>[
-                   Container(
-                     padding: EdgeInsets.only(left : 10),
-                     width: screenSize.width - 94,
-                     child: Text('地址：fwefwefewfwefwef',style : TextStyle(fontSize : 12 ,color : Color.fromARGB(255, 153, 153, 153))),
-                   ),
-                   picAndTextButton('assetss/images/firspage_buy.png', '购买', (){})
-                 ],
-               ),
+                getCommonCellHeader('地址', '购买', (){}, context,128),
+                getCellBottomView(),
              ]
            ),
          ),

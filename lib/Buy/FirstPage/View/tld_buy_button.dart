@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Widget picAndTextButton(String imgpath,String text,Function onPress) {
+Widget picAndTextButton(String imgpath,String text,Function onPress,double buttonWidth) {
   return Container(
-    width: 64,
-    height: 30,
-    padding: EdgeInsets.only(right : 0),
+    width: ScreenUtil().setWidth(buttonWidth),
+    height: ScreenUtil().setWidth(buttonWidth / 128 * 60),
     decoration: BoxDecoration(
       color: Colors.white,
       image: DecorationImage(
@@ -15,7 +15,7 @@ Widget picAndTextButton(String imgpath,String text,Function onPress) {
     alignment: Alignment.center,
     child: FlatButton(
       onPressed: onPress,
-      child: Text(text,style: TextStyle(color : Colors.white),),
+      child: Text(text,style: TextStyle(color : Colors.white,fontSize: ScreenUtil().setSp(26)),maxLines: 1,),
       color: Colors.transparent,
       ),
   );

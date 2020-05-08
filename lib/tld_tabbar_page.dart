@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import './Buy/FirstPage/Page/tld_buy_page.dart';
-import './Exchange/Page/tld_exchange_page.dart';
+import './Exchange/FirstPage/Page/tld_exchange_page.dart';
 import './Purse/FirstPage/Page/tld_purse_page.dart';
-import './Sale/Page/tld_sale_page.dart';
+import './Sale/FirstPage/Page/tld_sale_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDTabbarPage extends StatefulWidget {
   TLDTabbarPage({Key key}) : super(key: key);
@@ -42,6 +43,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, width: 750, height: 1334);
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: items,

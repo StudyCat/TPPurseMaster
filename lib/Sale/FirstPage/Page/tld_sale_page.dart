@@ -1,23 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
-import '../View/tld_buy_search_field.dart';
-import '../View/tld_buy_firstpage_cell.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
+import '../View/tld_sale_firstpage_cell.dart';
 
-class TLDBuyPage extends StatefulWidget {
-  TLDBuyPage({Key key}) : super(key: key);
+class TLDSalePage extends StatefulWidget {
+  TLDSalePage({Key key}) : super(key: key);
 
   @override
-  _TLDBuyPageState createState() => _TLDBuyPageState();
+  _TLDSalePageState createState() => _TLDSalePageState();
 }
 
-class _TLDBuyPageState extends State<TLDBuyPage> {
+class _TLDSalePageState extends State<TLDSalePage> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: _getBodyWidget(size.width),
+      body: _getBody(context),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
         middle: Text('TLD钱包'),
@@ -53,28 +51,16 @@ class _TLDBuyPageState extends State<TLDBuyPage> {
           ],
         )
         ),
-      ),
+      ),);
+  }
+
+  Widget _getBody(BuildContext context){
+    return ListView.builder(
+      itemCount: 11,
+      itemBuilder: (BuildContext context, int index) {
+      return getSaleFirstPageCell('取消挂售',(){},context);
+     },
     );
   }
 
-  Widget _getBodyWidget(double screenWidth){
-    return Container(
-      width: screenWidth,
-      child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        TLDBuySearchField(),
-        Expanded(
-          child: ListView.builder(
-          itemCount: 11,
-          itemBuilder: (BuildContext context, int index) {
-          return TLDBuyFirstPageCell();
-         },
-        ), 
-        ),
-      ],
-    ),
-    );
-  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDBuySearchField extends StatefulWidget {
   TLDBuySearchField({Key key}) : super(key: key);
@@ -23,10 +24,12 @@ class _TLDBuySearchFieldState extends State<TLDBuySearchField> {
            padding: EdgeInsets.only(left:10,right: 10),
            child: Row(
              mainAxisAlignment: MainAxisAlignment.start,
-             crossAxisAlignment: CrossAxisAlignment.stretch,
+             crossAxisAlignment: CrossAxisAlignment.center,
              children: <Widget>[
                Container(
-                 width: screenSize.width - 115,
+                 width: screenSize.width - ScreenUtil().setWidth(230),
+                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(10)),
+                 alignment: Alignment.topCenter,
                  child: TextField(
                    decoration : InputDecoration(
                      border : InputBorder.none,
@@ -36,11 +39,11 @@ class _TLDBuySearchFieldState extends State<TLDBuySearchField> {
                    style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize: 12),
                  ),
                ),
-               Container(height: 5, child: VerticalDivider(color: Color.fromARGB(255, 187, 187, 187))),
+               Container(height: ScreenUtil().setHeight(40), child: VerticalDivider(color: Color.fromARGB(255, 187, 187, 187))),
                Container(
                  padding: EdgeInsets.only(left : 5),
-                 width: 45,
-                 height: 30,
+                 width: ScreenUtil().setWidth(90),
+                 height: ScreenUtil().setHeight(60),
                  child: CupertinoButton(
                    padding: EdgeInsets.all(0),
                    child: Text('查询',style : TextStyle(fontSize : 14 , color : Color.fromARGB(255, 51, 114, 245)),),
