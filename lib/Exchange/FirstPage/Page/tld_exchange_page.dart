@@ -46,17 +46,22 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
 
   Widget _getBody(BuildContext context) {
     return ListView.builder(
-      itemCount: titleList.length,
+      itemCount: titleList.length + 1,
       itemBuilder: (BuildContext context, int index) {
-        String title = titleList[index];
         if (index == 0){
-          return TLDExchangeNormalCell(type: TLDExchangeNormalCellType.normalArrow,title: title,content: 'dqwdqdqd',contentStyle: TextStyle(fontSize : 12),top: 15,);
+          return TLDExchangeNormalCell(type: TLDExchangeNormalCellType.normalArrow,title: titleList[index],content: 'dqwdqdqd',contentStyle: TextStyle(fontSize : 12),top: 15,);
         }else if (index == 2){
-          return TLDExchangeInputSliderCell(title : title);
+          return TLDExchangeInputSliderCell(title : titleList[index]);
         }else if (index == 3){
-          return TLDExchangeInputCell(title: title,);
+          return TLDExchangeInputCell(title: titleList[index],);
+        }else if (index == titleList.length){
+          return Container(
+            padding: EdgeInsets.only(top : ScreenUtil().setHeight(40),left: 15,right: 15),
+            height : ScreenUtil().setHeight(135),
+            child: CupertinoButton(color: Color.fromARGB(255, 51, 114, 245),child: Text('兑换',style : TextStyle(color : Colors.white,fontSize : ScreenUtil().setSp(28)),), onPressed: (){}),
+          );
         }else{
-          return TLDExchangeNormalCell(type: TLDExchangeNormalCellType.normal,title: title,content: 'dqwdqdqd',contentStyle: TextStyle(fontSize : 12),top: 1,);
+          return TLDExchangeNormalCell(type: TLDExchangeNormalCellType.normal,title: titleList[index],content: 'dqwdqdqd',contentStyle: TextStyle(fontSize : 12),top: 1,);
         }
       },
     );

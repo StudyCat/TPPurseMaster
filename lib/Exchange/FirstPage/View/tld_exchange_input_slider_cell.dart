@@ -1,5 +1,6 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
+import 'flutter_xlider.dart';
 
 class TLDExchangeInputSliderCell extends StatefulWidget {
   final String title;
@@ -20,7 +21,7 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
           borderRadius: BorderRadius.all(Radius.circular(4)),
           child: Container(
             color: Colors.white,
-            height: ScreenUtil().setHeight(186),
+            height: ScreenUtil().setHeight(200),
             child: Column(
               children: <Widget>[
                 getCellTopView(),
@@ -70,8 +71,45 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
 
   Widget getSliderView(){
     return Container(
-      padding : EdgeInsets.only(right : ScreenUtil().setWidth(20),left : ScreenUtil().setWidth(20),top : ScreenUtil().setWidth(13)),
-      child : Slider(value: 0, onChanged: (double value){},)
+      padding : EdgeInsets.only(right : ScreenUtil().setWidth(20),left : ScreenUtil().setWidth(20),top : ScreenUtil().setWidth(8)),
+      child :FlutterSlider(
+              values: [10],
+              min: 0,
+              max: 100,
+              handlerHeight: ScreenUtil().setHeight(40),
+              handlerWidth: ScreenUtil().setHeight(40),
+              trackBar: FlutterSliderTrackBar(
+                inactiveTrackBarHeight: ScreenUtil().setHeight(40),
+                activeTrackBarHeight: ScreenUtil().setHeight(40),
+                inactiveTrackBar: BoxDecoration(
+                  borderRadius:  BorderRadius.circular(20.0),
+                  color: Color.fromARGB(255, 148, 170, 218)
+                ),
+                activeTrackBar: BoxDecoration(
+                  borderRadius:  BorderRadius.circular(20.0),
+                  color: Color.fromARGB(255, 51, 114, 245)
+                ),
+                ),
+              handler: FlutterSliderHandler(
+                child : Container(
+                  decoration: BoxDecoration(
+                  borderRadius:  BorderRadius.circular(20.0),
+                  color: Color.fromARGB(255, 51, 114, 245)
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12.0),
+                  child: Container(
+                    width: 24,
+                    height: 24,
+                    color: Colors.white,
+                  ),
+                ),
+                ),
+              ),
+              onDragging: (handlerIndex, lowerValue, upperValue) {
+                setState(() {});
+              },
+            ),
     );
   }
 

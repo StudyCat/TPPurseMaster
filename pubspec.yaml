@@ -44,6 +44,9 @@ flutter:
   assets :
      - assetss/images/home_purse_icon.png
      - assetss/images/firspage_buy.png
+     - assetss/images/slider_inactive.png
+     - assetss/images/record_black.png
+     - assetss/images/record_blue.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

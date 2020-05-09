@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDPurseFirstPageCell extends StatefulWidget {
-  TLDPurseFirstPageCell({Key key}) : super(key: key);
-
+  TLDPurseFirstPageCell({Key key,this.didClickCallBack}) : super(key: key);
+  final Function didClickCallBack;
   @override
   _TLDPurseFirstPageCellState createState() => _TLDPurseFirstPageCellState();
 }
@@ -12,7 +12,9 @@ class _TLDPurseFirstPageCellState extends State<TLDPurseFirstPageCell> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Container(
+    return GestureDetector(
+      onTap : () => widget.didClickCallBack(),
+      child : Container(
        padding: EdgeInsets.only(left : 15 , top : 5 ,right: 15),
        width: screenSize.width - 30,  
        child: ClipRRect(
@@ -52,6 +54,7 @@ class _TLDPurseFirstPageCellState extends State<TLDPurseFirstPageCell> {
            ),
          ),
        ),
+    )
     );
   }
 }
