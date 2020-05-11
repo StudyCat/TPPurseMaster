@@ -10,7 +10,7 @@ class TLDMyPurseContentView extends StatefulWidget {
 }
 
 class _TLDMyPurseContentViewState extends State<TLDMyPurseContentView>
-    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   List<String> _tabTitles = [
     "全部记录",
     "收款记录",
@@ -21,9 +21,11 @@ class _TLDMyPurseContentViewState extends State<TLDMyPurseContentView>
 
   @override
   void initState() {
-    _tabController = TabController(length: _tabTitles.length, vsync: this);
-    // TODO: implement initState
+
     super.initState();
+
+    _tabController = TabController(length: _tabTitles.length, vsync: this);
+
   }
 
   @override
@@ -51,7 +53,7 @@ class _TLDMyPurseContentViewState extends State<TLDMyPurseContentView>
           Expanded(
               child: TabBarView(
             children: [
-              TLDMyPurseRecordPage(index : 1),
+              TLDMyPurseRecordPage(index: 1,),
               TLDMyPurseRecordPage(index: 2,),
               TLDMyPurseRecordPage(index: 0,),
             ],
@@ -62,7 +64,7 @@ class _TLDMyPurseContentViewState extends State<TLDMyPurseContentView>
     );
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+  // @override
+
+  // bool get wantKeepAlive => true;
 }
