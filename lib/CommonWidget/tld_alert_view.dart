@@ -69,7 +69,10 @@ class _TLDAlertViewState extends State<TLDAlertView> {
         ),
       );
     }else{
-      return Text(widget.alertString);
+      return Padding(
+        padding: EdgeInsets.only(top : ScreenUtil().setHeight(30)),
+        child: Text(widget.alertString),
+      );
     }
   }
 }

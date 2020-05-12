@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import '../View/tld_purse_setting_cell.dart';
 import '../../../CommonWidget/tld_alert_view.dart';
 import 'tld_purse_setting_backup_word_page.dart';
+import 'tld_export_key_page.dart';
+import 'tld_delete_purse_success_page.dart';
 
 class TLDPurseSettingPage extends StatefulWidget {
   TLDPurseSettingPage({Key key}) : super(key: key);
@@ -24,6 +26,11 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
+        border: Border.all(
+          color : Color.fromARGB(0, 0, 0, 0),
+        ),
+        heroTag: 'purse_setting_page',
+        transitionBetweenRoutes: false,
         middle: Text('钱包设置'),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
@@ -43,6 +50,10 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
               changePurseName(context);
             }else if (index == 1){
               Navigator.push(context, MaterialPageRoute(builder: (context) => TLDPurseSeetingBackWordPage()));
+            }else if (index == 2){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TLDExportKeyPage()));
+            }else {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDeletePurseSuccessPage()));
             }
           },
         );

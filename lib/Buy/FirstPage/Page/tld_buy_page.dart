@@ -20,6 +20,12 @@ class _TLDBuyPageState extends State<TLDBuyPage> {
       body: _getBodyWidget(size.width),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
+        border: Border.all(
+          color : Color.fromARGB(0, 0, 0, 0),
+        ),
+        heroTag: 'buy_page',
+        backgroundColor: Color.fromARGB(255, 242, 242, 242),
+        transitionBetweenRoutes: false,
         middle: Text('TLD钱包'),
         leading: Builder(builder: (BuildContext context) {
           return CupertinoButton(

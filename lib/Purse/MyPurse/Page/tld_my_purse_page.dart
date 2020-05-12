@@ -17,6 +17,11 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
+        border: Border.all(
+          color : Color.fromARGB(0, 0, 0, 0),
+        ),
+        heroTag: 'my_purse_page',
+        transitionBetweenRoutes: false,
         middle: Text('data'),
         trailing: Container(
             width: ScreenUtil().setWidth(160),

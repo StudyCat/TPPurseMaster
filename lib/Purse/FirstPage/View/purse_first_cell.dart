@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDPurseHeaderCell extends StatefulWidget {
-  TLDPurseHeaderCell({Key key}) : super(key: key);
+  TLDPurseHeaderCell({Key key,this.didClickCreatePurseButtonCallBack,this.didClickImportPurseButtonCallBack}) : super(key: key);
+
+  final Function didClickCreatePurseButtonCallBack;
+  final Function didClickImportPurseButtonCallBack;
 
   @override
   _TLDPurseHeaderCellState createState() => _TLDPurseHeaderCellState();
@@ -51,8 +54,8 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
             child: Row(
               mainAxisAlignment : MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                getButton((){}, '创建钱包', screenSize.width),
-                getButton((){}, '导入钱包', screenSize.width),
+                getButton(()=>widget.didClickCreatePurseButtonCallBack(), '创建钱包', screenSize.width),
+                getButton(()=>widget.didClickImportPurseButtonCallBack(), '导入钱包', screenSize.width),
               ],
             ),
           ),

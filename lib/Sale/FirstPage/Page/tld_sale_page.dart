@@ -18,6 +18,12 @@ class _TLDSalePageState extends State<TLDSalePage> {
       body: _getBody(context),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
+        backgroundColor: Color.fromARGB(255, 242, 242, 242),
+        border: Border.all(
+          color : Color.fromARGB(0, 0, 0, 0),
+        ),
+        heroTag: 'sale_page',
+        transitionBetweenRoutes: false,
         middle: Text('TLD钱包'),
         leading: Builder(builder: (BuildContext context) {
           return CupertinoButton(

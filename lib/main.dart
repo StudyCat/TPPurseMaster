@@ -18,10 +18,6 @@ class MyApp extends StatelessWidget {
         primaryColor : Color.fromARGB(255, 51, 114, 245),
       ),
       home: TLDTabbarPage(),
-       routes: <String,WidgetBuilder>{
-        "/purse_setting":(BuildContext context)=>new TLDPurseSettingPage(),
-        '/purse_backup_word_success' :(BuildContext context)=>new TLDPurseBackupWordSuccessPage()
-      },
     );
   }
 }

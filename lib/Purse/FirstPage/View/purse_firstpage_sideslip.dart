@@ -4,7 +4,9 @@ import 'purse_sideslip_header_cell.dart';
 
 
 class TLDPurseSideslipView extends StatelessWidget {
-  const TLDPurseSideslipView({Key key}) : super(key: key);
+  const TLDPurseSideslipView({Key key,this.didClickCallBack}) : super(key: key);
+
+  final ValueChanged<int> didClickCallBack;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,9 @@ class TLDPurseSideslipView extends StatelessWidget {
               child: Icon(IconData(iconList[index - 1],fontFamily: 'appIconFonts'),color: Color.fromARGB(255,51, 114, 255),),
             ),
             title: Text(titleList[index - 1],style : TextStyle(color : Color.fromARGB(255, 153, 153, 153),fontSize: 14),textAlign: TextAlign.left,),
+            onTap: (){
+              this.didClickCallBack(index);
+            },
           );
         }
      },

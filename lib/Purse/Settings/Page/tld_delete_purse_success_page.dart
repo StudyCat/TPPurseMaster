@@ -1,17 +1,15 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TLDPurseBackupWordSuccessPage extends StatefulWidget {
-  TLDPurseBackupWordSuccessPage({Key key}) : super(key: key);
+class TLDDeletePurseSuccessPage extends StatefulWidget {
+  TLDDeletePurseSuccessPage({Key key}) : super(key: key);
 
   @override
-  _TLDPurseBackupWordSuccessPageState createState() =>
-      _TLDPurseBackupWordSuccessPageState();
+  _TLDDeletePurseSuccessPageState createState() => _TLDDeletePurseSuccessPageState();
 }
 
-class _TLDPurseBackupWordSuccessPageState
-    extends State<TLDPurseBackupWordSuccessPage> {
+class _TLDDeletePurseSuccessPageState extends State<TLDDeletePurseSuccessPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,9 +17,9 @@ class _TLDPurseBackupWordSuccessPageState
         border: Border.all(
           color : Color.fromARGB(0, 0, 0, 0),
         ),
-        heroTag: 'purse_backup_word_success_page',
+        heroTag: 'delete_purse_success_page',
         transitionBetweenRoutes: false,
-        middle: Text('备份助记词'),
+        middle: Text('删除钱包'),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -30,7 +28,7 @@ class _TLDPurseBackupWordSuccessPageState
     );
   }
 
-  Widget _getBodyWidget(BuildContext context) {
+   Widget _getBodyWidget(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,23 +53,15 @@ class _TLDPurseBackupWordSuccessPageState
           ),
         ),
         Container(
-           padding: EdgeInsets.only(
-            top: ScreenUtil().setHeight(40),
-          ),
-          child: Center(
-              child: Text('请妥善保管您的助记词\n切勿丢失或泄漏给他',style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),textAlign: TextAlign.center,),
-          ),
-        ),
-        Container(
           padding: EdgeInsets.only(
-           top: ScreenUtil().setHeight(80),
+           top: ScreenUtil().setHeight(250),
           ),
           child: Center(
             child: Container(
               height : ScreenUtil().setHeight(80),
               width :  ScreenUtil().setWidth(540),
               child: CupertinoButton(child: Text('完成',style : TextStyle(fontSize : ScreenUtil().setSp(28),color: Colors.white)), padding: EdgeInsets.all(0),color: Theme.of(context).primaryColor, borderRadius: BorderRadius.all(Radius.circular(4)),onPressed: (){
-               Navigator.of(context)..pop()..pop()..pop();
+               Navigator.of(context)..pop();
               }),
             ),
           ),
