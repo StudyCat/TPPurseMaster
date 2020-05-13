@@ -4,6 +4,8 @@ import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
 import '../View/tld_buy_search_field.dart';
 import '../View/tld_buy_firstpage_cell.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../Notification/tld_more_btn_click_notification.dart';
+import '../../../Order/Page/tld_order_list_page.dart';
 
 class TLDBuyPage extends StatefulWidget {
   TLDBuyPage({Key key}) : super(key: key);
@@ -36,7 +38,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> {
               padding: EdgeInsets.all(0),
               minSize: 20,
               onPressed: () {
-                Scaffold.of(context).openDrawer();
+                TLDMoreBtnClickNotification().dispatch(context);
               });
         }),
         automaticallyImplyLeading: false,
@@ -53,7 +55,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> {
                 padding: EdgeInsets.all(0),
                 minSize: 20,
                 onPressed: () {
-                  Scaffold.of(context).openDrawer();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => TLDOrderListPage()));
                 }),
             MessageButton()
           ],

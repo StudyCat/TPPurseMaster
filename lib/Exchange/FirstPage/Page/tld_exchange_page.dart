@@ -5,6 +5,7 @@ import '../View/tld_exchange_normalCell.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../View/tld_exchange_input_cell.dart';
 import '../View/tld_exchange_input_slider_cell.dart';
+import '../../../Notification/tld_more_btn_click_notification.dart';
 
 
 
@@ -41,7 +42,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
               padding: EdgeInsets.all(0),
               minSize: 20,
               onPressed: () {
-                Scaffold.of(context).openDrawer();
+                TLDMoreBtnClickNotification().dispatch(context);
               });
         }),
         automaticallyImplyLeading: false,

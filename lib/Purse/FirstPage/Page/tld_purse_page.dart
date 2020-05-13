@@ -4,31 +4,25 @@ import '../View/message_button.dart';
 import '../View/purse_first_cell.dart';
 import '../View/purse_cell.dart';
 import '../View/purse_bottom_cell.dart';
-import '../View/purse_firstpage_sideslip.dart';
 import '../../MyPurse/Page/tld_my_purse_page.dart';
 import '../../../ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import '../../../ceatePurse&importPurse/ImportPurse/Page/tld_import_purse_page.dart';
-import '../../../Drawer/PaymentTerm/Page/tld_choose_payment_page.dart';
+import '../../../Notification/tld_more_btn_click_notification.dart';
 
 class TLDPursePage extends StatefulWidget {
-  TLDPursePage({Key key}) : super(key: key);
+  TLDPursePage({Key key,this.didClickMoreBtnCallBack}) : super(key: key);
+  final Function didClickMoreBtnCallBack;
 
   @override
   _TLDPursePageState createState() => _TLDPursePageState();
 }
 
 class _TLDPursePageState extends State<TLDPursePage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _getBodyWidget(context),
-      drawer: TLDPurseSideslipView(
-        didClickCallBack: (int index){
-          if (index == 2){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDChoosePaymentPage()));
-          }
-        },
-      ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
@@ -47,7 +41,7 @@ class _TLDPursePageState extends State<TLDPursePage> {
               padding: EdgeInsets.all(0),
               minSize: 20,
               onPressed: () {
-                Scaffold.of(context).openDrawer();
+                TLDMoreBtnClickNotification().dispatch(context);
               });
         }),
         automaticallyImplyLeading: false,
