@@ -4,6 +4,8 @@ import '../View/tld_my_purse_header.dart';
 import '../View/tld_my_purse_content_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../Settings/Page/tld_purse_setting_page.dart';
+import '../../TransferAccounts/Page/tld_transfer_accounts_page.dart';
+import '../../QRCode/Page/tld_qr_code_page.dart';
 
 class TLDMyPursePage extends StatefulWidget {
   TLDMyPursePage({Key key}) : super(key: key);
@@ -67,7 +69,13 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
 
   Widget _getBodyWidget(BuildContext context) {
     return Column(children: <Widget>[
-      TLDMyPurseHeaderView(),
+      TLDMyPurseHeaderView(didClickTransferAccountsBtnCallBack: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDTransferAccountsPage()));
+      },
+      didClickQRCodeBtnCallBack: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDQRCodePage()));
+      },
+      ),
       Expanded(
         child: TLDMyPurseContentView(),
       )

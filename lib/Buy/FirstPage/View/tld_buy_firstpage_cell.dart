@@ -4,7 +4,9 @@ import 'tld_buy_cell_bottom.dart';
 import 'package:dragon_sword_purse/CommonWidget/ltd_sale_buy_cell_header.dart';
 
 class TLDBuyFirstPageCell extends StatefulWidget {
-  TLDBuyFirstPageCell({Key key}) : super(key: key);
+  TLDBuyFirstPageCell({Key key,this.didClickBuyBtnCallBack}) : super(key: key);
+
+  final didClickBuyBtnCallBack;
 
   @override
   _TLDBuyFirstPageCellState createState() => _TLDBuyFirstPageCellState();
@@ -25,7 +27,7 @@ class _TLDBuyFirstPageCellState extends State<TLDBuyFirstPageCell> {
            padding: EdgeInsets.only(top : 10,bottom : 17),
            child: Column(
              children : <Widget>[
-                getCommonCellHeader('地址', '购买', (){}, context,128),
+                getCommonCellHeader('地址', '购买', widget.didClickBuyBtnCallBack, context,128),
                 getCellBottomView(),
              ]
            ),

@@ -6,6 +6,7 @@ import '../View/tld_buy_firstpage_cell.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../Notification/tld_more_btn_click_notification.dart';
 import '../../../Order/Page/tld_order_list_page.dart';
+import '../View/tld_buy_action_sheet.dart';
 
 class TLDBuyPage extends StatefulWidget {
   TLDBuyPage({Key key}) : super(key: key);
@@ -77,7 +78,11 @@ class _TLDBuyPageState extends State<TLDBuyPage> {
           child: ListView.builder(
           itemCount: 11,
           itemBuilder: (BuildContext context, int index) {
-          return TLDBuyFirstPageCell();
+          return TLDBuyFirstPageCell(didClickBuyBtnCallBack: (){
+            showCupertinoModalPopup(context: context, builder: (BuildContext context){
+              return TLDBuyActionSheet();
+            });
+          },);
          },
         ), 
         ),

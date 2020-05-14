@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDMyPurseHeaderView extends StatefulWidget {
-  TLDMyPurseHeaderView({Key key}) : super(key: key);
+  TLDMyPurseHeaderView({Key key,this.didClickTransferAccountsBtnCallBack,this.didClickQRCodeBtnCallBack}) : super(key: key);
+
+  final Function didClickTransferAccountsBtnCallBack;
+
+  final Function didClickQRCodeBtnCallBack;
 
   @override
   _TLDMyPurseHeaderViewState createState() => _TLDMyPurseHeaderViewState();
@@ -111,7 +115,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
               width: (size.width - ScreenUtil().setWidth(90)) / 2,
               height: ScreenUtil().setHeight(80),
               child: OutlineButton(
-                onPressed: () {},
+                onPressed: widget.didClickQRCodeBtnCallBack,
                 shape: BeveledRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
@@ -120,7 +124,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
                     width: 1,
                   ),
                 child: Text(
-                  '钱包',
+                  '收款码',
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(28),
                       color: Theme.of(context).primaryColor),
@@ -130,9 +134,9 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
               width: (size.width - ScreenUtil().setWidth(90)) / 2,
               height: ScreenUtil().setHeight(80),
               child: CupertinoButton(
-                onPressed: () {},
+                onPressed: widget.didClickTransferAccountsBtnCallBack,
                 child: Text(
-                  '收款码',
+                  '转账',
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(28), color: Colors.white),
                 ),

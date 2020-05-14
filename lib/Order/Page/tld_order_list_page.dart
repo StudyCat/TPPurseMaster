@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'tld_order_list_content_page.dart';
+import '../View/tld_order_list_screen_view.dart';
 
 class TLDOrderListPage extends StatefulWidget {
   TLDOrderListPage({Key key}) : super(key: key);
@@ -15,6 +16,8 @@ class _TLDOrderListPageState extends State<TLDOrderListPage>
 
   TabController _tabController;
 
+  TLDOrderListScreenViewController _screenViewController;
+
   List<String> _tabTitles = [
     "买入",
     "卖出",
@@ -27,6 +30,7 @@ class _TLDOrderListPageState extends State<TLDOrderListPage>
 
     _tabController = TabController(length: 2, vsync: this);
 
+    _screenViewController = TLDOrderListScreenViewController(true);
   }
 
   @override
@@ -49,6 +53,7 @@ class _TLDOrderListPageState extends State<TLDOrderListPage>
             padding: EdgeInsets.all(0),
             minSize: 20,
             onPressed: () {
+              _screenViewController.value = !_screenViewController.value;
             }),
       ),
       body: _getBodyWidget(context),
@@ -87,6 +92,7 @@ class _TLDOrderListPageState extends State<TLDOrderListPage>
           ))
         ],
       ),
+      TLDOrderListScreenView(controller: _screenViewController,)
     ]);
   }
 }
