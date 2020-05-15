@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../Notification/tld_more_btn_click_notification.dart';
 import '../../../Order/Page/tld_order_list_page.dart';
 import '../View/tld_buy_action_sheet.dart';
+import '../../../Message/Page/tld_message_page.dart';
 
 class TLDBuyPage extends StatefulWidget {
   TLDBuyPage({Key key}) : super(key: key);
@@ -58,7 +59,9 @@ class _TLDBuyPageState extends State<TLDBuyPage> {
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => TLDOrderListPage()));
                 }),
-            MessageButton()
+            MessageButton(
+              didClickCallBack: () =>  Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage())),
+            )
           ],
         )
         ),

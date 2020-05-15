@@ -8,12 +8,12 @@ Widget getCommonCellHeader(String title,String buttonTitle ,Function onPressCall
   return Column(
              children : <Widget>[
                Row(
-                 mainAxisAlignment: MainAxisAlignment.start,
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 mainAxisSize: MainAxisSize.max,
                  crossAxisAlignment: CrossAxisAlignment.center,
                  children: <Widget>[
                    Container(
                      padding: EdgeInsets.only(left : 10),
-                     width: screenSize.width - ScreenUtil().setWidth(buttonWidth + 60),
                      child: Text(title +'：fwefwefewfwefwef',style : TextStyle(fontSize : ScreenUtil().setSp(24) ,color : Color.fromARGB(255, 153, 153, 153))),
                    ),
                    picAndTextButton('assetss/images/firspage_buy.png', buttonTitle, onPressCallBack,buttonWidth)

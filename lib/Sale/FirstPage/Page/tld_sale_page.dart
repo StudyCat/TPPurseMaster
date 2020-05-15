@@ -5,6 +5,8 @@ import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
 import '../View/tld_sale_firstpage_cell.dart';
 import '../../../Notification/tld_more_btn_click_notification.dart';
 import '../../../Order/Page/tld_order_list_page.dart';
+import '../../../Message/Page/tld_message_page.dart';
+import '../../DetailSale/Page/tld_detail_sale_page.dart';
 
 class TLDSalePage extends StatefulWidget {
   TLDSalePage({Key key}) : super(key: key);
@@ -55,7 +57,9 @@ class _TLDSalePageState extends State<TLDSalePage> {
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => TLDOrderListPage()));
                 }),
-            MessageButton()
+            MessageButton(
+              didClickCallBack: () =>  Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage())),
+            )
           ],
         )
         ),
@@ -66,7 +70,7 @@ class _TLDSalePageState extends State<TLDSalePage> {
     return ListView.builder(
       itemCount: 11,
       itemBuilder: (BuildContext context, int index) {
-      return getSaleFirstPageCell('取消挂售',(){},context);
+      return getSaleFirstPageCell('取消挂售',() => Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailSalePage())),context);
      },
     );
   }

@@ -17,6 +17,7 @@ Widget picAndTextButton(String imgpath,String text,Function onPress,double butto
       onPressed: onPress,
       child: Text(text,style: TextStyle(color : Colors.white,fontSize: ScreenUtil().setSp(26)),maxLines: 1,),
       color: Colors.transparent,
+      padding: EdgeInsets.all(0),
       ),
   );
 }

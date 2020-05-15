@@ -4,9 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDClipTitleInputCell extends StatefulWidget {
   TLDClipTitleInputCell(
-      {Key key, this.title, this.textFieldEditingCallBack, this.placeholder})
+      {Key key, this.title, this.textFieldEditingCallBack, this.placeholder,this.titleFontSize})
       : super(key: key);
 
+  final num titleFontSize;
   final String title;
   final ValueChanged<String> textFieldEditingCallBack;
   final String placeholder;
@@ -43,7 +44,7 @@ class _TLDClipTitleInputCellState extends State<TLDClipTitleInputCell> {
               Text(
                 widget.title,
                 style: TextStyle(
-                    fontSize: ScreenUtil().setSp(24),
+                    fontSize: widget.titleFontSize == null ? ScreenUtil().setSp(24) : widget.titleFontSize,
                     color: Color.fromARGB(255, 51, 51, 51)),
               ),
               Expanded(

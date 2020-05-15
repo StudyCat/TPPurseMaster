@@ -8,6 +8,7 @@ import '../../MyPurse/Page/tld_my_purse_page.dart';
 import '../../../ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import '../../../ceatePurse&importPurse/ImportPurse/Page/tld_import_purse_page.dart';
 import '../../../Notification/tld_more_btn_click_notification.dart';
+import '../../../Message/Page/tld_message_page.dart';
 
 class TLDPursePage extends StatefulWidget {
   TLDPursePage({Key key,this.didClickMoreBtnCallBack}) : super(key: key);
@@ -45,7 +46,9 @@ class _TLDPursePageState extends State<TLDPursePage> {
               });
         }),
         automaticallyImplyLeading: false,
-        trailing: MessageButton(didClickCallBack: () {}),
+        trailing: MessageButton(didClickCallBack: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage()));
+        }),
       ),
     );
   }

@@ -17,7 +17,7 @@ Widget getSaleFirstPageCell(
         width: screenSize.width - 30,
         padding: EdgeInsets.only(top: 10, bottom: 17),
         child: Column(children: <Widget>[
-          getCommonCellHeader('订单号', buttonTitle, () {}, context,166),
+          getCommonCellHeader('订单号', buttonTitle, onPressCallBack, context,166),
           _leftRightItem(context,34, 0, '收款方式', '', false),
           _leftRightItem(context,22, 0, '挂售钱包', '56456456456645', true),
           _leftRightItem(context, 22, 20, '交易时间', '2020.5.4', true),

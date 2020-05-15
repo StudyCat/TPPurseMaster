@@ -8,6 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'Purse/FirstPage/View/purse_firstpage_sideslip.dart';
 import 'Drawer/PaymentTerm/Page/tld_choose_payment_page.dart';
 import 'Notification/tld_more_btn_click_notification.dart';
+import 'Drawer/IntegrationDesc/Page/tld_integration_desc_page.dart';
+import 'Drawer/AboutUs/Page/tld_about_us_page.dart';
+import 'Drawer/UserFeedback/Page/tld_user_feedback_page.dart';
 
 class TLDTabbarPage extends StatefulWidget {
   TLDTabbarPage({Key key}) : super(key: key);
@@ -76,6 +79,17 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => TLDChoosePaymentPage()));
+          } else if (index == 3) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TLDIntegrationDescPage()));
+          } else if (index == 5) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TLDAboutUsPage()));
+          } else if (index == 4) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TLDUserFeedBackPage()));
           }
         },
       ),
@@ -87,13 +101,13 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> {
         iconSize: 26,
         onTap: (index) => _getPage(index),
       ),
-      body: Builder(builder: (BuildContext context){
+      body: Builder(builder: (BuildContext context) {
         return NotificationListener<TLDMoreBtnClickNotification>(
-        onNotification: (TLDMoreBtnClickNotification notifcation) {
-          Scaffold.of(context).openDrawer();
-          return true;
-        },
-        child: currentPage);
+            onNotification: (TLDMoreBtnClickNotification notifcation) {
+              Scaffold.of(context).openDrawer();
+              return true;
+            },
+            child: currentPage);
       }),
     );
   }

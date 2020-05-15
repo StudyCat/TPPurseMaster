@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../View/tld_exchange_input_cell.dart';
 import '../View/tld_exchange_input_slider_cell.dart';
 import '../../../Notification/tld_more_btn_click_notification.dart';
+import '../../../Message/Page/tld_message_page.dart';
 
 
 
@@ -46,7 +47,9 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
               });
         }),
         automaticallyImplyLeading: false,
-        trailing: MessageButton(didClickCallBack: () {}),
+        trailing: MessageButton(
+          didClickCallBack: () =>  Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage())),
+        ),
       ),
     );
   }

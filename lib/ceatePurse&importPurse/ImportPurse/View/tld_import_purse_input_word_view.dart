@@ -58,7 +58,7 @@ class _TLDImportPurseInputWordViewState extends State<TLDImportPurseInputWordVie
     int index = columnIndex * 4 + rowIndex;
     return Container(
       padding: EdgeInsets.all(0),
-      width: (size.width - ScreenUtil().setWidth(106)) / 4.0,
+      width: (size.width - ScreenUtil().setWidth(110)) / 4.0,
       height: ScreenUtil().setHeight(70),
       child: Center(
         child : TLDImportPurseInputWordTextField(textFieldEditingCallBack: (String text){

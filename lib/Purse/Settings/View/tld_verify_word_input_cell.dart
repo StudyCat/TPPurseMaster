@@ -69,7 +69,7 @@ class _TLDVerifyWordInputCellState extends State<TLDVerifyWordInputCell> {
     Size size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.all(0),
-      width: (size.width - ScreenUtil().setWidth(106)) / 4.0,
+      width: (size.width - ScreenUtil().setWidth(110)) / 4.0,
       height: ScreenUtil().setHeight(70),
       child: Center(
         child : Text(word,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51)),)
