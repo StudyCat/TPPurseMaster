@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDOrderListCell extends StatefulWidget {
-  TLDOrderListCell({Key key,this.didClickDetailBtnCallBack}) : super(key: key);
+  TLDOrderListCell({Key key,this.didClickDetailBtnCallBack,this.didClickIMBtnCallBack}) : super(key: key);
+
+  final Function didClickIMBtnCallBack;
 
   final Function didClickDetailBtnCallBack;
 
@@ -53,9 +55,12 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
               fontSize: ScreenUtil().setSp(24),
               color: Color.fromARGB(255, 153, 153, 153)),
         ),
-        Icon(
+        GestureDetector(
+          onTap : widget.didClickIMBtnCallBack,
+          child: Icon(
           IconData(0xe609, fontFamily: 'appIconFonts'),
           size: ScreenUtil().setWidth(32),
+        ),
         )
       ],
     );

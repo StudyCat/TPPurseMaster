@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDUserFeedbackPickPicCell extends StatefulWidget {
-  TLDUserFeedbackPickPicCell({Key key, this.title, this.images,this.didClickCallBack})
+  TLDUserFeedbackPickPicCell({Key key, this.title, this.images,this.didClickCallBack,this.didClickImageCallBack})
       : super(key: key);
 
   final String title;
@@ -11,6 +11,8 @@ class TLDUserFeedbackPickPicCell extends StatefulWidget {
   final List images;
   
   final Function didClickCallBack;
+
+  final ValueChanged<int> didClickImageCallBack;
 
   @override
   _TLDUserFeedbackPickPicCellState createState() =>
@@ -52,7 +54,7 @@ class _TLDUserFeedbackPickPicCellState
                             childAspectRatio: 1,
                             crossAxisSpacing: ScreenUtil().setWidth(10),
                             mainAxisSpacing: ScreenUtil().setHeight(10)),
-                        itemCount: widget.images.length + 1,
+                        itemCount: widget.images.length < 3 ? widget.images.length + 1 : 3,
                         itemBuilder: (BuildContext context, int index) {
                           if (index == widget.images.length) {
                             return CupertinoButton(
@@ -67,13 +69,13 @@ class _TLDUserFeedbackPickPicCellState
                                   ),
                                 ),
                                 onPressed: () {
-                                  if (widget.images.length < 2) {
+                                  // if (widget.images.length < 2) {
                                       widget.didClickCallBack();
-                                  }
+                                  // }
                                 });
                           } else {
                             return GestureDetector(
-                              onTap :(){},
+                              onTap :() => widget.didClickImageCallBack(index),
                               child : Image.file(widget.images[index],fit : BoxFit.fill)
                             );
                           }

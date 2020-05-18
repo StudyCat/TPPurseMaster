@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../View/tld_order_list_cell.dart';
 import 'tld_detail_order_page.dart';
+import '../../IM/Page/tld_im_page.dart';
 
 
 class TLDOrderListContentPage extends StatefulWidget {
@@ -22,8 +23,13 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> {
   }
 
   Widget _getListItem(BuildContext context,int index){
-    return TLDOrderListCell(didClickDetailBtnCallBack: (){
+    return TLDOrderListCell(
+      didClickDetailBtnCallBack: (){
       Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage()));
-    },);
+        },
+      didClickIMBtnCallBack: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage()));
+      },
+      );
   }
 }

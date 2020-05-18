@@ -5,6 +5,7 @@ import '../../../CommonWidget/tld_clip_title_input_cell.dart';
 import '../View/tld_user_feedback_question_desc_cell.dart';
 import '../View/tld_user_feedback_pick_pic_cell.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../CommonWidget/tld_image_show_page.dart';
 
 class TLDUserFeedBackPage extends StatefulWidget {
   TLDUserFeedBackPage({Key key}) : super(key: key);
@@ -31,9 +32,18 @@ class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
     '请描述您的具体问题'
   ];
 
+  PageController _pageController;
+
   List images = [];
 
   List icons = [0xe679, 0xe61d, 0xe630];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _pageController = PageController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +96,15 @@ class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
                       }),
                     );
                   });
-            },));
+            },
+            didClickImageCallBack: (int index){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDImageShowPage(images: images,pageController: _pageController,index: index,heroTag: 'user_feedback',isShowDelete: true,deleteCallBack: (int index){
+                setState(() {
+                  images.removeAt(index);
+                });
+              },)));
+            },
+            ));
           }
         });
   }
