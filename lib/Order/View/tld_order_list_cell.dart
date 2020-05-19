@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDOrderListCell extends StatefulWidget {
-  TLDOrderListCell({Key key,this.didClickDetailBtnCallBack,this.didClickIMBtnCallBack}) : super(key: key);
+  TLDOrderListCell({Key key,this.didClickDetailBtnCallBack,this.didClickIMBtnCallBack,this.didClickItemCallBack}) : super(key: key);
 
   final Function didClickIMBtnCallBack;
 
   final Function didClickDetailBtnCallBack;
+
+  final Function didClickItemCallBack;
 
   @override
   _TLDOrderListCellState createState() => _TLDOrderListCellState();
@@ -16,7 +18,9 @@ class TLDOrderListCell extends StatefulWidget {
 class _TLDOrderListCellState extends State<TLDOrderListCell> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: widget.didClickItemCallBack,
+      child: Container(
       padding: EdgeInsets.only(
           left: ScreenUtil().setWidth(30),
           right: ScreenUtil().setWidth(30),
@@ -31,6 +35,7 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
                 top: ScreenUtil().setHeight(36)),
             child: _getContentColumn(context)),
       ),
+    ),
     );
   }
 

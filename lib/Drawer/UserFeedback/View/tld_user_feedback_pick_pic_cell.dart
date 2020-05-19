@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDUserFeedbackPickPicCell extends StatefulWidget {
-  TLDUserFeedbackPickPicCell({Key key, this.title, this.images,this.didClickCallBack,this.didClickImageCallBack})
+  TLDUserFeedbackPickPicCell({Key key, this.title, this.images,this.didClickCallBack,this.didClickImageCallBack,this.subTitle})
       : super(key: key);
 
   final String title;
+
+  final String subTitle;
 
   final List images;
   
@@ -38,12 +40,18 @@ class _TLDUserFeedbackPickPicCellState
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
-                child: Text(
-                  widget.title,
-                  style: TextStyle(
-                      fontSize: ScreenUtil().setSp(28),
-                      color: Color.fromARGB(255, 51, 51, 51)),
-                ),
+                child: RichText(
+                  text: TextSpan(
+                    text : widget.title,
+                    style : TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51)),
+                    children: <InlineSpan>[
+                      TextSpan(
+                        text : widget.subTitle == null ? '' : widget.subTitle,
+                        style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153))
+                      )
+                    ],
+                  ),
+                )
               ),
                 Container(
                       height: height,

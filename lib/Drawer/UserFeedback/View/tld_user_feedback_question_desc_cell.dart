@@ -36,6 +36,7 @@ class _TLDUserFeedbackQuestionDescCellState extends State<TLDUserFeedbackQuestio
             left: ScreenUtil().setWidth(20), right: ScreenUtil().setWidth(20)),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
@@ -52,7 +53,7 @@ class _TLDUserFeedbackQuestionDescCellState extends State<TLDUserFeedbackQuestio
                 height: ScreenUtil().setHeight(180),
                 child: CupertinoTextField(
                   controller: _controller,
-                  padding: EdgeInsets.all(0),
+                  padding: EdgeInsets.only(top: 0),
                   decoration: BoxDecoration(
                       border: Border.all(color: Color.fromARGB(0, 0, 0, 0))),
                   maxLines: null,
@@ -60,6 +61,7 @@ class _TLDUserFeedbackQuestionDescCellState extends State<TLDUserFeedbackQuestio
                   placeholderStyle: TextStyle(fontSize : ScreenUtil().setSp(24),color :Color.fromARGB(255, 153, 153, 153)),
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.done,
+                  style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51)),
                 ),
               )
             ]),
