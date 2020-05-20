@@ -2,6 +2,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'tld_create_purse_success_page.dart';
+import '../Model/create_purse_model_manager.dart';
 
 class TLDCreatingPursePage extends StatefulWidget {
   TLDCreatingPursePage({Key key}) : super(key: key);
@@ -12,6 +13,22 @@ class TLDCreatingPursePage extends StatefulWidget {
 
 
 class _TLDCreatingPursePageState extends State<TLDCreatingPursePage> {
+
+  TLDCreatePurseModelManager _manager;
+  @override
+  void initState() { 
+    super.initState();
+    _manager = TLDCreatePurseModelManager();
+
+    _createPurse();
+  }
+
+  Future _createPurse()async{
+    await _manager.createPurse('', (){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => TLDCreatePurseSuccessPage()));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,13 +47,6 @@ class _TLDCreatingPursePageState extends State<TLDCreatingPursePage> {
     );
   }
 
-  @override
-  void initState() { 
-    super.initState();
-    Future.delayed(Duration(seconds: 2), (){
-      Navigator.push(context, MaterialPageRoute(builder: (context) => TLDCreatePurseSuccessPage()));
-    });
-  }
 
   Widget _getBodyWidget(BuildContext context){
     return Center(

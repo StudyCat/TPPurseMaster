@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'tld_tabbar_page.dart';
 import 'Purse/Settings/Page/tld_purse_setting_page.dart';
 import 'Purse/Settings/Page/tld_purse_backup_word_success_page.dart';
+import 'package:flutter/services.dart';
+import 'dart:async';
 
 void main() => runApp(MyApp());
 
@@ -18,9 +20,13 @@ class MyApp extends StatelessWidget {
         primaryColor : Color.fromARGB(255, 51, 114, 245),
       ),
       home: TLDTabbarPage(),
+      // home: PlatformChannel(),
     );
   }
 }
+
+
+
 
 
 

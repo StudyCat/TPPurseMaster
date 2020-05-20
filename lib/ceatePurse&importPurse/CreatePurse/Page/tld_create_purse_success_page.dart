@@ -1,6 +1,7 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../../dataBase/tld_database_manager.dart';
 
 class TLDCreatePurseSuccessPage extends StatefulWidget {
   TLDCreatePurseSuccessPage({Key key}) : super(key: key);
@@ -11,6 +12,16 @@ class TLDCreatePurseSuccessPage extends StatefulWidget {
 }
 
 class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
+
+  TLDDataBaseManager _dataBaseManager;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _dataBaseManager  = TLDDataBaseManager();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +80,7 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
               padding: EdgeInsets.all(0),
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                Navigator.of(context)..pop()..pop()..pop();
+                
               }),
         ),
         Container(
@@ -88,10 +99,20 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
               padding: EdgeInsets.all(0),
               color: Theme.of(context).primaryColor,
               onPressed: () {
-
+                getDatas();
               }),
         )
       ],
     ));
   }
+
+  void getDatas() async{
+    await _dataBaseManager.openDataBase();
+    List book = await _dataBaseManager.searchAllWallet();
+    await _dataBaseManager.close();
+    setState(() {
+      
+    });
+  }
+
 }
