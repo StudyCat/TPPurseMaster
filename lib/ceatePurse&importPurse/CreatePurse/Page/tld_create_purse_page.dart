@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/ceatePurse&importPurse/ImportPurse/Page/tld_import_purse_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,9 +8,17 @@ import '../View/tld_verify_password_view.dart';
 import 'tld_creating_purse_page.dart';
 import '../Model/create_purse_model_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../../../CommonWidget/tld_data_manager.dart';
+
+enum TLDCreatePursePageType{
+  create,
+  import
+}
 
 class TLDCreatePursePage extends StatefulWidget {
-  TLDCreatePursePage({Key key}) : super(key: key);
+  TLDCreatePursePage({Key key,@required this.type}) : super(key: key);
+
+  final TLDCreatePursePageType type;
 
   @override
   _TLDCreatePursePageState createState() => _TLDCreatePursePageState();
@@ -24,6 +33,7 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
   }
 
   @override
@@ -131,7 +141,11 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
                     _isLengthLegal()) {
                   if (_password == _surePassword) {
                     _savePassword();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TLDCreatingPursePage()));
+                    if (widget.type == TLDCreatePursePageType.create){
+                       Navigator.push(context, MaterialPageRoute(builder: (context) => TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));
+                    }else{
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => TLDImportPursePage()));
+                    }
                   } else {
                     Fluttertoast.showToast(
                         msg: "确认密码与密码不符合",
@@ -153,6 +167,7 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
   void _savePassword() async{
     SharedPreferences pre = await SharedPreferences.getInstance();
     pre.setString('password', _password);
+    TLDDataManager.instance.password = _password;
   }
 
   bool _isHaveCapital() {
@@ -180,6 +195,6 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
     if (_password == null) {
       return false;
     }
-    return (_password.length > 8 && _password.length < 32);
+    return (_password.length > 7 && _password.length < 33);
   }
 }

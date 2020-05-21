@@ -12,15 +12,13 @@ class TLDDataManager{
   TLDDataManager._internal() {
     // 初始化
 
-    getPassword().then((value) => (){
-      password = value;
-    });
+   getPassword();
   }
 
 
-  Future<String> getPassword()async{
+  Future<String>  getPassword()async{
     SharedPreferences pre = await SharedPreferences.getInstance();
-    return pre.getString('password');
+    password = pre.getString('password');
   } 
 
 

@@ -9,6 +9,11 @@ import '../../../ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.d
 import '../../../ceatePurse&importPurse/ImportPurse/Page/tld_import_purse_page.dart';
 import '../../../Notification/tld_more_btn_click_notification.dart';
 import '../../../Message/Page/tld_message_page.dart';
+import '../../../CommonWidget/tld_alert_view.dart';
+import '../../../CommonWidget/tld_data_manager.dart';
+import '../../../ceatePurse&importPurse/CreatePurse/Page/tld_creating_purse_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../../../CommonFunction/tld_common_function.dart';
 
 class TLDPursePage extends StatefulWidget {
   TLDPursePage({Key key,this.didClickMoreBtnCallBack}) : super(key: key);
@@ -64,10 +69,10 @@ class _TLDPursePageState extends State<TLDPursePage> {
     if (index == 0) {
       return TLDPurseHeaderCell(
         didClickCreatePurseButtonCallBack: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDCreatePursePage()));
+          _createPurse(context);
         },
         didClickImportPurseButtonCallBack: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDImportPursePage()));
+          _importPurse(context);
         },
         );
     } else if (index == 4) {
@@ -87,4 +92,17 @@ class _TLDPursePageState extends State<TLDPursePage> {
       );
     }
   }
+
+  void _createPurse(BuildContext context){
+    jugeHavePassword(context, (){
+       Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));
+    },TLDCreatePursePageType.create);
+  }
+
+  void _importPurse(BuildContext context){
+    jugeHavePassword(context,(){
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDImportPursePage()));
+    },TLDCreatePursePageType.import);
+  }
+  
 }

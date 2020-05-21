@@ -19,6 +19,23 @@ class _TLDPurseBackupWordSuccessPageState
         border: Border.all(
           color : Color.fromARGB(0, 0, 0, 0),
         ),
+        leading: Container(
+        height: ScreenUtil().setHeight(34),
+        width: ScreenUtil().setHeight(34),
+        child: CupertinoButton(
+          child: Icon(
+            IconData(
+              0xe600,
+              fontFamily: 'appIconFonts',
+            ),
+           color: Color.fromARGB(255, 51, 51, 51),
+          ),
+          padding: EdgeInsets.all(0),
+          onPressed: () {
+            Navigator.popAndPushNamed(context, '/');
+          },
+        ),
+      ),
         heroTag: 'purse_backup_word_success_page',
         transitionBetweenRoutes: false,
         middle: Text('备份助记词'),
@@ -71,7 +88,7 @@ class _TLDPurseBackupWordSuccessPageState
               height : ScreenUtil().setHeight(80),
               width :  ScreenUtil().setWidth(540),
               child: CupertinoButton(child: Text('完成',style : TextStyle(fontSize : ScreenUtil().setSp(28),color: Colors.white)), padding: EdgeInsets.all(0),color: Theme.of(context).primaryColor, borderRadius: BorderRadius.all(Radius.circular(4)),onPressed: (){
-               Navigator.of(context)..pop()..pop()..pop();
+               Navigator.popAndPushNamed(context, '/');
               }),
             ),
           ),

@@ -2,10 +2,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../dataBase/tld_database_manager.dart';
+import '../../../Purse/Settings/Page/tld_purse_setting_backup_word_page.dart';
+import '../../../dataBase/tld_database_manager.dart';
 
 class TLDCreatePurseSuccessPage extends StatefulWidget {
-  TLDCreatePurseSuccessPage({Key key}) : super(key: key);
+  TLDCreatePurseSuccessPage({Key key,this.wallet}) : super(key: key);
 
+  final TLDWallet wallet;
   @override
   _TLDCreatePurseSuccessPageState createState() =>
       _TLDCreatePurseSuccessPageState();
@@ -13,13 +16,13 @@ class TLDCreatePurseSuccessPage extends StatefulWidget {
 
 class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
 
-  TLDDataBaseManager _dataBaseManager;
+
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _dataBaseManager  = TLDDataBaseManager();
   }
 
   @override
@@ -32,6 +35,23 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
         heroTag: 'create_purse_success_page',
         transitionBetweenRoutes: false,
         middle: Text('创建钱包'),
+        leading: Container(
+        height: ScreenUtil().setHeight(34),
+        width: ScreenUtil().setHeight(34),
+        child: CupertinoButton(
+          child: Icon(
+            IconData(
+              0xe600,
+              fontFamily: 'appIconFonts',
+            ),
+           color: Color.fromARGB(255, 51, 51, 51),
+          ),
+          padding: EdgeInsets.all(0),
+          onPressed: () {
+            Navigator.popAndPushNamed(context, '/');
+          },
+        ),
+      ),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -80,7 +100,7 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
               padding: EdgeInsets.all(0),
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                
+                 Navigator.popAndPushNamed(context, '/');
               }),
         ),
         Container(
@@ -99,20 +119,11 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
               padding: EdgeInsets.all(0),
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                getDatas();
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPurseSeetingBackWordPage(wallet: widget.wallet,)));
               }),
         )
       ],
     ));
-  }
-
-  void getDatas() async{
-    await _dataBaseManager.openDataBase();
-    List book = await _dataBaseManager.searchAllWallet();
-    await _dataBaseManager.close();
-    setState(() {
-      
-    });
   }
 
 }

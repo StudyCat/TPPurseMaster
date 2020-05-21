@@ -1,8 +1,11 @@
+import 'package:dragon_sword_purse/ceatePurse&importPurse/ImportPurse/Model/tld_import_purse_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../CommonWidget/tld_alert_view.dart';
 import 'tld_import_purse_success_page.dart';
+import '../../CreatePurse/Page/tld_creating_purse_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TLDImportPurseKeyPage extends StatefulWidget {
   TLDImportPurseKeyPage({Key key}) : super(key: key);
@@ -15,6 +18,8 @@ class _TLDImportPurseKeyPageState extends State<TLDImportPurseKeyPage> {
 
   TextEditingController _controller;
 
+  TLDImportPurseModelManager _manager;
+
   String _keyString = ''; 
 
   @override
@@ -22,6 +27,7 @@ class _TLDImportPurseKeyPageState extends State<TLDImportPurseKeyPage> {
     // TODO: implement initState
     super.initState();
 
+    _manager = TLDImportPurseModelManager();
     _controller = TextEditingController();
     _controller.addListener((){
       _keyString = _controller.text;
@@ -88,18 +94,31 @@ class _TLDImportPurseKeyPageState extends State<TLDImportPurseKeyPage> {
                       builder: (context) => TLDAlertView(
                             title: '温馨提示',
                             type: TLDAlertViewType.normal,
-                            alertString: '需要将助记词补满哦',
+                            alertString: '私钥不能为空',
                             didClickSureBtn: () {},
                           ));
                 } else {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TLDImportPurseSuccessPage()));
+                   _manager.jugePrivateKeyLegal(_keyString, (privateKey){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDCreatingPursePage(type: TLDCreatingPursePageType.import,privateKey: privateKey,)));
+                  }, (int value) {
+                    String msg; 
+                    if(value == 0){
+                      msg = '私钥非法';
+                    }else{
+                      msg = '已拥有该钱包';
+                    }
+                     Fluttertoast.showToast(
+                        msg: msg,
+                        toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+                  });
                 }
               }),
         )
       ],
     ));
   }
+
+
+
 }

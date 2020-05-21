@@ -76,7 +76,7 @@ class _TLDVerifyPasswordViewState extends State<TLDVerifyPasswordView> {
     if (widget.password == null){
       return false;
     }
-    return (widget.password.length > 8 && widget.password.length < 32);
+    return (widget.password.length > 7 && widget.password.length < 33);
   }
 
 }

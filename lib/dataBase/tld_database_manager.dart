@@ -9,17 +9,22 @@ final String tableWallet = 'wallet';
 final String walletId = '_id';
 final String walletJson = 'walletJson';
 final String walletMnemonic = 'walletMnemonic';
-
+final String walletPrivate = 'walletPrivate';
+final String walletAdress = 'walletAdress';
 
 class TLDWallet{
   int id;
   String json;
   String mnemonic;
+  String privateKey;
+  String address;
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       walletJson: json,
       walletMnemonic: mnemonic,
+      walletPrivate : privateKey,
+      walletAdress : address
     };
     if (id != null) {
       map[walletId] = id;
@@ -27,16 +32,20 @@ class TLDWallet{
     return map;
   }
 
-  TLDWallet(int id, String json, String mnemonic) {
+  TLDWallet(int id, String json, String mnemonic,String privateKey,String address) {
     this.id = id;
     this.json = json;
     this.mnemonic = mnemonic;
+    this.privateKey = privateKey;
+    this.address = address;
   }
 
   TLDWallet.fromMap(Map<String, dynamic> map) {
     id = map[walletId];
     json = map[walletJson];
     mnemonic = map[walletJson];
+    privateKey = map[walletPrivate];
+    address = map[walletAdress];
   }
 }
 
@@ -56,7 +65,9 @@ class TLDDataBaseManager {
           CREATE TABLE $tableWallet (
             $walletId INTEGER PRIMARY KEY, 
             $walletJson TEXT, 
-            $walletMnemonic TEXT)
+            $walletMnemonic TEXT,
+            $walletPrivate TEXT,
+            $walletAdress TEXT)
           ''');
     });
   }
@@ -73,6 +84,8 @@ class TLDDataBaseManager {
       walletId,
       walletJson,
       walletMnemonic,
+      walletPrivate,
+      walletAdress
     ]);
 
      if (maps == null || maps.length == 0) {

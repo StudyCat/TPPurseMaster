@@ -1,10 +1,14 @@
+import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
+import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_creating_purse_page.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/ImportPurse/View/tld_import_purse_input_word_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../View/tld_import_purse_input_word_view.dart';
 import '../../../CommonWidget/tld_alert_view.dart';
 import 'tld_import_purse_success_page.dart';
+import '../Model/tld_import_purse_model_manager.dart';
 
 class TLDImportPurseWordPage extends StatefulWidget {
   TLDImportPurseWordPage({Key key}) : super(key: key);
@@ -16,10 +20,14 @@ class TLDImportPurseWordPage extends StatefulWidget {
 class _TLDImportPurseWordPageState extends State<TLDImportPurseWordPage> {
   List words;
 
+  TLDImportPurseModelManager _manager;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    _manager = TLDImportPurseModelManager();
 
     words = [
       '',
@@ -83,7 +91,20 @@ class _TLDImportPurseWordPageState extends State<TLDImportPurseWordPage> {
                 if (isEmpty) {
                   showDialog(context: context , builder : (context) => TLDAlertView(title : '温馨提示',type : TLDAlertViewType.normal ,alertString: '需要将助记词补满哦',didClickSureBtn: (){},));
                 }else{
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => TLDImportPurseSuccessPage()));
+                  _manager.jugeMnemonicisLegal(words, (mnemonicString){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDCreatingPursePage(type: TLDCreatingPursePageType.import,mnemonicString: mnemonicString,)));
+                  }, (int value) {
+                    String msg; 
+                    if(value == 0){
+                      msg = '助记词非法';
+                    }else{
+                      msg = '已拥有该钱包';
+                    }
+                     Fluttertoast.showToast(
+                        msg: msg,
+                        toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+                  });
                 }
               }),
         )

@@ -1,32 +1,29 @@
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../View/tld_purse_setting_backup_word_gridview.dart';
 import 'tld_verify_word_page.dart';
+import 'dart:convert';
 
 class TLDPurseSeetingBackWordPage extends StatefulWidget {
-  TLDPurseSeetingBackWordPage({Key key}) : super(key: key);
-
+  TLDPurseSeetingBackWordPage({Key key,this.wallet}) : super(key: key);
+  final TLDWallet wallet;
   @override
   _TLDPurseSeetingBackWordPageState createState() => _TLDPurseSeetingBackWordPageState();
 }
 
 class _TLDPurseSeetingBackWordPageState extends State<TLDPurseSeetingBackWordPage> {
+  List _words;
 
-  List words = [
-    'asfas',
-    'fsdfdsf',
-    'dsfsdfds',
-    'fdsfsdf',
-    'fdsfsdf',
-    'fdsfdsf',
-    'fdsfsdf',
-    'fdsfsdf',
-    'weqeq',
-    'asdasd',
-    'fdsfd',
-    'fdfdfs',
-  ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    
+    _words = widget.wallet.mnemonic.split(' ');
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +55,15 @@ class _TLDPurseSeetingBackWordPageState extends State<TLDPurseSeetingBackWordPag
           ),
           Container(
             height : ScreenUtil().setHeight(280),
-            child : STDPurseSettingBackupWordGridView(words: words,),
+            child : STDPurseSettingBackupWordGridView(words: _words,),
           ),
           Container(
             width: size.width - ScreenUtil().setWidth(200),
             margin: EdgeInsets.only(top : ScreenUtil().setHeight(80)),
             height: ScreenUtil().setHeight(80),
             child: CupertinoButton(child: Text('下一步',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDVerifyWordPage(words: words,)));
+              print(_words);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDVerifyWordPage(words: _words,)));
             }), 
           ),
         ],
