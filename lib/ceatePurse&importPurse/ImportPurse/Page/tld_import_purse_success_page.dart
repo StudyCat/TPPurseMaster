@@ -1,6 +1,7 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../../tld_tabbar_page.dart';
 
 class TLDImportPurseSuccessPage extends StatefulWidget {
   TLDImportPurseSuccessPage({Key key}) : super(key: key);
@@ -17,6 +18,23 @@ class _TLDImportPurseSuccessPageState extends State<TLDImportPurseSuccessPage> {
         border: Border.all(
           color : Color.fromARGB(0, 0, 0, 0),
         ),
+         leading: Container(
+        height: ScreenUtil().setHeight(34),
+        width: ScreenUtil().setHeight(34),
+        child: CupertinoButton(
+          child: Icon(
+            IconData(
+              0xe600,
+              fontFamily: 'appIconFonts',
+            ),
+           color: Color.fromARGB(255, 51, 51, 51),
+          ),
+          padding: EdgeInsets.all(0),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TLDTabbarPage()), (route) => route == null);
+          },
+        ),
+       ),
         heroTag: 'import_purse_success_page',
         transitionBetweenRoutes: false,
         middle: Text('导入钱包'),
@@ -68,7 +86,7 @@ class _TLDImportPurseSuccessPageState extends State<TLDImportPurseSuccessPage> {
               padding: EdgeInsets.all(0),
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                Navigator.of(context)..pop()..pop();
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TLDTabbarPage()), (route) => route == null);
               }),
         ),
       ],

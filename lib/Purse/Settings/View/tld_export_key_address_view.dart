@@ -1,9 +1,15 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TLDExportKeyAddressView extends StatefulWidget {
-  TLDExportKeyAddressView({Key key}) : super(key: key);
+  TLDExportKeyAddressView({Key key,this.address,this.privateKey}) : super(key: key);
+
+  final String address;
+
+  final String privateKey;
 
   @override
   _TLDExportKeyAddressViewState createState() => _TLDExportKeyAddressViewState();
@@ -31,7 +37,7 @@ class _TLDExportKeyAddressViewState extends State<TLDExportKeyAddressView> {
             width: size.width - ScreenUtil().setWidth(190),
             margin: EdgeInsets.only(left: ScreenUtil().setWidth(36)),
             child: Text(
-              '456456565dqwdqwdqwdwqdwqdqwqwdqw',
+              widget.address == null ? widget.privateKey : widget.address,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(24),
                   color: Color.fromARGB(255, 153, 153, 153)),
@@ -48,7 +54,11 @@ class _TLDExportKeyAddressViewState extends State<TLDExportKeyAddressView> {
                   IconData(0xe601, fontFamily: 'appIconFonts'),
                   size: ScreenUtil().setWidth(32),
                 ),
-                onPressed: () {}),
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text : widget.address == null ? widget.privateKey : widget.address));
+                  Fluttertoast.showToast(msg: '已复制到剪切板',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+                }),
           ),
 
         ],

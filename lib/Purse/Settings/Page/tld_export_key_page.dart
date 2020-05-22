@@ -1,10 +1,13 @@
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../View/tld_export_key_address_view.dart';
 
 class TLDExportKeyPage extends StatefulWidget {
-  TLDExportKeyPage({Key key}) : super(key: key);
+  TLDExportKeyPage({Key key,this.wallet}) : super(key: key);
+
+  final TLDWallet wallet;
 
   @override
   _TLDExportKeyPageState createState() => _TLDExportKeyPageState();
@@ -63,7 +66,7 @@ class _TLDExportKeyPageState extends State<TLDExportKeyPage> {
             right: ScreenUtil().setWidth(30)
           ),
           child: Center(
-            child : TLDExportKeyAddressView(),
+            child : TLDExportKeyAddressView(address: widget.wallet.address,),
           ),
         ),
           Container(
@@ -80,7 +83,7 @@ class _TLDExportKeyPageState extends State<TLDExportKeyPage> {
             right: ScreenUtil().setWidth(30)
           ),
           child: Center(
-            child : TLDExportKeyAddressView(),
+            child : TLDExportKeyAddressView(privateKey: widget.wallet.privateKey,),
           ),
         )
       ],

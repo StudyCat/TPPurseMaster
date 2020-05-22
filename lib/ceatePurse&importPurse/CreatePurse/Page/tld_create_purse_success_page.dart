@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../dataBase/tld_database_manager.dart';
 import '../../../Purse/Settings/Page/tld_purse_setting_backup_word_page.dart';
 import '../../../dataBase/tld_database_manager.dart';
+import '../../../tld_tabbar_page.dart';
 
 class TLDCreatePurseSuccessPage extends StatefulWidget {
   TLDCreatePurseSuccessPage({Key key,this.wallet}) : super(key: key);
@@ -48,7 +49,7 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
           ),
           padding: EdgeInsets.all(0),
           onPressed: () {
-            Navigator.popAndPushNamed(context, '/');
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TLDTabbarPage()), (route) => route == null);
           },
         ),
       ),
@@ -100,7 +101,8 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
               padding: EdgeInsets.all(0),
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                 Navigator.popAndPushNamed(context, '/');
+
+                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TLDTabbarPage()), (route) => route == null);
               }),
         ),
         Container(

@@ -11,6 +11,7 @@ final String walletJson = 'walletJson';
 final String walletMnemonic = 'walletMnemonic';
 final String walletPrivate = 'walletPrivate';
 final String walletAdress = 'walletAdress';
+final String walletName = 'walletName';
 
 class TLDWallet{
   int id;
@@ -18,13 +19,15 @@ class TLDWallet{
   String mnemonic;
   String privateKey;
   String address;
+  String name;
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       walletJson: json,
       walletMnemonic: mnemonic,
       walletPrivate : privateKey,
-      walletAdress : address
+      walletAdress : address,
+      walletName : name
     };
     if (id != null) {
       map[walletId] = id;
@@ -32,20 +35,22 @@ class TLDWallet{
     return map;
   }
 
-  TLDWallet(int id, String json, String mnemonic,String privateKey,String address) {
+  TLDWallet(int id, String json, String mnemonic,String privateKey,String address,String name) {
     this.id = id;
     this.json = json;
     this.mnemonic = mnemonic;
     this.privateKey = privateKey;
     this.address = address;
+    this.name = name;
   }
 
   TLDWallet.fromMap(Map<String, dynamic> map) {
     id = map[walletId];
     json = map[walletJson];
-    mnemonic = map[walletJson];
+    mnemonic = map[walletMnemonic];
     privateKey = map[walletPrivate];
     address = map[walletAdress];
+    name = map[walletName];
   }
 }
 
@@ -67,7 +72,8 @@ class TLDDataBaseManager {
             $walletJson TEXT, 
             $walletMnemonic TEXT,
             $walletPrivate TEXT,
-            $walletAdress TEXT)
+            $walletAdress TEXT,
+            $walletName TEXT)
           ''');
     });
   }
@@ -79,13 +85,22 @@ class TLDDataBaseManager {
     return wallet;
   }
 
+   deleteDataBase(TLDWallet wallet) async{
+     await db.delete(tableWallet,where:'$walletId = ${wallet.id}');
+  }
+
+  changeWalletName(TLDWallet wallet) async{
+    await db.update(tableWallet, wallet.toMap(),where: '$walletId = ${wallet.id}');
+  }
+
   Future<List> searchAllWallet() async{
     List<Map> maps = await db.query(tableWallet,columns: [
       walletId,
       walletJson,
       walletMnemonic,
       walletPrivate,
-      walletAdress
+      walletAdress,
+      walletName
     ]);
 
      if (maps == null || maps.length == 0) {

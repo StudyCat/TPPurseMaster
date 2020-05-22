@@ -53,6 +53,10 @@ class TLDCreatePurseModelManager {
     String seed = bip39.mnemonicToSeedHex(randomMnemonic);
     KeyData master = ED25519_HD_KEY.getMasterKeyFromSeed(seed);
     String privateKey = HEX.encode(master.key);
+    return await _getWallet(privateKey,randomMnemonic);
+  }
+
+  Future<TLDWallet> _getWallet(String privateKey,String mnemonic) async{
     EthPrivateKey private = EthPrivateKey.fromHex(privateKey);
     EthereumAddress address = await private.extractAddress();
     Uint8List addressList = address.addressBytes;
@@ -64,7 +68,10 @@ class TLDCreatePurseModelManager {
     Random rng = Random.secure();
     Wallet wallet = Wallet.createNew(private, '', rng);
     String walletJson = wallet.toJson();
-    TLDWallet tldWallet = TLDWallet(null, walletJson, randomMnemonic,privateKey,addressHex);
+    Map walletMap = jsonDecode(walletJson);
+    String walletId = walletMap['id'];
+    String walletName = '屠龙刀钱包' + walletId.split('-').first;
+    TLDWallet tldWallet = TLDWallet(null, walletJson, mnemonic,privateKey,addressHex,walletName);
     return tldWallet;
   }
 
@@ -72,35 +79,11 @@ class TLDCreatePurseModelManager {
      String seed = bip39.mnemonicToSeedHex(mnemonicString);
     KeyData master = ED25519_HD_KEY.getMasterKeyFromSeed(seed);
     String privateKey = HEX.encode(master.key);
-    EthPrivateKey private = EthPrivateKey.fromHex(privateKey);
-    EthereumAddress address = await private.extractAddress();
-    Uint8List addressList = address.addressBytes;
-    String addressHex = bytesToHex(
-                      addressList,                           //地址字节数组
-                      include0x:true,                    //包含0x前缀
-                      forcePadLength:40                  //补齐到40字节
-                    );
-    Random rng = Random.secure();
-    Wallet wallet = Wallet.createNew(private, '', rng);
-    String walletJson = wallet.toJson();
-    TLDWallet tldWallet = TLDWallet(null, walletJson, mnemonicString,privateKey,addressHex);
-    return tldWallet;
+    return await _getWallet(privateKey, mnemonicString);
   }
 
     Future<TLDWallet> _getWalletWithPrivateKey(String privateKey) async{
-    EthPrivateKey private = EthPrivateKey.fromHex(privateKey);
-      EthereumAddress address = await private.extractAddress();
-    Uint8List addressList = address.addressBytes;
-    String addressHex = bytesToHex(
-                      addressList,                           //地址字节数组
-                      include0x:true,                    //包含0x前缀
-                      forcePadLength:40                  //补齐到40字节
-                    );
-    Random rng = Random.secure();
-    Wallet wallet = Wallet.createNew(private, '', rng);
-    String walletJson = wallet.toJson();
-    TLDWallet tldWallet = TLDWallet(null, walletJson, '',privateKey,addressHex);
-    return tldWallet;
+    return await _getWallet(privateKey, '');
   }
 
 

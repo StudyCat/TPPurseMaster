@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum TLDAlertViewType{
   normal,
-  input
+  input,
 }
 
 

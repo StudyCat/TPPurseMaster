@@ -5,9 +5,9 @@ import '../CommonWidget/tld_alert_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 
-void jugeHavePassword(BuildContext context,Function passwordRightCallBack,TLDCreatePursePageType type){
+void jugeHavePassword(BuildContext context,Function passwordRightCallBack,TLDCreatePursePageType type,Function setPasswordSuccessCallBack){
    if(TLDDataManager.instance.password == null){
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDCreatePursePage(type: type,)));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDCreatePursePage(type: type,setPasswordSuccessCallBack: setPasswordSuccessCallBack,)));
     }else{
       String password;
       showDialog(context: context,builder: (BuildContext context){

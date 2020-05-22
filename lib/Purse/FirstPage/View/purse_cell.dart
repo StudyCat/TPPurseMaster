@@ -1,9 +1,11 @@
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDPurseFirstPageCell extends StatefulWidget {
-  TLDPurseFirstPageCell({Key key,this.didClickCallBack}) : super(key: key);
+  TLDPurseFirstPageCell({Key key,this.didClickCallBack,this.wallet}) : super(key: key);
   final Function didClickCallBack;
+  final TLDWallet wallet;
   @override
   _TLDPurseFirstPageCellState createState() => _TLDPurseFirstPageCellState();
 }
@@ -38,7 +40,7 @@ class _TLDPurseFirstPageCellState extends State<TLDPurseFirstPageCell> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Text('我的钱包',style : TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize: 14),),
+                      Text(widget.wallet.name,style : TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize: 14),),
                       Container(
                         padding: EdgeInsets.only(top : 8,right: 15),
                         child: Text('100.00TLD',style: TextStyle(color: Color.fromARGB(255, 51, 114, 245),fontSize: 18),),

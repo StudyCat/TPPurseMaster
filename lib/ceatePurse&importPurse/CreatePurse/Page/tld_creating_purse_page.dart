@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'tld_create_purse_success_page.dart';
 import '../Model/create_purse_model_manager.dart';
+import '../../../Notification/tld_import_create_purse_success_notification.dart';
+import '../../../CommonWidget/tld_data_manager.dart';
 
 enum TLDCreatingPursePageType { create, import }
 
@@ -46,6 +48,7 @@ class _TLDCreatingPursePageState extends State<TLDCreatingPursePage> {
 
   void _createPurse() async {
     await _manager.createPurse('', (TLDWallet wallet) {
+      TLDDataManager.instance.purseList.add(wallet);
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -58,6 +61,7 @@ class _TLDCreatingPursePageState extends State<TLDCreatingPursePage> {
   void _importPurseWithWord() async {
     await _manager.importPurseWithWord(widget.mnemonicString,
         (TLDWallet wallet) {
+      TLDDataManager.instance.purseList.add(wallet);
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => TLDImportPurseSuccessPage()));
     }, () {

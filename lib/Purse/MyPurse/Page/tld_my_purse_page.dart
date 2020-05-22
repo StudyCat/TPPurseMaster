@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../View/tld_my_purse_header.dart';
@@ -8,7 +9,11 @@ import '../../TransferAccounts/Page/tld_transfer_accounts_page.dart';
 import '../../QRCode/Page/tld_qr_code_page.dart';
 
 class TLDMyPursePage extends StatefulWidget {
-  TLDMyPursePage({Key key}) : super(key: key);
+  TLDMyPursePage({Key key,this.wallet,this.changeNameSuccessCallBack}) : super(key: key);
+
+  final TLDWallet wallet;
+
+  final ValueChanged<String> changeNameSuccessCallBack;
 
   @override
   _TLDMyPursePageState createState() => _TLDMyPursePageState();
@@ -24,7 +29,7 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
         ),
         heroTag: 'my_purse_page',
         transitionBetweenRoutes: false,
-        middle: Text('data'),
+        middle: Text(widget.wallet.name),
         trailing: Container(
             width: ScreenUtil().setWidth(160),
             child: Row(
@@ -52,7 +57,12 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return TLDPurseSettingPage();
+                            return TLDPurseSettingPage(wallet : widget.wallet,nameChangeSuccessCallBack: (String name){
+                              widget.changeNameSuccessCallBack(name);
+                              setState(() {
+                                widget.wallet.name = name;
+                              });
+                            },);
                           },
                         ),
                       );

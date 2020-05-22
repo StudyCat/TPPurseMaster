@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../View/message_button.dart';
@@ -61,7 +62,7 @@ class _TLDPursePageState extends State<TLDPursePage> {
   Widget _getBodyWidget(BuildContext context) {
     return ListView.builder(
       itemBuilder: (context, index) => _getListViewItem(context,index),
-      itemCount: 5,
+      itemCount: TLDDataManager.instance.purseList.length + 2,
     );
   }
 
@@ -75,16 +76,22 @@ class _TLDPursePageState extends State<TLDPursePage> {
           _importPurse(context);
         },
         );
-    } else if (index == 4) {
+    } else if (index == TLDDataManager.instance.purseList.length + 1) {
       return TLDPurseFirstPageBottomCell();
     } else {
+      TLDWallet wallet = TLDDataManager.instance.purseList[index - 1];
       return TLDPurseFirstPageCell(
+        wallet: wallet,
         didClickCallBack: () {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) {
-                return  TLDMyPursePage();
+                return  TLDMyPursePage(wallet: wallet,changeNameSuccessCallBack: (String name){
+                  setState(() {
+                    TLDDataManager.instance.purseList;
+                  });
+                },);
               },
             ),
           );
@@ -96,13 +103,13 @@ class _TLDPursePageState extends State<TLDPursePage> {
   void _createPurse(BuildContext context){
     jugeHavePassword(context, (){
        Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));
-    },TLDCreatePursePageType.create);
+    },TLDCreatePursePageType.create,null);
   }
 
   void _importPurse(BuildContext context){
     jugeHavePassword(context,(){
       Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDImportPursePage()));
-    },TLDCreatePursePageType.import);
+    },TLDCreatePursePageType.import,null);
   }
   
 }

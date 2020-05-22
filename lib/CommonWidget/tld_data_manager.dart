@@ -9,6 +9,9 @@ class TLDDataManager{
 
   String password;  
 
+  List purseList;
+
+
   TLDDataManager._internal() {
     // 初始化
 
@@ -20,6 +23,7 @@ class TLDDataManager{
     SharedPreferences pre = await SharedPreferences.getInstance();
     password = pre.getString('password');
   } 
+
 
 
   static TLDDataManager _getInstance() {

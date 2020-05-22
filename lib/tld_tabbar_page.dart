@@ -68,8 +68,6 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, width: 750, height: 1334);
-
     return Scaffold(
       drawer: TLDPurseSideslipView(
         didClickCallBack: (int index) {

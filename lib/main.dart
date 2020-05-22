@@ -8,6 +8,7 @@ import 'Purse/Settings/Page/tld_purse_backup_word_success_page.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'CommonWidget/tld_data_manager.dart';
+import 'tld_home_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor : Color.fromARGB(255, 51, 114, 245),
       ),
-      home: TLDTabbarPage(),
+      home: TLDHomePage(),
       // home: PlatformChannel(),
     );
   }

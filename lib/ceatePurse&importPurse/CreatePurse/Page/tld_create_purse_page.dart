@@ -12,13 +12,16 @@ import '../../../CommonWidget/tld_data_manager.dart';
 
 enum TLDCreatePursePageType{
   create,
-  import
+  import,
+  back
 }
 
 class TLDCreatePursePage extends StatefulWidget {
-  TLDCreatePursePage({Key key,@required this.type}) : super(key: key);
+  TLDCreatePursePage({Key key,@required this.type,this.setPasswordSuccessCallBack}) : super(key: key);
 
   final TLDCreatePursePageType type;
+
+  final Function setPasswordSuccessCallBack;
 
   @override
   _TLDCreatePursePageState createState() => _TLDCreatePursePageState();
@@ -143,8 +146,13 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
                     _savePassword();
                     if (widget.type == TLDCreatePursePageType.create){
                        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));
-                    }else{
+                    }else if (widget.type == TLDCreatePursePageType.import){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => TLDImportPursePage()));
+                    }else {
+                      if (widget.setPasswordSuccessCallBack != null){
+                        widget.setPasswordSuccessCallBack();
+                      }
+                      Navigator.pop(context);
                     }
                   } else {
                     Fluttertoast.showToast(
