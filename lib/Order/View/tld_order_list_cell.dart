@@ -102,7 +102,7 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
             content,
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(28),
-                color: contentColor == null ? Color.fromARGB(255, 51, 114, 245) : contentColor,
+                color: contentColor == null ? Theme.of(context).primaryColor : contentColor,
           ),
         ),
         )],

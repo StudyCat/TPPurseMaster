@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title : '屠龙刀',
       theme: ThemeData(
-        primaryColor : Color.fromARGB(255, 51, 114, 245),
+        primaryColor : Color.fromARGB(255, 22, 128, 205),
       ),
       home: TLDHomePage(),
       // home: PlatformChannel(),

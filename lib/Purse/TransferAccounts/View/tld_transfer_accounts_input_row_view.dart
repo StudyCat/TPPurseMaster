@@ -49,7 +49,7 @@ class _TLDTransferAccountsInputRowViewState extends State<TLDTransferAccountsInp
                  height: ScreenUtil().setHeight(60),
                  child: CupertinoButton(
                    padding: EdgeInsets.all(0),
-                   child: Text('全部转出',style : TextStyle(fontSize : 14 , color : Color.fromARGB(255, 51, 114, 245)),),
+                   child: Text('全部转出',style : TextStyle(fontSize : 14 , color : Theme.of(context).primaryColor),),
                    onPressed: (){
                       
                    }),

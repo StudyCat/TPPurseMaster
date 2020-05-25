@@ -54,7 +54,7 @@ class _TLDExchangeInputCellState extends State<TLDExchangeInputCell> {
           borderSide: BorderSide(color: Color.fromARGB(255, 203, 203, 203)),
         ),
       ),
-      style: TextStyle(color: Color.fromARGB(255, 51, 114, 245), fontSize: ScreenUtil().setSp(24)),
+      style: TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24)),
     ));
   }
 }

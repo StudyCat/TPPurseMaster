@@ -1,9 +1,14 @@
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../CommonFunction/tld_common_function.dart';
+
 
 class TLDMyPurseHeaderView extends StatefulWidget {
-  TLDMyPurseHeaderView({Key key,this.didClickTransferAccountsBtnCallBack,this.didClickQRCodeBtnCallBack}) : super(key: key);
+  TLDMyPurseHeaderView({Key key,this.didClickTransferAccountsBtnCallBack,this.didClickQRCodeBtnCallBack,this.infoModel}) : super(key: key);
+
+  final TLDWalletInfoModel infoModel;
 
   final Function didClickTransferAccountsBtnCallBack;
 
@@ -40,10 +45,18 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text('456465456',
-                style: TextStyle(
-                    fontSize: ScreenUtil().setSp(52),
-                    color: Color.fromARGB(255, 51, 114, 245))),
+            RichText(
+                  text: TextSpan(
+                    text : getMoneyStyleStr(widget.infoModel.value),
+                    style : TextStyle(fontSize : ScreenUtil().setSp(52),color : Theme.of(context).primaryColor),
+                    children: <InlineSpan>[
+                      TextSpan(
+                        text : '  TLD',
+                        style: TextStyle(fontSize : ScreenUtil().setSp(24),color :Theme.of(context).primaryColor)
+                      )
+                    ],
+                  ),
+                ),
             Container(
               width: ScreenUtil().setWidth(142),
               height: ScreenUtil().setHeight(60),
@@ -56,12 +69,13 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(28), color: Colors.white)),
                 onPressed: () {},
-                color: Color.fromARGB(255, 51, 114, 245),
+                color: Theme.of(context).primaryColor,
               ),
             ),
           ],
         ));
   }
+
 
   Widget getCopyAdressView(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -79,7 +93,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
             width: size.width - ScreenUtil().setWidth(190),
             margin: EdgeInsets.only(left: ScreenUtil().setWidth(36)),
             child: Text(
-              '456456565dqwdqwdqwdwqdwqdqwqwdqw',
+              widget.infoModel.wallet.address,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(28),
                   color: Color.fromARGB(255, 102, 102, 102)),

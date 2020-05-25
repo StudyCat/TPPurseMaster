@@ -7,11 +7,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../Settings/Page/tld_purse_setting_page.dart';
 import '../../TransferAccounts/Page/tld_transfer_accounts_page.dart';
 import '../../QRCode/Page/tld_qr_code_page.dart';
+import '../../FirstPage/Model/tld_wallet_info_model.dart';
 
 class TLDMyPursePage extends StatefulWidget {
-  TLDMyPursePage({Key key,this.wallet,this.changeNameSuccessCallBack}) : super(key: key);
+  TLDMyPursePage({Key key,this.infoModel,this.changeNameSuccessCallBack}) : super(key: key);
 
-  final TLDWallet wallet;
+  final TLDWalletInfoModel infoModel;
 
   final ValueChanged<String> changeNameSuccessCallBack;
 
@@ -29,7 +30,7 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
         ),
         heroTag: 'my_purse_page',
         transitionBetweenRoutes: false,
-        middle: Text(widget.wallet.name),
+        middle: Text(widget.infoModel.wallet.name),
         trailing: Container(
             width: ScreenUtil().setWidth(160),
             child: Row(
@@ -57,10 +58,10 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return TLDPurseSettingPage(wallet : widget.wallet,nameChangeSuccessCallBack: (String name){
+                            return TLDPurseSettingPage(wallet : widget.infoModel.wallet,nameChangeSuccessCallBack: (String name){
                               widget.changeNameSuccessCallBack(name);
                               setState(() {
-                                widget.wallet.name = name;
+                                widget.infoModel.wallet.name = name;
                               });
                             },);
                           },
@@ -79,7 +80,7 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
 
   Widget _getBodyWidget(BuildContext context) {
     return Column(children: <Widget>[
-      TLDMyPurseHeaderView(didClickTransferAccountsBtnCallBack: (){
+      TLDMyPurseHeaderView(infoModel: widget.infoModel,didClickTransferAccountsBtnCallBack: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) => TLDTransferAccountsPage()));
       },
       didClickQRCodeBtnCallBack: (){

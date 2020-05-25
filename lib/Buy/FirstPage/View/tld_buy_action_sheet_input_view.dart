@@ -49,7 +49,7 @@ class _TLDBuyActionSheetInputViewState
               child: Text(
                 '全部转出',
                 style: TextStyle(
-                    fontSize: 14, color: Color.fromARGB(255, 51, 114, 245),),
+                    fontSize: 14, color: Theme.of(context).primaryColor,),
               ),
               onPressed: () {}),
         ),

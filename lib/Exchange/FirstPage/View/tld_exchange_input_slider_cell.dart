@@ -65,7 +65,7 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
           borderSide: BorderSide(color: Color.fromARGB(255, 203, 203, 203)),
         ),
       ),
-      style: TextStyle(color: Color.fromARGB(255, 51, 114, 245), fontSize: ScreenUtil().setSp(24)),
+      style: TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24)),
     ));
   }
 
@@ -87,14 +87,14 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
                 ),
                 activeTrackBar: BoxDecoration(
                   borderRadius:  BorderRadius.circular(20.0),
-                  color: Color.fromARGB(255, 51, 114, 245)
+                  color: Theme.of(context).primaryColor
                 ),
                 ),
               handler: FlutterSliderHandler(
                 child : Container(
                   decoration: BoxDecoration(
                   borderRadius:  BorderRadius.circular(20.0),
-                  color: Color.fromARGB(255, 51, 114, 245)
+                  color: Theme.of(context).primaryColor
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12.0),

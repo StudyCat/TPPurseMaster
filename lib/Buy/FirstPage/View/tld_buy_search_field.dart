@@ -46,7 +46,7 @@ class _TLDBuySearchFieldState extends State<TLDBuySearchField> {
                  height: ScreenUtil().setHeight(60),
                  child: CupertinoButton(
                    padding: EdgeInsets.all(0),
-                   child: Text('查询',style : TextStyle(fontSize : 14 , color : Color.fromARGB(255, 51, 114, 245)),),
+                   child: Text('查询',style : TextStyle(fontSize : 14 , color : Theme.of(context).primaryColor),),
                    onPressed: (){
                       
                    }),

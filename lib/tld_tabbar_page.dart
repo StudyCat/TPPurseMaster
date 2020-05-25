@@ -42,16 +42,9 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> {
             fontSize: 10,
           )),
     ),
-    BottomNavigationBarItem(
-      icon: Icon(IconData(0xe60d, fontFamily: 'appIconFonts')),
-      title: Text('兑换',
-          style: TextStyle(
-            fontSize: 10,
-          )),
-    ),
   ];
 
-  List pages = [TLDPursePage(), TLDBuyPage(), TLDSalePage(), TLDExchangePage()];
+  List pages = [TLDPursePage(), TLDBuyPage(), TLDSalePage()];
 
   int currentIndex;
 
@@ -94,7 +87,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> {
       bottomNavigationBar: CupertinoTabBar(
         items: items,
         currentIndex: currentIndex,
-        activeColor: Color.fromARGB(255, 51, 114, 245),
+        activeColor: Theme.of(context).primaryColor,
         inactiveColor: Color.fromARGB(255, 153, 153, 153),
         iconSize: 26,
         onTap: (index) => _getPage(index),

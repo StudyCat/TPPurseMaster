@@ -1,3 +1,6 @@
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_loading_view.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +18,7 @@ import '../../../CommonWidget/tld_data_manager.dart';
 import '../../../ceatePurse&importPurse/CreatePurse/Page/tld_creating_purse_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../CommonFunction/tld_common_function.dart';
+import '../Model/tld_purse_model_manager.dart';
 
 class TLDPursePage extends StatefulWidget {
   TLDPursePage({Key key,this.didClickMoreBtnCallBack}) : super(key: key);
@@ -25,6 +29,27 @@ class TLDPursePage extends StatefulWidget {
 }
 
 class _TLDPursePageState extends State<TLDPursePage> {
+  TLDPurseModelManager _manager;
+
+  List _dataSource;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _manager = TLDPurseModelManager();
+
+    _dataSource = [];
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    _getPurseInfoList(context);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +87,7 @@ class _TLDPursePageState extends State<TLDPursePage> {
   Widget _getBodyWidget(BuildContext context) {
     return ListView.builder(
       itemBuilder: (context, index) => _getListViewItem(context,index),
-      itemCount: TLDDataManager.instance.purseList.length + 2,
+      itemCount: _dataSource.length + 2,
     );
   }
 
@@ -76,18 +101,18 @@ class _TLDPursePageState extends State<TLDPursePage> {
           _importPurse(context);
         },
         );
-    } else if (index == TLDDataManager.instance.purseList.length + 1) {
+    } else if (index == _dataSource.length + 1) {
       return TLDPurseFirstPageBottomCell();
     } else {
-      TLDWallet wallet = TLDDataManager.instance.purseList[index - 1];
+      TLDWalletInfoModel model = _dataSource[index - 1];
       return TLDPurseFirstPageCell(
-        wallet: wallet,
+        walletInfo: model,
         didClickCallBack: () {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) {
-                return  TLDMyPursePage(wallet: wallet,changeNameSuccessCallBack: (String name){
+                return  TLDMyPursePage(infoModel: model,changeNameSuccessCallBack: (String name){
                   setState(() {
                     TLDDataManager.instance.purseList;
                   });
@@ -110,6 +135,20 @@ class _TLDPursePageState extends State<TLDPursePage> {
     jugeHavePassword(context,(){
       Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDImportPursePage()));
     },TLDCreatePursePageType.import,null);
+  }
+
+  void _getPurseInfoList(BuildContext context) async{
+    Future.delayed(Duration(milliseconds: 100));
+    _manager.getWalletListData((List purseInfoList){
+      Loading.hideLoading(context);
+      setState(() {
+        _dataSource = List.from(purseInfoList);
+      });
+    }, (TLDError error){
+      Loading.hideLoading(context);
+      Fluttertoast.showToast(msg: error.msg, toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 1);
+    });
   }
   
 }

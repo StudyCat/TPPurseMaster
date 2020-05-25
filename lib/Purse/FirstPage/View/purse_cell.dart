@@ -1,11 +1,12 @@
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../Model/tld_wallet_info_model.dart';
 
 class TLDPurseFirstPageCell extends StatefulWidget {
-  TLDPurseFirstPageCell({Key key,this.didClickCallBack,this.wallet}) : super(key: key);
+  TLDPurseFirstPageCell({Key key,this.didClickCallBack,this.walletInfo}) : super(key: key);
   final Function didClickCallBack;
-  final TLDWallet wallet;
+  final TLDWalletInfoModel walletInfo;
   @override
   _TLDPurseFirstPageCellState createState() => _TLDPurseFirstPageCellState();
 }
@@ -40,14 +41,14 @@ class _TLDPurseFirstPageCellState extends State<TLDPurseFirstPageCell> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Text(widget.wallet.name,style : TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize: 14),),
+                      Text(widget.walletInfo.wallet.name,style : TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize: 14),),
                       Container(
                         padding: EdgeInsets.only(top : 8,right: 15),
-                        child: Text('100.00TLD',style: TextStyle(color: Color.fromARGB(255, 51, 114, 245),fontSize: 18),),
+                        child: Text(double.parse(widget.walletInfo.value).toStringAsFixed(2)+'TLD',style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18),),
                       ),
                       Container(
                         padding: EdgeInsets.only(top : 4,right: 15),
-                        child: Text('=100.00rmb',style: TextStyle(color: Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
+                        child: Text('='+double.parse(widget.walletInfo.value).toStringAsFixed(2)+'rmb',style: TextStyle(color: Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
                       )
                     ],
                   ),

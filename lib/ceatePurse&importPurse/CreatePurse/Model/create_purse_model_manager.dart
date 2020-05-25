@@ -10,32 +10,38 @@ import 'dart:math';
 import '../../../dataBase/tld_database_manager.dart';
 import 'dart:typed_data';
 import 'package:web3dart/crypto.dart';
+import '../../../Base/tld_base_request.dart';
 
 class TLDCreatePurseModelManager {
-
-  Future createPurse(String password, Function(TLDWallet) success) async {
+  Future createPurse(String password, Function(TLDWallet) success,Function(TLDError) failure) async {
     TLDWallet wallet = await _getWalletWithNoting();
-    await _insertDB(wallet);
-    success(wallet);
-  }
-
-  Future importPurseWithWord(String mnemonicString,Function(TLDWallet) success,Function failure) async {
-    TLDWallet wallet = await _getWalletWithWord(mnemonicString);
-    if (await _isHaveSamePurse(wallet)){
-      failure();
-    }else{
+    createServiceWallet(wallet, (TLDWallet wallet)async{
       await _insertDB(wallet);
       success(wallet);
+    }, (error) => failure(error));
+  }
+
+  Future importPurseWithWord(String mnemonicString,Function(TLDWallet) success,Function(TLDError) failure) async {
+    TLDWallet wallet = await _getWalletWithWord(mnemonicString);
+    if (await _isHaveSamePurse(wallet)){
+      failure(TLDError(800,'已拥有该钱包'));
+    }else{
+      searchPurseIsExist(wallet.address, ()async{
+        await _insertDB(wallet);
+        success(wallet);
+      }, (error) => failure(error));
     }
   }
 
-   Future importPurseWithPrivateKey(String privateKey,Function(TLDWallet) success,Function failure) async {
+   Future importPurseWithPrivateKey(String privateKey,Function(TLDWallet) success,Function(TLDError) failure) async {
     TLDWallet wallet = await _getWalletWithPrivateKey(privateKey);
      if (await _isHaveSamePurse(wallet)){
-      failure();
+       failure(TLDError(800,'已拥有该钱包'));
     }else{
-      await _insertDB(wallet);
-      success(wallet);
+       searchPurseIsExist(wallet.address, ()async{
+        await _insertDB(wallet);
+        success(wallet);
+      }, (error) => failure(error));
     }
   }
 
@@ -76,7 +82,7 @@ class TLDCreatePurseModelManager {
   }
 
   Future<TLDWallet> _getWalletWithWord(String mnemonicString) async{
-     String seed = bip39.mnemonicToSeedHex(mnemonicString);
+    String seed = bip39.mnemonicToSeedHex(mnemonicString);
     KeyData master = ED25519_HD_KEY.getMasterKeyFromSeed(seed);
     String privateKey = HEX.encode(master.key);
     return await _getWallet(privateKey, mnemonicString);
@@ -109,5 +115,24 @@ class TLDCreatePurseModelManager {
     return purses;
   }
 
+
+  void createServiceWallet(TLDWallet wallet,Function(TLDWallet) success,Function(TLDError) failure){
+    String walletAddree = wallet.address;
+    TLDBaseRequest request = TLDBaseRequest({'walletAddress':walletAddree},'wallet/createWallet');
+    request.postNetRequest((dynamic data) {
+      success(wallet);
+      } , (TLDError error){
+        failure(error);
+        } );
+  }
+
+  void searchPurseIsExist(String walletAddress,Function success,Function(TLDError) failure){
+      List addressList = [walletAddress];
+      String addressListJson = jsonEncode(addressList);
+      TLDBaseRequest request = TLDBaseRequest({"list":addressListJson}, 'wallet/queryWallet');
+      request.postNetRequest((dynamic data) {
+      success();
+       }, (error)=> failure(error));
+  }
 
 }

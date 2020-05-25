@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/ImportPurse/Page/tld_import_purse_success_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +11,8 @@ import 'tld_create_purse_success_page.dart';
 import '../Model/create_purse_model_manager.dart';
 import '../../../Notification/tld_import_create_purse_success_notification.dart';
 import '../../../CommonWidget/tld_data_manager.dart';
+import '../../../tld_not_purse_page.dart';
+import '../../../tld_tabbar_page.dart';
 
 enum TLDCreatingPursePageType { create, import }
 
@@ -41,7 +44,9 @@ class _TLDCreatingPursePageState extends State<TLDCreatingPursePage> {
       } else {
         if (widget.mnemonicString != null) {
           _importPurseWithWord();
-        } else {}
+        } else {
+          _importPurseWithPrivateKey();
+        }
       }
     });
   }
@@ -55,8 +60,16 @@ class _TLDCreatingPursePageState extends State<TLDCreatingPursePage> {
               builder: (context) => TLDCreatePurseSuccessPage(
                     wallet: wallet,
                   )));
+    }, (TLDError error) {
+      Fluttertoast.showToast(
+          msg: error.msg,
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 1);
+          _popAction();
     });
   }
+
+
 
   void _importPurseWithWord() async {
     await _manager.importPurseWithWord(widget.mnemonicString,
@@ -64,13 +77,27 @@ class _TLDCreatingPursePageState extends State<TLDCreatingPursePage> {
       TLDDataManager.instance.purseList.add(wallet);
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => TLDImportPurseSuccessPage()));
-    }, () {
+    }, (TLDError error) {
       Fluttertoast.showToast(
-          msg: '已拥有该钱包',
+          msg: error.msg,
           toastLength: Toast.LENGTH_SHORT,
           timeInSecForIosWeb: 1);
-      Navigator.popAndPushNamed(context, '/');
+      _popAction();
     });
+  }
+
+  void _importPurseWithPrivateKey()async{
+    await _manager.importPurseWithPrivateKey(widget.privateKey, (TLDWallet wallet){
+      TLDDataManager.instance.purseList.add(wallet);
+          Navigator.push(context,
+               MaterialPageRoute(builder: (context) => TLDImportPurseSuccessPage()));
+    },(TLDError error) {
+      Fluttertoast.showToast(
+          msg: error.msg,
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 1);
+      _popAction();
+    } );
   }
 
   @override
@@ -91,6 +118,21 @@ class _TLDCreatingPursePageState extends State<TLDCreatingPursePage> {
         middle: Text(title),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
+        leading: Container(
+          height: ScreenUtil().setHeight(34),
+          width: ScreenUtil().setHeight(34),
+          child: CupertinoButton(
+            child: Icon(
+              IconData(
+                0xe600,
+                fontFamily: 'appIconFonts',
+              ),
+              color: Color.fromARGB(255, 51, 51, 51),
+            ),
+            padding: EdgeInsets.all(0),
+            onPressed: () => _popAction(),
+          ),
+        ),
       ),
       body: _getBodyWidget(context),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
@@ -125,5 +167,19 @@ class _TLDCreatingPursePageState extends State<TLDCreatingPursePage> {
         )
       ],
     ));
+  }
+
+  void _popAction() {
+    if (TLDDataManager.instance.purseList.length == 0) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => TLDNotPurseHomePage()),
+          (route) => route == null);
+    } else {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => TLDTabbarPage()),
+          (route) => route == null);
+    }
   }
 }

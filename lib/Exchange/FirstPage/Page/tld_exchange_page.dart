@@ -68,7 +68,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
           return Container(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(40),left: 15,right: 15),
             height : ScreenUtil().setHeight(135),
-            child: CupertinoButton(color: Color.fromARGB(255, 51, 114, 245),child: Text('兑换',style : TextStyle(color : Colors.white,fontSize : ScreenUtil().setSp(28)),), onPressed: (){}),
+            child: CupertinoButton(color: Theme.of(context).primaryColor,child: Text('兑换',style : TextStyle(color : Colors.white,fontSize : ScreenUtil().setSp(28)),), onPressed: (){}),
           );
         }else{
           return TLDExchangeNormalCell(type: TLDExchangeNormalCellType.normal,title: titleList[index],content: 'dqwdqdqd',contentStyle: TextStyle(fontSize : 12),top: 1,);
