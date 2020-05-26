@@ -32,8 +32,46 @@ void jugeHavePassword(BuildContext context,Function passwordRightCallBack,TLDCre
       if (text == null || text.isEmpty) {
         return "";
       } else {
-        String temp = "";
-        if (text.length <= 3) {
+        if (text.contains('.')){
+          List stringList = text.split('.');
+          String intText = stringList.first;
+          String resultIntText = '';
+          if (text.length <= 3) {
+          resultIntText = intText;
+          return resultIntText;
+        } else {
+          int count = ((intText.length) ~/ 3); //切割次数
+          int startIndex = intText.length % 3; //开始切割的位置
+          if (startIndex != 0) {
+            if (count == 1) {
+              resultIntText = intText.substring(0, startIndex) +
+                  "," +
+                  intText.substring(startIndex, intText.length);
+            } else {
+              resultIntText = intText.substring(0, startIndex) + ","; //第一次切割0-startIndex
+              int syCount = count - 1; //剩余切割次数
+              for (int i = 0; i < syCount; i++) {
+                resultIntText += intText.substring(
+                        startIndex + 3 * i, startIndex + (i * 3) + 3) +
+                    ",";
+              }
+              resultIntText += intText.substring(
+                  (startIndex + (syCount - 1) * 3 + 3), intText.length);
+            }
+          } else {
+            for (int i = 0; i < count; i++) {
+              if (i != count - 1) {
+                resultIntText += intText.substring(3 * i, (i + 1) * 3) + ",";
+              } else {
+                resultIntText += intText.substring(3 * i, (i + 1) * 3);
+              }
+            }
+          }
+          return resultIntText + '.' + stringList.last;
+        }
+        }else{
+          String temp = "";
+          if (text.length <= 3) {
           temp = text;
           return temp;
         } else {
@@ -67,6 +105,7 @@ void jugeHavePassword(BuildContext context,Function passwordRightCallBack,TLDCre
           return temp;
         }
       }
+        }
     } catch (e) {
       print(e);
     }

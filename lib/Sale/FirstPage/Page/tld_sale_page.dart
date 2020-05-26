@@ -1,14 +1,18 @@
 import 'dart:async';
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../View/tld_sale_firstpage_cell.dart';
 import '../../../Notification/tld_more_btn_click_notification.dart';
 import '../../../Order/Page/tld_order_list_page.dart';
 import '../../../Message/Page/tld_message_page.dart';
 import '../../DetailSale/Page/tld_detail_sale_page.dart';
 import '../View/tld_sale_not_data_view.dart';
+import '../Model/tld_sale_model_manager.dart';
+import '../../../Exchange/FirstPage/Page/tld_exchange_page.dart';
 
 class TLDSalePage extends StatefulWidget {
   TLDSalePage({Key key}) : super(key: key);
@@ -17,19 +21,32 @@ class TLDSalePage extends StatefulWidget {
   _TLDSalePageState createState() => _TLDSalePageState();
 }
 
-class _TLDSalePageState extends State<TLDSalePage> {
+class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClientMixin {
   List _saleDatas;
 
   StreamController _controller;
 
+  TLDSaleModelManager _modelManager;
+
   @override
   void initState() {
     // TODO: implement initState
-
-    _saleDatas = [];
+    super.initState();
+    _modelManager = TLDSaleModelManager();
+     _saleDatas = [];
     _controller = StreamController<List>();
     _controller.sink.add(_saleDatas);
-    super.initState();
+  }
+
+  void getSaleListInfo(){
+    _modelManager.getSaleList((List dataList){
+      setState(() {
+        _saleDatas = List.from(dataList);
+      });
+    } , (TLDError error) {
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 1);
+    });
   }
 
   @override
@@ -108,7 +125,13 @@ class _TLDSalePageState extends State<TLDSalePage> {
               },
             );
           } 
-          return TLDSaleNotDataView();
+          return TLDSaleNotDataView(didClickCallBack: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => TLDExchangePage()));
+          },);
         });
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

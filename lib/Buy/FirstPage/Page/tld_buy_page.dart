@@ -16,7 +16,7 @@ class TLDBuyPage extends StatefulWidget {
   _TLDBuyPageState createState() => _TLDBuyPageState();
 }
 
-class _TLDBuyPageState extends State<TLDBuyPage> {
+class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -93,4 +93,8 @@ class _TLDBuyPageState extends State<TLDBuyPage> {
     ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

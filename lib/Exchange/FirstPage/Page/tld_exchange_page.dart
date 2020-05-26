@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
@@ -7,6 +8,7 @@ import '../View/tld_exchange_input_cell.dart';
 import '../View/tld_exchange_input_slider_cell.dart';
 import '../../../Notification/tld_more_btn_click_notification.dart';
 import '../../../Message/Page/tld_message_page.dart';
+import 'tld_exchange_choose_wallet.dart';
 
 
 
@@ -21,6 +23,8 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
   
   List titleList = ['钱包', '钱包余额', '兑换量', '限额设置', '手续费率', '手续费', '实际到账', '收款方式'];
 
+  TLDWalletInfoModel _infoModel;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,25 +32,13 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
+        actionsForegroundColor:  Color.fromARGB(255, 51, 51, 51),
         border: Border.all(
           color : Color.fromARGB(0, 0, 0, 0),
         ),
         heroTag: 'exchange_page',
         transitionBetweenRoutes: false,
         middle: Text('TLD钱包'),
-        leading: Builder(builder: (BuildContext context) {
-          return CupertinoButton(
-              child: Icon(
-                IconData(0xe608, fontFamily: 'appIconFonts'),
-                color: Color.fromARGB(255, 51, 51, 51),
-              ),
-              padding: EdgeInsets.all(0),
-              minSize: 20,
-              onPressed: () {
-                TLDMoreBtnClickNotification().dispatch(context);
-              });
-        }),
-        automaticallyImplyLeading: false,
         trailing: MessageButton(
           didClickCallBack: () =>  Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage())),
         ),
@@ -59,9 +51,15 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
       itemCount: titleList.length + 1,
       itemBuilder: (BuildContext context, int index) {
         if (index == 0){
-          return TLDExchangeNormalCell(type: TLDExchangeNormalCellType.normalArrow,title: titleList[index],content: 'dqwdqdqd',contentStyle: TextStyle(fontSize : 12),top: 15,);
+          return TLDExchangeNormalCell(type: TLDExchangeNormalCellType.normalArrow,title: titleList[index],content: _infoModel == null ?'选择钱包':_infoModel.wallet.name,contentStyle: TextStyle(fontSize : 12,color: Color.fromARGB(255, 153, 153, 153)),top: 15,didClickCallBack: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDEchangeChooseWalletPage(didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
+              setState(() {
+                _infoModel = infoModel;
+              });
+            },)));
+          },);
         }else if (index == 2){
-          return TLDExchangeInputSliderCell(title : titleList[index]);
+          return TLDExchangeInputSliderCell(title : titleList[index],infoModel: _infoModel,);
         }else if (index == 3){
           return TLDExchangeInputCell(title: titleList[index],);
         }else if (index == titleList.length){
@@ -71,7 +69,11 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
             child: CupertinoButton(color: Theme.of(context).primaryColor,child: Text('兑换',style : TextStyle(color : Colors.white,fontSize : ScreenUtil().setSp(28)),), onPressed: (){}),
           );
         }else{
-          return TLDExchangeNormalCell(type: TLDExchangeNormalCellType.normal,title: titleList[index],content: 'dqwdqdqd',contentStyle: TextStyle(fontSize : 12),top: 1,);
+          String content = '';
+          if(index == 1){
+            content = _infoModel == null ? '0.0' : _infoModel.value;
+          }
+          return TLDExchangeNormalCell(type: TLDExchangeNormalCellType.normal,title: titleList[index],content: content,contentStyle: TextStyle(fontSize : 12,color: Color.fromARGB(255, 153, 153, 153)),top: 1,);
         }
       },
     );

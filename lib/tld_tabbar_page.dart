@@ -48,7 +48,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> {
 
   int currentIndex;
 
-  Widget currentPage;
+  PageController _pageController;
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> {
     super.initState();
 
     currentIndex = 0;
-    currentPage = pages[currentIndex];
+    _pageController = PageController();
   }
 
   @override
@@ -94,21 +94,32 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> {
       ),
       body: Builder(builder: (BuildContext context) {
         return NotificationListener<TLDMoreBtnClickNotification>(
-            onNotification: (TLDMoreBtnClickNotification notifcation) {
-              Scaffold.of(context).openDrawer();
-              return true;
+          onNotification: (TLDMoreBtnClickNotification notifcation) {
+            Scaffold.of(context).openDrawer();
+            return true;
+          },
+          child: PageView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              return pages[index];
             },
-            child: currentPage);
+            controller: _pageController,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: items.length,
+            onPageChanged: (int index) {
+              setState(() {
+                currentIndex = index;
+              });
+            },
+          ),
+        );
       }),
     );
   }
 
   void _getPage(int index) {
-    if (currentIndex != index) {
-      setState(() {
-        currentIndex = index;
-        currentPage = pages[currentIndex];
-      });
-    }
+    setState(() {
+      _pageController.animateToPage(index,
+          duration: Duration(milliseconds: 200), curve: Curves.linear);
+    });
   }
 }

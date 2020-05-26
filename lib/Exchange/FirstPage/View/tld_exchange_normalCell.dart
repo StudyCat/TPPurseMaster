@@ -13,7 +13,8 @@ class TLDExchangeNormalCell extends StatefulWidget {
   final TLDExchangeNormalCellType type;
   final String content;
   final TextStyle contentStyle;
-  TLDExchangeNormalCell({Key key,this.type,this.title,this.top,this.contentStyle,this.content}) : super(key: key);
+  final Function didClickCallBack;
+  TLDExchangeNormalCell({Key key,this.type,this.title,this.top,this.contentStyle,this.content,this.didClickCallBack}) : super(key: key);
 
   @override
   _TLDExchangeNormalCellState createState() => _TLDExchangeNormalCellState();
@@ -23,7 +24,9 @@ class _TLDExchangeNormalCellState extends State<TLDExchangeNormalCell> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Container(
+    return GestureDetector(
+      onTap : widget.didClickCallBack,
+      child : Container(
       padding: EdgeInsets.only(left: 15, top: widget.top, right: 15),
       width: screenSize.width - 30,
       child: ClipRRect(
@@ -44,6 +47,7 @@ class _TLDExchangeNormalCellState extends State<TLDExchangeNormalCell> {
           ),
           )
          ),
+    )
     );
   }
 

@@ -1,17 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../CommonFunction/tld_common_function.dart';
 
 class TLDPurseHeaderCell extends StatefulWidget {
-  TLDPurseHeaderCell({Key key,this.didClickCreatePurseButtonCallBack,this.didClickImportPurseButtonCallBack}) : super(key: key);
+  TLDPurseHeaderCell({Key key,this.didClickCreatePurseButtonCallBack,this.didClickImportPurseButtonCallBack,this.totalAmount = 0.0}) : super(key: key);
 
   final Function didClickCreatePurseButtonCallBack;
   final Function didClickImportPurseButtonCallBack;
+  final double totalAmount;
 
   @override
   _TLDPurseHeaderCellState createState() => _TLDPurseHeaderCellState();
 }
 
 class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
+  bool _isShowMoney;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _isShowMoney = true;
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size; 
@@ -22,24 +34,26 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Text('总积分',style: TextStyle(color:Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
-
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                 width: screenSize.width - 70,
-                child: Text('5653654656',style : TextStyle(fontSize : 26,color : Color.fromARGB(255,51, 114, 255))),
+                child: Text(_isShowMoney ? getMoneyStyleStr(widget.totalAmount.toString()) :'***',style : TextStyle(fontSize : 26,color : Color.fromARGB(255,51, 114, 255))),
               ),
-              Container(
-                width: 20,
-                height: 12,
+              GestureDetector(
+                onTap: (){
+                  setState(() {
+                    _isShowMoney = !_isShowMoney;
+                  });
+                },
+                child: Container(
+                width: ScreenUtil().setWidth(80),
+                height: ScreenUtil().setHeight(40),
                 padding : EdgeInsets.only(right : 0,left: 10),
-                child: CupertinoButton(
-                  child: Icon(IconData(0xe60c,fontFamily: 'appIconFonts'),color: Color.fromARGB(255, 51, 114, 255),),
-                  padding: EdgeInsets.all(0),
-                  onPressed: (){},
-                ),
+                child:  _isShowMoney ? Icon(IconData(0xe60c,fontFamily: 'appIconFonts'),color: Color.fromARGB(255, 51, 114, 255),size: ScreenUtil().setWidth(50),) : Icon(IconData(0xe648,fontFamily: 'appIconFonts'),color: Color.fromARGB(255, 51, 114, 255,),size: ScreenUtil().setWidth(50)),
               ),
+              )
             ],
           ),
           

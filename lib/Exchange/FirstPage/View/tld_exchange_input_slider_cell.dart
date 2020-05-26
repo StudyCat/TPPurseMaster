@@ -1,16 +1,49 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'flutter_xlider.dart';
+import '../../../Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:flutter/services.dart';
 
 class TLDExchangeInputSliderCell extends StatefulWidget {
   final String title;
-  TLDExchangeInputSliderCell({Key key,this.title}) : super(key: key);
+  final TLDWalletInfoModel infoModel;
+  TLDExchangeInputSliderCell({Key key,this.title,this.infoModel}) : super(key: key);
 
   @override
   _TLDExchangeInputSliderCellState createState() => _TLDExchangeInputSliderCellState();
 }
 
 class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell> {
+  String _value = '0';
+
+  String _lastSting;
+
+  TextEditingController _controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _lastSting = '0';
+    _controller = TextEditingController(text: '0');
+    _controller.addListener(() {
+      String text = _controller.text;
+      setState(() {
+          if(text.length == 0){
+            _value = '0';
+          }else{
+             if(double.parse(text) > double.parse(widget.infoModel.value)){
+              _controller.text = _lastSting;
+            }else{
+              _value = text;
+            }
+          }
+      });
+      _lastSting = text;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -54,28 +87,33 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
   }
 
   Widget getTextField(){
-    return Container(
-      width: ScreenUtil().setWidth(122),
+    return Stack(
+      alignment : FractionalOffset(0.8,0.6),
+      children: <Widget>[
+        Container(
+      width: ScreenUtil().setWidth(200),
       height: ScreenUtil().setWidth(48),
       padding: EdgeInsets.only(right : ScreenUtil().setWidth(20)),
-      child: TextField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.0),
-          borderSide: BorderSide(color: Color.fromARGB(255, 203, 203, 203)),
-        ),
-      ),
-      style: TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24)),
-    ));
+      child: CupertinoTextField(
+      enabled: widget.infoModel == null ? false : true,
+      style: TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24),textBaseline: TextBaseline.alphabetic),
+      controller: _controller,
+      inputFormatters: [
+        WhitelistingTextInputFormatter.digitsOnly
+      ],
+    )),
+    Text('TLD',style:TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24)))
+      ],
+    );
   }
 
   Widget getSliderView(){
     return Container(
       padding : EdgeInsets.only(right : ScreenUtil().setWidth(20),left : ScreenUtil().setWidth(20),top : ScreenUtil().setWidth(8)),
       child :FlutterSlider(
-              values: [10],
+              values: [double.parse(_value)],
               min: 0,
-              max: 100,
+              max: widget.infoModel == null ? 100 : double.parse(widget.infoModel.value),
               handlerHeight: ScreenUtil().setHeight(40),
               handlerWidth: ScreenUtil().setHeight(40),
               trackBar: FlutterSliderTrackBar(
@@ -107,7 +145,16 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
                 ),
               ),
               onDragging: (handlerIndex, lowerValue, upperValue) {
-                setState(() {});
+                if(widget.infoModel != null){
+                  setState(() {
+                  _value = lowerValue.toString();
+                  _controller.text = _value;
+                });
+                }else{
+                  setState(() {
+                    _value = '0';
+                  });
+                }    
               },
             ),
     );

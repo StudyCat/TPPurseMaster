@@ -10,6 +10,7 @@ class TLDWalletInfoModel {
   String walletAddress;
   String value;
   TLDWallet wallet;
+  bool existSell;
 
   TLDWalletInfoModel(
       {this.createTime,
@@ -18,6 +19,7 @@ class TLDWalletInfoModel {
       this.lock,
       this.walletAddress,
       this.value,
+      this.existSell,
       this.wallet});
 
   TLDWalletInfoModel.fromJson(Map<String, dynamic> json) {
@@ -30,6 +32,7 @@ class TLDWalletInfoModel {
     }
     walletName = json['walletName'];
     lock = json['lock'];
+    existSell = json['existSell'];
     walletAddress = json['walletAddress'];
     value = json['value'];
   }
@@ -45,6 +48,7 @@ class TLDWalletInfoModel {
     data['lock'] = this.lock;
     data['walletAddress'] = this.walletAddress;
     data['value'] = this.value;
+    data['existSell'] = this.existSell;
     return data;
   }
 }

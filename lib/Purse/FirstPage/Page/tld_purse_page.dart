@@ -1,7 +1,6 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_loading_view.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
-import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../View/message_button.dart';
@@ -13,7 +12,6 @@ import '../../../ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.d
 import '../../../ceatePurse&importPurse/ImportPurse/Page/tld_import_purse_page.dart';
 import '../../../Notification/tld_more_btn_click_notification.dart';
 import '../../../Message/Page/tld_message_page.dart';
-import '../../../CommonWidget/tld_alert_view.dart';
 import '../../../CommonWidget/tld_data_manager.dart';
 import '../../../ceatePurse&importPurse/CreatePurse/Page/tld_creating_purse_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -28,25 +26,30 @@ class TLDPursePage extends StatefulWidget {
   _TLDPursePageState createState() => _TLDPursePageState();
 }
 
-class _TLDPursePageState extends State<TLDPursePage> {
+class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClientMixin {
   TLDPurseModelManager _manager;
 
   List _dataSource;
+
+  double _totalAmount;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     _manager = TLDPurseModelManager();
 
     _dataSource = [];
+
+    _totalAmount = 0.0;
   }
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-
+    
     _getPurseInfoList(context);
   }
 
@@ -93,7 +96,7 @@ class _TLDPursePageState extends State<TLDPursePage> {
 
   Widget _getListViewItem(BuildContext context, int index) {
     if (index == 0) {
-      return TLDPurseHeaderCell(
+      return TLDPurseHeaderCell(totalAmount:  _totalAmount,
         didClickCreatePurseButtonCallBack: (){
           _createPurse(context);
         },
@@ -142,6 +145,9 @@ class _TLDPursePageState extends State<TLDPursePage> {
     _manager.getWalletListData((List purseInfoList){
       Loading.hideLoading(context);
       setState(() {
+        for (TLDWalletInfoModel item in purseInfoList) {
+          _totalAmount = _totalAmount + double.parse(item.value);
+        }
         _dataSource = List.from(purseInfoList);
       });
     }, (TLDError error){
@@ -150,5 +156,9 @@ class _TLDPursePageState extends State<TLDPursePage> {
           timeInSecForIosWeb: 1);
     });
   }
+
+    @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
   
 }
