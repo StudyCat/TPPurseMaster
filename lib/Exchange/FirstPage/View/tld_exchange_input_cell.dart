@@ -1,16 +1,54 @@
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/services.dart';
 
 class TLDExchangeInputCell extends StatefulWidget {
   final String title;
 
-  TLDExchangeInputCell({Key key, this.title}) : super(key: key);
+  final TLDWalletInfoModel infoModel;
+
+  final Function(String) inputCallBack;
+
+  TLDExchangeInputCell({Key key, this.title,this.infoModel,this.inputCallBack}) : super(key: key);
 
   @override
   _TLDExchangeInputCellState createState() => _TLDExchangeInputCellState();
 }
 
 class _TLDExchangeInputCellState extends State<TLDExchangeInputCell> {
+
+  TextEditingController _controller;
+
+  FocusNode _commentFocus;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _commentFocus = FocusNode();
+    _controller = TextEditingController(text: '0');
+    _controller.addListener(() {
+      String text = _controller.text;
+      String result;
+      setState(() {
+          if(text.length == 0){
+            result = '0';
+          }else{
+             if(double.parse(text) > double.parse(widget.infoModel.value)){
+               _commentFocus.unfocus();
+              _controller.text = widget.infoModel.value;
+              result = widget.infoModel.value;
+            }else{
+              result = text;
+            }
+          }
+      });
+      widget.inputCallBack(result);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -43,18 +81,24 @@ class _TLDExchangeInputCellState extends State<TLDExchangeInputCell> {
   }
 
   Widget getRightWidget() {
-    return Container(
-      width: ScreenUtil().setWidth(122),
+    return Stack(
+      alignment : FractionalOffset(0.8,0.6),
+      children: <Widget>[
+        Container(
+      width: ScreenUtil().setWidth(200),
       height: ScreenUtil().setWidth(48),
       padding: EdgeInsets.only(right : ScreenUtil().setWidth(20)),
-      child: TextField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.0),
-          borderSide: BorderSide(color: Color.fromARGB(255, 203, 203, 203)),
-        ),
-      ),
-      style: TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24)),
-    ));
+      child: CupertinoTextField(
+      enabled: widget.infoModel == null ? false : true,
+      style: TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24),textBaseline: TextBaseline.alphabetic),
+      controller: _controller,
+      focusNode: _commentFocus,
+      inputFormatters: [
+        WhitelistingTextInputFormatter.digitsOnly
+      ],
+    )),
+    Text('TLD',style:TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24)))
+      ],
+    );
   }
 }

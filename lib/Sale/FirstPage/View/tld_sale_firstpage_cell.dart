@@ -1,13 +1,17 @@
+import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/ltd_sale_buy_cell_header.dart';
+import 'package:dragon_sword_purse/Sale/FirstPage/Model/tld_sale_list_info_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 
 Widget getSaleFirstPageCell(
-    String buttonTitle, Function onPressCallBack, BuildContext context) {
+  String buttonTitle, Function onPressCallBack, BuildContext context,TLDSaleListInfoModel model,Function clickItemCallBack) {
   Size screenSize = MediaQuery.of(context).size;
-  return Container(
+  return GestureDetector(
+    onTap :clickItemCallBack,
+    child : Container(
     padding: EdgeInsets.only(left: 15, top: 5, right: 15),
     width: screenSize.width - 30,
     child: ClipRRect(
@@ -17,15 +21,17 @@ Widget getSaleFirstPageCell(
         width: screenSize.width - 30,
         padding: EdgeInsets.only(top: 10, bottom: 17),
         child: Column(children: <Widget>[
-          getCommonCellHeader('订单号', buttonTitle, onPressCallBack, context,166),
+          TLDCommonCellHeaderView(title:'订单号',buttonTitle: buttonTitle,onPressCallBack: onPressCallBack,buttonWidth: 166,saleModel: model,),
           _leftRightItem(context,34, 0, '收款方式', '', false),
-          _leftRightItem(context,22, 0, '挂售钱包', '56456456456645', true),
-          _leftRightItem(context, 22, 20, '交易时间', '2020.5.4', true),
+          _leftRightItem(context,22, 0, '挂售钱包', model.wallet.name, true),
+          _leftRightItem(context, 22, 20, '创建时间', getTimeString(model.createTime), true),
         ]),
       ),
     ),
+  )
   );
 }
+
 
 Widget _leftRightItem(BuildContext context, num top , num bottom,String title , String content,bool isTextType) {
   Size screenSize = MediaQuery.of(context).size;

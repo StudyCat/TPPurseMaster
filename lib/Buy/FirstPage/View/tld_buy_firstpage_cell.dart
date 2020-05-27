@@ -27,7 +27,7 @@ class _TLDBuyFirstPageCellState extends State<TLDBuyFirstPageCell> {
            padding: EdgeInsets.only(top : 10,bottom : 17),
            child: Column(
              children : <Widget>[
-                getCommonCellHeader('地址', '购买', widget.didClickBuyBtnCallBack, context,128),
+               TLDCommonCellHeaderView(title: '地址',buttonTitle: '购买',onPressCallBack: widget.didClickBuyBtnCallBack,buttonWidth: 128,),
                 getCellBottomView(),
              ]
            ),

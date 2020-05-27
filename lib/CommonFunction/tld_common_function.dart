@@ -4,6 +4,7 @@ import '../CommonWidget/tld_data_manager.dart';
 import '../CommonWidget/tld_alert_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
+import 'package:date_format/date_format.dart';
 
 void jugeHavePassword(BuildContext context,Function passwordRightCallBack,TLDCreatePursePageType type,Function setPasswordSuccessCallBack){
    if(TLDDataManager.instance.password == null){
@@ -109,6 +110,10 @@ void jugeHavePassword(BuildContext context,Function passwordRightCallBack,TLDCre
     } catch (e) {
       print(e);
     }
+  }
+
+  String getTimeString(int date){
+    return formatDate(DateTime.fromMillisecondsSinceEpoch(date),[yyyy,'.',mm,'.',dd]);
   }
 
  

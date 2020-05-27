@@ -1,4 +1,7 @@
 
+
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+
 class TLDSaleListInfoModel {
   int sellId;
   String sellNo;
@@ -6,6 +9,11 @@ class TLDSaleListInfoModel {
   String currentCount;
   String payMethod;
   int createTime;
+  String max;
+  String totalCount;
+  TLDWallet wallet;
+  String realCount;
+  String tmpWalletAddress;
 
   TLDSaleListInfoModel(
       {this.sellId,
@@ -13,7 +21,12 @@ class TLDSaleListInfoModel {
       this.walletAddress,
       this.currentCount,
       this.payMethod,
-      this.createTime});
+      this.createTime,
+      this.max,
+      this.totalCount,
+      this.realCount,
+      this.tmpWalletAddress,
+      this.wallet});
 
   TLDSaleListInfoModel.fromJson(Map<String, dynamic> json) {
     sellId = json['sellId'];
@@ -22,6 +35,10 @@ class TLDSaleListInfoModel {
     currentCount = json['currentCount'];
     payMethod = json['payMethod'];
     createTime = json['createTime'];
+    max = json['max'];
+    totalCount = json['totalCount'];
+    realCount = json['realCount'];
+    tmpWalletAddress = json['tmpWalletAddress'];
   }
 
   Map<String, dynamic> toJson() {
@@ -32,6 +49,10 @@ class TLDSaleListInfoModel {
     data['currentCount'] = this.currentCount;
     data['payMethod'] = this.payMethod;
     data['createTime'] = this.createTime;
+    data['max'] = this.max;
+    data['totalCount'] = this.totalCount;
+    data['realCount'] = this.realCount;
+    data['tmpWalletAddress'] = this.tmpWalletAddress;
     return data;
   }
 }

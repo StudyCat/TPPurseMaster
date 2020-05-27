@@ -1,18 +1,31 @@
 
+import 'package:date_format/date_format.dart';
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Sale/DetailSale/Model/tld_detail_sale_model.dart';
+import 'package:dragon_sword_purse/Sale/DetailSale/Model/tld_detail_sale_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import '../View/tld_detail_sale_info_view.dart';
 import '../View/tld_detail_sale_row_view.dart';
 
 class TLDDetailSalePage extends StatefulWidget {
-  TLDDetailSalePage({Key key}) : super(key: key);
+  final String sellNo;
+  final String walletName;
+  TLDDetailSalePage({Key key,this.sellNo,this.walletName}) : super(key: key);
 
   @override
   _TLDDetailSalePageState createState() => _TLDDetailSalePageState();
 }
 
 class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
+
+  TLDDetailSaleModel _saleModel;
+
+  bool _isLoading;
+
   List titles = [
     '收款方式',
     '挂售钱包',
@@ -31,6 +44,35 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
     '2020-05-05',
     '2020-04-30',
   ];
+
+  TLDDetailSaleModelManager _modelManager;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _modelManager = TLDDetailSaleModelManager();
+    _isLoading = true;
+
+    getDetailInfo();
+  }
+
+
+  void getDetailInfo(){
+    _modelManager.getDetailSale(widget.sellNo, (TLDDetailSaleModel detailModel){
+      setState(() {
+        _isLoading = false;
+        _saleModel = detailModel;
+      });
+    }, (TLDError error){
+      setState(() {
+        _isLoading = false;
+      });
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +86,7 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getBodyWidget(context),
+      body: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget(context)),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -61,9 +103,10 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
             itemCount: 9,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
+                String address = _saleModel != null ? _saleModel.walletAddress : '';
                 return Padding(
                   padding: EdgeInsets.only(top : ScreenUtil().setHeight(36)),
-                  child: Text('地址：214234124324',style:TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153))),
+                  child: Text('地址：' + address,style:TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153))),
                 );
               }else if (index == 1){
                 return TLDDetailSaleInfoView();
@@ -72,8 +115,19 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
                 String content  = '';
                 if (index == 2) {
                   isShowIcon = true;
+                }else if(index == 3){
+                  content = widget.walletName;
+                }else if(index == 4){
+                  String amount = _saleModel != null ? '0' : '0';
+                  content = amount + 'TLD';  
+                }else if(index == 5){
+                  content = '0.006%';
+                }else if(index == 6){
+                  content = '¥0';
+                }else if(index == 7){
+                  content = '¥0';
                 }else{
-                  content = contents[index - 3];
+                  content = _saleModel != null ? formatDate(DateTime.fromMillisecondsSinceEpoch(_saleModel.createTime), [yyyy,'-',mm,'-',dd]): '';
                 }
                 return TLDDetailSaleRowView(isShowIcon: isShowIcon,title: titles[index - 2],content: content,);
               }

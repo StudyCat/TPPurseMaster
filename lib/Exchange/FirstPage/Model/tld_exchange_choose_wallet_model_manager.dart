@@ -4,6 +4,8 @@ import '../../../CommonWidget/tld_data_manager.dart';
 import '../../../dataBase/tld_database_manager.dart';
 import 'dart:convert';
 
+
+
 class TLDExchangeChooseWalletModelManager{
   void getWalletListData(Function(List<TLDWalletInfoModel>) success,Function(TLDError) failure)async {
       List purseList = TLDDataManager.instance.purseList;

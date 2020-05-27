@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import '../../../Base/tld_base_request.dart';
 import 'tld_sale_list_info_model.dart';
 import '../../../CommonWidget/tld_data_manager.dart';
@@ -23,7 +22,29 @@ class TLDSaleModelManager{
         TLDSaleListInfoModel model = TLDSaleListInfoModel.fromJson(item);
         result.add(model);
       }
+      for (TLDSaleListInfoModel model in result) {
+        for (TLDWallet wallet in purseList) {
+          if(model.walletAddress == wallet.address){
+              model.wallet = wallet;
+              break;
+          }
+        }
+      }
       success(result);
     }, (error) => failure(error));
+  }
+
+  void cancelSale(TLDSaleListInfoModel model,Function success,Function(TLDError) failure){
+    TLDBaseRequest request = TLDBaseRequest({'count':model.realCount,'sellNo':model.sellNo,'sign':'fewfwefwe','tmpWalletAddress':model.tmpWalletAddress,'walletAddress':model.walletAddress},'sell/cancel');
+    request.postNetRequest((dynamic data) {
+      success();
+     }, (TLDError error){
+       if(error.code == 10000){
+         model.realCount = error.msg;
+         cancelSale(model, success, failure);
+       }else{
+         failure(error);
+       }
+     });
   }
 }

@@ -1,9 +1,12 @@
+import 'package:dragon_sword_purse/Sale/DetailSale/Model/tld_detail_sale_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDDetailSaleInfoView extends StatefulWidget {
-  TLDDetailSaleInfoView({Key key}) : super(key: key);
+  TLDDetailSaleInfoView({Key key,this.saleModel}) : super(key: key);
+
+  final TLDDetailSaleModel saleModel;
 
   @override
   _TLDDetailSaleInfoViewState createState() => _TLDDetailSaleInfoViewState();
@@ -12,13 +15,15 @@ class TLDDetailSaleInfoView extends StatefulWidget {
 class _TLDDetailSaleInfoViewState extends State<TLDDetailSaleInfoView> {
   @override
   Widget build(BuildContext context) {
+    String currentAmountStr = widget.saleModel != null ? widget.saleModel.currentCount : '0';
+    String totalAmountStr = widget.saleModel != null ? '0' : '0';
     return Padding(
       padding: EdgeInsets.only(top : ScreenUtil().setHeight(40)),
       child: Row(
         mainAxisAlignment : MainAxisAlignment.spaceAround,
         children: <Widget>[
-          _getSaleInfoLabel('总量', '1839TLD'),
-          _getSaleInfoLabel('剩余', '900TLD'),
+          _getSaleInfoLabel('总量', totalAmountStr + 'TLD'),
+          _getSaleInfoLabel('剩余', currentAmountStr + 'TLD'),
           _getSaleInfoLabel('状态', '挂售中')
         ],
       ),

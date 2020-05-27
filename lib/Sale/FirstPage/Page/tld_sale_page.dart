@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Sale/FirstPage/Model/tld_sale_list_info_model.dart';
+import 'package:dragon_sword_purse/Sale/FirstPage/View/tld_sale_suspend_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +15,7 @@ import '../../DetailSale/Page/tld_detail_sale_page.dart';
 import '../View/tld_sale_not_data_view.dart';
 import '../Model/tld_sale_model_manager.dart';
 import '../../../Exchange/FirstPage/Page/tld_exchange_page.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 class TLDSalePage extends StatefulWidget {
   TLDSalePage({Key key}) : super(key: key);
@@ -28,6 +31,8 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
 
   TLDSaleModelManager _modelManager;
 
+  bool _isLoading;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -36,14 +41,42 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
      _saleDatas = [];
     _controller = StreamController<List>();
     _controller.sink.add(_saleDatas);
+    _isLoading = true;
+    getSaleListInfo();
   }
 
   void getSaleListInfo(){
     _modelManager.getSaleList((List dataList){
       setState(() {
+        setState(() {
+          _isLoading = false;
+        });
         _saleDatas = List.from(dataList);
+        _controller.sink.add(_saleDatas);
       });
     } , (TLDError error) {
+      setState(() {
+          _isLoading = false;
+        });
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 1);
+    });
+  }
+
+    void _cancelSale(TLDSaleListInfoModel model,int index){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.cancelSale(model, (){
+      setState(() {
+      _isLoading = false;
+    });
+      _saleDatas.removeAt(index);
+      _controller.sink.add(_saleDatas);
+    }, (TLDError error){
+      setState(() {
+      _isLoading = false;
+      });
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
           timeInSecForIosWeb: 1);
     });
@@ -52,7 +85,7 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _getBody(context),
+      body: LoadingOverlay(isLoading: _isLoading, child: _getBody(context)),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
@@ -112,24 +145,42 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
           List datas = snapshot.data;
           if ( datas != null) {
             if (datas.length > 0)
-            return ListView.builder(
-              itemCount: 11,
+            return Stack(
+              alignment: FractionalOffset(0.9, 0.95),
+              children: <Widget>[
+              ListView.builder(
+              itemCount: datas.length,
               itemBuilder: (BuildContext context, int index) {
+                TLDSaleListInfoModel model = datas[index];
                 return getSaleFirstPageCell(
                     '取消挂售',
-                    () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TLDDetailSalePage())),
-                    context);
+                    () => _cancelSale(model,index),
+                    context,model,()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDDetailSalePage(sellNo: model.sellNo,walletName: model.wallet.name,))));
               },
+             ),
+             TLDSaleSuspendButton(didClickCallBack:(){
+               Navigator.push(context, MaterialPageRoute(builder: (context) => TLDExchangePage())).then((dynamic value){
+              setState(() {
+                _isLoading = true;
+              });
+              getSaleListInfo();
+            });
+             } ,)
+              ],
             );
           } 
           return TLDSaleNotDataView(didClickCallBack: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => TLDExchangePage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => TLDExchangePage())).then((dynamic value){
+              setState(() {
+                _isLoading = true;
+              });
+              getSaleListInfo();
+            });
           },);
         });
   }
+
+
 
   @override
   // TODO: implement wantKeepAlive

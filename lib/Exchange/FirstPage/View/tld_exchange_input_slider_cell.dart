@@ -8,7 +8,8 @@ import 'package:flutter/services.dart';
 class TLDExchangeInputSliderCell extends StatefulWidget {
   final String title;
   final TLDWalletInfoModel infoModel;
-  TLDExchangeInputSliderCell({Key key,this.title,this.infoModel}) : super(key: key);
+  final Function(String) inputCallBack;
+  TLDExchangeInputSliderCell({Key key,this.title,this.infoModel,this.inputCallBack}) : super(key: key);
 
   @override
   _TLDExchangeInputSliderCellState createState() => _TLDExchangeInputSliderCellState();
@@ -17,15 +18,15 @@ class TLDExchangeInputSliderCell extends StatefulWidget {
 class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell> {
   String _value = '0';
 
-  String _lastSting;
-
   TextEditingController _controller;
+
+  FocusNode _commentFocus;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _lastSting = '0';
+    _commentFocus = FocusNode();
     _controller = TextEditingController(text: '0');
     _controller.addListener(() {
       String text = _controller.text;
@@ -34,13 +35,15 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
             _value = '0';
           }else{
              if(double.parse(text) > double.parse(widget.infoModel.value)){
-              _controller.text = _lastSting;
+               _commentFocus.unfocus();
+              _controller.text = widget.infoModel.value;
+              _value = widget.infoModel.value;
             }else{
               _value = text;
             }
           }
       });
-      _lastSting = text;
+      widget.inputCallBack(_value);
     });
   }
 
@@ -98,6 +101,7 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
       enabled: widget.infoModel == null ? false : true,
       style: TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24),textBaseline: TextBaseline.alphabetic),
       controller: _controller,
+      focusNode: _commentFocus,
       inputFormatters: [
         WhitelistingTextInputFormatter.digitsOnly
       ],
@@ -147,14 +151,17 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
               onDragging: (handlerIndex, lowerValue, upperValue) {
                 if(widget.infoModel != null){
                   setState(() {
+                  _commentFocus.unfocus();
                   _value = lowerValue.toString();
                   _controller.text = _value;
                 });
                 }else{
+                  _commentFocus.unfocus();
                   setState(() {
                     _value = '0';
                   });
-                }    
+                }
+                widget.inputCallBack(_value);    
               },
             ),
     );
