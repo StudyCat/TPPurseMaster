@@ -1,7 +1,8 @@
+import 'package:dragon_sword_purse/Buy/FirstPage/Model/tld_buy_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Widget getCellBottomView(){
+Widget getCellBottomView(TLDBuyListInfoModel model){
   return Container(
     padding: EdgeInsets.only(top : ScreenUtil().setHeight(18),bottom: ScreenUtil().setHeight(30)),
     child: Row(

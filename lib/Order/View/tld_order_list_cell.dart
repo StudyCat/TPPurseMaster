@@ -1,9 +1,15 @@
+import 'package:date_format/date_format.dart';
+import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Order/Model/tld_order_list_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDOrderListCell extends StatefulWidget {
-  TLDOrderListCell({Key key,this.didClickDetailBtnCallBack,this.didClickIMBtnCallBack,this.didClickItemCallBack}) : super(key: key);
+  TLDOrderListCell({Key key,this.didClickDetailBtnCallBack,this.didClickIMBtnCallBack,this.didClickItemCallBack,this.orderListModel}) : super(key: key);
+
+  final TLDOrderListModel orderListModel;
 
   final Function didClickIMBtnCallBack;
 
@@ -55,7 +61,7 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Text(
-          '地址：21321342134323423413231',
+          '单号：' + widget.orderListModel.orderNo,
           style: TextStyle(
               fontSize: ScreenUtil().setSp(24),
               color: Color.fromARGB(255, 153, 153, 153)),
@@ -72,15 +78,16 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
   }
 
   Widget _getNumAmountStatusView(BuildContext context) {
+    TLDOrderStatusInfoModel infoModel = TLDDataManager.orderListStatusMap[widget.orderListModel.status];
     return Padding(
       padding: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          _getInfoView('数量', '4654TLD', null),
-          _getInfoView('金额', '¥5451', null),
-          _getInfoView('状态', '已完成', Color.fromARGB(255, 208, 2, 27)),
+          _getInfoView('数量',  widget.orderListModel.txCount + 'TLD', null),
+          _getInfoView('金额', '¥' + widget.orderListModel.txCount, null),
+          _getInfoView('状态', infoModel.orderStatusName, infoModel.orderStatusColor),
         ],
       ),
     );
@@ -116,7 +123,7 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          Text('2020.03.18',style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
+          Text(getTimeString(widget.orderListModel.createTime),style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
            Container(
               width: ScreenUtil().setWidth(122),
               height: ScreenUtil().setHeight(48),

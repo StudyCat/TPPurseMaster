@@ -1,9 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/services.dart';
 
 class TLDBuyActionSheetInputView extends StatefulWidget {
-  TLDBuyActionSheetInputView({Key key}) : super(key: key);
+  TLDBuyActionSheetInputView({Key key,this.max,this.inputStringCallBack,this.currentAmount}) : super(key: key);
+
+  final String max;
+
+  final String currentAmount;
+
+  final Function(String) inputStringCallBack;
 
   @override
   _TLDBuyActionSheetInputViewState createState() =>
@@ -12,6 +19,47 @@ class TLDBuyActionSheetInputView extends StatefulWidget {
 
 class _TLDBuyActionSheetInputViewState
     extends State<TLDBuyActionSheetInputView> {
+  TextEditingController _controller;
+
+  FocusNode _focusNode;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _controller = TextEditingController();
+    _focusNode = FocusNode();
+    _controller.addListener(() {
+       String text = _controller.text;
+        String result;
+        setState(() {
+          if(text.length == 0){
+            result = '0';
+          }else{
+             if(double.parse(widget.currentAmount) < double.parse(widget.max)){
+               if(double.parse(text) > double.parse(widget.currentAmount)){
+                _focusNode.unfocus();
+                _controller.text = widget.currentAmount;
+                result = widget.currentAmount;
+              }else{
+                result = text;
+              }
+             }else{
+               if(double.parse(text) > double.parse(widget.max)){
+                _focusNode.unfocus();
+                _controller.text = widget.max;
+                result = widget.max;
+              }else{
+                result = text;
+              }
+             }
+          }
+      });
+      widget.inputStringCallBack(result);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,7 +90,7 @@ class _TLDBuyActionSheetInputViewState
             child: VerticalDivider(color: Color.fromARGB(255, 187, 187, 187))),
         Container(
           padding: EdgeInsets.only(left: 5),
-          width: ScreenUtil().setWidth(120),
+          width: ScreenUtil().setWidth(130),
           height: ScreenUtil().setHeight(60),
           child: CupertinoButton(
               padding: EdgeInsets.all(0),
@@ -51,7 +99,12 @@ class _TLDBuyActionSheetInputViewState
                 style: TextStyle(
                     fontSize: 14, color: Theme.of(context).primaryColor,),
               ),
-              onPressed: () {}),
+              onPressed: () {
+                _focusNode.unfocus();
+                String allAmount = double.parse(widget.max) > double.parse(widget.currentAmount) ? widget.currentAmount : widget.max;
+                _controller.text = allAmount;
+                widget.inputStringCallBack(allAmount);
+              }),
         ),
       ],
     );
@@ -70,6 +123,11 @@ class _TLDBuyActionSheetInputViewState
       placeholderStyle: TextStyle(
           fontSize: ScreenUtil().setSp(24),
           color: Color.fromARGB(255, 153, 153, 153),height: 1.1),
+      inputFormatters: [
+          WhitelistingTextInputFormatter.digitsOnly
+      ],
+      controller: _controller,
+      focusNode: _focusNode,
     );
   }
   

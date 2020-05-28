@@ -87,7 +87,7 @@ class _TLDOrderListPageState extends State<TLDOrderListPage>
           ),
           Expanded(
               child: TabBarView(
-            children: [TLDOrderListContentPage(), TLDOrderListContentPage()],
+            children: [TLDOrderListContentPage(type: 1,), TLDOrderListContentPage(type: 2,)],
             controller: _tabController,
           ))
         ],

@@ -7,7 +7,7 @@ import 'dart:convert';
 
 
 class TLDExchangeChooseWalletModelManager{
-  void getWalletListData(Function(List<TLDWalletInfoModel>) success,Function(TLDError) failure)async {
+  void getWalletListData(bool isNeedFilter,Function(List<TLDWalletInfoModel>) success,Function(TLDError) failure)async {
       List purseList = TLDDataManager.instance.purseList;
       List addressList = [];
       for (TLDWallet item in purseList) {
@@ -19,10 +19,14 @@ class TLDExchangeChooseWalletModelManager{
       Map dataMap = data;
       List dataList = dataMap['list'];
       List canChangeList = [];
-      for (Map item in dataList) {
-        if(item['existSell'] == false){
-          canChangeList.add(item);
+      if (isNeedFilter == true){
+        for (Map item in dataList) {
+          if(item['existSell'] == false){
+            canChangeList.add(item);
         }
+      }
+      }else{
+        canChangeList = List.from(dataList);
       }
       List<TLDWalletInfoModel> result = [];
       for (TLDWallet wallet in purseList) {

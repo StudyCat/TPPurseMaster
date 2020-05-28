@@ -7,9 +7,11 @@ import '../../../Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import '../Model/tld_exchange_choose_wallet_model_manager.dart';
 
 class TLDEchangeChooseWalletPage extends StatefulWidget {
-  TLDEchangeChooseWalletPage({Key key,this.didChooseWalletCallBack}) : super(key: key);
+  TLDEchangeChooseWalletPage({Key key,this.didChooseWalletCallBack,this.isNeedFliter = true}) : super(key: key);
 
   final Function(TLDWalletInfoModel) didChooseWalletCallBack;
+
+  final bool isNeedFliter;
 
   @override
   _TLDEchangeChooseWalletPageState createState() => _TLDEchangeChooseWalletPageState();
@@ -66,7 +68,7 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
   }
 
   void getWalletList(){
-    _modelManager.getWalletListData((List infoList) {
+    _modelManager.getWalletListData(widget.isNeedFliter,(List infoList) {
       setState(() {
         _dataSource = List.from(infoList);
       });
