@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDOrderListScreenContentView extends StatefulWidget {
-  TLDOrderListScreenContentView({Key key, this.selectedIndex})
+  TLDOrderListScreenContentView({Key key,this.didClickSureBtnCallBack})
       : super(key: key);
 
-  final int selectedIndex;
+  final Function(int) didClickSureBtnCallBack;
 
   @override
   _TLDOrderListScreenContentViewState createState() =>
@@ -22,6 +22,8 @@ class _TLDOrderListScreenContentViewState
     '已取消',
     '申诉中',
   ];
+
+  int selectedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +72,12 @@ class _TLDOrderListScreenContentViewState
   }
 
   Widget _getGridViewItem(BuildContext context, int index) {
-    if (index != widget.selectedIndex || widget.selectedIndex == null) {
+    if (index != selectedIndex || selectedIndex == null) {
       return OutlineButton(
         onPressed: () {
-          
+          setState(() {
+            selectedIndex = index;
+          });
         },
         shape: BeveledRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -115,7 +119,12 @@ class _TLDOrderListScreenContentViewState
             width: ScreenUtil().setWidth(300),
             height: ScreenUtil().setHeight(80),
             child: OutlineButton(
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  selectedIndex = null;
+                });
+                widget.didClickSureBtnCallBack(null);
+              },
               shape: BeveledRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
@@ -144,7 +153,17 @@ class _TLDOrderListScreenContentViewState
           borderRadius: BorderRadius.all(Radius.circular(4)),
           color: Theme.of(context).primaryColor,
           onPressed: () {
-            
+            if (selectedIndex != null){
+              int status;
+              if (selectedIndex == 3){
+                status = -1;
+              }else{
+                status = selectedIndex;
+              }
+              widget.didClickSureBtnCallBack(status);
+            }else{
+              widget.didClickSureBtnCallBack(null);
+            }
           })
           ),
         ],

@@ -10,11 +10,17 @@ import '../../IM/Page/tld_im_page.dart';
 import 'tld_order_appeal_page.dart';
 import '../Model/tld_order_list_model_manager.dart';
 
+class TLDOrderListContentController  extends ValueNotifier<int>{
+    TLDOrderListContentController(int status) : super(status);
+}
+
 
 class TLDOrderListContentPage extends StatefulWidget {
-  TLDOrderListContentPage({Key key,this.type}) : super(key: key);
+  TLDOrderListContentPage({Key key,this.type,this.controller}) : super(key: key);
 
   final int type;
+
+  final TLDOrderListContentController controller;
 
   @override
   _TLDOrderListContentPageState createState() => _TLDOrderListContentPageState();
@@ -44,6 +50,25 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
     _refreshController = RefreshController(initialRefresh:true);
 
     _getOrderListDataWithPramaterModel(_pramaterModel);
+
+    widget.controller.addListener(() {
+      int status = widget.controller.value;
+      if (status == null){
+        if (_pramaterModel.status != null){
+          _pramaterModel.status = null;
+          _pramaterModel.page = 1;
+          _refreshController.requestRefresh();
+          _getOrderListDataWithPramaterModel(_pramaterModel);
+        }
+      }else{
+        if (_pramaterModel.status != status){
+           _pramaterModel.status = status;
+          _pramaterModel.page = 1;
+          _refreshController.requestRefresh();
+          _getOrderListDataWithPramaterModel(_pramaterModel);
+        }
+      }
+    });
   }
 
   void _getOrderListDataWithPramaterModel(TLDOrderListPramaterModel model){
@@ -120,16 +145,17 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
 
   Widget _getListItem(BuildContext context,int index){
     TLDOrderListModel model = _dataSource[index];
+    bool isBuyer =  widget.type == 1 ? true : false;
     return TLDOrderListCell(
       orderListModel: model,
       didClickDetailBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDOrderAppealPage()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: model.orderNo,isBuyer:isBuyer,)));
         },
       didClickIMBtnCallBack: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage()));
       },
       didClickItemCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: model.orderNo,isBuyer: isBuyer,)));
       },
       );
   }

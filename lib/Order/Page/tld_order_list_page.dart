@@ -18,6 +18,8 @@ class _TLDOrderListPageState extends State<TLDOrderListPage>
 
   TLDOrderListScreenViewController _screenViewController;
 
+  TLDOrderListContentController _contentController;
+
   List<String> _tabTitles = [
     "买入",
     "卖出",
@@ -31,6 +33,8 @@ class _TLDOrderListPageState extends State<TLDOrderListPage>
     _tabController = TabController(length: 2, vsync: this);
 
     _screenViewController = TLDOrderListScreenViewController(true);
+
+    _contentController = TLDOrderListContentController(null);
   }
 
   @override
@@ -87,12 +91,14 @@ class _TLDOrderListPageState extends State<TLDOrderListPage>
           ),
           Expanded(
               child: TabBarView(
-            children: [TLDOrderListContentPage(type: 1,), TLDOrderListContentPage(type: 2,)],
+            children: [TLDOrderListContentPage(type: 1,controller: _contentController,), TLDOrderListContentPage(type: 2,controller: _contentController,)],
             controller: _tabController,
           ))
         ],
       ),
-      TLDOrderListScreenView(controller: _screenViewController,)
+      TLDOrderListScreenView(controller: _screenViewController,didClickSureBtnCallBack: (int status){
+        _contentController.value = status;
+      },)
     ]);
   }
 }

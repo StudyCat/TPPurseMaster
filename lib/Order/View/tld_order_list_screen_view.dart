@@ -10,9 +10,11 @@ class TLDOrderListScreenViewController extends ValueNotifier<bool>{
 }
 
 class TLDOrderListScreenView extends StatefulWidget {
-  TLDOrderListScreenView({Key key,this.controller}) : super(key: key);
+  TLDOrderListScreenView({Key key,this.controller,this.didClickSureBtnCallBack}) : super(key: key);
 
   final TLDOrderListScreenViewController controller;
+
+  final Function(int) didClickSureBtnCallBack;
 
   @override
   _TLDOrderListScreenViewState createState() => _TLDOrderListScreenViewState();
@@ -42,7 +44,12 @@ class _TLDOrderListScreenViewState extends State<TLDOrderListScreenView>
       offstage: isShow,
       child: Column(
         children: <Widget>[
-          TLDOrderListScreenContentView(),
+          TLDOrderListScreenContentView(
+            didClickSureBtnCallBack: (int status){
+              widget.didClickSureBtnCallBack(status);
+              widget.controller.value = true;
+            },
+          ),
           Expanded(
              child: GestureDetector(
                onTap:(){

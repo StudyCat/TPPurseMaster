@@ -45,10 +45,14 @@ class _TLDClipCommonCellState extends State<TLDClipCommonCell> {
               widget.title,
               style: widget.titleStyle,
             ),
-            trailing: Text(
-              widget.content,
-              style: widget.contentStyle,
-            )),
+            trailing:Container(
+                width: ScreenUtil().setWidth(400),
+                child: Text(
+                widget.content,
+                textAlign: TextAlign.end,
+                style: widget.contentStyle,
+              ),
+              )),
       );
     } else {
       return Container(
@@ -59,17 +63,25 @@ class _TLDClipCommonCellState extends State<TLDClipCommonCell> {
             widget.title,
             style: widget.titleStyle,
           ),
-          trailing: Row(
+          trailing: Container(
+            width : ScreenUtil().setWidth(440),
+            child :Row(
             mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(
+              Container(
+                width: ScreenUtil().setWidth(400),
+                child: Text(
                 widget.content,
+                textAlign: TextAlign.end,
                 style: widget.contentStyle,
               ),
-              Icon(Icons.keyboard_arrow_right)
+              ),
+              Expanded(child:Icon(Icons.keyboard_arrow_right,color: Color.fromARGB(255, 51, 51, 51)))
             ],
+          )
           ),
-        ),
+          ),
       );
     }
   }

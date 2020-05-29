@@ -17,7 +17,7 @@ class TLDOrderListModel {
   int payTime;
   int finishTime;
   int expireTime;
-  Null overtime;
+  bool overtime;
   String remarkPayNo;
 
   TLDOrderListModel(

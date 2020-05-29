@@ -39,7 +39,7 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(28)),
-              child: _getHedaerView(Icon(Icons.keyboard_arrow_down)),
+              child: _getHedaerView(Icon(Icons.keyboard_arrow_down,color: Color.fromARGB(255, 51, 51, 51))),
             ),
             _getPayMethodView()
           ],
@@ -49,7 +49,7 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
       return Container(
         color: Colors.white,
         height: ScreenUtil().setHeight(88),
-        child: _getHedaerView(Icon(Icons.keyboard_arrow_right)),
+        child: _getHedaerView(Icon(Icons.keyboard_arrow_right,color: Color.fromARGB(255, 51, 51, 51),)),
       );
     }
   }
