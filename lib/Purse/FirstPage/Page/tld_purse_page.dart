@@ -1,8 +1,8 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
-import 'package:dragon_sword_purse/CommonWidget/tld_loading_view.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../View/message_button.dart';
 import '../View/purse_first_cell.dart';
 import '../View/purse_cell.dart';
@@ -33,6 +33,8 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
 
   double _totalAmount;
 
+  RefreshController _controller;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -43,13 +45,9 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
     _dataSource = [];
 
     _totalAmount = 0.0;
-  }
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    
+    _controller = RefreshController(initialRefresh: true);
+
     _getPurseInfoList(context);
   }
 
@@ -57,7 +55,12 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _getBodyWidget(context),
+      body: SmartRefresher(
+        controller: _controller,
+        child: _getBodyWidget(context),
+        header: WaterDropHeader(complete: Text('刷新完成'),),
+        onRefresh:()=>_getPurseInfoList(context),
+        ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
@@ -122,7 +125,7 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
                 },);
               },
             ),
-          );
+          ).then((value) => _getPurseInfoList(context));
         },
       );
     }
@@ -140,18 +143,19 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
     },TLDCreatePursePageType.import,null);
   }
 
-  void _getPurseInfoList(BuildContext context) async{
-    Future.delayed(Duration(milliseconds: 100));
+  void _getPurseInfoList(BuildContext context){
+    _totalAmount = 0.0;
+    _dataSource = [];
     _manager.getWalletListData((List purseInfoList){
-      Loading.hideLoading(context);
       setState(() {
         for (TLDWalletInfoModel item in purseInfoList) {
           _totalAmount = _totalAmount + double.parse(item.value);
         }
         _dataSource = List.from(purseInfoList);
       });
+      _controller.refreshCompleted();
     }, (TLDError error){
-      Loading.hideLoading(context);
+      _controller.refreshCompleted();
       Fluttertoast.showToast(msg: error.msg, toastLength: Toast.LENGTH_SHORT,
           timeInSecForIosWeb: 1);
     });

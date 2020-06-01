@@ -7,13 +7,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:async';
 
 class TLDDetailOrderHeaderView extends StatefulWidget {
-  TLDDetailOrderHeaderView({Key key,this.detailOrderModel,this.isBuyer,this.timeIsOverRefreshUICallBack}) : super(key: key);
+  TLDDetailOrderHeaderView({Key key,this.detailOrderModel,this.isBuyer,this.timeIsOverRefreshUICallBack,this.didClickAppealBtnCallBack}) : super(key: key);
 
   final TLDDetailOrderModel detailOrderModel;
 
   final bool isBuyer;
 
   final Function timeIsOverRefreshUICallBack;
+
+  final Function didClickAppealBtnCallBack;
 
   @override
   _TLDDetailOrderHeaderViewState createState() => _TLDDetailOrderHeaderViewState();
@@ -118,7 +120,7 @@ class _TLDDetailOrderHeaderViewState extends State<TLDDetailOrderHeaderView> {
         Offstage(
           offstage: !isNeedAppeal,
           child: GestureDetector(
-            onTap: (){},
+            onTap: () => widget.didClickAppealBtnCallBack(),
             child : Text('申诉',style: TextStyle(fontSize : ScreenUtil().setSp(32),color : Colors.white),),
           ),
         ),

@@ -1,6 +1,14 @@
+
+import 'dart:io';
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
+import 'package:dragon_sword_purse/Order/Model/tld_order_appeal_model_manager.dart';
+import 'package:dragon_sword_purse/Order/View/tld_order_appeal_bottom_cell.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import '../../CommonWidget/tld_clip_common_cell.dart';
 import '../View/tld_detail_order_paymethod_cell.dart';
 import '../../Drawer/UserFeedback/View/tld_user_feedback_question_desc_cell.dart';
@@ -9,7 +17,9 @@ import 'package:image_picker/image_picker.dart';
 import '../../CommonWidget/tld_image_show_page.dart';
 
 class TLDOrderAppealPage extends StatefulWidget {
-  TLDOrderAppealPage({Key key}) : super(key: key);
+  TLDOrderAppealPage({Key key,this.orderModel}) : super(key: key);
+
+  final TLDDetailOrderModel orderModel;
 
   @override
   _TLDOrderAppealPageState createState() => _TLDOrderAppealPageState();
@@ -22,7 +32,13 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
 
   List images = [];
 
+  bool _isLoading = false;
+
+  String appealDesc = '';
+
   PageController _controller;
+
+  TLDOrderAppealModelManager _manager;
 
   @override
   void initState() {
@@ -31,6 +47,36 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
     isOpen = false;
 
     _controller = PageController();
+
+    _manager = TLDOrderAppealModelManager();
+  }
+
+  void _uploadOrderAppealInfo(){
+    setState(() {
+      _isLoading = true;
+    });
+    _manager.uploadImageToService(images, (List urlList){
+      _manager.orderAppealToService(urlList, appealDesc, widget.orderModel.orderNo, (){
+        setState(() {
+        _isLoading = false;
+        });
+        Fluttertoast.showToast(msg: '提交申请成功',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+        Navigator.of(context).pop();
+      }, (TLDError error){
+        setState(() {
+        _isLoading = false;
+        });
+        Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      });
+    }, (TLDError error){
+      setState(() {
+        _isLoading = false;
+      });
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    });
   }
 
   @override
@@ -46,14 +92,14 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getBodyWidget(context),
+      body: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget(context)),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
 
   Widget _getBodyWidget(BuildContext context) {
     return ListView.builder(
-        itemCount: 6,
+        itemCount: 7,
         itemBuilder: (BuildContext context, int index) {
           if (index == 1) {
             return Padding(
@@ -79,6 +125,9 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
             return _getPadding(TLDUserFeedbackQuestionDescCell(
               title: titles[index],
               placeholder: '请描述您的申诉问题',
+              stringDidChangeCallBack: (String text){
+                appealDesc = text;
+              },
             ));
           } else if (index == 5) {
             return _getPadding(TLDUserFeedbackPickPicCell(
@@ -129,6 +178,20 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
                                 },
                               )));
                 }));
+          }else if(index == 6){
+            return TLDOrderAppealBottomCell(didClickSureBtnCallBack: (){
+              if (appealDesc.length == 0){
+                Fluttertoast.showToast(msg: '请先填好问题描述',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+                return;
+              }
+              if (images.length == 0){
+                Fluttertoast.showToast(msg: '请先选择图片',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+                return;
+              }
+              _uploadOrderAppealInfo();
+            },);
           }
 
           return _getNormalCell(context, ScreenUtil().setHeight(2), index);
@@ -136,6 +199,14 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
   }
 
   Widget _getNormalCell(BuildContext context, num top, int index) {
+    String content;
+    if(index == 0){
+      content = widget.orderModel.orderNo;
+    }else if (index == 2){
+      content = widget.orderModel.sellerAddress;
+    }else if (index == 3){
+      content = widget.orderModel.buyerAddress;
+    }
     return Padding(
       padding: EdgeInsets.only(
           top: top,
@@ -149,7 +220,7 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
           titleStyle: TextStyle(
               fontSize: ScreenUtil().setSp(28),
               color: Color.fromARGB(255, 51, 51, 51)),
-          content: 'fwefwefwe',
+          content: content,
           contentStyle: TextStyle(
               fontSize: ScreenUtil().setSp(24),
               color: Color.fromARGB(255, 153, 153, 153)),
@@ -171,7 +242,6 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
   /*拍照*/
   void _takePhoto() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
-
     if (image != null) {
       setState(() {
         images.add(image);

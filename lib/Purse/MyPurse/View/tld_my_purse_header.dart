@@ -3,16 +3,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../CommonFunction/tld_common_function.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/services.dart';
 
 
 class TLDMyPurseHeaderView extends StatefulWidget {
-  TLDMyPurseHeaderView({Key key,this.didClickTransferAccountsBtnCallBack,this.didClickQRCodeBtnCallBack,this.infoModel}) : super(key: key);
+  TLDMyPurseHeaderView({Key key,this.didClickTransferAccountsBtnCallBack,this.didClickQRCodeBtnCallBack,this.infoModel,this.didClickChangeBtnCallBack}) : super(key: key);
 
   final TLDWalletInfoModel infoModel;
 
   final Function didClickTransferAccountsBtnCallBack;
 
   final Function didClickQRCodeBtnCallBack;
+
+  final Function didClickChangeBtnCallBack;
 
   @override
   _TLDMyPurseHeaderViewState createState() => _TLDMyPurseHeaderViewState();
@@ -68,7 +72,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
                 child: Text('兑换',
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(28), color: Colors.white)),
-                onPressed: () {},
+                onPressed: widget.didClickChangeBtnCallBack,
                 color: Theme.of(context).primaryColor,
               ),
             ),
@@ -110,7 +114,11 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
                   IconData(0xe601, fontFamily: 'appIconFonts'),
                   size: ScreenUtil().setWidth(32),
                 ),
-                onPressed: () {}),
+                onPressed: () {
+                   Clipboard.setData(ClipboardData(text : widget.infoModel.walletAddress));
+                  Fluttertoast.showToast(msg: '已复制到剪切板',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+                }),
           )
         ],
       ),

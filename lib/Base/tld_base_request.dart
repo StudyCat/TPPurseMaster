@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+
 
 class TLDError{
   int code;
@@ -68,4 +70,35 @@ class TLDBaseRequest{
     //    failure(error);
     // }
   } 
+
+
+  void uploadFile(List datas,Function(List) success,Function(TLDError) failure)async{
+      BaseOptions options = BaseOptions(
+        contentType : 'application/json',
+     );
+     String url = baseUrl + 'common/uploadFile';
+      Dio dio = Dio(options);
+      List uploadDatas = [];
+      for (File item in datas) {
+        String path = item.path;
+        var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+        MultipartFile file = await MultipartFile.fromFile(item.path,filename: name);
+        uploadDatas.add(file); 
+      }
+      FormData formData = FormData.fromMap({
+        'files' : uploadDatas
+      });
+      Response response = await dio.post(url,data:formData);
+      Map responseMap = response.data;
+      String codeStr = responseMap['code'];
+     Map dataStr = responseMap['data'];
+     List fileUrlList = dataStr['list'];
+     if(int.parse(codeStr) == 200){
+       success(fileUrlList);
+     }else{
+       TLDError error = TLDError(int.parse(codeStr),responseMap['msg']);
+       failure(error);
+     }
+  }
+
 }

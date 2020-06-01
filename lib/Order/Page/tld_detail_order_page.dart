@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
+import 'package:dragon_sword_purse/Order/Page/tld_order_appeal_page.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_bottom_cell.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -144,7 +144,8 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
           _detailOrderModel = null;
           _controller.sink.add(_detailOrderModel);
           _getDetailOrderInfo();
-        },),
+        },didClickAppealBtnCallBack: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDOrderAppealPage(orderModel: _detailOrderModel,))),
+        ),
       ),
     );
   }

@@ -28,13 +28,4 @@ class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage> {
       );
   }
 
-  Color getColor(){
-    if (widget.index == 0){
-      return Colors.red;
-    }else if(widget.index == 1){
-      return Colors.yellow;
-    }else{
-      return Colors.blue;
-    }
-  }
 }

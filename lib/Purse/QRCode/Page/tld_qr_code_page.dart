@@ -1,11 +1,16 @@
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'dart:typed_data';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/services.dart';
 
 class TLDQRCodePage extends StatefulWidget {
-  TLDQRCodePage({Key key}) : super(key: key);
+  TLDQRCodePage({Key key,this.infoModel}) : super(key: key);
+
+  final TLDWalletInfoModel infoModel;
 
   @override
   _TLDQRCodePageState createState() => _TLDQRCodePageState();
@@ -20,7 +25,9 @@ class _TLDQRCodePageState extends State<TLDQRCodePage> {
     // TODO: implement initState
     super.initState();
 
-    _generateBarCode('www.baidu.com');
+    String qrCode = 'http://www.tlddollar.com?walletAddress=' + widget.infoModel.walletAddress;
+
+    _generateBarCode(qrCode);
   }
 
   @override
@@ -95,7 +102,7 @@ class _TLDQRCodePageState extends State<TLDQRCodePage> {
             width: size.width - ScreenUtil().setWidth(240),
             margin: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
             child: Text(
-              '456456565dqwdqwdqwdwqdwqdqwqwdqw',
+              widget.infoModel.walletAddress,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -114,7 +121,11 @@ class _TLDQRCodePageState extends State<TLDQRCodePage> {
                   IconData(0xe601, fontFamily: 'appIconFonts'),
                   size: ScreenUtil().setWidth(32),
                 ),
-                onPressed: () {}),
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text : widget.infoModel.walletAddress));
+                  Fluttertoast.showToast(msg: '已复制到剪切板',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+                }),
           )
         ],
       ),

@@ -15,7 +15,10 @@ import 'tld_exchange_choose_wallet.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 class TLDExchangePage extends StatefulWidget {
-  TLDExchangePage({Key key}) : super(key: key);
+  TLDExchangePage({Key key,this.infoModel}) : super(key: key);
+
+  final TLDWalletInfoModel infoModel;
+
 
   @override
   _TLDExchangePageState createState() => _TLDExchangePageState();
@@ -38,6 +41,10 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
     _formModel.maxBuyAmount = '0';
     _formModel.saleAmount = '0';
     _formModel.payMethodName = '微信支付';
+
+    if (widget.infoModel != null){
+      _formModel.infoModel = widget.infoModel;
+    }
 
     _isLoading = false;
     _manager = TLDExchangeModelManager();
@@ -80,7 +87,8 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
                 fontSize: 12, color: Color.fromARGB(255, 153, 153, 153)),
             top: 15,
             didClickCallBack: () {
-              Navigator.push(
+              if(widget.infoModel == null){
+                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => TLDEchangeChooseWalletPage(
@@ -91,6 +99,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
                               });
                             },
                           )));
+              }
             },
           );
         } else if (index == 2) {

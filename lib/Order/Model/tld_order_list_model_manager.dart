@@ -88,7 +88,7 @@ class TLDOrderListModelManager{
         addressList.add(item.address);
       }
       String addressListJson = jsonEncode(addressList);
-    Map pramater = {'type': pramaterModel.type,'pageNo':pramaterModel.page,'pageSize':10,'walletAddressList':addressListJson};
+    Map pramater = {'type': pramaterModel.type,'pageNo':pramaterModel.page,'pageSize':10,'walletAddressList':addressListJson,'sort':'deasc'};
     if(pramaterModel.status != null){
       pramater.addAll({'status':pramaterModel.status});
     }

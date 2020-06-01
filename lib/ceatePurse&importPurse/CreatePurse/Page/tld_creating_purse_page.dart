@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'tld_create_purse_success_page.dart';
 import '../Model/create_purse_model_manager.dart';
-import '../../../Notification/tld_import_create_purse_success_notification.dart';
 import '../../../CommonWidget/tld_data_manager.dart';
 import '../../../tld_not_purse_page.dart';
 import '../../../tld_tabbar_page.dart';

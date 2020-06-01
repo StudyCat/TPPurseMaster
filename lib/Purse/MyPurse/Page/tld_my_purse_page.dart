@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -81,10 +82,17 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
   Widget _getBodyWidget(BuildContext context) {
     return Column(children: <Widget>[
       TLDMyPurseHeaderView(infoModel: widget.infoModel,didClickTransferAccountsBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDTransferAccountsPage()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDTransferAccountsPage(walletInfoModel: widget.infoModel,transferSuccessCallBack: (String str){
+          setState(() {
+            widget.infoModel.value = (double.parse(widget.infoModel.value) - double.parse(str)).toString();
+          });
+        },)));
+      },
+      didClickChangeBtnCallBack: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDExchangePage(infoModel: widget.infoModel,)));
       },
       didClickQRCodeBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDQRCodePage()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDQRCodePage(infoModel: widget.infoModel,)));
       },
       ),
       Expanded(

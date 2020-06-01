@@ -3,11 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDUserFeedbackQuestionDescCell extends StatefulWidget {
-  TLDUserFeedbackQuestionDescCell({Key key,this.title,this.placeholder}) : super(key: key);
+  TLDUserFeedbackQuestionDescCell({Key key,this.title,this.placeholder,this.stringDidChangeCallBack}) : super(key: key);
 
   final String title;
 
   final String placeholder;
+
+  final Function(String) stringDidChangeCallBack;
 
   @override
   _TLDUserFeedbackQuestionDescCellState createState() => _TLDUserFeedbackQuestionDescCellState();
@@ -22,7 +24,9 @@ class _TLDUserFeedbackQuestionDescCellState extends State<TLDUserFeedbackQuestio
     super.initState();
 
     _controller = TextEditingController();
-
+    _controller.addListener(() {
+      widget.stringDidChangeCallBack(_controller.text);
+    });
   }
 
   @override
