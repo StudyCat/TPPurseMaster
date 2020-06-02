@@ -1,9 +1,14 @@
+import 'dart:io';
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import '../../../CommonWidget/tld_clip_title_input_cell.dart';
 import '../View/tld_wechat_alipay_choice_qrcode_view.dart';
 import 'package:image_picker/image_picker.dart';
+import '../Model/tld_create_payment_model_manager.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 enum TLDWechatAliPayInfoPageType { weChat, aliPay }
 
@@ -24,22 +29,100 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
 
   String title;
 
-  Image _image;
+  TLDCreatePaymentPramaterModel _pramaterModel;
+
+  File _image;
+
+  TLDCreatePaymentModelManager _manager;
+
+  bool _loading;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
+    _loading = false;
+    _manager = TLDCreatePaymentModelManager();
+
+    _pramaterModel = TLDCreatePaymentPramaterModel();
     if (widget.type == TLDWechatAliPayInfoPageType.weChat) {
-      titles = ['真实姓名', '微信账号', '微信收款二维码'];
-      placeholders = ['请输入您的真实姓名', '请输入您的微信账号'];
+      titles = ['真实姓名', '微信账号', '限额（每日）','微信收款二维码'];
+      placeholders = ['请输入您的真实姓名', '请输入您的微信账号','请输入您的限制额度'];
       title = '微信账号信息';
+
+    _pramaterModel.type = 2;
     } else {
-      titles = ['真实姓名', '支付宝账号', '支付宝收款二维码'];
-      placeholders = ['请输入您的真实姓名', '请输入您的支付宝账号'];
+      titles = ['真实姓名', '支付宝账号', '限额（每日）','支付宝收款二维码'];
+      placeholders = ['请输入您的真实姓名', '请输入您的支付宝账号','请输入您的限制额度'];
       title = '支付宝账号信息';
+
+      _pramaterModel.type = 3;
     }
+  }
+
+   void createPayment(){
+    if(_pramaterModel.realName.length == 0){
+      Fluttertoast.showToast(
+                      msg: "请填写真实姓名",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+                      return;
+    }
+    if(_pramaterModel.account.length == 0){
+      String msg = widget.type == TLDWechatAliPayInfoPageType.weChat ? '请填写微信账号' : '请填写支付宝账号';
+      Fluttertoast.showToast(
+                      msg: msg,
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+                      return;
+    }
+    if(_pramaterModel.quota.length == 0){
+      Fluttertoast.showToast(
+                      msg: "请填写每日限额",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+                      return;
+    }
+    if(_pramaterModel.imageUrl == null){
+      Fluttertoast.showToast(
+                      msg: "请添加付款码",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+                      return;
+    }
+    
+    setState(() {
+      _loading = true;
+    });
+
+    _manager.uploadWeChatOrAliPayQrCodeImage(_pramaterModel, (String url){
+      _pramaterModel.imageUrl = url;
+      _manager.createPayment(_pramaterModel, (){
+        String msg = widget.type == TLDWechatAliPayInfoPageType.weChat ? '添加微信号成功' : '添加支付宝成功';
+        Fluttertoast.showToast(
+                      msg: msg,
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+        Navigator.of(context).pop();
+      }, (TLDError error){
+      setState(() {
+        _loading = false;
+      });
+      Fluttertoast.showToast(
+                      msg: error.msg,
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+    });
+    }, (TLDError error){
+      setState(() {
+        _loading = false;
+      });
+      Fluttertoast.showToast(
+                      msg: error.msg,
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+    });
   }
 
   @override
@@ -55,7 +138,7 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getBodyWidget(context),
+      body: LoadingOverlay(isLoading: _loading, child: _getBodyWidget(context)),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -74,7 +157,15 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
               child: TLDClipTitleInputCell(
                 title: titles[index],
                 placeholder: placeholders[index],
-                textFieldEditingCallBack: (String string) {},
+                textFieldEditingCallBack: (String string) {
+                  if (index == 0){
+                    _pramaterModel.realName = string;
+                  }else if(index == 1){
+                    _pramaterModel.account = string;
+                  }else if (index == 2){
+                    _pramaterModel.quota = string;
+                  } 
+                },
               ),
             );
           }else if (index == titles.length - 1){
@@ -123,7 +214,9 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
                   ),
                   padding: EdgeInsets.all(0),
                   color: Theme.of(context).primaryColor,
-                  onPressed: () {}),
+                  onPressed: () {
+                    createPayment();
+                  }),
             );
           }
         });
@@ -132,10 +225,10 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
    /*拍照*/
   void _takePhoto() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
-
     if (image != null) {
+      _pramaterModel.imageFile = image;
       setState(() {
-      _image = Image.file(image,width: ScreenUtil().setWidth(200),height: ScreenUtil().setHeight(200),fit: BoxFit.fill,);
+        _image = image;
     });
     }
   }
@@ -144,8 +237,9 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
 void  _openGallery() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery); 
     if (image != null) {
+      _pramaterModel.imageFile = image;
      setState(() {
-      _image = Image.file(image);
+        _image = image;
     }); 
     }
   }

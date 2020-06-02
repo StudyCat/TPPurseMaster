@@ -45,6 +45,9 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
     _pramaterModel = TLDTranferAmountPramaterModel();
     _pramaterModel.chargeWalletAddress = widget.walletInfoModel.chargeWalletAddress;
     _pramaterModel.fromWalletAddress = widget.walletInfoModel.walletAddress;
+    _pramaterModel.chargeValue = '0.0';
+    _pramaterModel.toWalletAddress = "";
+    _pramaterModel.value = '0.0';
   }
 
   void tranferAmount(){
@@ -53,7 +56,7 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
     });
     _manager.transferAmount(_pramaterModel, (){
         setState(() {
-          _loading = true;
+          _loading = false;
         });
         Fluttertoast.showToast(msg: '转账成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
@@ -61,7 +64,7 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
         Navigator.of(context).pop();
     }, (TLDError error){
       setState(() {
-      _loading = true;
+      _loading = false;
       });
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                           timeInSecForIosWeb: 1);
@@ -70,6 +73,7 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: CupertinoNavigationBar(
         border: Border.all(
@@ -81,13 +85,13 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: LoadingOverlay(isLoading: _loading, child: _getBodyWidget(context)),
+      body: LoadingOverlay(isLoading: _loading, child: _getBodyWidget(context,size)),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
 
-  Widget _getBodyWidget(BuildContext context){
-    Size size = MediaQuery.of(context).size;
+  Widget _getBodyWidget(BuildContext context,Size size){
+    // Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right : ScreenUtil().setWidth(30)),
@@ -109,7 +113,6 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
                   setState(() {
                     _pramaterModel.chargeValue = (double.parse(amount) * double.parse(widget.walletInfoModel.rate)).toString();
                   });
-
                 },),
               ),
               Padding(
@@ -140,7 +143,7 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
               ),
               Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setWidth(20)),
-                child: TLDTransferAccountsNormalRowView(title: '手续费',content:'¥' + _pramaterModel.chargeValue,),
+                child: TLDTransferAccountsNormalRowView(title: '手续费',content:'¥' + _pramaterModel.chargeValue != null ? _pramaterModel.chargeValue: '0.0',),
               ),
               Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(200),),
@@ -148,7 +151,7 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
                   width: size.width - ScreenUtil().setWidth(108),
                   height: ScreenUtil().setHeight(96),
                   child : CupertinoButton(child: Text('确定'), color: Theme.of(context).primaryColor,onPressed: (){
-
+                    tranferAmount();
                   })
                 ),
               )

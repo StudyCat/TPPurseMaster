@@ -1,28 +1,104 @@
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import '../../../CommonWidget/tld_clip_title_input_cell.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../Model/tld_create_payment_model_manager.dart';
 
 
 class TLDBankCardInfoPage extends StatefulWidget {
-  TLDBankCardInfoPage({Key key}) : super(key: key);
+  TLDBankCardInfoPage({Key key,this.walletAddress}) : super(key: key);
 
+  final String walletAddress;
   @override
   _TLDBankCardInfoPageState createState() => _TLDBankCardInfoPageState();
 }
 
 class _TLDBankCardInfoPageState extends State<TLDBankCardInfoPage> {
+  
+  TLDCreatePaymentPramaterModel _pramaterModel;
+
+  TLDCreatePaymentModelManager _manager;
+
+  bool _loading;
+
   List titles = [
     '真实姓名',
     '银行卡号',
-    '开户行'
+    '开户行',
+    '限额（每日）'
   ];
 
   List placeholders = [
     '请输入您的真实姓名',
     '请输入您的银行卡号',
     '请输入开户行',
+    '请输入您的限制额度'
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    
+    _loading = false;
+
+    _pramaterModel = TLDCreatePaymentPramaterModel();
+    _pramaterModel.type = 1;
+    _pramaterModel.walletAddress = widget.walletAddress;
+
+    _manager = TLDCreatePaymentModelManager();
+  }
+
+  void createBankPayment(){
+    if(_pramaterModel.realName.length == 0){
+      Fluttertoast.showToast(
+                      msg: "请填写真实姓名",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+                      return;
+    }
+    if(_pramaterModel.account.length == 0){
+      Fluttertoast.showToast(
+                      msg: "请填写银行卡号",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+                      return;
+    }
+    if(_pramaterModel.subBranch.length == 0){
+      Fluttertoast.showToast(
+                      msg: "请填写开户行",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+                      return;
+    }
+    if(_pramaterModel.quota.length == 0){
+      Fluttertoast.showToast(
+                      msg: "请填写每日限额",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+                      return;
+    }
+    setState(() {
+      _loading = true;
+    });
+    _manager.createPayment(_pramaterModel, (){
+      setState(() {
+        _loading = false;
+      });
+      Fluttertoast.showToast(
+                      msg: "添加银行卡成功",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+      Navigator.of(context).pop();
+    }, (TLDError error){
+      setState(() {
+        _loading = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +113,7 @@ class _TLDBankCardInfoPageState extends State<TLDBankCardInfoPage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getBodyWidget(context),
+      body: LoadingOverlay(isLoading: _loading, child: _getBodyWidget(context)),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -51,7 +127,15 @@ class _TLDBankCardInfoPageState extends State<TLDBankCardInfoPage> {
           return Padding(
           padding: EdgeInsets.only(top:ScreenUtil().setHeight(2),left: ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),
           child: TLDClipTitleInputCell(title : titles[index],placeholder: placeholders[index],textFieldEditingCallBack: (String string){
-          
+          if(index == 0){
+            _pramaterModel.realName = string;
+          }else if(index == 1){
+            _pramaterModel.account = string;
+          }else if(index == 2){
+            _pramaterModel.subBranch = string;
+          }else if(index == 3){
+            _pramaterModel.quota = string;
+          }
         },),
         );
         }else{
@@ -59,8 +143,8 @@ class _TLDBankCardInfoPageState extends State<TLDBankCardInfoPage> {
             margin : EdgeInsets.only(top : ScreenUtil().setHeight(400),left: ScreenUtil().setWidth(100),right: ScreenUtil().setWidth(100)),
             height: ScreenUtil().setHeight(80),
             width:size.width -  ScreenUtil().setWidth(200),
-            child: CupertinoButton(child: Text('确定',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){ 
-              
+            child: CupertinoButton(child: Text('保存',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){ 
+              createBankPayment();
             }),
           );
         }

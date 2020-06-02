@@ -4,9 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../View/tld_choose_payment_cell.dart';
 import 'tld_bank_card_info_page.dart';
 import 'tld_wecha_alipay_info_page.dart';
+import 'tld_payment_manager_page.dart';
 
 class TLDChoosePaymentPage extends StatefulWidget {
-  TLDChoosePaymentPage({Key key}) : super(key: key);
+  TLDChoosePaymentPage({Key key,this.walletAddress}) : super(key: key);
+
+  final String walletAddress;
 
   @override
   _TLDChoosePaymentPageState createState() => _TLDChoosePaymentPageState();
@@ -50,17 +53,15 @@ class _TLDChoosePaymentPageState extends State<TLDChoosePaymentPage> {
       itemBuilder: (BuildContext context, int index){
         return TLDChoosePaymentCell(title : titles[index], iconInt: icons[index],
           didClickCallBack: (){
+            TLDPaymentType type;
             if (index == 0){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDBankCardInfoPage()));
-            }else{
-              TLDWechatAliPayInfoPageType type;
-              if (index == 1) {
-                type = TLDWechatAliPayInfoPageType.weChat;
-              }else{
-                type = TLDWechatAliPayInfoPageType.aliPay;
-              }
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDWechatAliPayInfoPage(type: type,)));
+              type = TLDPaymentType.bank;
+            }else if (index == 1) {
+                type = TLDPaymentType.wechat;
+             }else{
+                type = TLDPaymentType.alipay;
             }
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPaymentManagerPage(type: type,)));
           },
         );
       }

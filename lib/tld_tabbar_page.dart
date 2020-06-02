@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_choose_wallet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './Buy/FirstPage/Page/tld_buy_page.dart';
@@ -69,7 +70,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => TLDChoosePaymentPage()));
+                    builder: (context) => TLDPaymentChooseWalletPage()));
           } else if (index == 3) {
             Navigator.push(
                 context,

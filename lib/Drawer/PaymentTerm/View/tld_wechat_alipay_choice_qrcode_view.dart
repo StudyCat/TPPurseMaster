@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +10,7 @@ class TLDWechatAlipayChoiceQRCodeView extends StatefulWidget {
   TLDWechatAlipayChoiceQRCodeView({Key key,this.title,this.didClickBtnCallBack,this.image}) : super(key: key);
   final String title;
   final Function didClickBtnCallBack;
-  final Widget image;
+  final File image;
   
   @override
   _TLDWechatAlipayChoiceQRCodeViewState createState() => _TLDWechatAlipayChoiceQRCodeViewState();
@@ -70,7 +72,7 @@ class _TLDWechatAlipayChoiceQRCodeViewState extends State<TLDWechatAlipayChoiceQ
                   padding: EdgeInsets.all(0),
                   child: Container(
                     child: Center(
-                      child : widget.image,
+                      child : Image.file(widget.image,width: ScreenUtil().setWidth(200),height: ScreenUtil().setHeight(200),fit: BoxFit.fill,),
                     ),
                   ), 
                   onPressed: (){
