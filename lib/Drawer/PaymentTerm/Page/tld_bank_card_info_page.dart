@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,9 +10,11 @@ import '../Model/tld_create_payment_model_manager.dart';
 
 
 class TLDBankCardInfoPage extends StatefulWidget {
-  TLDBankCardInfoPage({Key key,this.walletAddress}) : super(key: key);
+  TLDBankCardInfoPage({Key key,this.walletAddress,this.paymentModel}) : super(key: key);
 
   final String walletAddress;
+
+  final TLDPaymentModel paymentModel;
   @override
   _TLDBankCardInfoPageState createState() => _TLDBankCardInfoPageState();
 }
@@ -49,7 +52,17 @@ class _TLDBankCardInfoPageState extends State<TLDBankCardInfoPage> {
     _pramaterModel.type = 1;
     _pramaterModel.walletAddress = widget.walletAddress;
 
+    if(widget.paymentModel != null){
+      _pramaterModel.payId = widget.paymentModel.payId.toString();
+      _pramaterModel.subBranch = widget.paymentModel.subBranch;
+      _pramaterModel.account = widget.paymentModel.account;
+      _pramaterModel.realName = widget.paymentModel.realName;
+      _pramaterModel.quota = widget.paymentModel.quota;
+    }
+
     _manager = TLDCreatePaymentModelManager();
+
+
   }
 
   void createBankPayment(){
@@ -100,6 +113,54 @@ class _TLDBankCardInfoPageState extends State<TLDBankCardInfoPage> {
     });
   }
 
+  void updateBankInfo(){
+    if(_pramaterModel.realName.length == 0){
+      Fluttertoast.showToast(
+                      msg: "请填写真实姓名",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+                      return;
+    }
+    if(_pramaterModel.account.length == 0){
+      Fluttertoast.showToast(
+                      msg: "请填写银行卡号",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+                      return;
+    }
+    if(_pramaterModel.subBranch.length == 0){
+      Fluttertoast.showToast(
+                      msg: "请填写开户行",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+                      return;
+    }
+    if(_pramaterModel.quota.length == 0){
+      Fluttertoast.showToast(
+                      msg: "请填写每日限额",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+                      return;
+    }
+    setState(() {
+      _loading = true;
+    });
+    _manager.updatePayment(_pramaterModel, (){
+      setState(() {
+        _loading = false;
+      });
+      Fluttertoast.showToast(
+                      msg: "修改银行卡成功",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+      Navigator.of(context).pop();
+    }, (TLDError error){
+      setState(() {
+        _loading = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,9 +185,19 @@ class _TLDBankCardInfoPageState extends State<TLDBankCardInfoPage> {
       itemCount: titles.length + 1,
       itemBuilder: (BuildContext context, int index){
         if (index < titles.length) {
+          String content;
+          if(index == 0){
+            content = _pramaterModel.realName;
+          }else if(index == 1){
+            content = _pramaterModel.account;
+          }else if(index == 2){
+            content = _pramaterModel.subBranch;
+          }else if(index == 3){
+            content = _pramaterModel.quota;
+          }
           return Padding(
           padding: EdgeInsets.only(top:ScreenUtil().setHeight(2),left: ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),
-          child: TLDClipTitleInputCell(title : titles[index],placeholder: placeholders[index],textFieldEditingCallBack: (String string){
+          child: TLDClipTitleInputCell(content: content,title : titles[index],placeholder: placeholders[index],textFieldEditingCallBack: (String string){
           if(index == 0){
             _pramaterModel.realName = string;
           }else if(index == 1){
@@ -144,7 +215,11 @@ class _TLDBankCardInfoPageState extends State<TLDBankCardInfoPage> {
             height: ScreenUtil().setHeight(80),
             width:size.width -  ScreenUtil().setWidth(200),
             child: CupertinoButton(child: Text('保存',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){ 
-              createBankPayment();
+              if(_pramaterModel.payId.length == 0){
+                createBankPayment();
+              }else{
+                updateBankInfo();
+              }
             }),
           );
         }

@@ -1,6 +1,7 @@
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 
 class TLDBuyPramaterModel{
@@ -18,6 +19,7 @@ class TLDBuyListInfoModel {
   String payMethod;
   String sellerWalletAddress;
   String createTime;
+  TLDPaymentModel payMethodVO;
   bool isMine = false;
 
   TLDBuyListInfoModel(
@@ -29,7 +31,8 @@ class TLDBuyListInfoModel {
       this.payMethod,
       this.sellerWalletAddress,
       this.createTime,
-      this.isMine});
+      this.isMine,
+      this.payMethodVO});
 
   TLDBuyListInfoModel.fromJson(Map<String, dynamic> json) {
     sellId = json['sellId'];
@@ -40,6 +43,7 @@ class TLDBuyListInfoModel {
     payMethod = json['payMethod'];
     sellerWalletAddress = json['sellerWalletAddress'];
     createTime = json['createTime'];
+    payMethodVO = TLDPaymentModel.fromJson(json['payMethodVO']);
   }
 
   Map<String, dynamic> toJson() {
@@ -52,6 +56,7 @@ class TLDBuyListInfoModel {
     data['payMethod'] = this.payMethod;
     data['sellerWalletAddress'] = this.sellerWalletAddress;
     data['createTime'] = this.createTime;
+    data['payMethodVO'] = this.payMethodVO.toJson();
     return data;
   }
 }

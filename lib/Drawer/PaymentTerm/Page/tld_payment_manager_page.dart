@@ -18,11 +18,15 @@ enum TLDPaymentType{
 }
 
 class TLDPaymentManagerPage extends StatefulWidget {
-  TLDPaymentManagerPage({Key key,this.type,this.walletAddress}) : super(key: key);
+  TLDPaymentManagerPage({Key key,this.type,this.walletAddress,this.isChoosePayment,this.didChoosePaymentCallBack}) : super(key: key);
 
   final TLDPaymentType type;
 
+  final bool isChoosePayment;
+
   final String walletAddress;
+
+  final Function(TLDPaymentModel) didChoosePaymentCallBack;
 
   @override
   _TLDPaymentManagerPageState createState() => _TLDPaymentManagerPageState();
@@ -50,8 +54,8 @@ class _TLDPaymentManagerPageState extends State<TLDPaymentManagerPage> {
 
 
   void _getPaymentList(){
-    _dataSource = [];
     _manager.getPaymentInfoList(widget.walletAddress, widget.type, (List dataList){
+      _dataSource = [];
       _refreshController.refreshCompleted();
       setState(() {
         _dataSource.addAll(dataList);
@@ -117,7 +121,7 @@ class _TLDPaymentManagerPageState extends State<TLDPaymentManagerPage> {
         if(index == _dataSource.length){
           return TLDPaymentManagerAddPaymentCell(type: widget.type,didClickItemCallBack: (){
             if (widget.type == TLDPaymentType.bank){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDBankCardInfoPage())).then((value) => refreshPaymentList());
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDBankCardInfoPage(walletAddress: widget.walletAddress,))).then((value) => refreshPaymentList());
             }else{
               TLDWechatAliPayInfoPageType pageType;
               if (widget.type == TLDPaymentType.wechat){
@@ -125,12 +129,29 @@ class _TLDPaymentManagerPageState extends State<TLDPaymentManagerPage> {
               }else{
                 pageType = TLDWechatAliPayInfoPageType.aliPay;
               }
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDWechatAliPayInfoPage(type : pageType))).then((value) => refreshPaymentList());
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDWechatAliPayInfoPage(walletAddress : widget.walletAddress,type : pageType))).then((value) => refreshPaymentList());
             }
           },);
         }else{
           TLDPaymentModel paymentModel = _dataSource[index];
-          return TLDPaymentManagerCell(paymentModel: paymentModel,);
+          return TLDPaymentManagerCell(paymentModel: paymentModel,didClickItemCallBack: (){
+            if (widget.isChoosePayment == true){
+              widget.didChoosePaymentCallBack(paymentModel);
+              Navigator.of(context)..pop()..pop();
+            }else{
+              if (paymentModel.type == 1){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDBankCardInfoPage(walletAddress: widget.walletAddress,paymentModel: paymentModel,))).then((value) => refreshPaymentList());
+            }else{
+              TLDWechatAliPayInfoPageType pageType;
+              if (widget.type == TLDPaymentType.wechat){
+                pageType = TLDWechatAliPayInfoPageType.weChat;
+              }else{
+                pageType = TLDWechatAliPayInfoPageType.aliPay;
+              }
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDWechatAliPayInfoPage(walletAddress : widget.walletAddress,type : pageType,paymentModel: paymentModel,))).then((value) => refreshPaymentList());
+            }
+            }
+          },);
         }
       } 
       );

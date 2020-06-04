@@ -1,5 +1,8 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_choose_payment_page.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Model/tld_exchange_model_manager.dart';
+import 'package:dragon_sword_purse/Exchange/FirstPage/View/tld_exchange_payment_cell.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -119,7 +122,17 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
               inputCallBack: (String text) {
                 _formModel.maxBuyAmount = text;
               });
-        } else if (index == titleList.length) {
+        }else if (index == titleList.length -1){
+          return TLDExchangePaymentCell(paymentModel: _formModel.paymentModel,didClickItemCallBack: (){
+            if (_formModel.infoModel != null){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDChoosePaymentPage(walletAddress:_formModel.infoModel.walletAddress,isChoosePayment: true,didChoosePaymentCallBack: (TLDPaymentModel paymentModel){
+                setState(() {
+                  _formModel.paymentModel = paymentModel;
+                });
+              },)));
+            }
+          },);
+        }else if (index == titleList.length) {
           return Container(
             padding: EdgeInsets.only(
                 top: ScreenUtil().setHeight(40), left: 15, right: 15),
@@ -140,14 +153,22 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
                 ? '0.0'
                 : _formModel.infoModel.value;
           } else if (index == 4) {
-            content = '0.6%';
+            content =  _formModel.infoModel == null ?  '0%' : (double.parse(_formModel.infoModel.rate) * 100).toString() + '%';
           } else if (index == 5) {
-            double amount = double.parse(_formModel.saleAmount) * 0.006;
-            content = amount.toString() + 'TLD';
+            if (_formModel.infoModel != null){
+              double amount = double.parse(_formModel.saleAmount) * double.parse(_formModel.infoModel.rate);
+              content = amount.toString() + 'TLD';
+            }else{
+              content = '0TLD';
+            }
           } else if (index == 6) {
-            double amount = double.parse(_formModel.saleAmount) * 0.006;
-            double trueAmount = double.parse(_formModel.saleAmount) - amount;
-            content = '¥' + trueAmount.toString();
+            if (_formModel.infoModel != null){
+              double amount = double.parse(_formModel.saleAmount) * double.parse(_formModel.infoModel.rate);
+              double trueAmount = double.parse(_formModel.saleAmount) - amount;
+              content = '¥' + trueAmount.toString();
+            }else{
+              content = '¥0';
+            }
           }
           return TLDExchangeNormalCell(
             type: TLDExchangeNormalCellType.normal,
@@ -176,6 +197,11 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
     if(_formModel.infoModel == null){
         Fluttertoast.showToast(
           msg: '请选择钱包', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
+        return;
+    }
+    if(_formModel.paymentModel == null){
+        Fluttertoast.showToast(
+          msg: '请选择支付方式', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
         return;
     }
     setState(() {

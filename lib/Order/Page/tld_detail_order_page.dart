@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_order_appeal_page.dart';
+import 'package:dragon_sword_purse/Order/View/tld_detail_alipay_qrcode_show_view.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_bottom_cell.dart';
+import 'package:dragon_sword_purse/Order/View/tld_detail_wechat_qrcode_show_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -172,11 +174,18 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
                     fontSize: ScreenUtil().setSp(24),
                     color: Color.fromARGB(255, 51, 51, 51)),
                 isOpen: isOpen,
-                isBank: true,
+                paymentModel: _detailOrderModel.payMethodVO,
                 didClickCallBack: (){
                   setState(() {
                     isOpen = !isOpen;
                   });
+                },
+                didClickQrCodeCallBack: (){
+                  if (_detailOrderModel.payMethodVO.type == 2){
+                      showDialog(context: context,builder: (context) => TLDDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,));
+                  }else{
+                      showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,));                    
+                  }
                 },
               ),
             );

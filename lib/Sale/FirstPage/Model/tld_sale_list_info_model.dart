@@ -1,5 +1,6 @@
 
 
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 
 class TLDSaleListInfoModel {
@@ -14,6 +15,7 @@ class TLDSaleListInfoModel {
   TLDWallet wallet;
   String realCount;
   String tmpWalletAddress;
+  TLDPaymentModel payMethodVO;
 
   TLDSaleListInfoModel(
       {this.sellId,
@@ -26,7 +28,8 @@ class TLDSaleListInfoModel {
       this.totalCount,
       this.realCount,
       this.tmpWalletAddress,
-      this.wallet});
+      this.wallet,
+      this.payMethodVO});
 
   TLDSaleListInfoModel.fromJson(Map<String, dynamic> json) {
     sellId = json['sellId'];
@@ -39,6 +42,7 @@ class TLDSaleListInfoModel {
     totalCount = json['totalCount'];
     realCount = json['realCount'];
     tmpWalletAddress = json['tmpWalletAddress'];
+    payMethodVO = TLDPaymentModel.fromJson(json['payMethodVO']);
   }
 
   Map<String, dynamic> toJson() {
@@ -53,6 +57,7 @@ class TLDSaleListInfoModel {
     data['totalCount'] = this.totalCount;
     data['realCount'] = this.realCount;
     data['tmpWalletAddress'] = this.tmpWalletAddress;
+    data['payMethodVO'] = this.payMethodVO.toJson();
     return data;
   }
 }

@@ -13,6 +13,7 @@ class TLDPaymentModel {
   String walletAddress;
   String account;
   String subBranch;
+  String realName;
 
   TLDPaymentModel(
       {this.createTime,
@@ -23,7 +24,8 @@ class TLDPaymentModel {
       this.type,
       this.walletAddress,
       this.account,
-      this.subBranch});
+      this.subBranch,
+      this.realName});
 
   TLDPaymentModel.fromJson(Map<String, dynamic> json) {
     createTime = json['createTime'];
@@ -35,6 +37,7 @@ class TLDPaymentModel {
     walletAddress = json['walletAddress'];
     account = json['account'];
     subBranch = json['subBranch'];
+    realName = json['realName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -48,6 +51,7 @@ class TLDPaymentModel {
     data['walletAddress'] = this.walletAddress;
     data['account'] = this.account;
     data['subBranch'] = this.subBranch;
+    data['realName'] = this.realName;
     return data;
   }
 }

@@ -1,5 +1,6 @@
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import '../../CommonWidget/tld_data_manager.dart';
 import 'dart:convert';
@@ -19,6 +20,7 @@ class TLDOrderListModel {
   int expireTime;
   bool overtime;
   String remarkPayNo;
+  TLDPaymentModel payMethodVO;
 
   TLDOrderListModel(
       {this.orderId,
@@ -34,7 +36,8 @@ class TLDOrderListModel {
       this.finishTime,
       this.expireTime,
       this.overtime,
-      this.remarkPayNo});
+      this.remarkPayNo,
+      this.payMethodVO});
 
   TLDOrderListModel.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
@@ -51,6 +54,7 @@ class TLDOrderListModel {
     expireTime = json['expireTime'];
     overtime = json['overtime'];
     remarkPayNo = json['remarkPayNo'];
+    payMethodVO = TLDPaymentModel.fromJson(json['payMethodVO']);
   }
 
   Map<String, dynamic> toJson() {
@@ -69,6 +73,7 @@ class TLDOrderListModel {
     data['expireTime'] = this.expireTime;
     data['overtime'] = this.overtime;
     data['remarkPayNo'] = this.remarkPayNo;
+    data['payMethodVO'] = this.payMethodVO.toJson();
     return data;
   }
 }

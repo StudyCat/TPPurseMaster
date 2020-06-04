@@ -11,19 +11,10 @@ class TLDCreatePaymentPramaterModel{
   String subBranch = '';
   int type;
   String walletAddress = '';
-  File imageFile;
+  String payId = "";
 }
 
 class TLDCreatePaymentModelManager{
-  
-  void uploadWeChatOrAliPayQrCodeImage(TLDCreatePaymentPramaterModel pramaterModel,Function(String) success,Function(TLDError) failure){
-    TLDBaseRequest request = TLDBaseRequest({}, '');
-    request.uploadFile([pramaterModel.imageFile], (List urlList){
-      Map urlMap = urlList.first;
-      success(urlMap['url']);
-    }, (error) => failure(error));
-  }
-
    void createPayment(TLDCreatePaymentPramaterModel pramaterModel,Function success,Function(TLDError) failure){
      Map pramaterMap;
      if (pramaterModel.type != 1){
@@ -32,6 +23,19 @@ class TLDCreatePaymentModelManager{
        pramaterMap = {'account':pramaterModel.account,'quota':pramaterModel.quota,'realName':pramaterModel.realName,'type':pramaterModel.type,'walletAddress':pramaterModel.walletAddress,'subBranch':pramaterModel.subBranch};
      }
      TLDBaseRequest request = TLDBaseRequest(pramaterMap, 'pay/addPay');
+     request.postNetRequest((dynamic value) {
+        success();
+     }, (error) => failure(error));
+   }
+
+   void updatePayment(TLDCreatePaymentPramaterModel pramaterModel,Function success,Function(TLDError) failure){
+     Map pramaterMap;
+     if (pramaterModel.type != 1){
+       pramaterMap = {'payId':pramaterModel.payId,'account':pramaterModel.account,'quota':pramaterModel.quota,'realName':pramaterModel.realName,'type':pramaterModel.type,'walletAddress':pramaterModel.walletAddress,'imageUrl':pramaterModel.imageUrl};
+     }else{
+       pramaterMap = {'payId':pramaterModel.payId,'account':pramaterModel.account,'quota':pramaterModel.quota,'realName':pramaterModel.realName,'type':pramaterModel.type,'walletAddress':pramaterModel.walletAddress,'subBranch':pramaterModel.subBranch};
+     }
+     TLDBaseRequest request = TLDBaseRequest(pramaterMap, 'pay/resetPay');
      request.postNetRequest((dynamic value) {
         success();
      }, (error) => failure(error));

@@ -113,7 +113,7 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
                     fontSize: ScreenUtil().setSp(28),
                     color: Color.fromARGB(255, 51, 51, 51)),
                 isOpen: isOpen,
-                isBank: true,
+                paymentModel: widget.orderModel.payMethodVO,
                 didClickCallBack: () {
                   setState(() {
                     isOpen = !isOpen;

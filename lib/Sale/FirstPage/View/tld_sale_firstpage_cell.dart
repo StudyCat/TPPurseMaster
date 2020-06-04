@@ -7,8 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 Widget getSaleFirstPageCell(
-  String buttonTitle, Function onPressCallBack, BuildContext context,TLDSaleListInfoModel model,Function clickItemCallBack) {
+  String buttonTitle, Function onPressCallBack, BuildContext context,TLDSaleListInfoModel model,Function clickItemCallBack,int type) {
   Size screenSize = MediaQuery.of(context).size;
+  bool isHiddeBtn = type == 0 ? false : true;
   return GestureDetector(
     onTap :clickItemCallBack,
     child : Container(
@@ -21,10 +22,10 @@ Widget getSaleFirstPageCell(
         width: screenSize.width - 30,
         padding: EdgeInsets.only(top: 10, bottom: 17),
         child: Column(children: <Widget>[
-          TLDCommonCellHeaderView(title:'订单号',buttonTitle: buttonTitle,onPressCallBack: onPressCallBack,buttonWidth: 166,saleModel: model,),
-          _leftRightItem(context,34, 0, '收款方式', '', false),
-          _leftRightItem(context,22, 0, '挂售钱包', model.wallet.name, true),
-          _leftRightItem(context, 22, 20, '创建时间', getTimeString(model.createTime), true),
+          TLDCommonCellHeaderView(title:'订单号',buttonTitle: buttonTitle,onPressCallBack: onPressCallBack,buttonWidth: 166,saleModel: model,isHiddenBtn: isHiddeBtn),
+          _leftRightItem(context,34, 0, '收款方式', '', false,model.payMethodVO.type),
+          _leftRightItem(context,22, 0, '挂售钱包', model.wallet.name, true,0),
+          _leftRightItem(context, 22, 20, '创建时间', getTimeString(model.createTime), true,0),
         ]),
       ),
     ),
@@ -33,7 +34,7 @@ Widget getSaleFirstPageCell(
 }
 
 
-Widget _leftRightItem(BuildContext context, num top , num bottom,String title , String content,bool isTextType) {
+Widget _leftRightItem(BuildContext context, num top , num bottom,String title , String content,bool isTextType,int paymentType) {
   Size screenSize = MediaQuery.of(context).size;
   return Container(
     padding: bottom == 0 ? EdgeInsets.only(top : ScreenUtil().setHeight(top)) :EdgeInsets.only(top : ScreenUtil().setHeight(top),bottom: ScreenUtil().setHeight(bottom)),
@@ -48,9 +49,19 @@ Widget _leftRightItem(BuildContext context, num top , num bottom,String title , 
           padding : EdgeInsets.only( right :ScreenUtil().setWidth(20)),
           width:  ScreenUtil().setWidth(400),
           alignment: Alignment.centerRight,
-          child: isTextType ? Text(content,style: TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 51, 51, 51)),maxLines: 1,) : Icon(IconData(0xe679,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(28),)
+          child: isTextType ? Text(content,style: TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 51, 51, 51)),maxLines: 1,) : Icon(IconData(getIconInt(paymentType),fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(28),)
         ),
       ],
     ),
   );
+}
+
+int getIconInt(int paymentType){
+  if (paymentType == 1){
+    return 0xe679;
+  }else if (paymentType == 2){
+    return 0xe61d;
+  }else{
+    return 0xe630;
+  }
 }

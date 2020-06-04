@@ -2,10 +2,10 @@ import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.d
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
 import 'dart:typed_data';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/services.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class TLDQRCodePage extends StatefulWidget {
   TLDQRCodePage({Key key,this.infoModel}) : super(key: key);
@@ -18,16 +18,15 @@ class TLDQRCodePage extends StatefulWidget {
 
 class _TLDQRCodePageState extends State<TLDQRCodePage> {
 
-  Uint8List bytes = Uint8List(0);
+  String qrCode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    String qrCode = 'http://www.tlddollar.com?walletAddress=' + widget.infoModel.walletAddress;
+    qrCode = 'http://www.tlddollar.com?walletAddress=' + widget.infoModel.walletAddress;
 
-    _generateBarCode(qrCode);
   }
 
   @override
@@ -68,7 +67,7 @@ class _TLDQRCodePageState extends State<TLDQRCodePage> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(50)),
-                child: bytes != null ? Image.memory(bytes,width: ScreenUtil().setWidth(408),height: ScreenUtil().setHeight(408),alignment: Alignment.center,) : Container(width: ScreenUtil().setWidth(408),height: ScreenUtil().setHeight(408),color: Color.fromARGB(255, 103, 103, 103),),
+                child: qrCode.length != 0  ? QrImage(data: qrCode,size : ScreenUtil().setWidth(408)) : Container(width: ScreenUtil().setWidth(408),height: ScreenUtil().setHeight(408),color: Color.fromARGB(255, 103, 103, 103),),
               ),
               Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(50),left :ScreenUtil().setWidth(20),right : ScreenUtil().setWidth(20)),
@@ -81,10 +80,6 @@ class _TLDQRCodePageState extends State<TLDQRCodePage> {
       );
   }
 
-  Future _generateBarCode(String inputCode) async {
-    Uint8List result = await scanner.generateBarCode(inputCode);
-    this.setState(() => this.bytes = result);
-  }
 
   Widget getCopyAdressView(BuildContext context) {
     Size size = MediaQuery.of(context).size;

@@ -3,6 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget getCellBottomView(TLDBuyListInfoModel model){
+  int iconInt;
+  if (model.payMethodVO.type == 1){
+    iconInt = 0xe679;
+  }else if(model.payMethodVO.type == 2){
+    iconInt = 0xe61d;
+  }else{
+    iconInt = 0xe630;
+  }
   return Container(
     padding: EdgeInsets.only(top : ScreenUtil().setHeight(18),bottom: ScreenUtil().setHeight(30)),
     child: Row(
@@ -16,11 +24,9 @@ Widget getCellBottomView(TLDBuyListInfoModel model){
           padding : EdgeInsets.only( right :ScreenUtil().setWidth(20)),
           width: ScreenUtil().setWidth(200),
           child: Row(
-            mainAxisAlignment : MainAxisAlignment.spaceAround,
+            mainAxisAlignment : MainAxisAlignment.end,
             children: <Widget>[
-              Icon(IconData(0xe679,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(28),),
-              Icon(IconData(0xe61d,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(28),),
-              Icon(IconData(0xe630,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(28),),
+              Icon(IconData(iconInt,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(28),),
             ],
           ),
         ),

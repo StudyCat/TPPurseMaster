@@ -6,7 +6,7 @@ import '../Buy/FirstPage/View/tld_buy_button.dart';
 import '../Buy/FirstPage/View/tld_buy_info_label.dart';
 
 class TLDCommonCellHeaderView extends StatefulWidget {
-  TLDCommonCellHeaderView({Key key,this.title,this.buttonTitle,this.onPressCallBack,this.buttonWidth,this.saleModel,this.buyModel}) : super(key: key);
+  TLDCommonCellHeaderView({Key key,this.title,this.buttonTitle,this.onPressCallBack,this.buttonWidth,this.saleModel,this.buyModel,this.isHiddenBtn}) : super(key: key);
 
   final String title;
   final String buttonTitle; 
@@ -14,6 +14,7 @@ class TLDCommonCellHeaderView extends StatefulWidget {
   final double buttonWidth;
   final TLDSaleListInfoModel saleModel;
   final TLDBuyListInfoModel buyModel;
+  final bool isHiddenBtn;
   @override
   _TLDCommonCellHeaderViewState createState() => _TLDCommonCellHeaderViewState();
 }
@@ -38,7 +39,7 @@ class _TLDCommonCellHeaderViewState extends State<TLDCommonCellHeaderView> {
                      child: Text(titleContent ,style : TextStyle(fontSize : ScreenUtil().setSp(24) ,color : Color.fromARGB(255, 153, 153, 153)),maxLines: 1,overflow: TextOverflow.fade,textAlign: TextAlign.start,softWrap: false,),
                    ),
                    Offstage(
-                     offstage : widget.buyModel != null ? widget.buyModel.isMine : false,
+                     offstage : widget.buyModel != null ? widget.buyModel.isMine : widget.isHiddenBtn,
                      child : picAndTextButton('assetss/images/firspage_buy.png', widget.buttonTitle, widget.onPressCallBack,widget.buttonWidth)
                    )
                  ],

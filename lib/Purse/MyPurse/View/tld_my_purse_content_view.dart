@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../Page/tld_my_purse_record_page.dart';
 
-class TLDMyPurseContentView extends StatefulWidget {
-  TLDMyPurseContentView({Key key}) : super(key: key);
+class TLDMyPurseContentView extends StatefulWidget  {
+  TLDMyPurseContentView({Key key,this.walletAddress}) : super(key: key);
+
+  final String walletAddress;
 
   @override
   _TLDMyPurseContentViewState createState() => _TLDMyPurseContentViewState();
@@ -53,9 +56,9 @@ class _TLDMyPurseContentViewState extends State<TLDMyPurseContentView>
           Expanded(
               child: TabBarView(
             children: [
-              TLDMyPurseRecordPage(index: 1,),
-              TLDMyPurseRecordPage(index: 2,),
-              TLDMyPurseRecordPage(index: 0,),
+              TLDMyPurseRecordPage(type: 0,walletAddress: widget.walletAddress,),
+              TLDMyPurseRecordPage(type: 2,walletAddress: widget.walletAddress,),
+              TLDMyPurseRecordPage(type: 1,walletAddress: widget.walletAddress,),
             ],
             controller: _tabController,
           ))

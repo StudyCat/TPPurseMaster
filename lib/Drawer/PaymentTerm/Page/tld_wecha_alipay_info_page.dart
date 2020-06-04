@@ -1,5 +1,8 @@
+
 import 'dart:io';
+import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,13 +12,21 @@ import '../View/tld_wechat_alipay_choice_qrcode_view.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Model/tld_create_payment_model_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:flutter_qr_reader/qrcode_reader_view.dart';
 
 enum TLDWechatAliPayInfoPageType { weChat, aliPay }
 
 class TLDWechatAliPayInfoPage extends StatefulWidget {
-  TLDWechatAliPayInfoPage({Key key, @required this.type}) : super(key: key);
+  TLDWechatAliPayInfoPage({Key key, @required this.type,this.walletAddress,this.paymentModel}) : super(key: key);
+
+  final String walletAddress;
 
   final TLDWechatAliPayInfoPageType type;
+
+  final TLDPaymentModel paymentModel;
 
   @override
   _TLDWechatAliPayInfoPageState createState() =>
@@ -31,8 +42,6 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
 
   TLDCreatePaymentPramaterModel _pramaterModel;
 
-  File _image;
-
   TLDCreatePaymentModelManager _manager;
 
   bool _loading;
@@ -46,6 +55,7 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
     _manager = TLDCreatePaymentModelManager();
 
     _pramaterModel = TLDCreatePaymentPramaterModel();
+    _pramaterModel.walletAddress = widget.walletAddress;
     if (widget.type == TLDWechatAliPayInfoPageType.weChat) {
       titles = ['真实姓名', '微信账号', '限额（每日）','微信收款二维码'];
       placeholders = ['请输入您的真实姓名', '请输入您的微信账号','请输入您的限制额度'];
@@ -58,6 +68,14 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
       title = '支付宝账号信息';
 
       _pramaterModel.type = 3;
+    }
+
+    if (widget.paymentModel != null){
+      _pramaterModel.payId = widget.paymentModel.payId.toString();
+      _pramaterModel.imageUrl = widget.paymentModel.imageUrl;
+      _pramaterModel.account = widget.paymentModel.account;
+      _pramaterModel.realName = widget.paymentModel.realName;
+      _pramaterModel.quota = widget.paymentModel.quota;
     }
   }
 
@@ -84,7 +102,7 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
                       timeInSecForIosWeb: 1);
                       return;
     }
-    if(_pramaterModel.imageUrl == null){
+    if(_pramaterModel.imageUrl.length == 0){
       Fluttertoast.showToast(
                       msg: "请添加付款码",
                       toastLength: Toast.LENGTH_SHORT,
@@ -95,9 +113,6 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
     setState(() {
       _loading = true;
     });
-
-    _manager.uploadWeChatOrAliPayQrCodeImage(_pramaterModel, (String url){
-      _pramaterModel.imageUrl = url;
       _manager.createPayment(_pramaterModel, (){
         String msg = widget.type == TLDWechatAliPayInfoPageType.weChat ? '添加微信号成功' : '添加支付宝成功';
         Fluttertoast.showToast(
@@ -114,7 +129,24 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
                       toastLength: Toast.LENGTH_SHORT,
                       timeInSecForIosWeb: 1);
     });
-    }, (TLDError error){
+  }
+
+  void updatePayment(){
+    if(_pramaterModel.realName.length == 0){
+      Fluttertoast.showToast(
+                      msg: "请填写真实姓名",
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+                      return;
+    }
+      _manager.updatePayment(_pramaterModel, (){
+        String msg = widget.type == TLDWechatAliPayInfoPageType.weChat ? '修改微信号成功' : '修改支付宝成功';
+        Fluttertoast.showToast(
+                      msg: msg,
+                      toastLength: Toast.LENGTH_SHORT,
+                      timeInSecForIosWeb: 1);
+        Navigator.of(context).pop();
+      }, (TLDError error){
       setState(() {
         _loading = false;
       });
@@ -149,12 +181,21 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
         itemCount: titles.length + 1,
         itemBuilder: (BuildContext context, int index) {
           if (index < titles.length - 1) {
+          String content;
+          if(index == 0){
+            content = _pramaterModel.realName;
+          }else if(index == 1){
+            content = _pramaterModel.account;
+          }else if(index == 2){
+            content = _pramaterModel.quota;
+          }
             return Padding(
               padding: EdgeInsets.only(
                   top: ScreenUtil().setHeight(2),
                   left: ScreenUtil().setWidth(30),
                   right: ScreenUtil().setWidth(30)),
               child: TLDClipTitleInputCell(
+                content: content,
                 title: titles[index],
                 placeholder: placeholders[index],
                 textFieldEditingCallBack: (String string) {
@@ -176,7 +217,7 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
                   right: ScreenUtil().setWidth(30)),
               child: TLDWechatAlipayChoiceQRCodeView(
                 title: titles[index],
-                image: _image,
+                imageUrl: _pramaterModel.imageUrl,
                 didClickBtnCallBack: (){
                   showCupertinoModalPopup(context: context,builder : (BuildContext context){
                     return CupertinoActionSheet(
@@ -215,7 +256,11 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
                   padding: EdgeInsets.all(0),
                   color: Theme.of(context).primaryColor,
                   onPressed: () {
-                    createPayment();
+                    if (_pramaterModel.payId.length == 0){
+                      createPayment();
+                    }else{
+                      updatePayment();
+                    }
                   }),
             );
           }
@@ -224,24 +269,30 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
 
    /*拍照*/
   void _takePhoto() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      _pramaterModel.imageFile = image;
-      setState(() {
-        _image = image;
+    File image = await ImagePicker.pickImage(source: ImageSource.camera);
+    final String data = await FlutterQrReader.imgScan(image);
+    if (data == null){
+      Fluttertoast.showToast(msg: '该图片不是二维码');
+      return;
+    }else{
+       setState(() {
+        _pramaterModel.imageUrl = data;
     });
-    }
+  }
   }
 
   /*相册*/
 void  _openGallery() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery); 
-    if (image != null) {
-      _pramaterModel.imageFile = image;
-     setState(() {
-        _image = image;
-    }); 
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery); 
+    final String data = await FlutterQrReader.imgScan(image);
+    if (data == null){
+      Fluttertoast.showToast(msg: '该图片不是二维码');
+      return;
+    }else{
+       setState(() {
+        _pramaterModel.imageUrl = data;
+    });
     }
-  }
 }
 
+}

@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,9 +8,13 @@ import 'tld_wecha_alipay_info_page.dart';
 import 'tld_payment_manager_page.dart';
 
 class TLDChoosePaymentPage extends StatefulWidget {
-  TLDChoosePaymentPage({Key key,this.walletAddress}) : super(key: key);
+  TLDChoosePaymentPage({Key key,this.walletAddress,this.isChoosePayment = false,this.didChoosePaymentCallBack}) : super(key: key);
 
   final String walletAddress;
+
+  final bool isChoosePayment;
+
+  final Function(TLDPaymentModel) didChoosePaymentCallBack;
 
   @override
   _TLDChoosePaymentPageState createState() => _TLDChoosePaymentPageState();
@@ -61,7 +66,7 @@ class _TLDChoosePaymentPageState extends State<TLDChoosePaymentPage> {
              }else{
                 type = TLDPaymentType.alipay;
             }
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPaymentManagerPage(type: type,)));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPaymentManagerPage(type: type,walletAddress: widget.walletAddress,isChoosePayment: widget.isChoosePayment,didChoosePaymentCallBack: widget.didChoosePaymentCallBack,)));
           },
         );
       }

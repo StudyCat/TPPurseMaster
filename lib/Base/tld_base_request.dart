@@ -18,10 +18,12 @@ class TLDBaseRequest{
   static String baseUrl = 'http://192.168.1.120:8030/';
   Map pramatersMap;
   String subUrl;
+  CancelToken cancelToken;
 
   TLDBaseRequest(Map pramatersMap,String subUrl){
     this.pramatersMap = pramatersMap;
     this.subUrl = subUrl;
+    cancelToken = CancelToken();
   }
 
 
@@ -31,7 +33,7 @@ class TLDBaseRequest{
       Options options = Options(
         contentType : 'application/json', 
      );
-     Response response = await dio.get(baseUrl+this.subUrl,queryParameters: this.pramatersMap,options: options);
+     Response response = await dio.get(baseUrl+this.subUrl,queryParameters: this.pramatersMap,options: options,cancelToken: cancelToken);
      String jsonString = response.data;
      Map responseMap = jsonDecode(jsonString);
      String codeStr = responseMap['code'];
@@ -55,7 +57,7 @@ class TLDBaseRequest{
      );
       Dio dio = Dio(options);
      String url = baseUrl + this.subUrl;
-     Response response = await dio.post(url,queryParameters: Map<String, dynamic>.from(this.pramatersMap));
+     Response response = await dio.post(url,queryParameters: Map<String, dynamic>.from(this.pramatersMap),cancelToken: cancelToken);
      Map responseMap = response.data;
      String codeStr = responseMap['code'];
      dynamic dataStr = responseMap['data'];
@@ -88,7 +90,7 @@ class TLDBaseRequest{
       FormData formData = FormData.fromMap({
         'files' : uploadDatas
       });
-      Response response = await dio.post(url,data:formData);
+      Response response = await dio.post(url,data:formData,cancelToken: cancelToken);
       Map responseMap = response.data;
       String codeStr = responseMap['code'];
      Map dataStr = responseMap['data'];
@@ -100,5 +102,9 @@ class TLDBaseRequest{
        failure(error);
      }
   }
+
+  void cancelRequest(){
+    cancelToken.cancel();
+  } 
 
 }

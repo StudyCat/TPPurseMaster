@@ -1,8 +1,11 @@
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
+
 import '../../../Base/tld_base_request.dart';
 import '../../../Purse/FirstPage/Model/tld_wallet_info_model.dart';
 
 class TLDSaleFormModel{
   TLDWalletInfoModel infoModel;
+  TLDPaymentModel paymentModel;
   String maxBuyAmount;
   String payMethodName;
   String saleAmount;
@@ -12,7 +15,7 @@ class TLDSaleFormModel{
 class TLDExchangeModelManager{
 
   void submitSaleForm(TLDSaleFormModel formModel,Function success,Function(TLDError) failure){
-    TLDBaseRequest request = TLDBaseRequest({'walletAddress':formModel.infoModel.walletAddress,'payMethodName':formModel.payMethodName,'max':formModel.maxBuyAmount,'count':formModel.saleAmount},'sell/create');
+    TLDBaseRequest request = TLDBaseRequest({'walletAddress':formModel.infoModel.walletAddress,'payId':formModel.paymentModel.payId,'max':formModel.maxBuyAmount,'count':formModel.saleAmount},'sell/create');
     request.postNetRequest((value) {
       Map dataMap = value;
       formModel.tmpWalletAddress = dataMap['tmpWalletAddress'];

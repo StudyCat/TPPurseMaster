@@ -6,14 +6,14 @@ import '../../../dataBase/tld_database_manager.dart';
 
 
 class TLDSaleModelManager{
-  void getSaleList(Function(List) success,Function(TLDError) failure) {
+  void getSaleList(int type,Function(List) success,Function(TLDError) failure) {
     List purseList = TLDDataManager.instance.purseList;
       List addressList = [];
       for (TLDWallet item in purseList) {
         addressList.add(item.address);
       }
       String addressListJson = jsonEncode(addressList);
-    TLDBaseRequest request = TLDBaseRequest({'walletAddressList':addressListJson},'sell/list');
+    TLDBaseRequest request = TLDBaseRequest({'walletAddressList':addressListJson,'type':type},'sell/list');
     request.postNetRequest((dynamic data) { 
       Map dataMap = data;
       List dataList = dataMap['list'];
@@ -35,7 +35,7 @@ class TLDSaleModelManager{
   }
 
   void cancelSale(TLDSaleListInfoModel model,Function success,Function(TLDError) failure){
-    TLDBaseRequest request = TLDBaseRequest({'count':model.realCount,'sellNo':model.sellNo,'sign':'fewfwefwe','tmpWalletAddress':model.tmpWalletAddress,'walletAddress':model.walletAddress},'sell/cancel');
+    TLDBaseRequest request = TLDBaseRequest({'sellNo':model.sellNo,'walletAddress':model.walletAddress},'sell/cancel');
     request.postNetRequest((dynamic data) {
       success();
      }, (TLDError error){

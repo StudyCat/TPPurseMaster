@@ -32,6 +32,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+    <string>屠龙刀需要调用您的相机，获取相关信息</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>YES</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

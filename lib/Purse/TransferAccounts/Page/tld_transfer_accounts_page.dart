@@ -1,6 +1,7 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/Purse/TransferAccounts/Model/tld_transfer_accounts_model_manager.dart';
+import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,8 +10,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import '../View/tld_transfer_accounts_normal_row_view.dart';
 import '../View/tld_transfer_accounts_input_row_view.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
 import 'dart:async';
+import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 
 class TLDTransferAccountsPage extends StatefulWidget {
   TLDTransferAccountsPage({Key key,this.walletInfoModel,this.transferSuccessCallBack}) : super(key: key);
@@ -168,14 +169,17 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
   }
 
   Future _scanPhoto() async {
-    String barcode = await  scanner.scan();
-    _manager.getAddressFromQrCode(barcode, (String walletAddress){
-      _inputRowControl.value = walletAddress;
-      _pramaterModel.toWalletAddress = walletAddress;
-    }, (TLDError error){
-      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+    Navigator.push(context, MaterialPageRoute(builder:(context) => TLDScanQrCodePage(
+      scanCallBack: (String result){
+        _manager.getAddressFromQrCode(result, (String walletAddress){
+        _inputRowControl.value = walletAddress;
+        _pramaterModel.toWalletAddress = walletAddress;
+      }, (TLDError error){
+        Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
-    });
+      });
+      },
+    )));
   }
 
 }

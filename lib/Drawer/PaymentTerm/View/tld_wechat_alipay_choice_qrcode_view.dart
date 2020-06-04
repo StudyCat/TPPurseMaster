@@ -4,14 +4,15 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 
 class TLDWechatAlipayChoiceQRCodeView extends StatefulWidget {
-  TLDWechatAlipayChoiceQRCodeView({Key key,this.title,this.didClickBtnCallBack,this.image}) : super(key: key);
+  TLDWechatAlipayChoiceQRCodeView({Key key,this.title,this.didClickBtnCallBack,this.imageUrl}) : super(key: key);
   final String title;
   final Function didClickBtnCallBack;
-  final File image;
-  
+  final String imageUrl;
   @override
   _TLDWechatAlipayChoiceQRCodeViewState createState() => _TLDWechatAlipayChoiceQRCodeViewState();
 }
@@ -43,7 +44,7 @@ class _TLDWechatAlipayChoiceQRCodeViewState extends State<TLDWechatAlipayChoiceQ
   }
 
   Widget _getColumnBottomWidget(){
-    if (widget.image == null) {
+    // if (widget.image == null) {
       return Container(
                 padding: EdgeInsets.only(left : 0 ,top: ScreenUtil().setHeight(40)),
                 width: ScreenUtil().setWidth(200),
@@ -56,29 +57,40 @@ class _TLDWechatAlipayChoiceQRCodeViewState extends State<TLDWechatAlipayChoiceQ
                       color : Color.fromARGB(255, 242, 242, 242),
                     ),
                     child: Center(
-                      child : Icon(IconData(0xe623,fontFamily :'appIconFonts'),size: ScreenUtil().setWidth(60),color: Color.fromARGB(255, 153, 153, 153),)
+                      child : _getImage()
                     ),
                   ), 
                   onPressed: (){
                     widget.didClickBtnCallBack();
                   }),
               );
+    // }else{
+    //   return Container(
+    //             padding: EdgeInsets.only(left : 0 ,top: ScreenUtil().setHeight(40)),
+    //             width: ScreenUtil().setWidth(200),
+    //             height: ScreenUtil().setHeight(200),
+    //             child: CupertinoButton(
+    //               padding: EdgeInsets.all(0),
+    //               child: Container(
+    //                 child: Center(
+    //                   child : Image.file(widget.image,width: ScreenUtil().setWidth(200),height: ScreenUtil().setHeight(200),fit: BoxFit.fill,),
+    //                 ),
+    //               ), 
+    //               onPressed: (){
+    //                 widget.didClickBtnCallBack();
+    //               }),
+    //           );
+    // }
+  }
+
+  Widget _getImage(){
+    if ( widget.imageUrl.length == 0){
+      return Icon(IconData(0xe623,fontFamily :'appIconFonts'),size: ScreenUtil().setWidth(60),color: Color.fromARGB(255, 153, 153, 153),);
     }else{
-      return Container(
-                padding: EdgeInsets.only(left : 0 ,top: ScreenUtil().setHeight(40)),
-                width: ScreenUtil().setWidth(200),
-                height: ScreenUtil().setHeight(200),
-                child: CupertinoButton(
-                  padding: EdgeInsets.all(0),
-                  child: Container(
-                    child: Center(
-                      child : Image.file(widget.image,width: ScreenUtil().setWidth(200),height: ScreenUtil().setHeight(200),fit: BoxFit.fill,),
-                    ),
-                  ), 
-                  onPressed: (){
-                    widget.didClickBtnCallBack();
-                  }),
-              );
+      return QrImage(
+        data: widget.imageUrl,
+      );
     }
   }
+
 }

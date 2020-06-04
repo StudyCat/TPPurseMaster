@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 
 class TLDDetailOrderModel {
   int finishTime;
@@ -15,6 +16,7 @@ class TLDDetailOrderModel {
   String txCount;
   bool overtime;
   int status; //(-1：已取消，0：待支付，1：已支付，2：已完成，3：已超时)
+  TLDPaymentModel payMethodVO;
 
   TLDDetailOrderModel(
       {this.finishTime,
@@ -30,7 +32,8 @@ class TLDDetailOrderModel {
       this.tmpWalletAddress,
       this.txCount,
       this.overtime,
-      this.status});
+      this.status,
+      this.payMethodVO});
 
   TLDDetailOrderModel.fromJson(Map<String, dynamic> json) {
     finishTime = json['finishTime'];
@@ -47,6 +50,7 @@ class TLDDetailOrderModel {
     txCount = json['txCount'];
     overtime = json['overtime'];
     status = json['status'];
+    payMethodVO = TLDPaymentModel.fromJson(json['payMethodVO']);
   }
 
   Map<String, dynamic> toJson() {
@@ -65,6 +69,7 @@ class TLDDetailOrderModel {
     data['txCount'] = this.txCount;
     data['overtime'] = this.overtime;
     data['status'] = this.status;
+    data['payMethodVO'] = this.payMethodVO.toJson();
     return data;
   }
 }

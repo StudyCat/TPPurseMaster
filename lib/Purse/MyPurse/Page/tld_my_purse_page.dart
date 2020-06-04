@@ -96,7 +96,7 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
       },
       ),
       Expanded(
-        child: TLDMyPurseContentView(),
+        child: TLDMyPurseContentView(walletAddress: widget.infoModel.walletAddress,),
       )
     ]);
   }

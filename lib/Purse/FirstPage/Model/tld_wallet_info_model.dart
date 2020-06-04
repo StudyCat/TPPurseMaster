@@ -4,81 +4,112 @@ import 'package:flutter/material.dart';
 
 class TLDWalletInfoModel {
   String createTime;
+  String rate;
   List<PayMethodList> payMethodList;
-  String walletName;
   bool lock;
+  bool existSell;
   String walletAddress;
   String value;
-  TLDWallet wallet;
-  bool existSell;
-  String rate;
+  String walletLevel;
   String chargeWalletAddress;
+  TLDWallet wallet;
 
   TLDWalletInfoModel(
       {this.createTime,
+      this.rate,
       this.payMethodList,
-      this.walletName,
       this.lock,
+      this.existSell,
       this.walletAddress,
       this.value,
-      this.existSell,
-      this.rate,
+      this.walletLevel,
       this.chargeWalletAddress,
       this.wallet});
 
   TLDWalletInfoModel.fromJson(Map<String, dynamic> json) {
     createTime = json['createTime'];
+    rate = json['rate'];
     if (json['payMethodList'] != null) {
       payMethodList = new List<PayMethodList>();
       json['payMethodList'].forEach((v) {
         payMethodList.add(new PayMethodList.fromJson(v));
       });
     }
-    walletName = json['walletName'];
     lock = json['lock'];
     existSell = json['existSell'];
     walletAddress = json['walletAddress'];
     value = json['value'];
-    rate = json['rate'];
+    walletLevel = json['walletLevel'];
     chargeWalletAddress = json['chargeWalletAddress'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['createTime'] = this.createTime;
+    data['rate'] = this.rate;
     if (this.payMethodList != null) {
       data['payMethodList'] =
           this.payMethodList.map((v) => v.toJson()).toList();
     }
-    data['walletName'] = this.walletName;
     data['lock'] = this.lock;
+    data['existSell'] = this.existSell;
     data['walletAddress'] = this.walletAddress;
     data['value'] = this.value;
-    data['existSell'] = this.existSell;
-    data['rate'] = this.rate;
+    data['walletLevel'] = this.walletLevel;
     data['chargeWalletAddress'] = this.chargeWalletAddress;
     return data;
   }
 }
 
 class PayMethodList {
+  int payId;
+  String realName;
+  String walletAddress;
+  int type;
   String payMethodName;
+  String account;
   String imageUrl;
-  String payAccount;
+  String subBranch;
+  String quota;
+  int createTime;
 
-  PayMethodList({this.payMethodName, this.imageUrl, this.payAccount});
+  PayMethodList(
+      {this.payId,
+      this.realName,
+      this.walletAddress,
+      this.type,
+      this.payMethodName,
+      this.account,
+      this.imageUrl,
+      this.subBranch,
+      this.quota,
+      this.createTime});
 
   PayMethodList.fromJson(Map<String, dynamic> json) {
+    payId = json['payId'];
+    realName = json['realName'];
+    walletAddress = json['walletAddress'];
+    type = json['type'];
     payMethodName = json['payMethodName'];
+    account = json['account'];
     imageUrl = json['imageUrl'];
-    payAccount = json['payAccount'];
+    subBranch = json['subBranch'];
+    quota = json['quota'];
+    createTime = json['createTime'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['payId'] = this.payId;
+    data['realName'] = this.realName;
+    data['walletAddress'] = this.walletAddress;
+    data['type'] = this.type;
     data['payMethodName'] = this.payMethodName;
+    data['account'] = this.account;
     data['imageUrl'] = this.imageUrl;
-    data['payAccount'] = this.payAccount;
+    data['subBranch'] = this.subBranch;
+    data['quota'] = this.quota;
+    data['createTime'] = this.createTime;
     return data;
   }
 }

@@ -4,13 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDClipTitleInputCell extends StatefulWidget {
   TLDClipTitleInputCell(
-      {Key key, this.title, this.textFieldEditingCallBack, this.placeholder,this.titleFontSize})
+      {Key key, this.title, this.textFieldEditingCallBack, this.placeholder,this.titleFontSize,this.content})
       : super(key: key);
 
   final num titleFontSize;
   final String title;
   final ValueChanged<String> textFieldEditingCallBack;
   final String placeholder;
+  final String content;
   @override
   _TLDClipTitleInputCellState createState() => _TLDClipTitleInputCellState();
 }
@@ -23,7 +24,11 @@ class _TLDClipTitleInputCellState extends State<TLDClipTitleInputCell> {
     // TODO: implement initState
     super.initState();
 
-    _controller = TextEditingController();
+    if (widget.content != null && widget.content.length > 0){
+      _controller = TextEditingController(text: widget.content);
+    }else{
+      _controller = TextEditingController();
+    }
     _controller.addListener(() {
       widget.textFieldEditingCallBack(_controller.text);
     });

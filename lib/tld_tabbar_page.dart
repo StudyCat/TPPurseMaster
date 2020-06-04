@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_choose_wallet.dart';
+import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_tab_sale_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './Buy/FirstPage/Page/tld_buy_page.dart';
@@ -45,7 +46,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> {
     ),
   ];
 
-  List pages = [TLDPursePage(), TLDBuyPage(), TLDSalePage()];
+  List pages = [TLDPursePage(), TLDBuyPage(), TLDTabSalePage()];
 
   int currentIndex;
 

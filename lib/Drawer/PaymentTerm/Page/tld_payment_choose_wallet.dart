@@ -4,6 +4,7 @@ import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:web3dart/credentials.dart';
 import 'tld_choose_payment_page.dart';
 
 
@@ -43,7 +44,7 @@ class _TLDPaymentChooseWalletPageState extends State<TLDPaymentChooseWalletPage>
         TLDWallet wallet = TLDDataManager.instance.purseList[index];
         return GestureDetector(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => TLDChoosePaymentPage(walletAddress: walletAdress,)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => TLDChoosePaymentPage(walletAddress: wallet.address,)));
           },
           child: TLDClipCommonCell(title: wallet.name,titleStyle: TextStyle(color: Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(28)),type: TLDClipCommonCellType.normalArrow,content: '',),
         );
