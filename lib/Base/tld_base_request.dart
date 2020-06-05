@@ -51,7 +51,7 @@ class TLDBaseRequest{
   }
 
   void postNetRequest(ValueChanged<dynamic> success, Function(TLDError) failure) async{
-    // try{
+    try{
       BaseOptions options = BaseOptions(
         contentType : 'application/json',
      );
@@ -67,10 +67,10 @@ class TLDBaseRequest{
        TLDError error = TLDError(int.parse(codeStr),responseMap['msg']);
        failure(error);
      }
-    // }catch(e){
-    //   TLDError error = TLDError(400,'网络接口出错');
-    //    failure(error);
-    // }
+    }catch(e){
+      TLDError error = TLDError(400,'网络接口出错');
+       failure(error);
+    }
   } 
 
 

@@ -82,17 +82,22 @@ class TLDOrderListPramaterModel{
   int type;
   int page;
   int status;
+  String walletAddress = '';
 }
 
 
 class TLDOrderListModelManager{
   void getOrderList(TLDOrderListPramaterModel pramaterModel,Function(List) success,Function(TLDError) failure){
-    List purseList = TLDDataManager.instance.purseList;
-      List addressList = [];
+    List addressList = [];
+    if (pramaterModel.walletAddress.length > 0){
+      addressList.add(pramaterModel.walletAddress);
+    }else{
+      List purseList = TLDDataManager.instance.purseList;
       for (TLDWallet item in purseList) {
         addressList.add(item.address);
       }
-      String addressListJson = jsonEncode(addressList);
+    }
+    String addressListJson = jsonEncode(addressList);
     Map pramater = {'type': pramaterModel.type,'pageNo':pramaterModel.page,'pageSize':10,'walletAddressList':addressListJson,'sort':'deasc'};
     if(pramaterModel.status != null){
       pramater.addAll({'status':pramaterModel.status});

@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_choose_wallet.dart';
+import 'package:dragon_sword_purse/Drawer/UserAgreement/Page/tld_user_agreement_page.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_tab_sale_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -67,22 +68,26 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> {
       drawer: TLDPurseSideslipView(
         didClickCallBack: (int index) {
           Navigator.pop(context);
-          if (index == 2) {
+          if (index == 1) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => TLDPaymentChooseWalletPage()));
-          } else if (index == 3) {
+          } else if (index == 2) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => TLDIntegrationDescPage()));
-          } else if (index == 5) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TLDAboutUsPage()));
           } else if (index == 4) {
             Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TLDAboutUsPage()));
+          } else if (index == 3) {
+            Navigator.push(context,
                 MaterialPageRoute(builder: (context) => TLDUserFeedBackPage()));
+          }else {
+            // TLDUserAgreementPage
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TLDUserAgreementPage()));
           }
         },
       ),

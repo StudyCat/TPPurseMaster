@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_page.dart';
+import 'package:dragon_sword_purse/Order/Page/tld_order_list_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
                     padding: EdgeInsets.all(0),
                     minSize: 20,
                     onPressed: () {
-                      Scaffold.of(context).openDrawer();
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => TLDOrderListPage(walletAddress : widget.infoModel.walletAddress)));
                     }),
                 CupertinoButton(
                     child: Icon(

@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,7 +6,9 @@ import 'tld_order_list_content_page.dart';
 import '../View/tld_order_list_screen_view.dart';
 
 class TLDOrderListPage extends StatefulWidget {
-  TLDOrderListPage({Key key}) : super(key: key);
+  TLDOrderListPage({Key key,this.walletAddress}) : super(key: key);
+
+  final String walletAddress;
 
   @override
   _TLDOrderListPageState createState() => _TLDOrderListPageState();
@@ -91,7 +94,7 @@ class _TLDOrderListPageState extends State<TLDOrderListPage>
           ),
           Expanded(
               child: TabBarView(
-            children: [TLDOrderListContentPage(type: 1,controller: _contentController,), TLDOrderListContentPage(type: 2,controller: _contentController,)],
+            children: [TLDOrderListContentPage(type: 1,controller: _contentController,walletAddress:widget.walletAddress), TLDOrderListContentPage(type: 2,controller: _contentController,walletAddress: widget.walletAddress,)],
             controller: _tabController,
           ))
         ],

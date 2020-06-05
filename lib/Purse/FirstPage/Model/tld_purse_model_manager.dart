@@ -33,4 +33,19 @@ class TLDPurseModelManager{
        }, (error)=> failure(error));
   }
 
+
+  void getAllAmount(Function(String) success,Function(TLDError) failure){
+      List purseList = TLDDataManager.instance.purseList;
+      List addressList = [];
+      for (TLDWallet item in purseList) {
+        addressList.add(item.address);
+      }
+      String addressListJson = jsonEncode(addressList);
+      TLDBaseRequest request = TLDBaseRequest({"list":addressListJson}, 'wallet/queryAccountTotal');
+      request.postNetRequest((value) {
+        Map data = value;
+        success(data['total']);
+      }, (error) => failure(error));
+  }
+
 }

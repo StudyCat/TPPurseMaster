@@ -1,6 +1,12 @@
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Drawer/UserFeedback/Model/tld_user_feedback_model_manager.dart';
+import 'package:dragon_sword_purse/Drawer/UserFeedback/Model/tld_user_feedback_question_type_model_manager.dart';
+import 'package:dragon_sword_purse/Drawer/UserFeedback/Page/tld_user_feedback_question_type_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import '../../../CommonWidget/tld_clip_title_input_cell.dart';
 import '../View/tld_user_feedback_question_desc_cell.dart';
 import '../View/tld_user_feedback_pick_pic_cell.dart';
@@ -34,15 +40,70 @@ class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
 
   PageController _pageController;
 
-  List images = [];
-
   List icons = [0xe679, 0xe61d, 0xe630];
+
+  TLDUserFeedBackPramatersModel _pramatersModel;
+
+  TLDUserFeedBackModelManager _manager;
+
+  bool _loading;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _pageController = PageController();
+
+    _manager = TLDUserFeedBackModelManager();
+
+    _pramatersModel = TLDUserFeedBackPramatersModel();
+
+    _loading = false;
+  }
+
+  void _sendUserFeedBackQuestion(){
+    if (_pramatersModel.nickname.length == 0){
+      Fluttertoast.showToast(msg: '请填写您的称呼，便于我们联系您',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      return;
+    }
+    if (_pramatersModel.tel.length == 0){
+      Fluttertoast.showToast(msg: '请填写您的手机号，便于我们联系您',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      return;
+    }
+    if (_pramatersModel.email.length == 0){
+      Fluttertoast.showToast(msg: '请填写您的电子邮箱地址，便于我们联系您',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      return;
+    }
+    if (_pramatersModel.questionType == null){
+      Fluttertoast.showToast(msg: '请选择问题类型',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      return;
+    }
+    if (_pramatersModel.questionDesc.length == 0){
+      Fluttertoast.showToast(msg: '请填写问题描述',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      return;
+    }
+    setState(() {
+      _loading = true;
+    });
+    _manager.sendFeedBack(_pramatersModel, (){
+      setState(() {
+        _loading = false;
+      });
+      Fluttertoast.showToast(msg: '反馈成功',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      Navigator.of(context).pop();
+    }, (TLDError error){
+      setState(() {
+        _loading = false;
+      });
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    });
   }
 
   @override
@@ -58,27 +119,47 @@ class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getBodyWidget(context),
+      body: LoadingOverlay(isLoading: _loading, child: _getBodyWidget(context)),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
 
   Widget _getBodyWidget(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return ListView.builder(
-        itemCount: 6,
+        itemCount: 7,
         itemBuilder: (BuildContext context, int index) {
           if (index < 3) {
             return _getPadding(TLDClipTitleInputCell(
               placeholder: placeholders[index],
               title: titles[index],
               titleFontSize: ScreenUtil().setSp(28),
+              textFieldEditingCallBack: (String text){
+                if (index == 0){
+                  _pramatersModel.nickname = text;
+                }else if(index == 1){
+                  _pramatersModel.tel = text;
+                }else if (index == 2){
+                  _pramatersModel.email = text;
+                }
+              },
             ));
           } else if (index == 3){
-            return _getPadding(_getQuestionTypeCell(titles[index],placeholders[index]));
+            String content = _pramatersModel.questionType == null ? '请选择问题类型' : _pramatersModel.questionType.typeName;
+            return GestureDetector(
+              onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => TLDUserFeedbackQuestionTypePage(didChooseQuestionTypeCallBack: (TLDUserFeedbackQuestionTypeModel questionTypeModel){
+                setState(() {
+                  _pramatersModel.questionType = questionTypeModel;
+                });
+              },))),
+              child: _getPadding(_getQuestionTypeCell(titles[index],content)),
+              );
           }else if(index == 4){
-            return _getPadding(TLDUserFeedbackQuestionDescCell(title: titles[index],placeholder: placeholders[index],));
-          }else{
-            return _getPadding(TLDUserFeedbackPickPicCell(title: titles[index],images: images,didClickCallBack: (){
+            return _getPadding(TLDUserFeedbackQuestionDescCell(title: titles[index],placeholder: placeholders[index],stringDidChangeCallBack: (String text){
+              _pramatersModel.questionDesc = text;
+            },));
+          }else if (index == 5){
+            return _getPadding(TLDUserFeedbackPickPicCell(title: titles[index],images: _pramatersModel.imageFileList,didClickCallBack: (){
               showCupertinoModalPopup(context: context,builder : (BuildContext context){
                     return CupertinoActionSheet(
                       actions: <Widget>[
@@ -98,13 +179,33 @@ class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
                   });
             },
             didClickImageCallBack: (int index){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDImageShowPage(images: images,pageController: _pageController,index: index,heroTag: 'user_feedback',isShowDelete: true,deleteCallBack: (int index){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDImageShowPage(images: _pramatersModel.imageFileList,pageController: _pageController,index: index,heroTag: 'user_feedback',isShowDelete: true,deleteCallBack: (int index){
                 setState(() {
-                  images.removeAt(index);
+                  _pramatersModel.imageFileList.removeAt(index);
                 });
               },)));
             },
             ));
+          }else {
+            return Container(
+              margin: EdgeInsets.only(
+                  top: ScreenUtil().setHeight(40),
+                  left: ScreenUtil().setWidth(100),
+                  right: ScreenUtil().setWidth(100)),
+              height: ScreenUtil().setHeight(80),
+              width: size.width - ScreenUtil().setWidth(200),
+              child: CupertinoButton(
+                  child: Text(
+                    '提交反馈',
+                    style: TextStyle(
+                        fontSize: ScreenUtil().setSp(28), color: Colors.white),
+                  ),
+                  padding: EdgeInsets.all(0),
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () {
+                    _sendUserFeedBackQuestion();
+                  }),
+            );
           }
         });
   }
@@ -128,7 +229,7 @@ class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
         padding: EdgeInsets.only(
             left: ScreenUtil().setWidth(20), right: ScreenUtil().setWidth(20)),
         child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Text(
                 title,
@@ -159,7 +260,7 @@ class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
 
     if (image != null) {
       setState(() {
-      images.add(image);
+      _pramatersModel.imageFileList.add(image);
     });
     }
   }
@@ -169,7 +270,7 @@ void  _openGallery() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery); 
     if (image != null) {
      setState(() {
-      images.add(image);
+      _pramatersModel.imageFileList.add(image);
     }); 
     }
   }

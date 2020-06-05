@@ -46,7 +46,10 @@ class _TLDPaymentChooseWalletPageState extends State<TLDPaymentChooseWalletPage>
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => TLDChoosePaymentPage(walletAddress: wallet.address,)));
           },
-          child: TLDClipCommonCell(title: wallet.name,titleStyle: TextStyle(color: Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(28)),type: TLDClipCommonCellType.normalArrow,content: '',),
+          child: Padding(
+            padding: EdgeInsets.only(top : ScreenUtil().setHeight(2)),
+            child: TLDClipCommonCell(title: wallet.name,titleStyle: TextStyle(color: Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(28)),type: TLDClipCommonCellType.normalArrow,content: '',),
+          )
         );
      });
   }

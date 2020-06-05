@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDPurseSideSlipHeaderCell extends StatefulWidget {
-  TLDPurseSideSlipHeaderCell({Key key}) : super(key: key);
+  TLDPurseSideSlipHeaderCell({Key key,this.totalAmount}) : super(key: key);
+
+  final String totalAmount;
 
   @override
   _TLDPurseSideSlipHeaderCellState createState() => _TLDPurseSideSlipHeaderCellState();
@@ -26,7 +28,7 @@ class _TLDPurseSideSlipHeaderCellState extends State<TLDPurseSideSlipHeaderCell>
           ),
           Container(
             padding: EdgeInsets.only(left : 15),
-            child: Text('132156456TLD',style : TextStyle(fontSize : 20 ,color : Colors.white,fontWeight: FontWeight.bold),)
+            child: Text(widget.totalAmount + 'TLD',style : TextStyle(fontSize : 20 ,color : Colors.white,fontWeight: FontWeight.bold),)
           ),
         ],
       ),

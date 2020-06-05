@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../View/tld_order_list_cell.dart';
 import 'tld_detail_order_page.dart';
-import '../../IM/Page/tld_im_page.dart';
+import '../../IMUI/Page/tld_im_page.dart';
 import 'tld_order_appeal_page.dart';
 import '../Model/tld_order_list_model_manager.dart';
 
@@ -16,7 +17,9 @@ class TLDOrderListContentController  extends ValueNotifier<int>{
 
 
 class TLDOrderListContentPage extends StatefulWidget {
-  TLDOrderListContentPage({Key key,this.type,this.controller}) : super(key: key);
+  TLDOrderListContentPage({Key key,this.type,this.controller,this.walletAddress}) : super(key: key);
+
+  final String walletAddress;
 
   final int type;
 
@@ -44,6 +47,9 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
     _pramaterModel = TLDOrderListPramaterModel();
     _pramaterModel.type = widget.type;
     _pramaterModel.page = 1;
+    if (widget.walletAddress != null){
+      _pramaterModel.walletAddress =  widget.walletAddress;
+    }
 
     _dataSource = [];
 

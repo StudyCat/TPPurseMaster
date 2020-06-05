@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'Purse/FirstPage/View/message_button.dart';
-import 'IM/Page/tld_im_page.dart';
+import 'IMUI/Page/tld_im_page.dart';
 import 'Message/Page/tld_message_page.dart';
 import 'ceatePurse&importPurse/CreatePurse/Page/tld_creating_purse_page.dart';
 import 'CommonFunction/tld_common_function.dart';
