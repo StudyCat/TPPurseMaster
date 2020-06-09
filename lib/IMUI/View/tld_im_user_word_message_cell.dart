@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'tld_right_bubble.dart';
 
 class TLDIMUserWordMessageCell extends StatefulWidget {
-  TLDIMUserWordMessageCell({Key key}) : super(key: key);
+  TLDIMUserWordMessageCell({Key key,this.content}) : super(key: key);
+
+  final String content;
 
   @override
   _TLDIMUserWordMessageCellState createState() => _TLDIMUserWordMessageCellState();
@@ -20,7 +22,7 @@ class _TLDIMUserWordMessageCellState extends State<TLDIMUserWordMessageCell> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Container(
-            child: TLDRightBubbleView(text: '4564fdsfsdfdsfsdfsdfsdfsdfsdfsdfsdfdsfsdf'),
+            child: TLDRightBubbleView(text: widget.content),
             constraints: BoxConstraints(
               maxWidth: size.width / 2
             ),

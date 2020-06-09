@@ -1,9 +1,20 @@
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDInputView extends StatefulWidget {
-  TLDInputView({Key key}) : super(key: key);
+  TLDInputView({Key key,this.selfAddress,this.otherGuyAddress,this.beginEditingCallBack,this.didClickCameraBtnCallBack,this.didClickPhotoBtnCallBack}) : super(key: key);
+
+  final String selfAddress;
+
+  final String otherGuyAddress;
+
+  final Function beginEditingCallBack;
+
+  final Function didClickCameraBtnCallBack;
+
+  final Function didClickPhotoBtnCallBack;
 
   @override
   _TLDInputViewState createState() => _TLDInputViewState();
@@ -19,12 +30,21 @@ class _TLDInputViewState extends State<TLDInputView> {
 
   CupertinoTextField _textField;
 
+  FocusNode _focusNode;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     _isOpenToolView = false;
+
+    _focusNode = FocusNode();
+    _focusNode.addListener(() {
+      if(_focusNode.hasFocus){
+        widget.beginEditingCallBack();
+      }
+    });
 
     _controller = TextEditingController();
     _text = '';
@@ -36,6 +56,7 @@ class _TLDInputViewState extends State<TLDInputView> {
 
     _textField =  CupertinoTextField(
                       controller: _controller,
+                      focusNode: _focusNode,
                       placeholder: '请输入您想说的话',
                       placeholderStyle: TextStyle(
                           fontSize: ScreenUtil().setSp(24),
@@ -116,7 +137,16 @@ class _TLDInputViewState extends State<TLDInputView> {
                     padding: EdgeInsets.all(0),
                     child: Text('发送',style : TextStyle(color : Colors.white,fontSize : ScreenUtil().setSp(28))),
                     // padding: EdgeInsets.all(0),
-                    onPressed: () {}),
+                    onPressed: () {
+                      TLDMessageModel messageModel = TLDMessageModel();
+                      messageModel.content = _text;
+                      messageModel.fromAddress = widget.selfAddress;
+                      messageModel.toAddress = widget.otherGuyAddress;
+                      messageModel.contentType = 1;
+                      TLDIMManager manager = TLDIMManager.instance;
+                      manager.sendMessage(messageModel);
+                      _controller.text = '';
+                    }),
               )
             ],
           );
@@ -131,11 +161,11 @@ class _TLDInputViewState extends State<TLDInputView> {
         children : <Widget>[
           Padding(
             padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
-            child: IconButton(icon: Icon(IconData(0xe642,fontFamily: 'appIconFonts',),size:ScreenUtil().setWidth(60),), onPressed: (){}),
+            child: IconButton(icon: Icon(IconData(0xe642,fontFamily: 'appIconFonts',),size:ScreenUtil().setWidth(60),), onPressed: widget.didClickPhotoBtnCallBack),
           ),
           Padding(
             padding: EdgeInsets.only(left : ScreenUtil().setWidth(80)),
-            child: IconButton(icon: Icon(IconData(0xe603,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(60),), onPressed: (){}),
+            child: IconButton(icon: Icon(IconData(0xe603,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(60),), onPressed:widget.didClickCameraBtnCallBack),
           )
         ],
       ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/IMUI/Page/tld_im_page.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_order_appeal_page.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_alipay_qrcode_show_view.dart';
@@ -244,7 +245,11 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
 
   Widget _getIMCell(){
     String title = widget.isBuyer == true ? '联系卖家' : '联系买家';
-    return Padding(
+    String selfAddress = widget.isBuyer == true ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
+    String otherAddress = widget.isBuyer == false ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
+    return GestureDetector(
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,))),
+      child:  Padding(
       padding: EdgeInsets.only(
           top: ScreenUtil().setHeight(2),
           left: ScreenUtil().setWidth(30),
@@ -263,6 +268,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
               color: Color.fromARGB(255, 102, 102, 102)),
         ),
       ),
+    ),
     );
   }
 }

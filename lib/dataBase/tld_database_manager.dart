@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -12,6 +13,14 @@ final String walletMnemonic = 'walletMnemonic';
 final String walletPrivate = 'walletPrivate';
 final String walletAdress = 'walletAdress';
 final String walletName = 'walletName';
+
+final String tableIM = 'imtable';
+final String contentTypeIM = 'contentType';
+final String contentIM = 'content';
+final String fromIM = 'fromAddress';
+final String toIM = 'toAddress';
+final String unreadIM = 'unread';
+final String idIM = '_id';
 
 class TLDWallet{
   int id;
@@ -61,7 +70,7 @@ class TLDDataBaseManager {
   openDataBase() async {
     // 获取数据库文件的存储路径
     var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'demo.db');
+    String path = join(databasesPath, 'TLDDollar.db');
 
     //根据数据库文件路径和数据库版本号创建数据库表
     db = await openDatabase(path, version: 1,
@@ -75,7 +84,47 @@ class TLDDataBaseManager {
             $walletAdress TEXT,
             $walletName TEXT)
           ''');
+       await db.execute('''
+          CREATE TABLE $tableIM (
+            $idIM INTEGER PRIMARY KEY, 
+            $contentTypeIM INTEGER, 
+            $contentIM TEXT,
+            $fromIM TEXT,
+            $toIM TEXT,
+            $unreadIM INTEGER)
+          ''');    
     });
+  }
+
+
+  openIMDataBase() async{
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'TLDDollar.db');
+
+    //根据数据库文件路径和数据库版本号创建数据库表
+    db = await openDatabase(path, version: 1);
+  }
+
+  Future<List> insertIMDataBase(List messageList) async{
+    for (TLDMessageModel message  in messageList) {
+      message.id = await db.insert(tableIM, message.toJson());
+    }
+    return messageList;
+  }
+
+
+  Future<List> searchIMDataBase(String walletAddress,int page) async{
+    int pageLimit = page * 10;
+    List<Map> maps = await db.rawQuery('SELECT * FROM $tableIM WHERE $toIM = \"$walletAddress\" or $fromIM = \"$walletAddress\" ORDER BY _id DESC LIMIT $pageLimit,10');
+     if (maps == null || maps.length == 0) {
+      return [];
+    }
+
+    List<TLDMessageModel> messages = [];
+    for (int i = 0; i < maps.length; i++) {
+      messages.insert(0, TLDMessageModel.fromJson(maps[i]));
+    }
+    return messages;
   }
 
   

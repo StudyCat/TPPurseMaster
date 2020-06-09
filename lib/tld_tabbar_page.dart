@@ -1,6 +1,11 @@
+import 'dart:convert';
+
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_choose_wallet.dart';
 import 'package:dragon_sword_purse/Drawer/UserAgreement/Page/tld_user_agreement_page.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_tab_sale_page.dart';
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './Buy/FirstPage/Page/tld_buy_page.dart';
@@ -60,6 +65,16 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> {
 
     currentIndex = 0;
     _pageController = PageController();
+    
+    List purseList = TLDDataManager.instance.purseList;
+      List addressList = [];
+      for (TLDWallet item in purseList) {
+        addressList.add(item.address);
+      }
+     String addressListJson = jsonEncode(addressList);
+    TLDIMManager manager = TLDIMManager.instance;
+    manager.walletAddress = addressListJson;
+    manager.connectClient();
   }
 
   @override

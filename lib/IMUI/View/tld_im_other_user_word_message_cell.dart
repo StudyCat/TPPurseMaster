@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'tld_left_bubble.dart';
 
 class TLDIMOtherUserWordMessageCell extends StatefulWidget {
-  TLDIMOtherUserWordMessageCell({Key key}) : super(key: key);
-
+  TLDIMOtherUserWordMessageCell({Key key,this.content}) : super(key: key);
+  final String content;
   @override
   _TLDIMOtherUserWordMessageCellState createState() => _TLDIMOtherUserWordMessageCellState();
 }
@@ -19,7 +19,7 @@ class _TLDIMOtherUserWordMessageCellState extends State<TLDIMOtherUserWordMessag
       child:  Row(
         children: <Widget>[
           Container(
-            child: TLDLeftBubbleView(text: '4564fdsfsdfdsfsdfsdfsdfsdfsdfsdfsdfdsfsdf'),
+            child: TLDLeftBubbleView(text: widget.content),
             constraints: BoxConstraints(
               maxWidth: size.width / 2
             ),
