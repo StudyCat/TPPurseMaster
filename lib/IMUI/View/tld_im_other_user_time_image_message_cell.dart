@@ -2,10 +2,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'tld_left_image_bubble.dart';
+import 'package:date_format/date_format.dart';
  
 
 class TLDIMOtherUserTimeImageMessageCell extends StatefulWidget {
-  TLDIMOtherUserTimeImageMessageCell({Key key}) : super(key: key);
+  TLDIMOtherUserTimeImageMessageCell({Key key,this.imageUrl,this.createTime}) : super(key: key);
+
+  final String imageUrl;
+
+  final int createTime;
 
   @override
   _TLDIMOtherUserTimeImageMessageCellState createState() => _TLDIMOtherUserTimeImageMessageCellState();
@@ -33,7 +38,7 @@ class _TLDIMOtherUserTimeImageMessageCellState extends State<TLDIMOtherUserTimeI
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(4)),
             color: Color.fromARGB(255, 216, 216, 216)),
-        child: Text('21:45:30',
+        child: Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.createTime),[HH,'.',nn,':',ss]),
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(24),
                 color: Color.fromARGB(255, 51, 51, 51))),
@@ -50,7 +55,7 @@ class _TLDIMOtherUserTimeImageMessageCellState extends State<TLDIMOtherUserTimeI
           Container(
             width: ScreenUtil().setWidth(360),
             height: ScreenUtil().setWidth(360),
-            child: TLDLeftImageBubbleView(imageUrl: 'http://img31.mtime.cn/mt/2016/07/28/145303.88789702_96X128.jpg'),
+            child: TLDLeftImageBubbleView(imageUrl: widget.imageUrl),
             constraints: BoxConstraints(
               maxWidth: size.width / 2
             ),

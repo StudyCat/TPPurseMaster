@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
@@ -34,6 +38,11 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
   String _keyword;
 
   List _dataSource;
+   
+  StreamSubscription _unreadSubscription;
+
+  bool _haveUnreadMessage;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -43,7 +52,24 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     _refreshController = RefreshController(initialRefresh: true);
     _page = 1;
     _dataSource = [];
+    _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
+    _registerUnreadMessageEvent();
     _loadBuyList(_keyword, _page);
+  }
+
+    void _registerUnreadMessageEvent(){
+    _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
+      setState(() {
+        _haveUnreadMessage = event.haveUnreadMessage;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _unreadSubscription.cancel();
   }
 
   void _loadBuyList(String keyword,int page){
@@ -131,7 +157,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => TLDOrderListPage()));
                 }),
-            MessageButton(
+            MessageButton(isHaveUnReadMessage: _haveUnreadMessage,
               didClickCallBack: () =>  Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage())),
             )
           ],

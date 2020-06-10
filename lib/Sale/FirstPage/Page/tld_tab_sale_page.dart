@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:dragon_sword_purse/Order/Page/tld_order_list_page.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_sale_page.dart';
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,12 +32,28 @@ class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProvid
 
   TabController _tabController;
 
+  StreamSubscription _unreadSubscription;
+
+  bool _haveUnreadMessage;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     _tabController = TabController(length: 3, vsync: this);
+
+    _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
+
+    _registerUnreadMessageEvent();
+  }
+
+  void _registerUnreadMessageEvent(){
+    _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
+      setState(() {
+        _haveUnreadMessage = event.haveUnreadMessage;
+      });
+    });
   }
 
   @override
@@ -82,6 +102,7 @@ class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProvid
                               builder: (context) => TLDOrderListPage()));
                     }),
                 MessageButton(
+                  isHaveUnReadMessage: _haveUnreadMessage,
                   didClickCallBack: () => Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -32,6 +32,7 @@ class TLDBaseRequest{
       Dio dio = Dio();
       Options options = Options(
         contentType : 'application/json', 
+        receiveDataWhenStatusError: false
      );
      Response response = await dio.get(baseUrl+this.subUrl,queryParameters: this.pramatersMap,options: options,cancelToken: cancelToken);
      String jsonString = response.data;
@@ -54,6 +55,7 @@ class TLDBaseRequest{
     try{
       BaseOptions options = BaseOptions(
         contentType : 'application/json',
+        receiveDataWhenStatusError: false
      );
       Dio dio = Dio(options);
      String url = baseUrl + this.subUrl;
@@ -77,6 +79,7 @@ class TLDBaseRequest{
   void uploadFile(List datas,Function(List) success,Function(TLDError) failure)async{
       BaseOptions options = BaseOptions(
         contentType : 'application/json',
+        receiveDataWhenStatusError: false
      );
      String url = baseUrl + 'common/uploadFile';
       Dio dio = Dio(options);

@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -7,6 +6,7 @@ import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/IMUI/Model/tld_im_model_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,8 @@ import '../View/tld_im_other_user_time_image_message_cell.dart';
 import '../View/tld_im_user_time_image_message_cell.dart';
 
 class TLDIMPage extends StatefulWidget {
-  TLDIMPage({Key key,this.selfWalletAddress,this.otherGuyWalletAddress}) : super(key: key);
+  TLDIMPage({Key key, this.selfWalletAddress, this.otherGuyWalletAddress})
+      : super(key: key);
 
   final String selfWalletAddress;
 
@@ -36,7 +37,6 @@ class TLDIMPage extends StatefulWidget {
 }
 
 class _TLDIMPageState extends State<TLDIMPage> {
-
   List _dataSource = [];
 
   int _page;
@@ -49,46 +49,58 @@ class _TLDIMPageState extends State<TLDIMPage> {
 
   RefreshController _refreshController;
 
+  StreamSubscription _messageSubscription;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-     _page = 0;
+    _page = 0;
 
     _controller = ScrollController();
 
     _modelManager = TLDIMModelManager();
-    
+
     _manager = TLDIMManager.instance;
+    _manager.isOnChatPage = true;
+    _manager.talkAddress = widget.otherGuyWalletAddress;
 
     _refreshController = RefreshController(initialRefresh: false);
-
+    
     getMessageList(_page);
+
+    registerEvent();
   }
 
-  void getMessageList(int page){
-    _manager.getMsssageList(widget.otherGuyWalletAddress, page, (List messages){
-      if (page == 0){
+  void getMessageList(int page) {
+    _manager.getMsssageList(widget.otherGuyWalletAddress, page,
+        (List messages) {
+      if (page == 0) {
         setState(() {
           _dataSource.addAll(messages);
         });
-        Timer(Duration(milliseconds: 500), () => _controller.jumpTo(_controller.position.maxScrollExtent ));
-        _manager.listenMessageCallBack = (List messageList){
-          setState(() {
-          _dataSource.addAll(messageList);
-        });
-        Timer(Duration(milliseconds: 500), () => _controller.jumpTo(_controller.position.maxScrollExtent ));
-        };
-      }else{
+        Timer(Duration(milliseconds: 500),
+            () => _controller.jumpTo(_controller.position.maxScrollExtent));
+      } else {
         setState(() {
           _dataSource.insertAll(0, messages);
         });
       }
-      if (messages.length > 0){
+      if (messages.length > 0) {
         _page = page + 1;
       }
       _refreshController.refreshCompleted();
+    });
+  }
+  //注册广播
+  void registerEvent(){
+    _messageSubscription = eventBus.on<TLDMessageEvent>().listen((event) {
+      setState(() {
+            _dataSource.addAll(event.messageList);
+          });
+          Timer(Duration(milliseconds: 500),
+              () => _controller.jumpTo(_controller.position.maxScrollExtent));
     });
   }
 
@@ -97,16 +109,17 @@ class _TLDIMPageState extends State<TLDIMPage> {
     // TODO: implement dispose
     super.dispose();
 
-    _manager.listenMessageCallBack = null;
+    _messageSubscription.cancel();
+    _manager.isOnChatPage = false;
+    _manager.talkAddress = '';
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
         border: Border.all(
-          color : Color.fromARGB(0, 0, 0, 0),
+          color: Color.fromARGB(0, 0, 0, 0),
         ),
         heroTag: 'im_page',
         transitionBetweenRoutes: false,
@@ -119,7 +132,7 @@ class _TLDIMPageState extends State<TLDIMPage> {
     );
   }
 
-    /*拍照*/
+  /*拍照*/
   void _takePhoto() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     if (image != null) {
@@ -128,95 +141,133 @@ class _TLDIMPageState extends State<TLDIMPage> {
   }
 
   /*相册*/
-void  _openGallery() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery); 
+  void _openGallery() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-     setState(() {
-       sendImageMessage(image);
-    }); 
+      setState(() {
+        sendImageMessage(image);
+      });
     }
   }
 
-void sendImageMessage(File image){
-  _modelManager.uploadImageInservice(image, (String url){
-     TLDMessageModel messageModel = TLDMessageModel();
-                      messageModel.content = url;
-                      messageModel.fromAddress = widget.selfWalletAddress;
-                      messageModel.toAddress = widget.otherGuyWalletAddress;
-                      messageModel.contentType = 2;
-                      TLDIMManager manager = TLDIMManager.instance;
-                      manager.sendMessage(messageModel);
-  }, (TLDError error){
-    Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
-                        timeInSecForIosWeb: 1);
-  });
-}
+  void sendImageMessage(File image) {
+    _modelManager.uploadImageInservice(image, (String url) {
+      TLDMessageModel messageModel = TLDMessageModel();
+      messageModel.content = url;
+      messageModel.fromAddress = widget.selfWalletAddress;
+      messageModel.toAddress = widget.otherGuyWalletAddress;
+      messageModel.contentType = 2;
+      messageModel.createTime = DateTime.now().millisecondsSinceEpoch;
+      TLDIMManager manager = TLDIMManager.instance;
+      manager.sendMessage(messageModel);
+    }, (TLDError error) {
+      Fluttertoast.showToast(
+          msg: error.msg,
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 1);
+    });
+  }
 
-Widget _getFreshWidget(BuildContext context){
-  return SmartRefresher(
-    controller:_refreshController,
-    header: WaterDropHeader(
-      complete : Container()
-    ),
-    onRefresh: () => getMessageList(_page),
-    child: _getMessageListView(context),
+  Widget _getFreshWidget(BuildContext context) {
+    return SmartRefresher(
+      controller: _refreshController,
+      header: WaterDropHeader(complete: Container()),
+      onRefresh: () => getMessageList(_page),
+      child: _getMessageListView(context),
     );
-}
+  }
 
-Widget _getMessageListView(BuildContext context){
-  return  ListView.builder(
-          itemCount: _dataSource.length,
-          controller: _controller,
-          itemBuilder: (BuildContext context, int index) {
-            TLDMessageModel model = _dataSource[index];
-           if (model.contentType == 1){
-              if(widget.otherGuyWalletAddress == model.toAddress){
-              return TLDIMUserWordMessageCell(content: model.content,);
-            }else{
-              return TLDIMOtherUserWordMessageCell(content: model.content,);
+  Widget _getMessageListView(BuildContext context) {
+    return ListView.builder(
+      itemCount: _dataSource.length,
+      controller: _controller,
+      itemBuilder: (BuildContext context, int index) {
+        TLDMessageModel model = _dataSource[index];
+        if (model.contentType == 1) {
+          if (_isNeedToshowTimeLabel(index)) {
+            if (widget.otherGuyWalletAddress == model.toAddress) {
+              return TLDIMUserTimeWordMessageCell(
+                content: model.content,
+                createTime: model.createTime,
+              );
+            } else {
+              return TLDIMOtherUserTimeWordMessageCell(
+                content: model.content,
+                createTime: model.createTime,
+              );
             }
-           }else{
-              if(widget.otherGuyWalletAddress == model.toAddress){
-              return TLDIMUserImageMessageCell(imageUrl: model.content,);
-            }else{
-              return TLDIMOtherUserImageMessageCell(imageUrl: model.content,);
+          } else {
+            if (widget.otherGuyWalletAddress == model.toAddress) {
+              return TLDIMUserWordMessageCell(
+                content: model.content,
+              );
+            } else {
+              return TLDIMOtherUserWordMessageCell(
+                content: model.content,
+              );
             }
-           }
-          // if (index % 8 == 0) {
-          //   return TLDIMOtherUserWordMessageCell();
-          // }else if (index % 8 == 1){
-          //   return TLDIMUserWordMessageCell();
-          // }else if(index % 8 == 2){
-          //   return TLDIMOtherUserTimeWordMessageCell();
-          // }else if(index % 8 == 3){
-          //   return TLDIMUserTimeWordMessageCell();
-          // }else if (index % 8 == 4){
-          //   return TLDIMOtherUserImageMessageCell();
-          // }else if (index % 8 == 5){
-          //   return TLDIMUserImageMessageCell();
-          // }else if (index % 8 == 6){
-          //   return TLDIMUserTimeImageMessageCell();
-          // }else{
-          //   return TLDIMOtherUserTimeImageMessageCell();
-          // }
-         },
-        );
-}
+          }
+        } else {
+          if (_isNeedToshowTimeLabel(index)) {
+            if (widget.otherGuyWalletAddress == model.toAddress) {
+              return TLDIMUserTimeImageMessageCell(
+                imageUrl: model.content,
+                createTime: model.createTime,
+              );
+            } else {
+              return TLDIMOtherUserTimeImageMessageCell(
+                imageUrl: model.content,
+                createTime: model.createTime,
+              );
+            }
+          } else {
+            if (widget.otherGuyWalletAddress == model.toAddress) {
+              return TLDIMUserImageMessageCell(
+                imageUrl: model.content,
+              );
+            } else {
+              return TLDIMOtherUserImageMessageCell(
+                imageUrl: model.content,
+              );
+            }
+          }
+        }
+      },
+    );
+  }
 
-  Widget _getBody(BuildContext context){
+//判断是否需要展示时间标签
+  bool _isNeedToshowTimeLabel(int index) {
+    if (index == 0) {
+      return true;
+    } else {
+      TLDMessageModel lastModel = _dataSource[index - 1];
+      TLDMessageModel currentModel = _dataSource[index];
+      return currentModel.createTime - lastModel.createTime > 30000;
+    }
+  }
+
+  Widget _getBody(BuildContext context) {
     return Column(
-      children :<Widget>[
+      children: <Widget>[
         TLDIMHeaderView(),
-        Expanded(child:_getFreshWidget(context),),
-        TLDInputView(selfAddress: widget.selfWalletAddress,otherGuyAddress: widget.otherGuyWalletAddress,beginEditingCallBack: (){
-          _controller.jumpTo(_controller.position.maxScrollExtent );
-        },didClickCameraBtnCallBack: (){
-          _takePhoto();
-        },didClickPhotoBtnCallBack: (){
-          _openGallery();
-        },
+        Expanded(
+          child: _getFreshWidget(context),
+        ),
+        TLDInputView(
+          selfAddress: widget.selfWalletAddress,
+          otherGuyAddress: widget.otherGuyWalletAddress,
+          beginEditingCallBack: () {
+            _controller.jumpTo(_controller.position.maxScrollExtent);
+          },
+          didClickCameraBtnCallBack: () {
+            _takePhoto();
+          },
+          didClickPhotoBtnCallBack: () {
+            _openGallery();
+          },
         ),
       ],
     );
-  }  
+  }
 }

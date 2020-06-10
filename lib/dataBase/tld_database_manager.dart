@@ -20,6 +20,7 @@ final String contentIM = 'content';
 final String fromIM = 'fromAddress';
 final String toIM = 'toAddress';
 final String unreadIM = 'unread';
+final String createTimeIM = 'createTime';
 final String idIM = '_id';
 
 class TLDWallet{
@@ -91,7 +92,8 @@ class TLDDataBaseManager {
             $contentIM TEXT,
             $fromIM TEXT,
             $toIM TEXT,
-            $unreadIM INTEGER)
+            $unreadIM INTEGER,
+            $createTimeIM INTEGER)
           ''');    
     });
   }
@@ -127,6 +129,24 @@ class TLDDataBaseManager {
     return messages;
   }
 
+  //进入到聊天界面后把所有未读消息置位已读
+  updateUnreadMessageType(String walletAddress) async{
+    await db.rawUpdate('UPDATE  $tableIM SET $unreadIM = 0 WHERE $toIM = \"$walletAddress\" or $fromIM = \"$walletAddress\"');
+  }
+
+//搜寻所有未读消息
+  Future<List> searchUnReadMessageList()async{
+     List maps = await db.rawQuery('SELECT * FROM $tableIM WHERE $unreadIM = 1');
+     if (maps == null || maps.length == 0) {
+      return [];
+    }
+
+    List<TLDMessageModel> messages = [];
+    for (int i = 0; i < maps.length; i++) {
+      messages.insert(0, TLDMessageModel.fromJson(maps[i]));
+    }
+    return messages;
+  }
   
 
   Future<TLDWallet> insertDataBase(TLDWallet wallet) async {

@@ -93,6 +93,7 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
 
   Widget _getBodyWidget(BuildContext context,Size size){
     // Size size = MediaQuery.of(context).size;
+    String chargeValue = _pramaterModel.chargeValue != null ? _pramaterModel.chargeValue: '0.0';
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right : ScreenUtil().setWidth(30)),
@@ -112,7 +113,7 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
                 child: TLDTransferAccountsInputRowView(type : TLDTransferAccountsInputRowViewType.allTransfer,allAmount: widget.walletInfoModel.value,stringEditingCallBack: (String amount){
                   _pramaterModel.value = amount;
                   setState(() {
-                    _pramaterModel.chargeValue = (double.parse(amount) * double.parse(widget.walletInfoModel.rate)).toString();
+                    _pramaterModel.chargeValue = (double.parse(amount) * double.parse(widget.walletInfoModel.rate)).toStringAsFixed(2);
                   });
                 },),
               ),
@@ -144,7 +145,7 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
               ),
               Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setWidth(20)),
-                child: TLDTransferAccountsNormalRowView(title: '手续费',content:'¥' + _pramaterModel.chargeValue != null ? _pramaterModel.chargeValue: '0.0',),
+                child: TLDTransferAccountsNormalRowView(title: '手续费',content:chargeValue + 'TLD',),
               ),
               Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(200),),

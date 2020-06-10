@@ -143,6 +143,7 @@ class _TLDInputViewState extends State<TLDInputView> {
                       messageModel.fromAddress = widget.selfAddress;
                       messageModel.toAddress = widget.otherGuyAddress;
                       messageModel.contentType = 1;
+                      messageModel.createTime = DateTime.now().millisecondsSinceEpoch;
                       TLDIMManager manager = TLDIMManager.instance;
                       manager.sendMessage(messageModel);
                       _controller.text = '';

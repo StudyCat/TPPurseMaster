@@ -2,9 +2,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'tld_left_bubble.dart';
+import 'package:date_format/date_format.dart';
 
 class TLDIMOtherUserTimeWordMessageCell extends StatefulWidget {
-  TLDIMOtherUserTimeWordMessageCell({Key key}) : super(key: key);
+  TLDIMOtherUserTimeWordMessageCell({Key key,this.createTime,this.content}) : super(key: key);
+
+  final String content;
+
+  final int createTime;
 
   @override
   _TLDIMOtherUserTimeWordMessageCellState createState() =>
@@ -34,7 +39,7 @@ class _TLDIMOtherUserTimeWordMessageCellState
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(4)),
             color: Color.fromARGB(255, 216, 216, 216)),
-        child: Text('21:45:30',
+        child: Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.createTime),[HH,'.',nn,':',ss]),
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(24),
                 color: Color.fromARGB(255, 51, 51, 51))),
@@ -51,7 +56,7 @@ class _TLDIMOtherUserTimeWordMessageCellState
         children: <Widget>[
           Container(
             child: TLDLeftBubbleView(
-                text: '4564fdsfsdfdsfsdfsdfsdfsdfsdfsdfsdfdsfsdf'),
+                text: widget.content),
             constraints: BoxConstraints(maxWidth: size.width / 2),
           )
         ],

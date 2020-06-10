@@ -24,11 +24,11 @@ class _TLDPurseSideSlipHeaderCellState extends State<TLDPurseSideSlipHeaderCell>
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(left : 15,bottom: 5),
-            child: Text('总积分',style : TextStyle(fontSize : 14 ,color : Colors.white))
+            child: Text('总积分（TLD）',style : TextStyle(fontSize : 14 ,color : Colors.white))
           ),
           Container(
             padding: EdgeInsets.only(left : 15),
-            child: Text(widget.totalAmount + 'TLD',style : TextStyle(fontSize : 20 ,color : Colors.white,fontWeight: FontWeight.bold),)
+            child: Text(widget.totalAmount,style : TextStyle(fontSize : 20 ,color : Colors.white,fontWeight: FontWeight.bold),)
           ),
         ],
       ),

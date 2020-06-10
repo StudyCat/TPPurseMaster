@@ -37,23 +37,13 @@ class _TLDBuyActionSheetInputViewState
           if(text.length == 0){
             result = '0';
           }else{
-             if(double.parse(widget.currentAmount) < double.parse(widget.max)){
-               if(double.parse(text) > double.parse(widget.currentAmount)){
+             if(double.parse(text) > double.parse(widget.currentAmount)){
                 _focusNode.unfocus();
                 _controller.text = widget.currentAmount;
                 result = widget.currentAmount;
-              }else{
+              }else {
                 result = text;
               }
-             }else{
-               if(double.parse(text) > double.parse(widget.max)){
-                _focusNode.unfocus();
-                _controller.text = widget.max;
-                result = widget.max;
-              }else{
-                result = text;
-              }
-             }
           }
       });
       widget.inputStringCallBack(result);
@@ -95,13 +85,13 @@ class _TLDBuyActionSheetInputViewState
           child: CupertinoButton(
               padding: EdgeInsets.all(0),
               child: Text(
-                '全部转出',
+                '全部购买',
                 style: TextStyle(
                     fontSize: 14, color: Theme.of(context).primaryColor,),
               ),
               onPressed: () {
                 _focusNode.unfocus();
-                String allAmount = double.parse(widget.max) > double.parse(widget.currentAmount) ? widget.currentAmount : widget.max;
+                String allAmount =  widget.currentAmount;
                 _controller.text = allAmount;
                 widget.inputStringCallBack(allAmount);
               }),

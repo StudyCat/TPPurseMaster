@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 class MessageButton extends StatefulWidget {
   final Function didClickCallBack;
 
-  MessageButton({Key key,this.didClickCallBack}) : super(key: key);
+  final bool isHaveUnReadMessage;
+
+  MessageButton({Key key,this.didClickCallBack,this.isHaveUnReadMessage = false}) : super(key: key);
 
   @override
   _MessageButtonState createState() => _MessageButtonState();
@@ -23,14 +25,17 @@ class _MessageButtonState extends State<MessageButton> {
              onPressed: () => widget.didClickCallBack(),
               padding: EdgeInsets.all(0),
             ),
-           ClipRRect(
+           Offstage(
+             offstage: !widget.isHaveUnReadMessage,
+             child: ClipRRect(
              borderRadius: BorderRadius.all(Radius.circular(3.5)),
              child : Container(
               height: 7,
               width: 7,
               color: Colors.red, 
              ),
-           ), 
+           ),
+           )
          ],
        ),
     );

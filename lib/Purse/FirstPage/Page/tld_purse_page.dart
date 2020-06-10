@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -35,6 +38,10 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
 
   RefreshController _controller;
 
+  StreamSubscription _unreadSubscription;
+
+  bool _haveUnreadMessage;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -48,9 +55,28 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
 
     _controller = RefreshController(initialRefresh: true);
 
+    _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
+
+    _registerUnreadMessageEvent();
+
     _getPurseInfoList(context);
   }
 
+  void _registerUnreadMessageEvent(){
+    _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
+      setState(() {
+        _haveUnreadMessage = event.haveUnreadMessage;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _unreadSubscription.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +109,7 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
               });
         }),
         automaticallyImplyLeading: false,
-        trailing: MessageButton(didClickCallBack: () {
+        trailing: MessageButton(isHaveUnReadMessage: _haveUnreadMessage,didClickCallBack: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage()));
         }),
       ),
