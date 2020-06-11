@@ -10,7 +10,6 @@ class TLDSettingModelManager{
       TLDDataBaseManager dataBaseManager = TLDDataBaseManager();
       await dataBaseManager.openDataBase();
       await dataBaseManager.deleteDataBase(wallet);
-      await dataBaseManager.close();
       TLDDataManager.instance.purseList.remove(wallet);
       success();
     }, (error) => failure(error));

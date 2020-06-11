@@ -10,7 +10,7 @@ class TLDSystemMessageContentPage extends StatefulWidget {
   _TLDSystemMessageContentPageState createState() => _TLDSystemMessageContentPageState();
 }
 
-class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPage> {
+class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPage> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -20,4 +20,8 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
      },
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

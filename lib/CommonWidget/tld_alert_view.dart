@@ -9,12 +9,14 @@ enum TLDAlertViewType{
 
 
 class TLDAlertView extends StatefulWidget {
-  TLDAlertView({Key key,this.title,this.type,this.alertString,this.didClickSureBtn,this.textEditingCallBack}) : super(key: key);
+  TLDAlertView({Key key,this.title,this.type,this.alertString,this.didClickSureBtn,this.textEditingCallBack,this.isNeedSecretShow = false,this.placeHolder = '限20字以内'}) : super(key: key);
   final String alertString;
   final String title;
   final TLDAlertViewType type;
   final Function didClickSureBtn;
   final ValueChanged<String> textEditingCallBack;
+  final bool isNeedSecretShow;
+  final String placeHolder;
   @override
   _TLDAlertViewState createState() => _TLDAlertViewState();
 }
@@ -61,7 +63,8 @@ class _TLDAlertViewState extends State<TLDAlertView> {
         margin: EdgeInsets.only(left: ScreenUtil().setWidth(20) , right: ScreenUtil().setWidth((20))),
         child: CupertinoTextField(
           controller: _controller,
-          placeholder: '限20字以内',
+          obscureText: widget.isNeedSecretShow,
+          placeholder: widget.placeHolder,
           decoration: BoxDecoration(
             color : Color.fromARGB(255, 242, 242, 242),
           ),

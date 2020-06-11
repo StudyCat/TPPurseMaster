@@ -51,7 +51,6 @@ class TLDCreatePurseModelManager {
     TLDDataBaseManager manager = TLDDataBaseManager();
     await manager.openDataBase();
     await manager.insertDataBase(tldWallet);
-    await manager.close();
   }
 
   Future<TLDWallet> _getWalletWithNoting() async{
@@ -111,7 +110,6 @@ class TLDCreatePurseModelManager {
     TLDDataBaseManager dataBase = TLDDataBaseManager();
     await dataBase.openDataBase();
     List purses = await dataBase.searchAllWallet();
-    await dataBase.close();
     return purses;
   }
 

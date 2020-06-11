@@ -39,7 +39,7 @@ class _TLDMyPurseRecordCellState extends State<TLDMyPurseRecordCell> {
         child: Container(
           color : Colors.white,
           margin : EdgeInsets.all(0),
-          height: ScreenUtil().setHeight(202),
+          height: ScreenUtil().setHeight(242),
           child: Row(
             children : <Widget>[
               Container(
@@ -61,22 +61,23 @@ class _TLDMyPurseRecordCellState extends State<TLDMyPurseRecordCell> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          getAdressView(context),
+          getAdressView(context,'发送地址',widget.transferInfoModel.fromWalletAddress),
+          getAdressView(context, '接收地址', widget.transferInfoModel.toWalletAddress),
           getNumLabel(context),
           getOtherInfoView(context),
         ],
       ));
   }
 
-  Widget getAdressView(BuildContext context){
+  Widget getAdressView(BuildContext context,String title,String content){
     Size size = MediaQuery.of(context).size;
     return Row(
       children: <Widget>[
-        Text('收款地址',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51)),),
+        Text(title,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51)),),
         Container(
           padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
           width: size.width - ScreenUtil().setWidth(230),
-          child: Text(widget.transferInfoModel.toWalletAddress,maxLines : 1 , style : TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153)),overflow: TextOverflow.ellipsis,),
+          child: Text(content,maxLines : 1 , style : TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153)),overflow: TextOverflow.ellipsis,),
         ),
       ],
     );

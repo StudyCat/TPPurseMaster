@@ -17,7 +17,7 @@ class TLDMessageModel {
   String fromAddress;
   String  toAddress;
   int id;
-  bool unRead;
+  bool unread;
   int createTime;
 
   TLDMessageModel(
@@ -34,6 +34,7 @@ class TLDMessageModel {
     fromAddress = json['fromAddress'];
     toAddress = json['toAddress'];
     createTime = json['createTime'];
+    unread =  json['unread'] == 1 ? true : false; 
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +44,7 @@ class TLDMessageModel {
     data['fromAddress'] = this.fromAddress;
     data['toAddress'] = this.toAddress;
     data['createTime'] = this.createTime;
+    // data['unread'] = this.unread ? 1 : 0;
     return data;
   }
 }
@@ -89,18 +91,17 @@ class TLDIMManager{
         for (Map item in messageList) {
           TLDMessageModel messageModel = TLDMessageModel.fromJson(item);
           if (this.isOnChatPage == true && (messageModel.toAddress == talkAddress || messageModel.fromAddress == talkAddress)){
-            messageModel.unRead = false;
+            messageModel.unread = false;
           }else{
-            messageModel.unRead = true;
+            messageModel.unread = true;
             isHaveUnreadMessage = true;
             this.unreadMessage.add(messageModel);
           }
           result.add(messageModel); 
         }
         TLDDataBaseManager dataManager = TLDDataBaseManager();
-        await dataManager.openIMDataBase();
+        await dataManager.openDataBase();
         await dataManager.insertIMDataBase(result);
-        await dataManager.close();
         eventBus.fire(TLDMessageEvent(result));
         if (isHaveUnreadMessage == true){
           eventBus.fire(TLDHaveUnreadMessageEvent(true)); 
@@ -136,9 +137,8 @@ class TLDIMManager{
     this.unreadMessage = [];
 
     TLDDataBaseManager dataManager = TLDDataBaseManager();
-    await dataManager.openIMDataBase();
+    await dataManager.openDataBase();
     List unReadListInDB = await dataManager.searchUnReadMessageList();
-    await dataManager.close();
     this.unreadMessage.addAll(unReadListInDB);
   }
 
@@ -153,13 +153,12 @@ class TLDIMManager{
 
   void getMsssageList(String walletAddress,int page,Function(List) success) async{
     TLDDataBaseManager manager = TLDDataBaseManager();
-    await manager.openIMDataBase();
+    await manager.openDataBase();
     if (page == 0){
       await manager.updateUnreadMessageType(walletAddress); //进入聊天界面吧未读消息设为已读
       _removeUnreadMessageWithAddress(walletAddress);
     }
     List result = await manager.searchIMDataBase(walletAddress, page);
-    await manager.close();
     success(result);
   }
 

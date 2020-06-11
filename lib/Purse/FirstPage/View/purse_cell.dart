@@ -48,7 +48,7 @@ class _TLDPurseFirstPageCellState extends State<TLDPurseFirstPageCell> {
                       ),
                       Container(
                         padding: EdgeInsets.only(top : 4,right: 15),
-                        child: Text('='+double.parse(widget.walletInfo.value).toStringAsFixed(2)+'rmb',style: TextStyle(color: Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
+                        child: Text('='+double.parse(widget.walletInfo.value).toStringAsFixed(2)+'CNY',style: TextStyle(color: Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
                       )
                     ],
                   ),

@@ -12,8 +12,8 @@ class TLDIntegrationDescPage extends StatefulWidget {
 
 class _TLDIntegrationDescPageState extends State<TLDIntegrationDescPage> {
  List titles = [
-    '兑换比例：1TLD=1RMB',
-    '手续费：千分之六',
+    '兑换比例：1TLD=1CNY',
+    '手续费：%0.1',
   ];
 
   @override

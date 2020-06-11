@@ -63,11 +63,11 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
-            child: getNormalView('限额', widget.model.max + 'TLD'),
+            child: getNormalView('最低购买额度', widget.model.max + 'TLD'),
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
-            child: getNormalView('实际付款', _pramaterModel.buyCount + 'RMB'),
+            child: getNormalView('实际付款', _pramaterModel.buyCount + 'CNY'),
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
@@ -91,13 +91,16 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
               if (double.parse(_pramaterModel.buyCount) == 0.0){
                 Fluttertoast.showToast(msg: '请填写购买数量',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
-                Navigator.of(context).pop();
                 return;
               }
               if (_pramaterModel.buyerAddress == null){
                 Fluttertoast.showToast(msg: '请选择接收钱包',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
-                Navigator.of(context).pop();
+                return;
+              }
+              if (double.parse(_pramaterModel.buyCount) < double.parse(widget.model.max)){
+                Fluttertoast.showToast(msg: '输入的购买数量低于最低购买额度',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
                 return;
               }
               widget.didClickBuyBtnCallBack(_pramaterModel);

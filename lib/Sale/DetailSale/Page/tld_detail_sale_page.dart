@@ -29,21 +29,13 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
   List titles = [
     '收款方式',
     '挂售钱包',
-    '限额',
+    '最低购买额度',
     '手续费率',
     '手续费',
     '预计到账',
     '创建时间',
   ];
 
-  List contents = [
-    'yeiwpgwepgwdpde09328',
-    '3249TLD',
-    '千分之六',
-    '¥783',
-    '2020-05-05',
-    '2020-04-30',
-  ];
 
   TLDDetailSaleModelManager _modelManager;
 
@@ -109,27 +101,29 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
                   child: Text('地址：' + address,style:TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153))),
                 );
               }else if (index == 1){
-                return TLDDetailSaleInfoView();
+                return TLDDetailSaleInfoView(saleModel: _saleModel,);
               }else{
                 bool isShowIcon = false;
                 String content  = '';
+                int payStatus = 0;
                 if (index == 2) {
                   isShowIcon = true;
+                  payStatus = _saleModel.payMethodVO.type;
                 }else if(index == 3){
                   content = widget.walletName;
                 }else if(index == 4){
-                  String amount = _saleModel != null ? '0' : '0';
+                  String amount = _saleModel != null ? _saleModel.max : '0';
                   content = amount + 'TLD';  
                 }else if(index == 5){
-                  content = '0.006%';
+                  content = _saleModel != null ? ((double.parse(_saleModel.rate) * 100).toString()+'%') : '0.6%'; 
                 }else if(index == 6){
-                  content = '¥0';
+                  content = _saleModel != null ? ('¥'+ _saleModel.charge) : '¥0';
                 }else if(index == 7){
-                  content = '¥0';
+                  content = _saleModel != null ? ('¥'+ _saleModel.recCount) : '¥0';
                 }else{
                   content = _saleModel != null ? formatDate(DateTime.fromMillisecondsSinceEpoch(_saleModel.createTime), [yyyy,'-',mm,'-',dd]): '';
                 }
-                return TLDDetailSaleRowView(isShowIcon: isShowIcon,title: titles[index - 2],content: content,);
+                return TLDDetailSaleRowView(isShowIcon: isShowIcon,title: titles[index - 2],content: content,payStatus: payStatus,);
               }
            },
           )

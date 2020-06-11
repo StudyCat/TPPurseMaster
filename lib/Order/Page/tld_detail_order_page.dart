@@ -27,11 +27,12 @@ class TLDDetailOrderPage extends StatefulWidget {
 }
 
 class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
-  List titles = ['订单号', '数量', '应付款', '收款方式', '付款参考号', '接收地址'];
+  List titles = ['订单号', '数量', '应付款', '收款方式', '接收地址'];
   bool isOpen = false;
   TLDDetailOrderModelManager _modelManager;
   TLDDetailOrderModel _detailOrderModel;
   StreamController _controller;
+  bool _isLoading;
 
   @override
   void initState() {
@@ -42,53 +43,90 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
     _controller.sink.add(_detailOrderModel);
 
     _modelManager = TLDDetailOrderModelManager();
+    _isLoading = false;
     _getDetailOrderInfo();
   }
 
   void _getDetailOrderInfo(){
+    setState(() {
+      _isLoading = true;
+    });
     _modelManager.getDetailOrderInfoWithOrderNo(widget.orderNo, (TLDDetailOrderModel detailModel){
+      setState(() {
+        _isLoading = false;
+      });
       _detailOrderModel = detailModel;
       _controller.sink.add(detailModel);
     }, (TLDError error){
+      setState(() {
+        _isLoading = false;
+      });
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });
   }
 
   void _cancelOrder(){
+    setState(() {
+      _isLoading = true;
+    });
     _modelManager.cancelOrderWithOrderNo(widget.orderNo, (){
+      setState(() {
+        _isLoading = false;
+      });
       _detailOrderModel = null;
       _controller.sink.add(_detailOrderModel);
       _getDetailOrderInfo();
       Fluttertoast.showToast(msg: '取消订单成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
+      setState(() {
+        _isLoading = false;
+      });
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });
   }
 
   void _confirmPaid(){
+    setState(() {
+      _isLoading = true;
+    });
     _modelManager.confirmPaid(widget.orderNo, _detailOrderModel.buyerAddress,  (){
+      setState(() {
+        _isLoading = false;
+      });
       _detailOrderModel = null;
       _controller.sink.add(_detailOrderModel);
       _getDetailOrderInfo();
       Fluttertoast.showToast(msg: '确认我已付款成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
+      setState(() {
+        _isLoading = false;
+      });
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });
   }
 
   void _sureSentCoin(){
+    setState(() {
+      _isLoading = true;
+    });
     _modelManager.sureSentCoin(widget.orderNo, _detailOrderModel.sellerAddress,  (){
+      setState(() {
+        _isLoading = false;
+      });
       _detailOrderModel = null;
       _controller.sink.add(_detailOrderModel);
       _getDetailOrderInfo();
       Fluttertoast.showToast(msg: '确认释放积分成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
+      setState(() {
+        _isLoading = false;
+      });
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });
@@ -97,7 +135,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder(
+      body: LoadingOverlay(isLoading:_isLoading, child: StreamBuilder(
         stream: _controller.stream,
         builder: (BuildContext context, AsyncSnapshot snapshot){
           TLDDetailOrderModel model = snapshot.data;
@@ -112,7 +150,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
           );
           }
         },
-      ),
+      )),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -143,7 +181,13 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       pinned: true, //不固定在顶部
       title: Text('订单详情'),
       flexibleSpace: FlexibleSpaceBar(
-        background: TLDDetailOrderHeaderView(detailOrderModel: _detailOrderModel,isBuyer: widget.isBuyer,timeIsOverRefreshUICallBack: (){
+        background: TLDDetailOrderHeaderView(detailOrderModel: _detailOrderModel,isBuyer: widget.isBuyer,
+        didClickChatBtnCallBack: (){
+          String selfAddress = widget.isBuyer == true ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
+          String otherAddress = widget.isBuyer == false ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
+          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,)));
+        },
+        timeIsOverRefreshUICallBack: (){
           _detailOrderModel = null;
           _controller.sink.add(_detailOrderModel);
           _getDetailOrderInfo();
@@ -155,7 +199,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
 
   Widget _getBodyWidget(BuildContext context) {
     return ListView.builder(
-        itemCount: 8,
+        itemCount: 7,
         itemBuilder: (BuildContext context, int index) {
           num top;
           if (index == 2) {
@@ -190,9 +234,9 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
                 },
               ),
             );
-          }else if(index == 6){
+          }else if(index == 5){
             return _getIMCell();
-          }else if(index == 7){
+          }else if(index == 6){
             return TLDDetailOrderBottomCell(detailOrderModel:_detailOrderModel,isBuyer: widget.isBuyer,didClickActionBtnCallBack: (String buttonTitle){
               if (buttonTitle == '取消订单'){
                 _cancelOrder();
@@ -216,8 +260,6 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       content = _detailOrderModel.txCount + 'TLD';
     }else if(index == 2){
       content = '¥'+_detailOrderModel.txCount;
-    }else if(index == 4){
-      content = '';
     }else{
       content = _detailOrderModel.buyerAddress;
     }

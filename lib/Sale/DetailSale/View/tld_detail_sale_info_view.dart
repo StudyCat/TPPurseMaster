@@ -16,7 +16,17 @@ class _TLDDetailSaleInfoViewState extends State<TLDDetailSaleInfoView> {
   @override
   Widget build(BuildContext context) {
     String currentAmountStr = widget.saleModel != null ? widget.saleModel.currentCount : '0';
-    String totalAmountStr = widget.saleModel != null ? '0' : '0';
+    String totalAmountStr = widget.saleModel != null ? widget.saleModel.totalCount : '0';
+    String status = '';
+    if (widget.saleModel != null){
+      if (widget.saleModel.status == 0){
+      status = '挂售中';
+    }else if(widget.saleModel.status == 1){
+      status = '已完成';
+    }else{
+      status = '已取消';
+    }
+    }
     return Padding(
       padding: EdgeInsets.only(top : ScreenUtil().setHeight(40)),
       child: Row(
@@ -24,7 +34,7 @@ class _TLDDetailSaleInfoViewState extends State<TLDDetailSaleInfoView> {
         children: <Widget>[
           _getSaleInfoLabel('总量', totalAmountStr + 'TLD'),
           _getSaleInfoLabel('剩余', currentAmountStr + 'TLD'),
-          _getSaleInfoLabel('状态', '挂售中')
+          _getSaleInfoLabel('状态', status)
         ],
       ),
     );

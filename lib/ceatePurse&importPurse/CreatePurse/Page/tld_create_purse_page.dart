@@ -82,6 +82,7 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
           child: Center(
               child: TLDClipInputCell(
             placeholder: '请输入您的密码',
+            isNeedSecretShow: true,
             textFieldEditingCallBack: (String string) {
               setState(() {
                 _password = string;
@@ -107,6 +108,7 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
           child: Center(
               child: TLDClipInputCell(
             placeholder: '请再次输入您的密码',
+            isNeedSecretShow: true,
             textFieldEditingCallBack: (String string) {
               _surePassword = string;
             },

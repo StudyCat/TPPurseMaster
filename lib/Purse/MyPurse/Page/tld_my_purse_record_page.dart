@@ -70,7 +70,9 @@ class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage> with Automa
 
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
+    return  Padding(
+      padding: EdgeInsets.only(top :ScreenUtil().setHeight(20)),
+      child:  SmartRefresher(
       controller: _refreshController,
       header: WaterDropHeader(
         complete: Text('刷新完成'),
@@ -84,6 +86,7 @@ class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage> with Automa
         _getPurseTransferList(_page);
       },
       child: getListView(),
+    ),
     );
   }
 
@@ -115,16 +118,15 @@ class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage> with Automa
   }
 
   Widget getListView(){
-    return Padding(
-      padding: EdgeInsets.only(top :ScreenUtil().setHeight(20)),
-      child: ListView.builder(
+    return ListView.builder(
         itemCount: _dataSource.length,
         itemBuilder: (BuildContext context , int index){
           TLDPurseTransferInfoModel infoModel = _dataSource[index];
-          return TLDMyPurseRecordCell(transferInfoModel: infoModel,walletAddress: walletAdress,);
-      }),
-      );
+          return TLDMyPurseRecordCell(transferInfoModel: infoModel,walletAddress: widget.walletAddress,);
+      });
   }
+
+
 
   @override
   // TODO: implement wantKeepAlive

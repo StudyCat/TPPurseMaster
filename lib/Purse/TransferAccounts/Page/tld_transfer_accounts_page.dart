@@ -1,7 +1,9 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/Purse/TransferAccounts/Model/tld_transfer_accounts_model_manager.dart';
 import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
+import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,6 +54,16 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
   }
 
   void tranferAmount(){
+    if (double.parse(_pramaterModel.value) == 0.0){
+      Fluttertoast.showToast(msg: '请填写购买数量',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+                return;
+    }
+    if (_pramaterModel.toWalletAddress.length == 0){
+      Fluttertoast.showToast(msg: '请输入接收地址',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+                return;
+    }
     setState(() {
       _loading = true;
     });
@@ -153,7 +165,11 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
                   width: size.width - ScreenUtil().setWidth(108),
                   height: ScreenUtil().setHeight(96),
                   child : CupertinoButton(child: Text('确定'), color: Theme.of(context).primaryColor,onPressed: (){
-                    tranferAmount();
+                    jugeHavePassword(context, (){
+                      tranferAmount();
+                    }, TLDCreatePursePageType.back, (){
+                      tranferAmount();
+                    });
                   })
                 ),
               )

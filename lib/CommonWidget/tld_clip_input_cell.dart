@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDClipInputCell extends StatefulWidget {
-  TLDClipInputCell({Key key,this.placeholder,this.textFieldEditingCallBack}) : super(key: key);
+  TLDClipInputCell({Key key,this.placeholder,this.textFieldEditingCallBack,this.isNeedSecretShow = false}) : super(key: key);
 
   final String placeholder;
   final ValueChanged<String> textFieldEditingCallBack;
+  final bool isNeedSecretShow;
 
   @override
   _TLDClipInputCellState createState() => _TLDClipInputCellState();
@@ -36,6 +37,7 @@ class _TLDClipInputCellState extends State<TLDClipInputCell> {
         height: ScreenUtil().setHeight(80),
         padding: EdgeInsets.only(left : ScreenUtil().setWidth(20),right : ScreenUtil().setWidth(20)),
         child: CupertinoTextField(
+          obscureText: widget.isNeedSecretShow,
           padding: EdgeInsets.only(top : ScreenUtil().setHeight(20),bottom: ScreenUtil().setHeight(20)),
           controller: _controller,
           placeholder: widget.placeholder,

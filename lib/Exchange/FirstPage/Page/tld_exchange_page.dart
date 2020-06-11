@@ -28,7 +28,7 @@ class TLDExchangePage extends StatefulWidget {
 }
 
 class _TLDExchangePageState extends State<TLDExchangePage> {
-  List titleList = ['钱包', '钱包余额', '兑换量', '限额设置', '手续费率', '手续费', '实际到账', '收款方式'];
+  List titleList = ['钱包', '钱包余额', '兑换量', '最低购买额度设置', '手续费率', '手续费', '实际到账', '收款方式'];
 
   TLDSaleFormModel _formModel;
 
@@ -191,7 +191,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
     }
     if(double.parse(_formModel.maxBuyAmount) == 0.0){
         Fluttertoast.showToast(
-          msg: '请输入限额量', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
+          msg: '请输入最低购买额度', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
         return;
     }
     if(_formModel.infoModel == null){

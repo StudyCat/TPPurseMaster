@@ -106,9 +106,7 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
              )),
              TLDSaleSuspendButton(didClickCallBack:(){
                Navigator.push(context, MaterialPageRoute(builder: (context) => TLDExchangePage())).then((dynamic value){
-              setState(() {
-                _isLoading = true;
-              });
+              _refreshController.requestRefresh();
               getSaleListInfo();
             });
              } ,)
@@ -117,6 +115,7 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
     }else{
       return _getRsfreshWidget(TLDSaleNotDataView(didClickCallBack: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => TLDExchangePage())).then((dynamic value){
+              _refreshController.requestRefresh();
               getSaleListInfo();
             });
           },));

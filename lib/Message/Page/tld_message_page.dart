@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/Message/Model/tld_message_model_manager.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_im_message_content_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_system_message_content_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,6 +26,7 @@ class _TLDMessagePageState extends State<TLDMessagePage> with TickerProviderStat
     super.initState();
 
     _tabController = TabController(length: 2, vsync: this);
+
   }
 
   @override
@@ -79,4 +81,6 @@ class _TLDMessagePageState extends State<TLDMessagePage> with TickerProviderStat
         ],
       );
   }
+  
+
 }

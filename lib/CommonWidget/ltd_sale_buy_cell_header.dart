@@ -50,7 +50,7 @@ class _TLDCommonCellHeaderViewState extends State<TLDCommonCellHeaderView> {
                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                    children: <Widget>[
                      getBuyInfoLabel('总量', widget.saleModel != null ?  widget.saleModel.totalCount + 'TLD' :widget.buyModel.totalCount + 'TLD'),
-                     getBuyInfoLabel('限额', widget.saleModel != null ?  widget.saleModel.max + 'TLD' :widget.buyModel.max + 'TLD'),
+                     getBuyInfoLabel('最低购买额度', widget.saleModel != null ?  widget.saleModel.max + 'TLD' :widget.buyModel.max + 'TLD'),
                      getBuyInfoLabel('剩余', widget.saleModel != null ?  widget.saleModel.currentCount + 'TLD' :widget.buyModel.currentCount + 'TLD'),
                    ],
                  ),)]

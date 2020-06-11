@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:async';
 
 class TLDDetailOrderHeaderView extends StatefulWidget {
-  TLDDetailOrderHeaderView({Key key,this.detailOrderModel,this.isBuyer,this.timeIsOverRefreshUICallBack,this.didClickAppealBtnCallBack}) : super(key: key);
+  TLDDetailOrderHeaderView({Key key,this.detailOrderModel,this.isBuyer,this.timeIsOverRefreshUICallBack,this.didClickAppealBtnCallBack,this.didClickChatBtnCallBack}) : super(key: key);
 
   final TLDDetailOrderModel detailOrderModel;
 
@@ -16,6 +16,8 @@ class TLDDetailOrderHeaderView extends StatefulWidget {
   final Function timeIsOverRefreshUICallBack;
 
   final Function didClickAppealBtnCallBack;
+
+  final Function didClickChatBtnCallBack;
 
   @override
   _TLDDetailOrderHeaderViewState createState() => _TLDDetailOrderHeaderViewState();
@@ -141,7 +143,7 @@ class _TLDDetailOrderHeaderViewState extends State<TLDDetailOrderHeaderView> {
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Text(statusStr,style :TextStyle(fontSize : ScreenUtil().setSp(44),color: Colors.white)),
-        IconButton(icon: Icon(IconData(0xe6a2,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(46),color: Colors.white,),onPressed: (){},)
+        IconButton(icon: Icon(IconData(0xe6a2,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(46),color: Colors.white,),onPressed:widget.didClickChatBtnCallBack,)
       ],
     );
   }

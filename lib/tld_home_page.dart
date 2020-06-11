@@ -39,7 +39,6 @@ class _TLDHomePageState extends State<TLDHomePage> {
   void _searchAllPurse()async{
     await _manager.openDataBase();
      List allPurse = await _manager.searchAllWallet();
-    await _manager.close();
 
     allPurse == null ? TLDDataManager.instance.purseList = [] : TLDDataManager.instance.purseList = List.from(allPurse);
 

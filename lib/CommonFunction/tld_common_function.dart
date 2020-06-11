@@ -12,7 +12,7 @@ void jugeHavePassword(BuildContext context,Function passwordRightCallBack,TLDCre
     }else{
       String password;
       showDialog(context: context,builder: (BuildContext context){
-        return TLDAlertView(title:'输入安全密码',type : TLDAlertViewType.input,textEditingCallBack: (String text){
+        return TLDAlertView(placeHolder: '请输入密码',isNeedSecretShow: true,title:'输入安全密码',type : TLDAlertViewType.input,textEditingCallBack: (String text){
           password = text;
         },didClickSureBtn: (){
           if (password == TLDDataManager.instance.password) {

@@ -38,7 +38,7 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                width: screenSize.width - 70,
+                width: screenSize.width - ScreenUtil().setWidth(150),
                 child: Text(_isShowMoney ? getMoneyStyleStr(widget.totalAmount.toString()) :'***',style : TextStyle(fontSize : 26,color : Color.fromARGB(255,51, 114, 255))),
               ),
               GestureDetector(
@@ -59,7 +59,7 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
           
           Container(
             padding: EdgeInsets.only(left : 0 ,top : 6),
-            child: Text('1.00TLD=1.00rmb',style: TextStyle(color:Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
+            child: Text('1.00TLD=1.00CNY',style: TextStyle(color:Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
           ),
 
           Container(

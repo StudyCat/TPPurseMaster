@@ -71,19 +71,45 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
               if (index == 0) {
                 changePurseName(context);
               } else if (index == 1) {
-                Navigator.push(
+                jugeHavePassword(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => TLDPurseSeetingBackWordPage(
-                              wallet: widget.wallet,
-                            )));
+                    () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TLDPurseSeetingBackWordPage(
+                                    wallet: widget.wallet,
+                                  )));
+                    },
+                    TLDCreatePursePageType.back,
+                    () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TLDPurseSeetingBackWordPage(
+                                    wallet: widget.wallet,
+                                  )));
+                    });
               } else if (index == 2) {
-                Navigator.push(
+                jugeHavePassword(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => TLDExportKeyPage(
-                              wallet: widget.wallet,
-                            )));
+                    () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TLDExportKeyPage(
+                                    wallet: widget.wallet,
+                                  )));
+                    },
+                    TLDCreatePursePageType.back,
+                    () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TLDExportKeyPage(
+                                    wallet: widget.wallet,
+                                  )));
+                    });
               } else {
                 _deletePurse(context);
               }
@@ -127,7 +153,6 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
     widget.wallet.name = newName;
     await dataBaseManager.openDataBase();
     await dataBaseManager.changeWalletName(widget.wallet);
-    await dataBaseManager.close();
 
     for (TLDWallet item in TLDDataManager.instance.purseList) {
       if (item.id == widget.wallet.id) {

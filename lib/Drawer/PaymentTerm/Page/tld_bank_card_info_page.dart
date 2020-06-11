@@ -89,7 +89,7 @@ class _TLDBankCardInfoPageState extends State<TLDBankCardInfoPage> {
     }
     if(_pramaterModel.quota.length == 0){
       Fluttertoast.showToast(
-                      msg: "请填写每日限额",
+                      msg: "请填写每日最低购买额度",
                       toastLength: Toast.LENGTH_SHORT,
                       timeInSecForIosWeb: 1);
                       return;
