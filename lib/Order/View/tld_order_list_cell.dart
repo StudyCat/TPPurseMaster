@@ -123,7 +123,7 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          Text(getTimeString(widget.orderListModel.createTime),style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
+          Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.orderListModel.createTime),[yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss]),style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
            Container(
               width: ScreenUtil().setWidth(122),
               height: ScreenUtil().setHeight(48),
