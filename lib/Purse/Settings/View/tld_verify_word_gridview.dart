@@ -46,11 +46,7 @@ class _TLDVerifyWordGridViewState extends State<TLDVerifyWordGridView> {
     if (widget.currentedIndex == null){
       return Colors.white;
     }else{
-      if (widget.currentedIndex == index){
-        return Theme.of(context).primaryColor;
-      }else{
         return Colors.white;
-      }
     }
   }
 
@@ -58,11 +54,11 @@ class _TLDVerifyWordGridViewState extends State<TLDVerifyWordGridView> {
     if (widget.currentedIndex == null){
       return Color.fromARGB(255, 51, 51, 51);
     }else{
-      if (widget.currentedIndex == index){
-        return Colors.white;
-      }else{
+      // if (widget.currentedIndex == index){
+      //   return Colors.white;
+      // }else{
         return Color.fromARGB(255, 51, 51, 51);
-      }
+      // }
     }
   }
 

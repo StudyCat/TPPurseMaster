@@ -108,7 +108,7 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
                 int payStatus = 0;
                 if (index == 2) {
                   isShowIcon = true;
-                  payStatus = _saleModel.payMethodVO.type;
+                  payStatus = _saleModel != null ? _saleModel.payMethodVO.type : 0;
                 }else if(index == 3){
                   content = widget.walletName;
                 }else if(index == 4){

@@ -2,6 +2,7 @@ import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/Purse/MyPurse/Model/tld_my_purse_model_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:date_format/date_format.dart';
 
 class TLDMyPurseRecordCell extends StatefulWidget {
   TLDMyPurseRecordCell({Key key,this.transferInfoModel,this.walletAddress}) : super(key: key);
@@ -22,16 +23,16 @@ class _TLDMyPurseRecordCellState extends State<TLDMyPurseRecordCell> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    
+  
+  }
+
+  @override
+  Widget build(BuildContext context) {
     if (widget.transferInfoModel.toWalletAddress == widget.walletAddress){
       isGetMoney = true;
     }else{
       isGetMoney = false;
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: ScreenUtil().setHeight(2)),
       child : ClipRRect(
@@ -102,7 +103,7 @@ class _TLDMyPurseRecordCellState extends State<TLDMyPurseRecordCell> {
        mainAxisAlignment: MainAxisAlignment.spaceBetween,
        mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Text(getTimeString(widget.transferInfoModel.createTime),style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51)),),
+        Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.transferInfoModel.createTime),[yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss]),style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51)),),
         Text('手续费' + widget.transferInfoModel.chargeValue + ' TLD',maxLines : 1 , style : TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153)),overflow: TextOverflow.ellipsis,
         )]
     ),

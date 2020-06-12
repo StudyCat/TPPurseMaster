@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../../CommonWidget/tld_clip_title_input_cell.dart';
 import '../View/tld_wechat_alipay_choice_qrcode_view.dart';
 import 'package:image_picker/image_picker.dart';
@@ -269,6 +270,13 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
 
    /*拍照*/
   void _takePhoto() async {
+    var status = await Permission.camera.status;
+    if (status == PermissionStatus.denied || status == PermissionStatus.restricted|| status == PermissionStatus.undetermined) {
+      Fluttertoast.showToast(msg: '请先开启相机权限',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      return;
+    }
+
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
     final String data = await FlutterQrReader.imgScan(image);
     if (data == null){
@@ -283,6 +291,12 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
 
   /*相册*/
 void  _openGallery() async {
+    var status = await Permission.camera.status;
+    if (status == PermissionStatus.denied || status == PermissionStatus.restricted|| status == PermissionStatus.undetermined) {
+      Fluttertoast.showToast(msg: '请先开启相册权限',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      return;
+    }
     File image = await ImagePicker.pickImage(source: ImageSource.gallery); 
     final String data = await FlutterQrReader.imgScan(image);
     if (data == null){

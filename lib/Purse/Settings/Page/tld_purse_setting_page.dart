@@ -153,7 +153,7 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
     widget.wallet.name = newName;
     await dataBaseManager.openDataBase();
     await dataBaseManager.changeWalletName(widget.wallet);
-
+    await dataBaseManager.closeDataBase();
     for (TLDWallet item in TLDDataManager.instance.purseList) {
       if (item.id == widget.wallet.id) {
         item.name = newName;
@@ -187,17 +187,16 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
             type: TLDAlertViewType.normal,
             alertString: '确定要删除该钱包？',
             didClickSureBtn: () {
-              _manager.deletePurse(widget.wallet, () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPurseSeetingBackWordPage(wallet: widget.wallet,type: TLDBackWordType.delete,verifySuccessCallBack: ()async{
+                TLDDataBaseManager dataBaseManager = TLDDataBaseManager();
+                await dataBaseManager.openDataBase();
+                await dataBaseManager.deleteDataBase(widget.wallet);
+                await dataBaseManager.closeDataBase();
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => TLDDeletePurseSuccessPage()));
-              }, (TLDError error) {
-                Fluttertoast.showToast(
-                    msg: error.msg,
-                    toastLength: Toast.LENGTH_SHORT,
-                    timeInSecForIosWeb: 1);
-              });
+              },)));
             },
           );
         });

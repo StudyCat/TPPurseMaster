@@ -11,7 +11,7 @@
     <uses-sdk android:minSdkVersion="18"/>
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="dragon_sword_purse"
+        android:label="屠龙刀"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity

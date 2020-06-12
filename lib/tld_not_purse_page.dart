@@ -1,3 +1,5 @@
+import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +18,16 @@ class TLDNotPurseHomePage extends StatefulWidget {
   _TLDNotPurseHomePageState createState() => _TLDNotPurseHomePageState();
 }
 
-class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> {
+class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> with WidgetsBindingObserver {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WidgetsBinding.instance.addObserver(this);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,4 +158,29 @@ class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> {
           MaterialPageRoute(builder: (context) => TLDImportPursePage()));
     }, TLDCreatePursePageType.import, null);
   }
+
+  //  @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   print("--" + state.toString());
+  //   switch (state) {
+  //     case AppLifecycleState.inactive: {
+  //       TLDIMManager.instance.isInBackState = true;
+  //     }// 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
+  //       break;
+  //     case AppLifecycleState.resumed:{
+  //       TLDIMManager.instance.isInBackState = false;
+  //       TLDIMManager.instance.connectClient();
+  //     }
+  //       break;
+  //     case AppLifecycleState.paused:{
+  //       TLDIMManager.instance.isInBackState = true;
+  //     } // 应用程序不可见，后台
+  //       break;
+  //     default : {
+  //       TLDIMManager.instance.isInBackState = true;
+  //     }
+  //       break;
+  //   }
+  // }
+
 }

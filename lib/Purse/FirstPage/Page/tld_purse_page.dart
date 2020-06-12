@@ -170,9 +170,9 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
   }
 
   void _getPurseInfoList(BuildContext context){
-    _totalAmount = 0.0;
-    _dataSource = [];
     _manager.getWalletListData((List purseInfoList){
+      _totalAmount = 0.0;
+      _dataSource = [];
       setState(() {
         for (TLDWalletInfoModel item in purseInfoList) {
           _totalAmount = _totalAmount + double.parse(item.value);

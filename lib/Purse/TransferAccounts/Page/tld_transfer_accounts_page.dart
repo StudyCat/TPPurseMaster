@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../View/tld_transfer_accounts_normal_row_view.dart';
 import '../View/tld_transfer_accounts_input_row_view.dart';
 import 'dart:async';
@@ -186,6 +187,13 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
   }
 
   Future _scanPhoto() async {
+    var status = await Permission.camera.status;
+     if (status == PermissionStatus.denied || status == PermissionStatus.restricted|| status == PermissionStatus.undetermined) {
+      Fluttertoast.showToast(msg: '请先开启相册权限',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      return;
+    }
+
     Navigator.push(context, MaterialPageRoute(builder:(context) => TLDScanQrCodePage(
       scanCallBack: (String result){
         _manager.getAddressFromQrCode(result, (String walletAddress){

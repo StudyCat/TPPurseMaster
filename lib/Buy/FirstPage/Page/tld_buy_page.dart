@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
@@ -97,15 +98,17 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
       setState(() {
         _isLoading = true;
       });
-    _modelManager.buyTLDCoin(pramaterModel, (){
+    _modelManager.buyTLDCoin(pramaterModel, (String orderNo){
       setState(() {
         _isLoading = false;
       });
       Fluttertoast.showToast(msg: '购买成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
-      _refreshController.requestRefresh();
-      _page = 1;
-      _loadBuyList(_keyword, _page);
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailOrderPage(orderNo: orderNo,isBuyer: true,))).then((value){
+        _refreshController.requestRefresh();
+        _page = 1;
+        _loadBuyList(_keyword, _page);
+      });
     }, (TLDError error){
       setState(() {
         _isLoading = false;

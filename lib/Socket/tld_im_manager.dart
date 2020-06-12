@@ -62,7 +62,7 @@ class TLDIMManager{
   List unreadMessage = [];//未读消息数组
   String talkAddress = '';//聊天地址
   IOWebSocketChannel channel;
-
+   bool isInBackState = false;
 
   TLDIMManager._internal() {
     // 初始化
@@ -102,15 +102,20 @@ class TLDIMManager{
         TLDDataBaseManager dataManager = TLDDataBaseManager();
         await dataManager.openDataBase();
         await dataManager.insertIMDataBase(result);
+        await dataManager.closeDataBase();
         eventBus.fire(TLDMessageEvent(result));
         if (isHaveUnreadMessage == true){
           eventBus.fire(TLDHaveUnreadMessageEvent(true)); 
         }
       }
     },onError: (error){
-      connectClient();
+      if (!this.isInBackState){
+        connectClient();
+      }
     },onDone: (){
-      connectClient();
+      if (!this.isInBackState){
+        connectClient();
+      }
     });
     timer = Timer.periodic(Duration(seconds : 30), (timer) { 
       sendHeartMessage();
@@ -139,6 +144,7 @@ class TLDIMManager{
     TLDDataBaseManager dataManager = TLDDataBaseManager();
     await dataManager.openDataBase();
     List unReadListInDB = await dataManager.searchUnReadMessageList();
+    await dataManager.closeDataBase();
     this.unreadMessage.addAll(unReadListInDB);
   }
 
@@ -159,6 +165,7 @@ class TLDIMManager{
       _removeUnreadMessageWithAddress(walletAddress);
     }
     List result = await manager.searchIMDataBase(walletAddress, page);
+    await manager.closeDataBase();
     success(result);
   }
 

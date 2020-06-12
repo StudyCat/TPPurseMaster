@@ -6,9 +6,19 @@ import '../View/tld_purse_setting_backup_word_gridview.dart';
 import 'tld_verify_word_page.dart';
 import 'dart:convert';
 
+enum TLDBackWordType{
+  normal,
+  delete
+}
+
 class TLDPurseSeetingBackWordPage extends StatefulWidget {
-  TLDPurseSeetingBackWordPage({Key key,this.wallet}) : super(key: key);
+  TLDPurseSeetingBackWordPage({Key key,this.wallet,this.type = TLDBackWordType.normal,this.verifySuccessCallBack}) : super(key: key);
+
+  final TLDBackWordType type;
+
   final TLDWallet wallet;
+
+  final Function verifySuccessCallBack;
   @override
   _TLDPurseSeetingBackWordPageState createState() => _TLDPurseSeetingBackWordPageState();
 }
@@ -63,7 +73,7 @@ class _TLDPurseSeetingBackWordPageState extends State<TLDPurseSeetingBackWordPag
             height: ScreenUtil().setHeight(80),
             child: CupertinoButton(child: Text('下一步',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){
               print(_words);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDVerifyWordPage(words: _words,)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDVerifyWordPage(words: _words,type: widget.type,verifySuccessCallBack: widget.verifySuccessCallBack,)));
             }), 
           ),
         ],

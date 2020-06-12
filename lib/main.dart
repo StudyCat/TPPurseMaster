@@ -3,6 +3,7 @@ import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_c
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'tld_tabbar_page.dart';
 import 'Purse/Settings/Page/tld_purse_setting_page.dart';
 import 'Purse/Settings/Page/tld_purse_backup_word_success_page.dart';
@@ -16,8 +17,9 @@ void main(){
 
   Future<void> initPlatformState() async {
 
-    jPush.getRegistrationID().then((rid) {
-      print('---->rid:${rid}');
+    jPush.getRegistrationID().then((rid)  {
+      TLDDataManager _manager = TLDDataManager.instance;
+      _manager.registrationID = rid;
     });
 
     jPush.setup(

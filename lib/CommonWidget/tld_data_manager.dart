@@ -20,6 +20,7 @@ class TLDDataManager{
 
   List purseList;
 
+  String registrationID = '';
 
   TLDDataManager._internal() {
     // 初始化

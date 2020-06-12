@@ -115,6 +115,10 @@ class TLDDataBaseManager {
     });
   }
 
+  closeDataBase()async{
+    await db.close();
+  }
+
 
   Future insertIMDataBase(List messageList) async{
     String valuesStr = '';

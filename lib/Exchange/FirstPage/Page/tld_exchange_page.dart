@@ -1,3 +1,4 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_choose_payment_page.dart';
@@ -157,7 +158,8 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
           } else if (index == 5) {
             if (_formModel.infoModel != null){
               double amount = double.parse(_formModel.saleAmount) * double.parse(_formModel.infoModel.rate);
-              content = amount.toString() + 'TLD';
+              String amountString = (NumUtil.getNumByValueDouble(amount, 3)).toStringAsFixed(3);
+              content = amountString + 'TLD';
             }else{
               content = '0TLD';
             }
@@ -165,7 +167,8 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
             if (_formModel.infoModel != null){
               double amount = double.parse(_formModel.saleAmount) * double.parse(_formModel.infoModel.rate);
               double trueAmount = double.parse(_formModel.saleAmount) - amount;
-              content = '¥' + trueAmount.toString();
+              String trueAmountString = (NumUtil.getNumByValueDouble(trueAmount, 3)).toStringAsFixed(3);
+              content = '¥' + trueAmountString;
             }else{
               content = '¥0';
             }

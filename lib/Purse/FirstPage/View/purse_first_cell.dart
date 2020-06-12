@@ -39,7 +39,7 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
             children: <Widget>[
               Container(
                 width: screenSize.width - ScreenUtil().setWidth(150),
-                child: Text(_isShowMoney ? getMoneyStyleStr(widget.totalAmount.toString()) :'***',style : TextStyle(fontSize : 26,color : Color.fromARGB(255,51, 114, 255))),
+                child: Text(_isShowMoney ? getMoneyStyleStr(widget.totalAmount.toString()) :'***',style : TextStyle(fontSize : 26,color : Color.fromARGB(255,22, 128, 205))),
               ),
               GestureDetector(
                 onTap: (){
@@ -51,7 +51,7 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
                 width: ScreenUtil().setWidth(80),
                 height: ScreenUtil().setHeight(40),
                 padding : EdgeInsets.only(right : 0,left: 10),
-                child:  _isShowMoney ? Icon(IconData(0xe60c,fontFamily: 'appIconFonts'),color: Color.fromARGB(255, 51, 114, 255),size: ScreenUtil().setWidth(50),) : Icon(IconData(0xe648,fontFamily: 'appIconFonts'),color: Color.fromARGB(255, 51, 114, 255,),size: ScreenUtil().setWidth(50)),
+                child:  _isShowMoney ? Icon(IconData(0xe60c,fontFamily: 'appIconFonts'),color: Color.fromARGB(255, 22, 128, 205),size: ScreenUtil().setWidth(50),) : Icon(IconData(0xe648,fontFamily: 'appIconFonts'),color: Color.fromARGB(255,22, 128, 205),size: ScreenUtil().setWidth(50)),
               ),
               )
             ],
@@ -64,7 +64,7 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
 
           Container(
             padding: EdgeInsets.only(top : 10),
-            height: 40,
+            height: ScreenUtil().setHeight(80),
             child: Row(
               mainAxisAlignment : MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -82,7 +82,7 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
       return Container(
                  width : scrrenWidth / 2.0 - 30,
                   child: RaisedButton(
-                  color: Color.fromARGB(255,51, 114, 255),
+                  color: Color.fromARGB(255,22, 128, 205),
               onPressed: () => didClickCallBack(),
                   child: ClipRRect(
            borderRadius: BorderRadius.all(Radius.circular(4.0)),

@@ -93,10 +93,12 @@ class TLDBuyModelManager{
     }, (error) => failure(error));
   }
 
-  void buyTLDCoin(TLDBuyPramaterModel pramaterModel,Function success,Function(TLDError) failure){
+  void buyTLDCoin(TLDBuyPramaterModel pramaterModel,Function(String) success,Function(TLDError) failure){
     TLDBaseRequest request = TLDBaseRequest({'buyCount':pramaterModel.buyCount,'buyerAddress':pramaterModel.buyerAddress,'sellNo':pramaterModel.sellNo,'sign':'sadasdasd'}, 'order/create');
     request.postNetRequest((dynamic value) {
-      success();
+      Map data = value;
+      String orderNo = data['orderNo'];     
+      success(orderNo);
      }, (error) => failure(error));
   }
 }

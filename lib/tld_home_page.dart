@@ -39,7 +39,7 @@ class _TLDHomePageState extends State<TLDHomePage> {
   void _searchAllPurse()async{
     await _manager.openDataBase();
      List allPurse = await _manager.searchAllWallet();
-
+    await _manager.closeDataBase();
     allPurse == null ? TLDDataManager.instance.purseList = [] : TLDDataManager.instance.purseList = List.from(allPurse);
 
       if(allPurse != null && allPurse.length > 0){
@@ -48,6 +48,7 @@ class _TLDHomePageState extends State<TLDHomePage> {
         });
       }
   }
+
 
   @override
   Widget build(BuildContext context) {

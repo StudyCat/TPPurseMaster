@@ -224,12 +224,17 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
                   setState(() {
                     isOpen = !isOpen;
                   });
+                  if (_detailOrderModel.payMethodVO.type == 2){
+                      showDialog(context: context,builder: (context) => TLDDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
+                  }else if (_detailOrderModel.payMethodVO.type == 2){
+                      showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));                    
+                  }
                 },
                 didClickQrCodeCallBack: (){
                   if (_detailOrderModel.payMethodVO.type == 2){
-                      showDialog(context: context,builder: (context) => TLDDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,));
+                      showDialog(context: context,builder: (context) => TLDDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
                   }else{
-                      showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,));                    
+                      showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));                    
                   }
                 },
               ),

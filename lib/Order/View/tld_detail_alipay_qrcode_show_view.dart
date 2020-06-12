@@ -11,9 +11,11 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class TLDDetailAlipayQrCodeShowView extends StatefulWidget {
-  TLDDetailAlipayQrCodeShowView({Key key,this.qrCode}) : super(key: key);
+  TLDDetailAlipayQrCodeShowView({Key key,this.qrCode,this.amount}) : super(key: key);
 
   final String qrCode;
+
+  final String amount;
 
   @override
   _TLDDetailAlipayQrCodeShowViewState createState() => _TLDDetailAlipayQrCodeShowViewState();
@@ -38,6 +40,7 @@ class _TLDDetailAlipayQrCodeShowViewState extends State<TLDDetailAlipayQrCodeSho
           width: ScreenUtil().setWidth(480),
           child: CupertinoButton(
             color: Colors.white,
+            padding: EdgeInsets.all(0),
             child: Text('保存二维码',style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(28)),),
             onPressed: ()async{
               Uint8List bytes = await _capturePng();
@@ -53,10 +56,27 @@ class _TLDDetailAlipayQrCodeShowViewState extends State<TLDDetailAlipayQrCodeSho
 
   Widget _getStackQrCodeView(){
     return Stack(
-      alignment : FractionalOffset(0.5,0.6),
+      alignment : FractionalOffset(0.5,0.7),
       children: <Widget>[
         Image.asset('assetss/images/alipay_qrcode.png',width:ScreenUtil().setWidth(584),height: ScreenUtil().setWidth(910),fit: BoxFit.fill,),
-        QrImage(data: widget.qrCode,size :ScreenUtil().setWidth(340)),
+        _getQRCodeImageAndPriceLabel()
+      ],
+    );
+  }
+
+    Widget _getQRCodeImageAndPriceLabel(){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        RepaintBoundary(
+          key : repainKey,
+          child: QrImage(data: widget.qrCode,size :ScreenUtil().setWidth(340)),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top : ScreenUtil().setHeight(60)),
+          child: Text('支付：¥'+widget.amount,style:TextStyle(color : Colors.white,fontSize: ScreenUtil().setSp(32),decoration: TextDecoration.none)),
+        )
       ],
     );
   }

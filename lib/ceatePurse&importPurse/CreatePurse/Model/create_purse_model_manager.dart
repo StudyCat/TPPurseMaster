@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:hex/hex.dart';
 import 'package:ed25519_hd_key/ed25519_hd_key.dart';
 import 'package:web3dart/web3dart.dart';
@@ -51,6 +52,7 @@ class TLDCreatePurseModelManager {
     TLDDataBaseManager manager = TLDDataBaseManager();
     await manager.openDataBase();
     await manager.insertDataBase(tldWallet);
+    await manager.closeDataBase();
   }
 
   Future<TLDWallet> _getWalletWithNoting() async{
@@ -110,13 +112,21 @@ class TLDCreatePurseModelManager {
     TLDDataBaseManager dataBase = TLDDataBaseManager();
     await dataBase.openDataBase();
     List purses = await dataBase.searchAllWallet();
+    await dataBase.closeDataBase();
     return purses;
   }
 
 
   void createServiceWallet(TLDWallet wallet,Function(TLDWallet) success,Function(TLDError) failure){
     String walletAddree = wallet.address;
-    TLDBaseRequest request = TLDBaseRequest({'walletAddress':walletAddree},'wallet/createWallet');
+    String registorId = TLDDataManager.instance.registrationID;
+    Map pramater;
+    if (registorId.length == 0){
+      pramater = {'walletAddress':walletAddree};
+    }else{
+      pramater = {'walletAddress':walletAddree,'registrationId':registorId};
+    }
+    TLDBaseRequest request = TLDBaseRequest(pramater,'wallet/createWallet');
     request.postNetRequest((dynamic data) {
       success(wallet);
       } , (TLDError error){

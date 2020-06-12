@@ -8,7 +8,7 @@ class TLDMessageModelManager{
      await _manager.openDataBase();
      List fromList = await _manager.searchFromAddressChatGroup();
      List toList = await _manager.searchToAddressChatGroup();
-
+    await _manager.closeDataBase();
     List groupList = [];
     List deleteList = [];
     for (TLDMessageModel fromMessageModel in fromList) {

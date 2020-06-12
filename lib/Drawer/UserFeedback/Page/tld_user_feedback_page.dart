@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../../CommonWidget/tld_clip_title_input_cell.dart';
 import '../View/tld_user_feedback_question_desc_cell.dart';
 import '../View/tld_user_feedback_pick_pic_cell.dart';
@@ -256,6 +257,12 @@ class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
 
    /*拍照*/
   void _takePhoto() async {
+    var status = await Permission.camera.status;
+    if (status == PermissionStatus.denied || status == PermissionStatus.restricted || status == PermissionStatus.undetermined) {
+      Fluttertoast.showToast(msg: '请先开启相机权限',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      return;
+    }
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
     if (image != null) {
@@ -267,6 +274,12 @@ class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
 
   /*相册*/
 void  _openGallery() async {
+  var status = await Permission.camera.status;
+    if (status == PermissionStatus.denied || status == PermissionStatus.restricted|| status == PermissionStatus.undetermined) {
+      Fluttertoast.showToast(msg: '请先开启相册权限',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      return;
+    }
     var image = await ImagePicker.pickImage(source: ImageSource.gallery); 
     if (image != null) {
      setState(() {

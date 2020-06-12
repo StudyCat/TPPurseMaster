@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,9 +11,11 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class TLDDetailWechatQrCodeShowView extends StatefulWidget {
-  TLDDetailWechatQrCodeShowView({Key key,this.qrCode}) : super(key: key);
+  TLDDetailWechatQrCodeShowView({Key key,this.qrCode,this.amount}) : super(key: key);
 
   final String qrCode;
+
+  final String amount;
 
   @override
   _TLDDetailWechatQrCodeShowViewState createState() => _TLDDetailWechatQrCodeShowViewState();
@@ -39,6 +40,7 @@ class _TLDDetailWechatQrCodeShowViewState extends State<TLDDetailWechatQrCodeSho
           width: ScreenUtil().setWidth(480),
           child: CupertinoButton(
             color: Colors.white,
+            padding: EdgeInsets.all(0),
             child: Text('保存二维码',style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(28)),),
             onPressed: () async {
               Uint8List bytes = await _capturePng();
@@ -54,12 +56,26 @@ class _TLDDetailWechatQrCodeShowViewState extends State<TLDDetailWechatQrCodeSho
 
   Widget _getStackQrCodeView(){
     return Stack(
-      alignment : FractionalOffset(0.5,0.30),
+      alignment : FractionalOffset(0.5,0.37),
       children: <Widget>[
         Image.asset('assetss/images/wechat_qrcode.png',width:ScreenUtil().setWidth(584),height: ScreenUtil().setWidth(792),fit: BoxFit.fill,),
+        _getQRCodeImageAndPriceLabel()
+      ],
+    );
+  }
+
+  Widget _getQRCodeImageAndPriceLabel(){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
         RepaintBoundary(
           key : repainKey,
           child: QrImage(data: widget.qrCode,size :ScreenUtil().setWidth(340)),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top : ScreenUtil().setHeight(60)),
+          child: Text('支付：¥'+widget.amount,style:TextStyle(color : Colors.white,fontSize: ScreenUtil().setSp(32),decoration: TextDecoration.none)),
         )
       ],
     );
