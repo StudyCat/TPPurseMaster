@@ -75,7 +75,6 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
       }
      String addressListJson = jsonEncode(addressList);
     TLDIMManager manager = TLDIMManager.instance;
-    manager.walletAddress = addressListJson;
     manager.connectClient();
   }
 

@@ -22,10 +22,13 @@ class TLDDataManager{
 
   String registrationID = '';
 
+  String userToken;
+
   TLDDataManager._internal() {
     // 初始化
-
    getPassword();
+
+   getUserToken();
   }
 
 
@@ -34,6 +37,10 @@ class TLDDataManager{
     password = pre.getString('password');
   } 
 
+  Future<String> getUserToken()async{
+    SharedPreferences pre = await SharedPreferences.getInstance();
+    userToken = pre.getString('userToken');
+  }
 
 
   static TLDDataManager _getInstance() {

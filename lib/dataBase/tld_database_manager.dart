@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +9,7 @@ import 'dart:io';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:web3dart/credentials.dart';
+import 'package:file_picker/file_picker.dart';
 
 final String tableWallet = 'wallet';
 final String walletId = '_id';
@@ -23,6 +27,8 @@ final String toIM = 'toAddress';
 final String unreadIM = 'unread';
 final String createTimeIM = 'createTime';
 final String idIM = '_id';
+final String orderNoIM = 'orderNo';
+final String messageTypeIM = 'messageType';
 
 class TLDWallet{
   int id;
@@ -106,11 +112,13 @@ class TLDDataBaseManager {
           CREATE TABLE $tableIM (
             $idIM INTEGER PRIMARY KEY, 
             $contentTypeIM INTEGER, 
-            $contentIM TEXT,
+            $contentIM LONGTEXT,
             $fromIM TEXT,
             $toIM TEXT,
             $unreadIM INTEGER,
-            $createTimeIM INTEGER)
+            $createTimeIM INTEGER,
+            $orderNoIM TEXT,
+            $messageTypeIM INTEGER)
           ''');    
     });
   }
@@ -121,25 +129,53 @@ class TLDDataBaseManager {
 
 
   Future insertIMDataBase(List messageList) async{
+    for (TLDMessageModel model in messageList) {
+        if (model.contentType == 2){
+          String filePath = await this._saveImageFileInMemory(model.content);
+          model.content = filePath;
+        }
+    }
+
     String valuesStr = '';
     for (int i = 0; i < messageList.length ; i++) {
       TLDMessageModel model = messageList[i];
       int unread = model.unread ? 1 : 0;
-      String str = '(\"'+model.content+'\",'+ '${model.contentType}'+',\"'+model.fromAddress+'\",\"'+model.toAddress+'\",'+'$unread'+','+'${model.createTime}'+')';
+      String str = '(\"'+model.content+'\",'+ '${model.contentType}'+',\"'+model.fromAddress+'\",\"'+model.toAddress+'\",'+'$unread'+','+'${model.createTime}'+',\"'+ '${model.orderNo}'+'\",'+'${model.messageType}' +')';
       if(i == 0){
         valuesStr = str;
       }else{
         valuesStr = valuesStr + ',' + str;
       }
     }
-    String sql = 'INSERT INTO $tableIM($contentIM,$contentTypeIM,$fromIM,$toIM,$unreadIM,$createTimeIM) VALUES'+valuesStr;
+    String sql = 'INSERT INTO $tableIM($contentIM,$contentTypeIM,$fromIM,$toIM,$unreadIM,$createTimeIM,$orderNoIM,$messageTypeIM) VALUES'+valuesStr;
     await db.rawInsert(sql);
   }
 
+  //存储Base64图片到本地，存储本地路径
+  Future<String> _saveImageFileInMemory(String base64ImageString) async{
+    Uint8List imageByteList = base642Image(base64ImageString);
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+    String floderPath = appDocPath+"/"+"IM";
+    var file = Directory(floderPath);
+    try {
+      bool exists = await file.exists();
+      if (!exists) {
+        await file.create();
+      }
+    } catch (e) {
+      print(e);
+    }
+    String filePath =  floderPath +'/'+ base64ImageString.substring(0,20) + '.png';
+    var pngFile = File(filePath);
+    await pngFile.writeAsBytes(imageByteList);
+    return filePath;
+  }
 
-  Future<List> searchIMDataBase(String walletAddress,int page) async{
+//搜索历史消息（通过orderNo为条件）
+  Future<List> searchIMDataBase(String orderNo,int page) async{
     int pageLimit = page * 10;
-    List<Map> maps = await db.rawQuery('SELECT * FROM $tableIM WHERE $toIM = \"$walletAddress\" or $fromIM = \"$walletAddress\" ORDER BY _id DESC LIMIT $pageLimit,10');
+    List<Map> maps = await db.rawQuery('SELECT * FROM $tableIM WHERE $orderNoIM = \"$orderNo\" ORDER BY _id DESC LIMIT $pageLimit,10');
      if (maps == null || maps.length == 0) {
       return [];
     }
@@ -152,13 +188,30 @@ class TLDDataBaseManager {
   }
 
   //进入到聊天界面后把所有未读消息置位已读
-  updateUnreadMessageType(String walletAddress) async{
-    await db.rawUpdate('UPDATE  $tableIM SET $unreadIM = 0 WHERE $toIM = \"$walletAddress\" or $fromIM = \"$walletAddress\"');
+  updateUnreadMessageType(String orderNo) async{
+    await db.rawUpdate('UPDATE  $tableIM SET $unreadIM = 0 WHERE $orderNoIM = \"$orderNo\"');
   }
 
 //搜寻所有未读消息
   Future<List> searchUnReadMessageList()async{
+    if (!db.isOpen){
+      await openDataBase();
+    }
      List maps = await db.rawQuery('SELECT * FROM $tableIM WHERE $unreadIM = 1');
+     if (maps == null || maps.length == 0) {
+      return [];
+    }
+
+    List<TLDMessageModel> messages = [];
+    for (int i = 0; i < maps.length; i++) {
+      messages.insert(0, TLDMessageModel.fromJson(maps[i]));
+    }
+    return messages;
+  }
+
+  //搜索数据库中以orderNo分组的IM聊天
+  Future<List> searchOrderNoChatGroup() async{
+    List<Map> maps = await db.rawQuery('SELECT * FROM $tableIM as m1 WHERE m1._id IN(SELECT max(_id) from $tableIM GROUP BY $orderNoIM) GROUP BY m1.$orderNoIM');
      if (maps == null || maps.length == 0) {
       return [];
     }

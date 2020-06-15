@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDInputView extends StatefulWidget {
-  TLDInputView({Key key,this.selfAddress,this.otherGuyAddress,this.beginEditingCallBack,this.didClickCameraBtnCallBack,this.didClickPhotoBtnCallBack}) : super(key: key);
+  TLDInputView({Key key,this.selfAddress,this.otherGuyAddress,this.orderNo,this.beginEditingCallBack,this.didClickCameraBtnCallBack,this.didClickPhotoBtnCallBack}) : super(key: key);
 
   final String selfAddress;
 
@@ -15,6 +15,8 @@ class TLDInputView extends StatefulWidget {
   final Function didClickCameraBtnCallBack;
 
   final Function didClickPhotoBtnCallBack;
+
+  final String orderNo;
 
   @override
   _TLDInputViewState createState() => _TLDInputViewState();
@@ -144,6 +146,8 @@ class _TLDInputViewState extends State<TLDInputView> {
                       messageModel.toAddress = widget.otherGuyAddress;
                       messageModel.contentType = 1;
                       messageModel.createTime = DateTime.now().millisecondsSinceEpoch;
+                      messageModel.messageType = 2;
+                      messageModel.orderNo = widget.orderNo;
                       TLDIMManager manager = TLDIMManager.instance;
                       manager.sendMessage(messageModel);
                       _controller.text = '';

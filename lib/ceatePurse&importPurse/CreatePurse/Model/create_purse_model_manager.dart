@@ -6,6 +6,7 @@ import 'package:bip39/bip39.dart' as bip39;
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:hex/hex.dart';
 import 'package:ed25519_hd_key/ed25519_hd_key.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web3dart/web3dart.dart';
 import 'dart:math';
 import '../../../dataBase/tld_database_manager.dart';
@@ -14,6 +15,19 @@ import 'package:web3dart/crypto.dart';
 import '../../../Base/tld_base_request.dart';
 
 class TLDCreatePurseModelManager {
+
+  void createSafeSecretPasswordRegisterUser(Function success,Function(TLDError) failure){
+    String registerId = TLDDataManager.instance.registrationID;
+    TLDBaseRequest request = TLDBaseRequest({'registrationId': registerId},'wallet/registerUser');
+    request.postNetRequest((value) async{
+      String token = value;
+      SharedPreferences perference = await SharedPreferences.getInstance();
+      perference.setString('userToken',token);
+      TLDDataManager.instance.userToken = token;
+      success();
+    }, (error)=> failure(error));
+  }
+
   Future createPurse(String password, Function(TLDWallet) success,Function(TLDError) failure) async {
     TLDWallet wallet = await _getWalletWithNoting();
     createServiceWallet(wallet, (TLDWallet wallet)async{
@@ -27,7 +41,7 @@ class TLDCreatePurseModelManager {
     if (await _isHaveSamePurse(wallet)){
       failure(TLDError(800,'已拥有该钱包'));
     }else{
-      searchPurseIsExist(wallet.address, ()async{
+      insertServiceWallet(wallet, (TLDWallet wallet)async{
         await _insertDB(wallet);
         success(wallet);
       }, (error) => failure(error));
@@ -39,7 +53,7 @@ class TLDCreatePurseModelManager {
      if (await _isHaveSamePurse(wallet)){
        failure(TLDError(800,'已拥有该钱包'));
     }else{
-       searchPurseIsExist(wallet.address, ()async{
+      insertServiceWallet(wallet, (TLDWallet wallet)async{
         await _insertDB(wallet);
         success(wallet);
       }, (error) => failure(error));
@@ -116,15 +130,15 @@ class TLDCreatePurseModelManager {
     return purses;
   }
 
-
+  //服务端创建钱包
   void createServiceWallet(TLDWallet wallet,Function(TLDWallet) success,Function(TLDError) failure){
     String walletAddree = wallet.address;
-    String registorId = TLDDataManager.instance.registrationID;
+    String userToken = TLDDataManager.instance.userToken;
     Map pramater;
-    if (registorId.length == 0){
+    if (userToken.length == 0){
       pramater = {'walletAddress':walletAddree};
     }else{
-      pramater = {'walletAddress':walletAddree,'registrationId':registorId};
+      pramater = {'walletAddress':walletAddree,'userToken':userToken};
     }
     TLDBaseRequest request = TLDBaseRequest(pramater,'wallet/createWallet');
     request.postNetRequest((dynamic data) {
@@ -134,13 +148,22 @@ class TLDCreatePurseModelManager {
         } );
   }
 
-  void searchPurseIsExist(String walletAddress,Function success,Function(TLDError) failure){
-      List addressList = [walletAddress];
-      String addressListJson = jsonEncode(addressList);
-      TLDBaseRequest request = TLDBaseRequest({"list":addressListJson}, 'wallet/queryWallet');
-      request.postNetRequest((dynamic data) {
-      success();
-       }, (error)=> failure(error));
+  //服务端导入钱包
+  void insertServiceWallet(TLDWallet wallet,Function(TLDWallet) success,Function(TLDError) failure){
+    String walletAddree = wallet.address;
+    String userToken = TLDDataManager.instance.userToken;
+    Map pramater;
+    if (userToken.length == 0){
+      pramater = {'walletAddress':walletAddree};
+    }else{
+      pramater = {'walletAddress':walletAddree,'userToken':userToken};
+    }
+    TLDBaseRequest request = TLDBaseRequest(pramater,'wallet/importWallet');
+    request.postNetRequest((dynamic data) {
+      success(wallet);
+      } , (TLDError error){
+        failure(error);
+        } );
   }
 
 }

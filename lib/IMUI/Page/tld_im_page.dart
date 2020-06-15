@@ -26,12 +26,14 @@ import '../View/tld_im_other_user_time_image_message_cell.dart';
 import '../View/tld_im_user_time_image_message_cell.dart';
 
 class TLDIMPage extends StatefulWidget {
-  TLDIMPage({Key key, this.selfWalletAddress, this.otherGuyWalletAddress})
+  TLDIMPage({Key key, this.selfWalletAddress, this.otherGuyWalletAddress,this.orderNo})
       : super(key: key);
 
   final String selfWalletAddress;
 
   final String otherGuyWalletAddress;
+
+  final String orderNo;
 
   @override
   _TLDIMPageState createState() => _TLDIMPageState();
@@ -75,7 +77,7 @@ class _TLDIMPageState extends State<TLDIMPage> {
   }
 
   void getMessageList(int page) {
-    _manager.getMsssageList(widget.otherGuyWalletAddress, page,
+    _manager.getMsssageList(widget.orderNo, page,
         (List messages) {
       if (page == 0) {
         setState(() {
@@ -171,6 +173,8 @@ class _TLDIMPageState extends State<TLDIMPage> {
       messageModel.toAddress = widget.otherGuyWalletAddress;
       messageModel.contentType = 2;
       messageModel.createTime = DateTime.now().millisecondsSinceEpoch;
+      messageModel.messageType = 2;
+      messageModel.orderNo = widget.orderNo;
       TLDIMManager manager = TLDIMManager.instance;
       manager.sendMessage(messageModel);
     }, (TLDError error) {
@@ -268,6 +272,7 @@ class _TLDIMPageState extends State<TLDIMPage> {
           child: _getFreshWidget(context),
         ),
         TLDInputView(
+          orderNo: widget.orderNo,
           selfAddress: widget.selfWalletAddress,
           otherGuyAddress: widget.otherGuyWalletAddress,
           beginEditingCallBack: () {

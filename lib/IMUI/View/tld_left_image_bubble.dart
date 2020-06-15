@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +19,14 @@ class TLDLeftImageBubbleView extends StatefulWidget {
 class _TLDLeftImageBubbleViewState extends State<TLDLeftImageBubbleView> {
   @override
   Widget build(BuildContext context) {
+    File file = File(widget.imageUrl);
    return Container(
       padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
       decoration: BoxDecoration(
         color : Colors.white,
         borderRadius : BorderRadius.only(topRight: Radius.circular(20),bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
       ),
-       child: CachedNetworkImage(imageUrl: widget.imageUrl,fit: BoxFit.fill,),
+       child: Image.file(file),
     );
   }
 }

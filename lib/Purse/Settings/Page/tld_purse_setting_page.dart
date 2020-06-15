@@ -26,14 +26,11 @@ class TLDPurseSettingPage extends StatefulWidget {
 }
 
 class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
-  List titles = [
-    '更改钱包名称',
-    '备份钱包助记词',
-    '导出私钥',
-    '删除钱包',
-  ];
+  List titles;
 
   TLDSettingModelManager _manager;
+
+  bool hasMnemonicWord = true;
 
   @override
   void initState() {
@@ -41,6 +38,14 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
     super.initState();
 
     _manager = TLDSettingModelManager();
+
+    if (widget.wallet.mnemonic.length != null && widget.wallet.mnemonic.length > 0){
+      hasMnemonicWord = true;
+      titles = [ '更改钱包名称','备份钱包助记词','导出私钥','删除钱包',];
+    }else{
+      hasMnemonicWord = false;
+      titles = [ '更改钱包名称','导出私钥','删除钱包',];
+    }  
   }
 
   @override
@@ -63,7 +68,7 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
 
   Widget _getBodyWidget(BuildContext context) {
     return ListView.builder(
-        itemCount: 4,
+        itemCount: titles.length,
         itemBuilder: (BuildContext context, int index) {
           return TLDPurseSettingCell(
             title: titles[index],
@@ -71,51 +76,67 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
               if (index == 0) {
                 changePurseName(context);
               } else if (index == 1) {
-                jugeHavePassword(
-                    context,
-                    () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TLDPurseSeetingBackWordPage(
-                                    wallet: widget.wallet,
-                                  )));
-                    },
-                    TLDCreatePursePageType.back,
-                    () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TLDPurseSeetingBackWordPage(
-                                    wallet: widget.wallet,
-                                  )));
-                    });
+                if (hasMnemonicWord){
+                  _backUpMnemonicWord();
+                } else{
+                  _getPrivateKey();
+                }
               } else if (index == 2) {
-                jugeHavePassword(
-                    context,
-                    () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TLDExportKeyPage(
-                                    wallet: widget.wallet,
-                                  )));
-                    },
-                    TLDCreatePursePageType.back,
-                    () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TLDExportKeyPage(
-                                    wallet: widget.wallet,
-                                  )));
-                    });
+                if (hasMnemonicWord){
+                  _getPrivateKey();
+                }else{
+                  _deletePurse(context);
+                }
               } else {
                 _deletePurse(context);
               }
             },
           );
         });
+  }
+
+  void _backUpMnemonicWord(){
+    jugeHavePassword(
+                    context,
+                    () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TLDPurseSeetingBackWordPage(
+                                    wallet: widget.wallet,
+                                  )));
+                    },
+                    TLDCreatePursePageType.back,
+                    () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TLDPurseSeetingBackWordPage(
+                                    wallet: widget.wallet,
+                                  )));
+                    });
+  }
+
+  void _getPrivateKey(){
+    jugeHavePassword(
+                    context,
+                    () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TLDExportKeyPage(
+                                    wallet: widget.wallet,
+                                  )));
+                    },
+                    TLDCreatePursePageType.back,
+                    () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TLDExportKeyPage(
+                                    wallet: widget.wallet,
+                                  )));
+                    });
   }
 
   void changePurseName(BuildContext context) {
@@ -186,17 +207,30 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
             title: '警告',
             type: TLDAlertViewType.normal,
             alertString: '确定要删除该钱包？',
-            didClickSureBtn: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPurseSeetingBackWordPage(wallet: widget.wallet,type: TLDBackWordType.delete,verifySuccessCallBack: ()async{
+            didClickSureBtn: () async {
+              if (hasMnemonicWord){
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPurseSeetingBackWordPage(wallet: widget.wallet,type: TLDBackWordType.delete,verifySuccessCallBack: ()async{
                 TLDDataBaseManager dataBaseManager = TLDDataBaseManager();
                 await dataBaseManager.openDataBase();
                 await dataBaseManager.deleteDataBase(widget.wallet);
                 await dataBaseManager.closeDataBase();
+                TLDDataManager.instance.purseList.remove(widget.wallet);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => TLDDeletePurseSuccessPage()));
               },)));
+              }else{
+                TLDDataBaseManager dataBaseManager = TLDDataBaseManager();
+                await dataBaseManager.openDataBase();
+                await dataBaseManager.deleteDataBase(widget.wallet);
+                await dataBaseManager.closeDataBase();
+                TLDDataManager.instance.purseList.remove(widget.wallet);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TLDDeletePurseSuccessPage()));
+              }
             },
           );
         });

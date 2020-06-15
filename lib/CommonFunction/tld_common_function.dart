@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../CommonWidget/tld_data_manager.dart';
@@ -5,6 +7,11 @@ import '../CommonWidget/tld_alert_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:date_format/date_format.dart';
+import 'dart:async';
+import 'dart:convert' as convert;
+import 'dart:io';
+
+
 
 void jugeHavePassword(BuildContext context,Function passwordRightCallBack,TLDCreatePursePageType type,Function setPasswordSuccessCallBack){
    if(TLDDataManager.instance.password == null){
@@ -115,5 +122,19 @@ void jugeHavePassword(BuildContext context,Function passwordRightCallBack,TLDCre
   String getTimeString(int date){
     return formatDate(DateTime.fromMillisecondsSinceEpoch(date),[yyyy,'.',mm,'.',dd]);
   }
+
+    //图片转base64
+   Future<String> imageFile2Base64(File file) async {
+    List<int> imageBytes = await file.readAsBytes();
+    return convert.base64Encode(imageBytes);
+  }
+
+ /*
+  * 将Base64字符串的图片转换成图片
+  */
+   Uint8List base642Image(String base64Txt) {
+    Uint8List decodeTxt =  convert.base64Decode(base64Txt);
+    return decodeTxt;
+   }
 
  

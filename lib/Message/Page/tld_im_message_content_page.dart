@@ -83,7 +83,7 @@ class _TLDIMMessageContentPageState extends State<TLDIMMessageContentPage> with 
       selfAddress = messageModel.toAddress;
       toAddress = messageModel.fromAddress;
     }
-    Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress:selfAddress,otherGuyWalletAddress: toAddress,))).then((value) => _searchIMChatGroup());
+    Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress:selfAddress,otherGuyWalletAddress: toAddress,orderNo: messageModel.orderNo,))).then((value) => _searchIMChatGroup());
   }
 
   @override

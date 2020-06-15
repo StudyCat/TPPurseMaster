@@ -67,7 +67,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
         ),
         heroTag: 'exchange_page',
         transitionBetweenRoutes: false,
-        middle: Text('TLD钱包'),
+        middle: Text('出售'),
         trailing: MessageButton(
           didClickCallBack: () => Navigator.push(context,
               MaterialPageRoute(builder: (context) => TLDMessagePage())),

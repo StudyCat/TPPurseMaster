@@ -152,13 +152,15 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
   Widget _getListItem(BuildContext context,int index){
     TLDOrderListModel model = _dataSource[index];
     bool isBuyer =  widget.type == 1 ? true : false;
+    String selfAddress = isBuyer == true ? model.buyerAddress : model.sellerAddress;
+     String otherAddress = isBuyer == false ? model.buyerAddress : model.sellerAddress;
     return TLDOrderListCell(
       orderListModel: model,
       didClickDetailBtnCallBack: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: model.orderNo,isBuyer:isBuyer,)));
         },
       didClickIMBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: model.orderNo,)));
       },
       didClickItemCallBack: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: model.orderNo,isBuyer: isBuyer,)));

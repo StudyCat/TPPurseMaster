@@ -69,7 +69,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
                 // color: Color.fromARGB(255, 51, 114, 245)
               ),
               child: RaisedButton(
-                child: Text('兑换',
+                child: Text('出售',
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(28), color: Colors.white)),
                 onPressed: widget.didClickChangeBtnCallBack,

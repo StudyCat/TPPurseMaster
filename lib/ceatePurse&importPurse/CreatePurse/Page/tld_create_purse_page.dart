@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/ImportPurse/Page/tld_import_purse_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,11 +33,14 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
 
   String _surePassword;
 
+  TLDCreatePurseModelManager _manager;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    
+    _manager = TLDCreatePurseModelManager();
   }
 
   @override
@@ -48,7 +52,7 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
         ),
         heroTag: 'create_purse_page',
         transitionBetweenRoutes: false,
-        middle: Text('创建钱包'),
+        middle: Text('设置安全密码'),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -145,17 +149,7 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
                     _isHaveNum() &&
                     _isLengthLegal()) {
                   if (_password == _surePassword) {
-                    _savePassword();
-                    if (widget.type == TLDCreatePursePageType.create){
-                       Navigator.push(context, MaterialPageRoute(builder: (context) => TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));
-                    }else if (widget.type == TLDCreatePursePageType.import){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => TLDImportPursePage()));
-                    }else {
-                      if (widget.setPasswordSuccessCallBack != null){
-                        widget.setPasswordSuccessCallBack();
-                      }
-                      Navigator.pop(context);
-                    }
+                    _registerUser();
                   } else {
                     Fluttertoast.showToast(
                         msg: "确认密码与密码不符合",
@@ -172,6 +166,25 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
         )
       ],
     );
+  }
+
+  void _registerUser(){
+    _manager.createSafeSecretPasswordRegisterUser((){
+      _savePassword();
+      if (widget.type == TLDCreatePursePageType.create){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));
+      }else if (widget.type == TLDCreatePursePageType.import){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDImportPursePage()));
+      }else {
+          if (widget.setPasswordSuccessCallBack != null){
+                widget.setPasswordSuccessCallBack();
+          }
+          Navigator.pop(context);
+      }
+    }, (TLDError error){
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    });
   }
 
   void _savePassword() async{
