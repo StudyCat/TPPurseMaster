@@ -26,18 +26,17 @@ class _TLDDetailOrderBottomCellState extends State<TLDDetailOrderBottomCell> {
   void initState() {
     // TODO: implement initState
     super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     TLDOrderStatusInfoModel infoModel =
-        TLDDataManager.orderListStatusMap[widget.detailOrderModel.status];
+    TLDDataManager.orderListStatusMap[widget.detailOrderModel.status];
     if (widget.isBuyer == true) {
       _actionBtnTitleList = infoModel.buyerActionButtonTitle;
     } else {
       _actionBtnTitleList = infoModel.sellerActionButtonTitle;
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(
             top: ScreenUtil().setHeight(120),

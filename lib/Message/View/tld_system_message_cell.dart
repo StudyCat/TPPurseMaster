@@ -1,11 +1,13 @@
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:date_format/date_format.dart';
 
 class TLDSystemMessageCell extends StatefulWidget {
-  TLDSystemMessageCell({Key key,this.title}) : super(key: key);
+  TLDSystemMessageCell({Key key,this.messageModel}) : super(key: key);
 
-  final String title;
+  final TLDMessageModel messageModel;
   @override
   _TLDSystemMessageCellState createState() => _TLDSystemMessageCellState();
 }
@@ -21,11 +23,12 @@ class _TLDSystemMessageCellState extends State<TLDSystemMessageCell> {
           color : Colors.white,
           height : ScreenUtil().setHeight(168),
           padding: EdgeInsets.only(left : ScreenUtil().setWidth(28),right: ScreenUtil().setWidth(28),top: ScreenUtil().setHeight(20),bottom: ScreenUtil().setHeight(20)),
-          child : Row(
+          child : Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _getLeftColumnView(),
-              _getRightColumnView()
+              _getTopRowView(),
+              Text(widget.messageModel.content,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 102, 102, 102)))
             ],
           ),
         ),
@@ -33,28 +36,38 @@ class _TLDSystemMessageCellState extends State<TLDSystemMessageCell> {
       );
   }
 
-  Widget _getLeftColumnView(){
-    return Padding(
-      padding: EdgeInsets.only(top : ScreenUtil().setHeight(10),bottom : ScreenUtil().setHeight(10)),
-      child: Column(
+  Widget _getTopRowView(){
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('TLD官方',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51),fontWeight: FontWeight.w700),),
-        Text('关于什么什么的通知。',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 102, 102, 102)))
-      ],
-    ),
-      );
-  }
-
-  Widget _getRightColumnView(){
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
-        Text('早上07:30',style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
-        Text('未读',style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 208, 2, 27)))
+         Text('TLD官方',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51),fontWeight: FontWeight.w700),),
+         Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.messageModel.createTime),[yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss]),style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
       ],
     );
   }
+
+  // Widget _getLeftColumnView(){
+  //   return Padding(
+  //     padding: EdgeInsets.only(top : ScreenUtil().setHeight(10),bottom : ScreenUtil().setHeight(10)),
+  //     child: Column(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       Text('TLD官方',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51),fontWeight: FontWeight.w700),),
+  //       Text(widget.messageModel.content,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 102, 102, 102)))
+  //     ],
+  //   ),
+  //     );
+  // }
+
+  // Widget _getRightColumnView(){
+  //   return Column(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     crossAxisAlignment: CrossAxisAlignment.end,
+  //     children: <Widget>[
+  //       Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.messageModel.createTime),[yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss]),style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
+  //       Text('已读',style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51)))
+  //     ],
+  //   );
+  // }
 }

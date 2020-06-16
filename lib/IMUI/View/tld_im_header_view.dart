@@ -1,18 +1,130 @@
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 class TLDIMHeaderView extends StatefulWidget {
-  TLDIMHeaderView({Key key}) : super(key: key);
+  TLDIMHeaderView({Key key,this.orderNo}) : super(key: key);
+
+  final String orderNo;
 
   @override
   _TLDIMHeaderViewState createState() => _TLDIMHeaderViewState();
 }
 
 class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
+
+  TLDDetailOrderModelManager _modelManager;
+
+  TLDDetailOrderModel _detailOrderModel;
+
+  List _actionBtnTitleList;
+
+  bool _isBuyer = false;
+
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _modelManager = TLDDetailOrderModelManager();
+
+    _actionBtnTitleList = [];
+
+    getOrderInfo();
+  }
+
+  void getOrderInfo(){
+     setState(() {
+      _isLoading = true;
+    });
+    _modelManager.getDetailOrderInfoWithOrderNo(widget.orderNo, (TLDDetailOrderModel detailOrderModel){
+      _jugeIsBuyer(detailOrderModel);
+      setState(() {
+        _isLoading = false;
+        _detailOrderModel = detailOrderModel;
+      });
+    }, (TLDError error){
+      setState(() {
+        _isLoading = false;
+      });
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    });
+  }
+
+  void _confirmPaid(){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.confirmPaid(widget.orderNo, _detailOrderModel.buyerAddress,  (){
+      setState(() {
+        _isLoading = false;
+      });
+      getOrderInfo();
+      Fluttertoast.showToast(msg: '确认我已付款成功',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    },  (TLDError error){
+      setState(() {
+        _isLoading = false;
+      });
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    });
+  }
+
+  void _sureSentCoin(){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.sureSentCoin(widget.orderNo, _detailOrderModel.sellerAddress,  (){
+      setState(() {
+        _isLoading = false;
+      });
+      _detailOrderModel = null;
+      getOrderInfo();
+      Fluttertoast.showToast(msg: '确认释放积分成功',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    },  (TLDError error){
+      setState(() {
+        _isLoading = false;
+      });
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    });
+  }
+
+  void _jugeIsBuyer(TLDDetailOrderModel detailOrderModel){
+    List purseList = TLDDataManager.instance.purseList;
+    List addressList = [];
+    for (TLDWallet item in purseList) {
+      addressList.add(item.address);
+    }
+    if (addressList.contains(detailOrderModel.buyerAddress)){
+      _isBuyer = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    if (_detailOrderModel != null){
+      TLDOrderStatusInfoModel infoModel = TLDDataManager.iMOrderListStatusMap[_detailOrderModel.status];
+      if (_isBuyer == true) {
+        _actionBtnTitleList = infoModel.buyerActionButtonTitle;
+      } else {
+        _actionBtnTitleList = infoModel.sellerActionButtonTitle;
+      }
+    }
+    return LoadingOverlay(
+      isLoading: _isLoading, 
+      child: Container(
        child: Padding(
          padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right : ScreenUtil().setWidth(30)),
          child: Column(
@@ -34,7 +146,7 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
            ]
          )
        )
-    );
+    ));
   }
 
   Widget _getOrderInfoActionBtnView(){
@@ -50,30 +162,58 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
                mainAxisSize: MainAxisSize.max,
                children : <Widget>[
                  _getOrderInfoView(),
-                 Container(
-                   height : ScreenUtil().setHeight(60),
-                   width : ScreenUtil().setWidth(190),
-                   child: CupertinoButton(
-                      color: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.all(0),
-                    child: Text('提醒放行',style : TextStyle(color : Colors.white,fontSize : ScreenUtil().setSp(24))),
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    onPressed: () {}),
-                   ),
+                _getActionBtn(context),
                ])
            ),
          );
   }
 
+  
+
   Widget _getOrderInfoView(){
+    String amount = _detailOrderModel != null ? _detailOrderModel.txCount : '';
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('fsafasf',style : TextStyle(fontSize : ScreenUtil().setSp(22),color : Color.fromARGB(255, 153, 153, 153))),
-        Text('fsafsafsafa',style : TextStyle(fontSize : ScreenUtil().setSp(28),color : Theme.of(context).primaryColor))
+        Padding(
+          padding: EdgeInsets.only(top : 0),
+          child: Text('订单号：'+ widget.orderNo,style : TextStyle(fontSize : ScreenUtil().setSp(22),color : Color.fromARGB(255, 153, 153, 153))),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top : ScreenUtil().setHeight(30)),
+          child: Text('总量：'+ amount + 'TLD',style : TextStyle(fontSize : ScreenUtil().setSp(28),color : Theme.of(context).primaryColor)),
+        )
       ],
     );
   }
+
+    Widget _getActionBtn(BuildContext context) {
+    if (_actionBtnTitleList.length == 0) {
+      return Container();
+    } else{
+      return _getOnlyOneActionBtnView();
+    }
+  }
+
+  Widget _getOnlyOneActionBtnView(){
+    return Container(
+                   height : ScreenUtil().setHeight(60),
+                   width : ScreenUtil().setWidth(190),
+                   child: CupertinoButton(
+                      color: Theme.of(context).primaryColor,
+                    padding: EdgeInsets.all(0),
+                    child: Text(_actionBtnTitleList.first,style : TextStyle(color : Colors.white,fontSize : ScreenUtil().setSp(24))),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    onPressed: () {
+                      if (_actionBtnTitleList.first == '我已付款'){
+                        _confirmPaid();
+                      }else if(_actionBtnTitleList.first == '确认释放积分'){
+                        _sureSentCoin();
+                      }
+                    }),
+            );
+  }
+
 }

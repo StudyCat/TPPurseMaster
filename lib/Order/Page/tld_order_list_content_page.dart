@@ -157,13 +157,25 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
     return TLDOrderListCell(
       orderListModel: model,
       didClickDetailBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: model.orderNo,isBuyer:isBuyer,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: model.orderNo,isBuyer:isBuyer,))).then((value) {
+          _pramaterModel.page = 1;
+          _refreshController.requestRefresh();
+          _getOrderListDataWithPramaterModel(_pramaterModel);
+        });
         },
       didClickIMBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: model.orderNo,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: model.orderNo,))).then((value) {
+          _pramaterModel.page = 1;
+          _refreshController.requestRefresh();
+          _getOrderListDataWithPramaterModel(_pramaterModel);
+        });
       },
       didClickItemCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: model.orderNo,isBuyer: isBuyer,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: model.orderNo,isBuyer: isBuyer,))).then((value) {
+          _pramaterModel.page = 1;
+          _refreshController.requestRefresh();
+          _getOrderListDataWithPramaterModel(_pramaterModel);
+        });
       },
       );
   }

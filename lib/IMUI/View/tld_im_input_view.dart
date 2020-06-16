@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
@@ -148,6 +150,7 @@ class _TLDInputViewState extends State<TLDInputView> {
                       messageModel.createTime = DateTime.now().millisecondsSinceEpoch;
                       messageModel.messageType = 2;
                       messageModel.orderNo = widget.orderNo;
+                      messageModel.bizAttr = '';
                       TLDIMManager manager = TLDIMManager.instance;
                       manager.sendMessage(messageModel);
                       _controller.text = '';

@@ -19,6 +19,7 @@ class TLDMessageModel {
   int createTime;
   String orderNo;
   int messageType;// 1.系统消息 2.IM
+  String bizAttr; // 系统消息 业务字段
 
   TLDMessageModel(
       {this.contentType,
@@ -27,7 +28,8 @@ class TLDMessageModel {
       this.toAddress,
       this.createTime,
       this.orderNo,
-      this.messageType
+      this.messageType,
+      this.bizAttr
       });
 
   TLDMessageModel.fromJson(Map<String, dynamic> json) {
@@ -39,6 +41,7 @@ class TLDMessageModel {
     unread =  json['unread'] == 1 ? true : false;
     orderNo = json['orderNo'];
     messageType = json['messageType'];
+    bizAttr = json['bizAttr'];
   }
 
   Map<String, dynamic> toJson() {
@@ -51,6 +54,7 @@ class TLDMessageModel {
     data['orderNo'] = this.orderNo;
     data['messageType'] = this.messageType;
     // data['unread'] = this.unread ? 1 : 0;
+    data['bizAttr'] = this.bizAttr;
     return data;
   }
 }
@@ -148,7 +152,23 @@ class TLDIMManager{
     if (this.unreadMessage.length == 0){
       eventBus.fire(TLDHaveUnreadMessageEvent(false));
     }
-  } 
+  }
+
+  //移除进入系统消息界面之后编程已读状态的消息
+  _removeUnreadSystemMessage(){
+    List removeList = [];
+    for (TLDMessageModel messageModel in this.unreadMessage) {
+      if (messageModel.messageType == 1){
+        removeList.add(messageModel);
+      }
+    }
+    for (TLDMessageModel messageModel in removeList) {
+      this.unreadMessage.remove(messageModel);
+    }
+    if (this.unreadMessage.length == 0){
+      eventBus.fire(TLDHaveUnreadMessageEvent(false));
+    }
+  }
 
   _searchAllUnReadMessageInDB()async{
     this.unreadMessage = [];
@@ -169,6 +189,7 @@ class TLDIMManager{
     channel.sink.add(convert.jsonEncode(message.toJson()));
   }
 
+//获取聊天IM信息列表
   void getMsssageList(String orderNo,int page,Function(List) success) async{
     TLDDataBaseManager manager = TLDDataBaseManager();
     await manager.openDataBase();
@@ -177,6 +198,19 @@ class TLDIMManager{
       _removeUnreadMessageWithOrderNo(orderNo);
     }
     List result = await manager.searchIMDataBase(orderNo, page);
+    await manager.closeDataBase();
+    success(result);
+  }
+
+//获取系统消息列表
+  void getSystemMsssageList(int page,Function(List) success) async{
+    TLDDataBaseManager manager = TLDDataBaseManager();
+    await manager.openDataBase();
+    if (page == 0){
+      await manager.updateUnreadSystemMessageType(); //进入系统消息界面吧未读消息设为已读
+      _removeUnreadSystemMessage();
+    }
+    List result = await manager.searchSystemIMDataBase(page);
     await manager.closeDataBase();
     success(result);
   }

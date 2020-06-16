@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/IMUI/Model/tld_im_model_manager.dart';
+import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
@@ -76,6 +77,8 @@ class _TLDIMPageState extends State<TLDIMPage> {
     registerEvent();
   }
 
+  
+
   void getMessageList(int page) {
     _manager.getMsssageList(widget.orderNo, page,
         (List messages) {
@@ -99,10 +102,15 @@ class _TLDIMPageState extends State<TLDIMPage> {
   //注册广播
   void registerEvent(){
     _messageSubscription = eventBus.on<TLDMessageEvent>().listen((event) {
+      for (TLDMessageModel item in event.messageList) {
+          if (item.messageType == 2){
+            _dataSource.add(item);
+          }
+        }
       setState(() {
-            _dataSource.addAll(event.messageList);
-          });
-          Timer(Duration(milliseconds: 500),
+        _dataSource;
+      });
+      Timer(Duration(milliseconds: 500),
               () => _controller.jumpTo(_controller.position.maxScrollExtent));
     });
   }
@@ -175,6 +183,7 @@ class _TLDIMPageState extends State<TLDIMPage> {
       messageModel.createTime = DateTime.now().millisecondsSinceEpoch;
       messageModel.messageType = 2;
       messageModel.orderNo = widget.orderNo;
+      messageModel.bizAttr = '';
       TLDIMManager manager = TLDIMManager.instance;
       manager.sendMessage(messageModel);
     }, (TLDError error) {
@@ -267,7 +276,7 @@ class _TLDIMPageState extends State<TLDIMPage> {
   Widget _getBody(BuildContext context) {
     return Column(
       children: <Widget>[
-        TLDIMHeaderView(),
+        TLDIMHeaderView(orderNo: widget.orderNo,),
         Expanded(
           child: _getFreshWidget(context),
         ),

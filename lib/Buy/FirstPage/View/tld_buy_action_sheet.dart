@@ -22,6 +22,8 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
   
   TLDBuyPramaterModel _pramaterModel;
 
+  FocusNode _focusNode;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -30,6 +32,8 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
     _pramaterModel = TLDBuyPramaterModel();
     _pramaterModel.buyCount = '0';
     _pramaterModel.sellNo = widget.model.sellNo;
+
+    _focusNode = FocusNode();
   }
 
   @override
@@ -55,7 +59,7 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
                   decoration: TextDecoration.none)),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(26)),
-            child: TLDBuyActionSheetInputView(max: widget.model.max,currentAmount: widget.model.currentCount,inputStringCallBack: (String text){
+            child: TLDBuyActionSheetInputView(focusNode: _focusNode,max: widget.model.max,currentAmount: widget.model.currentCount,inputStringCallBack: (String text){
               setState(() {
                 _pramaterModel.buyCount = text;
               });
@@ -73,6 +77,7 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
             child: GestureDetector(
               onTap:(){
+                _focusNode.unfocus();
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TLDEchangeChooseWalletPage(isNeedFliter: false,didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
                   setState(() {
                     _pramaterModel.buyerAddress = infoModel.walletAddress;

@@ -4,13 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 
 class TLDBuyActionSheetInputView extends StatefulWidget {
-  TLDBuyActionSheetInputView({Key key,this.max,this.inputStringCallBack,this.currentAmount}) : super(key: key);
+  TLDBuyActionSheetInputView({Key key,this.max,this.inputStringCallBack,this.currentAmount,this.focusNode}) : super(key: key);
 
   final String max;
 
   final String currentAmount;
 
   final Function(String) inputStringCallBack;
+
+  final FocusNode focusNode;
 
   @override
   _TLDBuyActionSheetInputViewState createState() =>
@@ -21,15 +23,12 @@ class _TLDBuyActionSheetInputViewState
     extends State<TLDBuyActionSheetInputView> {
   TextEditingController _controller;
 
-  FocusNode _focusNode;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     _controller = TextEditingController();
-    _focusNode = FocusNode();
     _controller.addListener(() {
        String text = _controller.text;
         String result;
@@ -38,7 +37,7 @@ class _TLDBuyActionSheetInputViewState
             result = '0';
           }else{
              if(double.parse(text) > double.parse(widget.currentAmount)){
-                _focusNode.unfocus();
+                widget.focusNode.unfocus();
                 _controller.text = widget.currentAmount;
                 result = widget.currentAmount;
               }else {
@@ -90,7 +89,7 @@ class _TLDBuyActionSheetInputViewState
                     fontSize: 14, color: Theme.of(context).primaryColor,),
               ),
               onPressed: () {
-                _focusNode.unfocus();
+                widget.focusNode.unfocus();
                 String allAmount =  widget.currentAmount;
                 _controller.text = allAmount;
                 widget.inputStringCallBack(allAmount);
@@ -110,6 +109,7 @@ class _TLDBuyActionSheetInputViewState
       padding: EdgeInsets.only(
           top: ScreenUtil().setHeight(24), left: ScreenUtil().setWidth(20)),
       placeholder: '请输入购买的数量',
+      focusNode:widget.focusNode,
       placeholderStyle: TextStyle(
           fontSize: ScreenUtil().setSp(24),
           color: Color.fromARGB(255, 153, 153, 153),height: 1.1),
@@ -117,7 +117,6 @@ class _TLDBuyActionSheetInputViewState
           WhitelistingTextInputFormatter.digitsOnly
       ],
       controller: _controller,
-      focusNode: _focusNode,
     );
   }
   

@@ -48,6 +48,13 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
   }
 
   @override
+  void deactivate() {
+    // TODO: implement deactivate
+    super.deactivate();
+    _commentFocus.unfocus();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Container(

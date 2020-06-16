@@ -185,7 +185,9 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
         didClickChatBtnCallBack: (){
           String selfAddress = widget.isBuyer == true ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
           String otherAddress = widget.isBuyer == false ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
-          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: _detailOrderModel.orderNo,)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: _detailOrderModel.orderNo,))).then((value){
+            _getDetailOrderInfo();
+          });
         },
         timeIsOverRefreshUICallBack: (){
           _detailOrderModel = null;
@@ -295,7 +297,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
     String selfAddress = widget.isBuyer == true ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
     String otherAddress = widget.isBuyer == false ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: _detailOrderModel.orderNo,))),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: _detailOrderModel.orderNo,))).then((value) => _getDetailOrderInfo()),
       child:  Padding(
       padding: EdgeInsets.only(
           top: ScreenUtil().setHeight(2),

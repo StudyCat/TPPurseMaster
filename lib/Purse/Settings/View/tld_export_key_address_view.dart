@@ -29,7 +29,13 @@ class _TLDExportKeyAddressViewState extends State<TLDExportKeyAddressView> {
         borderRadius: BorderRadius.all(Radius.circular(4)),
         color: Colors.white
       ),
-      child: Row(
+      child: GestureDetector(
+        onTap:(){
+           Clipboard.setData(ClipboardData(text : widget.address == null ? widget.privateKey : widget.address));
+                  Fluttertoast.showToast(msg: '已复制到剪切板',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+        },
+        child : Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -62,6 +68,7 @@ class _TLDExportKeyAddressViewState extends State<TLDExportKeyAddressView> {
           ),
 
         ],
+      )
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
@@ -29,6 +30,7 @@ final String createTimeIM = 'createTime';
 final String idIM = '_id';
 final String orderNoIM = 'orderNo';
 final String messageTypeIM = 'messageType';
+final String bizAttrIM = 'bizAttr';
 
 class TLDWallet{
   int id;
@@ -89,7 +91,7 @@ class TLDDataBaseManager {
   }
 
   Database db;
-
+  
 
   openDataBase() async {
     // 获取数据库文件的存储路径
@@ -97,7 +99,8 @@ class TLDDataBaseManager {
     String path = join(databasesPath, 'TLDDollar.db');
 
     //根据数据库文件路径和数据库版本号创建数据库表
-    db = await openDatabase(path, version: 1,
+    if (db == null){
+      db = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
       await db.execute('''
           CREATE TABLE $tableWallet (
@@ -118,13 +121,17 @@ class TLDDataBaseManager {
             $unreadIM INTEGER,
             $createTimeIM INTEGER,
             $orderNoIM TEXT,
-            $messageTypeIM INTEGER)
+            $messageTypeIM INTEGER,
+            $bizAttrIM TEXT)
           ''');    
     });
+    }
   }
 
   closeDataBase()async{
-    await db.close();
+    if (db.isOpen){
+      // await db.close();
+    }
   }
 
 
@@ -140,14 +147,16 @@ class TLDDataBaseManager {
     for (int i = 0; i < messageList.length ; i++) {
       TLDMessageModel model = messageList[i];
       int unread = model.unread ? 1 : 0;
-      String str = '(\"'+model.content+'\",'+ '${model.contentType}'+',\"'+model.fromAddress+'\",\"'+model.toAddress+'\",'+'$unread'+','+'${model.createTime}'+',\"'+ '${model.orderNo}'+'\",'+'${model.messageType}' +')';
+      String str1 = '(\"'+model.content+'\",'+ '${model.contentType}'+',\"'+model.fromAddress+'\",\"'+model.toAddress+'\",'+'$unread'+',';
+      String str2 = '${model.createTime}'+ ',\"' + model.orderNo +'\",'+'${model.messageType}'+',\''+ model.bizAttr +'\''+')';
+      String str = str1 + str2;
       if(i == 0){
         valuesStr = str;
       }else{
         valuesStr = valuesStr + ',' + str;
       }
     }
-    String sql = 'INSERT INTO $tableIM($contentIM,$contentTypeIM,$fromIM,$toIM,$unreadIM,$createTimeIM,$orderNoIM,$messageTypeIM) VALUES'+valuesStr;
+    String sql = 'INSERT INTO $tableIM($contentIM,$contentTypeIM,$fromIM,$toIM,$unreadIM,$createTimeIM,$orderNoIM,$messageTypeIM,$bizAttrIM) VALUES'+valuesStr;
     await db.rawInsert(sql);
   }
 
@@ -175,7 +184,21 @@ class TLDDataBaseManager {
 //搜索历史消息（通过orderNo为条件）
   Future<List> searchIMDataBase(String orderNo,int page) async{
     int pageLimit = page * 10;
-    List<Map> maps = await db.rawQuery('SELECT * FROM $tableIM WHERE $orderNoIM = \"$orderNo\" ORDER BY _id DESC LIMIT $pageLimit,10');
+    List<Map> maps = await db.rawQuery('SELECT * FROM $tableIM WHERE $orderNoIM = \"$orderNo\" AND $messageTypeIM = 2 ORDER BY _id DESC LIMIT $pageLimit,10');
+     if (maps == null || maps.length == 0) {
+      return [];
+    }
+
+    List<TLDMessageModel> messages = [];
+    for (int i = 0; i < maps.length; i++) {
+      messages.insert(0, TLDMessageModel.fromJson(maps[i]));
+    }
+    return messages;
+  }
+
+  Future<List> searchSystemIMDataBase(int page) async{
+    int pageLimit = page * 10;
+    List<Map> maps = await db.rawQuery('SELECT * FROM $tableIM WHERE  $messageTypeIM = 1 ORDER BY _id DESC LIMIT $pageLimit,10');
      if (maps == null || maps.length == 0) {
       return [];
     }
@@ -189,8 +212,14 @@ class TLDDataBaseManager {
 
   //进入到聊天界面后把所有未读消息置位已读
   updateUnreadMessageType(String orderNo) async{
-    await db.rawUpdate('UPDATE  $tableIM SET $unreadIM = 0 WHERE $orderNoIM = \"$orderNo\"');
+    await db.rawUpdate('UPDATE  $tableIM SET $unreadIM = 0 WHERE $orderNoIM = \"$orderNo\" AND $messageTypeIM = 2');
   }
+
+  //进入系统消息界面后吧所有系统消息置位已读
+  updateUnreadSystemMessageType() async{
+    await db.rawUpdate('UPDATE  $tableIM SET $unreadIM = 0 WHERE  $messageTypeIM = 1');
+  }
+
 
 //搜寻所有未读消息
   Future<List> searchUnReadMessageList()async{
@@ -211,7 +240,7 @@ class TLDDataBaseManager {
 
   //搜索数据库中以orderNo分组的IM聊天
   Future<List> searchOrderNoChatGroup() async{
-    List<Map> maps = await db.rawQuery('SELECT * FROM $tableIM as m1 WHERE m1._id IN(SELECT max(_id) from $tableIM GROUP BY $orderNoIM) GROUP BY m1.$orderNoIM');
+    List<Map> maps = await db.rawQuery('SELECT * FROM $tableIM as m1 WHERE m1._id IN(SELECT max(_id) from $tableIM GROUP BY $orderNoIM) AND $messageTypeIM = 2 GROUP BY m1.$orderNoIM');
      if (maps == null || maps.length == 0) {
       return [];
     }

@@ -141,7 +141,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
             child: CupertinoButton(
                 color: Theme.of(context).primaryColor,
                 child: Text(
-                  '兑换',
+                  '出售',
                   style: TextStyle(
                       color: Colors.white, fontSize: ScreenUtil().setSp(28)),
                 ),

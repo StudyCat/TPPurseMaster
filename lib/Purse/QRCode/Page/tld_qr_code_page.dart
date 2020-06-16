@@ -83,7 +83,13 @@ class _TLDQRCodePageState extends State<TLDQRCodePage> {
 
   Widget getCopyAdressView(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
+    return GestureDetector(
+      onTap:(){
+          Clipboard.setData(ClipboardData(text : widget.infoModel.walletAddress));
+                  Fluttertoast.showToast(msg: '已复制到剪切板',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      },
+      child : Container(
       height: ScreenUtil().setHeight(80),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -124,6 +130,7 @@ class _TLDQRCodePageState extends State<TLDQRCodePage> {
           )
         ],
       ),
+    )
     );
   }
 
