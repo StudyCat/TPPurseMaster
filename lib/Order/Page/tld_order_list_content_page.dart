@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,6 +42,8 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
   List _dataSource;
 
   RefreshController _refreshController;
+
+  StreamSubscription _systemSubscreption;
   @override
   void initState() {
     // TODO: implement initState
@@ -73,6 +79,27 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
           _refreshController.requestRefresh();
           _getOrderListDataWithPramaterModel(_pramaterModel);
         }
+      }
+    });
+    
+    _registerSystemEvent();
+  }
+
+    @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _systemSubscreption.cancel();
+  }
+
+  void _registerSystemEvent(){
+    _systemSubscreption = eventBus.on<TLDSystemMessageEvent>().listen((event) {
+      TLDMessageModel messageModel = event.messageModel;
+      if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103 || messageModel.contentType == 104){
+        _pramaterModel.page = 1;
+        _refreshController.requestRefresh();
+        _getOrderListDataWithPramaterModel(_pramaterModel);
       }
     });
   }

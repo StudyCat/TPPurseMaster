@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -99,8 +100,11 @@ class _TLDDetailWechatQrCodeShowViewState extends State<TLDDetailWechatQrCodeSho
     // Map<PermissionStatusGetters>
     var status = await Permission.camera.status;
     if (status == PermissionStatus.denied) {
-      Fluttertoast.showToast(msg: '请先设置相册保存权限',toastLength: Toast.LENGTH_SHORT,
-                        timeInSecForIosWeb: 1);
+      showDialog(context: context,builder:(context){
+            return TLDAlertView(title : '温馨提示',alertString:'未开启相册保存的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
+              openAppSettings();
+            },);
+      });
       return;
     }
     var result = await ImageGallerySaver.saveImage(bytes);

@@ -1,8 +1,16 @@
+import 'dart:async';
+
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_order_list_page.dart';
+import 'package:dragon_sword_purse/Purse/MyPurse/Model/tld_my_purse_model_manager.dart';
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import '../View/tld_my_purse_header.dart';
 import '../View/tld_my_purse_content_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,9 +20,9 @@ import '../../QRCode/Page/tld_qr_code_page.dart';
 import '../../FirstPage/Model/tld_wallet_info_model.dart';
 
 class TLDMyPursePage extends StatefulWidget {
-  TLDMyPursePage({Key key,this.infoModel,this.changeNameSuccessCallBack}) : super(key: key);
+  TLDMyPursePage({Key key,this.wallet,this.changeNameSuccessCallBack}) : super(key: key);
 
-  final TLDWalletInfoModel infoModel;
+  final TLDWallet wallet;
 
   final ValueChanged<String> changeNameSuccessCallBack;
 
@@ -23,6 +31,60 @@ class TLDMyPursePage extends StatefulWidget {
 }
 
 class _TLDMyPursePageState extends State<TLDMyPursePage> {
+  TLDWalletInfoModel _infoModel;
+
+  TLDMyPurseModelManager _modelManager;
+
+  bool _isloading;
+
+  StreamSubscription _systemSubscription;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _modelManager = TLDMyPurseModelManager();
+
+    _getWalletInfo();
+
+    _registerSystemEvent();
+  }
+
+  void _getWalletInfo(){
+    setState(() {
+      _isloading = true;
+    });
+    _modelManager.getWalletData(widget.wallet, (TLDWalletInfoModel infoModel){
+      setState(() {
+        _isloading = false;
+        _infoModel = infoModel;
+      });
+    }, (TLDError error){
+      setState(() {
+        _isloading = false;
+      });
+      Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+  void _registerSystemEvent(){
+    _systemSubscription = eventBus.on<TLDSystemMessageEvent>().listen((event) {
+      TLDMessageModel messageModel = event.messageModel;
+      if(messageModel.contentType == 105){
+        _getWalletInfo();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _systemSubscription.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +94,7 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
         ),
         heroTag: 'my_purse_page',
         transitionBetweenRoutes: false,
-        middle: Text(widget.infoModel.wallet.name),
+        middle: Text(widget.wallet.name),
         trailing: Container(
             width: ScreenUtil().setWidth(160),
             child: Row(
@@ -46,7 +108,7 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
                     padding: EdgeInsets.all(0),
                     minSize: 20,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => TLDOrderListPage(walletAddress : widget.infoModel.walletAddress)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => TLDOrderListPage(walletAddress : widget.wallet.address)));
                     }),
                 CupertinoButton(
                     child: Icon(
@@ -60,10 +122,10 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return TLDPurseSettingPage(wallet : widget.infoModel.wallet,nameChangeSuccessCallBack: (String name){
+                            return TLDPurseSettingPage(wallet : widget.wallet,nameChangeSuccessCallBack: (String name){
                               widget.changeNameSuccessCallBack(name);
                               setState(() {
-                                widget.infoModel.wallet.name = name;
+                                widget.wallet.name = name;
                               });
                             },);
                           },
@@ -75,29 +137,27 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getBodyWidget(context),
+      body: LoadingOverlay(isLoading: _isloading, child: _getBodyWidget(context)),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
 
   Widget _getBodyWidget(BuildContext context) {
     return Column(children: <Widget>[
-      TLDMyPurseHeaderView(infoModel: widget.infoModel,didClickTransferAccountsBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDTransferAccountsPage(walletInfoModel: widget.infoModel,transferSuccessCallBack: (String str){
-          setState(() {
-            widget.infoModel.value = (double.parse(widget.infoModel.value) - double.parse(str)).toString();
-          });
+      TLDMyPurseHeaderView(infoModel: _infoModel,didClickTransferAccountsBtnCallBack: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDTransferAccountsPage(walletInfoModel: _infoModel,transferSuccessCallBack: (String str){
+          _getWalletInfo();
         },)));
       },
       didClickChangeBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDExchangePage(infoModel: widget.infoModel,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDExchangePage(infoModel: _infoModel,)));
       },
       didClickQRCodeBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDQRCodePage(infoModel: widget.infoModel,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDQRCodePage(infoModel: _infoModel,)));
       },
       ),
       Expanded(
-        child: TLDMyPurseContentView(walletAddress: widget.infoModel.walletAddress,),
+        child: TLDMyPurseContentView(walletAddress: widget.wallet.address,),
       )
     ]);
   }

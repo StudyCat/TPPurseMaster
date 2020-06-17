@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/IMUI/Model/tld_im_model_manager.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
@@ -147,8 +148,20 @@ class _TLDIMPageState extends State<TLDIMPage> {
   void _takePhoto() async {
     var status = await Permission.camera.status;
     if (status == PermissionStatus.denied || status == PermissionStatus.restricted|| status == PermissionStatus.undetermined) {
-      Fluttertoast.showToast(msg: '请先开启相机权限',toastLength: Toast.LENGTH_SHORT,
-                        timeInSecForIosWeb: 1);
+            showDialog(context: context,builder:(context){
+            return TLDAlertView(title : '温馨提示',alertString:'未开启相机的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
+              openAppSettings();
+            },);
+      });
+      return;
+    }
+    var saveStatus = await Permission.storage.status;
+     if (saveStatus == PermissionStatus.denied || saveStatus == PermissionStatus.restricted|| saveStatus == PermissionStatus.undetermined) {
+            showDialog(context: context,builder:(context){
+            return TLDAlertView(title : '温馨提示',alertString:'未开启文件存储的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
+              openAppSettings();
+            },);
+      });
       return;
     }
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -161,11 +174,26 @@ class _TLDIMPageState extends State<TLDIMPage> {
   void _openGallery() async {
     var status = await Permission.camera.status;
     if (status == PermissionStatus.denied || status == PermissionStatus.restricted|| status == PermissionStatus.undetermined) {
-      Fluttertoast.showToast(msg: '请先开启相册权限',toastLength: Toast.LENGTH_SHORT,
-                        timeInSecForIosWeb: 1);
+            showDialog(context: context,builder:(context){
+            return TLDAlertView(title : '温馨提示',alertString:'未开启相册的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
+              openAppSettings();
+            },);
+      });
+      return;
+    }
+    var saveStatus = await Permission.storage.status;
+     if (saveStatus == PermissionStatus.denied || saveStatus == PermissionStatus.restricted|| saveStatus == PermissionStatus.undetermined) {
+            showDialog(context: context,builder:(context){
+            return TLDAlertView(title : '温馨提示',alertString:'未开启文件存储的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
+              openAppSettings();
+            },);
+      });
       return;
     }
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    // var saveStatus = await Permission.
+
     if (image != null) {
       setState(() {
         sendImageMessage(image);

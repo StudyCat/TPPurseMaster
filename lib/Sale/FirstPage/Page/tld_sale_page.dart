@@ -1,7 +1,11 @@
 
+import 'dart:async';
+
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Model/tld_sale_list_info_model.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/View/tld_sale_suspend_button.dart';
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -31,6 +35,8 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
 
   bool _isLoading;
 
+  StreamSubscription _systemSubscreption;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -42,6 +48,26 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
     _refreshController = RefreshController(initialRefresh: true);
 
     getSaleListInfo();
+
+    _registerSystemEvent();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _systemSubscreption.cancel();
+  }
+
+  void _registerSystemEvent(){
+    _systemSubscreption = eventBus.on<TLDSystemMessageEvent>().listen((event) {
+      TLDMessageModel messageModel = event.messageModel;
+      if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103 || messageModel.contentType == 104){
+        _refreshController.requestRefresh();
+        getSaleListInfo();
+      }
+    });
   }
 
   void getSaleListInfo(){
@@ -120,12 +146,6 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
             });
           },));
     }
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
   }
 
   @override

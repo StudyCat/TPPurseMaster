@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/Purse/TransferAccounts/Model/tld_transfer_accounts_model_manager.dart';
 import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
@@ -189,8 +190,11 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
   Future _scanPhoto() async {
     var status = await Permission.camera.status;
      if (status == PermissionStatus.denied || status == PermissionStatus.restricted|| status == PermissionStatus.undetermined) {
-      Fluttertoast.showToast(msg: '请先开启相册权限',toastLength: Toast.LENGTH_SHORT,
-                        timeInSecForIosWeb: 1);
+      showDialog(context: context,builder:(context){
+            return TLDAlertView(title : '温馨提示',alertString:'未开启相机的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
+              openAppSettings();
+            },);
+      });
       return;
     }
 

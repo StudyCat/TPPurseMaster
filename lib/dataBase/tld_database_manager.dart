@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:uuid_enhanced/uuid.dart';
 import 'package:web3dart/credentials.dart';
 import 'package:file_picker/file_picker.dart';
 
@@ -175,7 +176,7 @@ class TLDDataBaseManager {
     } catch (e) {
       print(e);
     }
-    String filePath =  floderPath +'/'+ base64ImageString.substring(0,20) + '.png';
+    String filePath =  floderPath +'/'+ Uuid.randomUuid().toString() + '.png';
     var pngFile = File(filePath);
     await pngFile.writeAsBytes(imageByteList);
     return filePath;

@@ -1,6 +1,7 @@
 
 import 'dart:io';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_order_appeal_model_manager.dart';
 import 'package:dragon_sword_purse/Order/View/tld_order_appeal_bottom_cell.dart';
@@ -244,8 +245,11 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
   void _takePhoto() async {
     var status = await Permission.camera.status;
     if (status == PermissionStatus.denied || status == PermissionStatus.restricted|| status == PermissionStatus.undetermined) {
-      Fluttertoast.showToast(msg: '请先开启相机权限',toastLength: Toast.LENGTH_SHORT,
-                        timeInSecForIosWeb: 1);
+            showDialog(context: context,builder:(context){
+            return TLDAlertView(title : '温馨提示',alertString:'未开启相机的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
+              openAppSettings();
+            },);
+      });
       return;
     }
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -260,8 +264,11 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
   void _openGallery() async {
     var status = await Permission.camera.status;
     if (status == PermissionStatus.denied || status == PermissionStatus.restricted|| status == PermissionStatus.undetermined) {
-      Fluttertoast.showToast(msg: '请先开启相册权限',toastLength: Toast.LENGTH_SHORT,
-                        timeInSecForIosWeb: 1);
+      showDialog(context: context,builder:(context){
+            return TLDAlertView(title : '温馨提示',alertString:'未开启相机的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
+              openAppSettings();
+            },);
+      });
       return;
     }
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);

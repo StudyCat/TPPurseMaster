@@ -1,6 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
+import 'package:dragon_sword_purse/Purse/MyPurse/Page/tld_my_purse_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +101,38 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
       child: ListView.builder(
       itemCount: _dataSource.length,
       itemBuilder: (BuildContext context, int index) {
-        return TLDSystemMessageCell(messageModel: _dataSource[index],);
+        TLDMessageModel model = _dataSource[index];
+        return GestureDetector(
+          onTap:(){
+            Map attrMap = jsonDecode(model.bizAttr);
+            if (model.contentType > 99 && model.contentType < 105){
+              String orderNo = attrMap['orderNo'];
+              bool isBuyer = false;
+              String buyerAddress = attrMap['buyerAddress'];
+              List purseList = TLDDataManager.instance.purseList;
+              List addressList = [];
+              for (TLDWallet item in purseList) {
+                addressList.add(item.address);
+              }
+              if (addressList.contains(buyerAddress)){
+                isBuyer = true;
+              }
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDDetailOrderPage(orderNo: orderNo,isBuyer: isBuyer,)));
+            }else if(model.contentType == 105){
+              String address = attrMap['toAddress'];
+              List purseList = TLDDataManager.instance.purseList;
+                TLDWallet wallet;
+                for (TLDWallet item in purseList) {
+                  if (item.address == address){
+                    wallet = item;
+                    break;
+                  }
+                }
+             Navigator.push(context,MaterialPageRoute(builder: (context) => TLDMyPursePage(wallet: wallet,changeNameSuccessCallBack: (str){},)));
+            }
+          },
+          child : TLDSystemMessageCell(messageModel: model,)
+        );
      },
     ),
     );

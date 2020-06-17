@@ -14,3 +14,11 @@ class TLDHaveUnreadMessageEvent{
   bool haveUnreadMessage;
   TLDHaveUnreadMessageEvent(this.haveUnreadMessage);
 }
+
+//系统消息广播
+class TLDSystemMessageEvent{
+  TLDMessageModel messageModel;
+  TLDSystemMessageEvent(this.messageModel);
+}
+
+//消息推送通知

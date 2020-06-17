@@ -6,6 +6,8 @@ import 'package:dragon_sword_purse/Order/Page/tld_order_appeal_page.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_alipay_qrcode_show_view.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_bottom_cell.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_wechat_qrcode_show_view.dart';
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,6 +35,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
   TLDDetailOrderModel _detailOrderModel;
   StreamController _controller;
   bool _isLoading;
+  StreamSubscription _systemSubscreption;
 
   @override
   void initState() {
@@ -45,6 +48,25 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
     _modelManager = TLDDetailOrderModelManager();
     _isLoading = false;
     _getDetailOrderInfo();
+
+    _registerSystemEvent();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _systemSubscreption.cancel();
+  }
+
+  void _registerSystemEvent(){
+    _systemSubscreption = eventBus.on<TLDSystemMessageEvent>().listen((event) {
+      TLDMessageModel messageModel = event.messageModel;
+      if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103 || messageModel.contentType == 104){
+        _getDetailOrderInfo();
+      }
+    });
   }
 
   void _getDetailOrderInfo(){

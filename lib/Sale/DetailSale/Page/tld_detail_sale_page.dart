@@ -1,8 +1,12 @@
 
+import 'dart:async';
+
 import 'package:date_format/date_format.dart';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Sale/DetailSale/Model/tld_detail_sale_model.dart';
 import 'package:dragon_sword_purse/Sale/DetailSale/Model/tld_detail_sale_model_manager.dart';
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,6 +30,8 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
 
   bool _isLoading;
 
+  StreamSubscription _systemSubscreption;
+
   List titles = [
     '收款方式',
     '挂售钱包',
@@ -47,6 +53,8 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
     _isLoading = true;
 
     getDetailInfo();
+
+    _registerSystemEvent();
   }
 
 
@@ -62,6 +70,26 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
       });
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                       timeInSecForIosWeb: 1);
+    });
+  }
+
+   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _systemSubscreption.cancel();
+  }
+
+  void _registerSystemEvent(){
+    _systemSubscreption = eventBus.on<TLDSystemMessageEvent>().listen((event) {
+      TLDMessageModel messageModel = event.messageModel;
+      if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103 || messageModel.contentType == 104){
+        setState(() {
+          _isLoading = true;
+        });
+        getDetailInfo();
+      }
     });
   }
 

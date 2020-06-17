@@ -51,7 +51,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
           children: <Widget>[
             RichText(
                   text: TextSpan(
-                    text : getMoneyStyleStr(widget.infoModel.value),
+                    text : getMoneyStyleStr(widget.infoModel == null ? '0':widget.infoModel.value),
                     style : TextStyle(fontSize : ScreenUtil().setSp(52),color : Theme.of(context).primaryColor),
                     children: <InlineSpan>[
                       TextSpan(
@@ -85,7 +85,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: (){
-        Clipboard.setData(ClipboardData(text : widget.infoModel.walletAddress));
+        Clipboard.setData(ClipboardData(text : widget.infoModel == null ? "":widget.infoModel.walletAddress));
                   Fluttertoast.showToast(msg: '已复制到剪切板',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
       },
@@ -103,7 +103,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
             width: size.width - ScreenUtil().setWidth(190),
             margin: EdgeInsets.only(left: ScreenUtil().setWidth(36)),
             child: Text(
-              widget.infoModel.wallet.address,
+              widget.infoModel == null ? "":widget.infoModel.walletAddress,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(28),
                   color: Color.fromARGB(255, 102, 102, 102)),

@@ -30,6 +30,7 @@ class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage> with Automa
 
   RefreshController _refreshController;
 
+  StreamSubscription _systemSubscreiption;
 
   @override
   void initState() {
@@ -45,6 +46,27 @@ class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage> with Automa
     _refreshController = RefreshController(initialRefresh:true);
 
     _getPurseTransferList(_page);
+
+    _registerSystemEvent();
+  }
+
+  void _registerSystemEvent(){
+    _systemSubscreiption = eventBus.on<TLDSystemMessageEvent>().listen((event) {
+      TLDMessageModel messageModel = event.messageModel;
+      if (messageModel.contentType == 105){
+        _page = 1;
+        _refreshController.requestRefresh();
+        _getPurseTransferList(_page);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _systemSubscreiption.cancel();
   }
 
   void _getPurseTransferList(int page){

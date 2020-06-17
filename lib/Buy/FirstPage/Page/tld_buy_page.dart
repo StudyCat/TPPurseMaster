@@ -42,6 +42,8 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
    
   StreamSubscription _unreadSubscription;
 
+  StreamSubscription _systemSubscription;
+
   bool _haveUnreadMessage;
 
   @override
@@ -55,6 +57,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     _dataSource = [];
     _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
     _registerUnreadMessageEvent();
+    _registerSystemMessageEvent();
     _loadBuyList(_keyword, _page);
   }
 
@@ -66,11 +69,22 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     });
   }
 
+  void _registerSystemMessageEvent(){
+    _systemSubscription = eventBus.on<TLDSystemMessageEvent>().listen((event) {
+       TLDMessageModel messageModel = event.messageModel;
+      if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103){
+        _page = 1;
+        _loadBuyList(_keyword, _page);
+      }
+    });
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _unreadSubscription.cancel();
+    _systemSubscription.cancel();
   }
 
   void _loadBuyList(String keyword,int page){

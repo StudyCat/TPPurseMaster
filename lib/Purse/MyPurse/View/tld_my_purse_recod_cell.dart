@@ -76,9 +76,9 @@ class _TLDMyPurseRecordCellState extends State<TLDMyPurseRecordCell> {
       children: <Widget>[
         Text(title,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51)),),
         Container(
-          padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
+          padding: EdgeInsets.only(left : ScreenUtil().setWidth(20),right: ScreenUtil().setWidth(20)),
           width: size.width - ScreenUtil().setWidth(230),
-          child: Text(content,maxLines : 1 , style : TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153)),overflow: TextOverflow.ellipsis,),
+          child: Text(content,maxLines : 2 , style : TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153)),overflow: TextOverflow.ellipsis,),
         ),
       ],
     );

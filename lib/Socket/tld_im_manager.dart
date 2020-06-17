@@ -10,7 +10,7 @@ import 'dart:async';
 import 'dart:convert' as convert;
 
 class TLDMessageModel {
-  int contentType; //  IM :(1.文本 2.图片)  系统消息：()
+  int contentType; //  IM :(1.文本 2.图片)  系统消息：(100, "购买时，系统消息通知",101, "取消订单",102, "订单即将超时",103,"订单已完成",104,"订单已支付",105,"转账成功")
   String content;
   String fromAddress;
   String  toAddress;
@@ -122,6 +122,11 @@ class TLDIMManager{
         eventBus.fire(TLDMessageEvent(result));
         if (isHaveUnreadMessage == true){
           eventBus.fire(TLDHaveUnreadMessageEvent(true)); 
+        }
+        for (TLDMessageModel messageModel  in result) {
+          if (messageModel.messageType == 1){
+            eventBus.fire(TLDSystemMessageEvent(messageModel));
+          }
         }
       }
     },onError: (error){

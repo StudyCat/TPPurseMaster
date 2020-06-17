@@ -144,7 +144,7 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
             context,
             MaterialPageRoute(
               builder: (context) {
-                return  TLDMyPursePage(infoModel: model,changeNameSuccessCallBack: (String name){
+                return  TLDMyPursePage(wallet: model.wallet,changeNameSuccessCallBack: (String name){
                   setState(() {
                     TLDDataManager.instance.purseList;
                   });

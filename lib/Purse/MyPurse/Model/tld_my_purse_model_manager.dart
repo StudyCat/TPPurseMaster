@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 
 
 class TLDPurseTransferInfoModel {
@@ -56,5 +60,26 @@ class TLDMyPurseModelManager{
     }, (TLDError error){
       failure(error);
     });
+  }
+
+  void getWalletData(TLDWallet wallet,Function(TLDWalletInfoModel) success,Function(TLDError) failure)async {
+      List addressList = [];
+      addressList.add(wallet.address);
+      String addressListJson = jsonEncode(addressList);
+      TLDBaseRequest request = TLDBaseRequest({"list":addressListJson}, 'wallet/queryWallet');
+     request.postNetRequest((dynamic data) {
+      Map dataMap = data;
+      List dataList = dataMap['list'];
+      List<TLDWalletInfoModel> result = [];
+      for (Map infoMap in dataList) {
+        if (infoMap['walletAddress'] == wallet.address){
+          TLDWalletInfoModel model = TLDWalletInfoModel.fromJson(infoMap);
+          model.wallet = wallet;            
+          result.add(model);
+          break;
+        }
+      }
+      success(result.first);
+       }, (error)=> failure(error));
   }
 }
