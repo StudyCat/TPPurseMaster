@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/IMUI/Page/tld_im_page.dart';
 import 'package:dragon_sword_purse/Message/Model/tld_message_model_manager.dart';
+import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';

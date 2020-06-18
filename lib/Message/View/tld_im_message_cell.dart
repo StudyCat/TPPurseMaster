@@ -18,6 +18,12 @@ class _TLDIMMessageCellState extends State<TLDIMMessageCell> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    String content;
+    if(widget.messageModel.contentType == 2){
+      content = '[图片]';
+    }else{
+      content = widget.messageModel.content;
+    }
     return Padding(
       padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right : ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(2)),
       child: ClipRRect(
@@ -31,7 +37,7 @@ class _TLDIMMessageCellState extends State<TLDIMMessageCell> {
             children: <Widget>[
               Container(
                 width: size.width - ScreenUtil().setWidth(250),
-                child: Text(widget.messageModel.content,style:TextStyle(fontSize : ScreenUtil().setSp(28),color: Color.fromARGB(255, 51, 51, 51)),maxLines: 1,overflow: TextOverflow.ellipsis,textAlign: TextAlign.start,),
+                child: Text(content,style:TextStyle(fontSize : ScreenUtil().setSp(28),color: Color.fromARGB(255, 51, 51, 51)),maxLines: 1,overflow: TextOverflow.ellipsis,textAlign: TextAlign.start,),
               ),
               _getRightColumnView(context)
             ],

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
+import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Page/tld_purse_page.dart';
 import 'package:dragon_sword_purse/Purse/MyPurse/Page/tld_my_purse_page.dart';
@@ -76,6 +77,9 @@ void main(){
                   }
                 }
               navigatorKey.currentState.push( MaterialPageRoute(builder: (context) => TLDMyPursePage(wallet: wallet,changeNameSuccessCallBack: (str){},)));
+            }else if (type == 106){
+              int appealId = dataMap['appealId'];
+              navigatorKey.currentState.push(MaterialPageRoute(builder: (context) => TLDJustNoticePage(appealId: appealId)));
             }
           }
           }

@@ -199,7 +199,7 @@ class TLDDataBaseManager {
 
   Future<List> searchSystemIMDataBase(int page) async{
     int pageLimit = page * 10;
-    List<Map> maps = await db.rawQuery('SELECT * FROM $tableIM WHERE  $messageTypeIM = 1 ORDER BY _id DESC LIMIT $pageLimit,10');
+    List<Map> maps = await db.rawQuery('SELECT * FROM $tableIM WHERE  $messageTypeIM = 1 ORDER BY _id ASC LIMIT $pageLimit,10');
      if (maps == null || maps.length == 0) {
       return [];
     }
@@ -276,6 +276,13 @@ class TLDDataBaseManager {
       messages.insert(0, TLDMessageModel.fromJson(maps[i]));
     }
     return messages;
+  }
+
+  //删除投票系统消息
+  deleteVoteSystemMessage(int appealId) async{
+    Map bizAttrMap = {'appealId':appealId};
+    String bizStr = jsonEncode(bizAttrMap);
+    db.rawDelete('DELETE FROM $tableIM WHERE $messageTypeIM = 1 AND $contentTypeIM = 106 AND $bizAttrIM = \'$bizStr\''); 
   }
 
   //搜索数据库中以toAdress分组IM的分组

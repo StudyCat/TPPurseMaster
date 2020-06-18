@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_empty_wallet_view.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,6 +25,8 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
 
   List _dataSource = [];
 
+  StreamController _streamController;
+
   TLDExchangeChooseWalletModelManager _modelManager;
   @override
   void initState() {
@@ -30,6 +36,8 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
     _modelManager = TLDExchangeChooseWalletModelManager();
     
     getWalletList();
+
+    _streamController = StreamController();
   }
 
   @override
@@ -51,9 +59,14 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
   }
 
     Widget _getBodyWidget(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) => _getListViewItem(context,index),
-      itemCount: _dataSource.length,
+    return TLDEmptyListView(
+      streamController: _streamController,
+      getEmptyViewCallBack: (){
+        return TLDEmptyWalletView();
+      },
+      getListViewCellCallBack: (int index){
+        return _getListViewItem(context,index);
+      },
     );
   }
 
@@ -69,9 +82,8 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
 
   void getWalletList(){
     _modelManager.getWalletListData(widget.isNeedFliter,(List infoList) {
-      setState(() {
         _dataSource = List.from(infoList);
-      });
+        _streamController.sink.add(_dataSource);
     }, (TLDError error){
       Fluttertoast.showToast(msg: error.msg, toastLength: Toast.LENGTH_SHORT,
                       timeInSecForIosWeb: 1);

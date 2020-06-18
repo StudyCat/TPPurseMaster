@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
@@ -32,6 +34,8 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
 
   RefreshController _refreshController;
 
+  StreamController _streamController;
+
   bool _isLoading;
 
   int _page;
@@ -53,6 +57,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     _isLoading = false;
     _modelManager = TLDBuyModelManager();
     _refreshController = RefreshController(initialRefresh: true);
+    _streamController = StreamController();
     _page = 1;
     _dataSource = [];
     _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
@@ -92,9 +97,8 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
       if(page == 1){
         _dataSource = [];
       }
-     setState(() {
-       _dataSource.addAll(data);      
-      });
+      _dataSource.addAll(data);
+      _streamController.sink.add(_dataSource);      
       if(data.length > 0){
         _page = page + 1;
       }
@@ -184,68 +188,9 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     );
   }
 
-  Widget _getRefreshFooter(){
-    return CustomFooter(
-          builder: (BuildContext context,LoadStatus mode){
-            Widget body ;
-            if(mode==LoadStatus.idle){
-              body =  Text("上拉加载");
-            }
-            else if(mode==LoadStatus.loading){
-              body =  CupertinoActivityIndicator();
-            }
-            else if(mode == LoadStatus.failed){
-              body = Text("Load Failed!Click retry!");
-            }
-            else if(mode == LoadStatus.canLoading){
-                body = Text("release to load more");
-            }
-            else{
-              body = Text("No more Data");
-            }
-            return Container(
-              height: 55.0,
-              child: Center(child:body),
-            );
-          },
-        );
-  }
-
   Widget _getBodyWidget(double screenWidth){
-    return Container(
-      width: screenWidth,
-      child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        TLDBuySearchField(),
-        Expanded(
-          child: SmartRefresher(
-        controller: _refreshController,
-        enablePullDown: true,
-        enablePullUp: true,
-        header: WaterDropHeader(complete: Text('刷新完成'),),
-        footer: _getRefreshFooter(),
-        onRefresh: (){
-          _page = 1;
-          _loadBuyList(_keyword, _page);
-        },
-        onLoading: (){
-          _loadBuyList(_keyword, _page);
-        },
-        child: _getListView(),
-        ) 
-        ),
-      ],
-    ),
-    );
-  }
-
-  Widget _getListView(){
-    return  ListView.builder(
-          itemCount: _dataSource.length,
-          itemBuilder: (BuildContext context, int index) {
-          TLDBuyListInfoModel model = _dataSource[index];
+    return TLDEmptyListView(getListViewCellCallBack:(int index){
+        TLDBuyListInfoModel model = _dataSource[index];
           return TLDBuyFirstPageCell(model: model,didClickBuyBtnCallBack: (){
             showCupertinoModalPopup(context: context, builder: (BuildContext context){
               return TLDBuyActionSheet(model: model,didClickBuyBtnCallBack: (TLDBuyPramaterModel pramaterModel){
@@ -253,8 +198,16 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
               },);
             });
           },);
-         },
-        );
+      }, getEmptyViewCallBack:(){
+        return TLDEmptyDataView(imageAsset: 'assetss/images/creating_purse.png', title: '暂无可购买的单子');
+      }, streamController: _streamController,
+      refreshController: _refreshController,
+      refreshCallBack: (){
+        _page = 1;
+          _loadBuyList(_keyword, _page);
+      },loadCallBack: (){
+          _loadBuyList(_keyword, _page);
+      },);
   }
 
   @override

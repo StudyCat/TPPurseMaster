@@ -56,7 +56,9 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
 
   Widget _getHedaerView(Icon arrowIcon){
     int iconInt;
-    if (widget.paymentModel.type == 1){
+    if (widget.paymentModel == null){
+      iconInt = 0xe679;
+    }else if (widget.paymentModel.type == 1){
       iconInt = 0xe679;
   }else if(widget.paymentModel.type == 2){
       iconInt = 0xe61d;
@@ -94,14 +96,14 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
         padding: EdgeInsets.only(left : ScreenUtil().setWidth(40),right : ScreenUtil().setWidth(40),top: ScreenUtil().setHeight(30),bottom: ScreenUtil().setHeight(36)),
         child: Column(
           children: <Widget>[
-            _getNormalPayInfoView('真实姓名', widget.paymentModel.realName),
+            _getNormalPayInfoView('真实姓名', widget.paymentModel == null ? '':widget.paymentModel.realName),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-              child: _getBankCodeInfoView(widget.paymentModel.account),
+              child: _getBankCodeInfoView(widget.paymentModel == null ? '':widget.paymentModel.account)
             ),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-              child: _getNormalPayInfoView('开户行', widget.paymentModel.subBranch),
+              child: _getNormalPayInfoView('开户行', widget.paymentModel == null ? '':widget.paymentModel.subBranch),
             )
           ],
         ),
@@ -111,7 +113,7 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
         padding: EdgeInsets.only(left : ScreenUtil().setWidth(40),right : ScreenUtil().setWidth(40),top: ScreenUtil().setHeight(30),bottom: ScreenUtil().setHeight(36)),
         child: Column(
           children: <Widget>[
-            _getNormalPayInfoView('收款账号', widget.paymentModel.account),
+            _getNormalPayInfoView('收款账号', widget.paymentModel == null ? '' :widget.paymentModel.account),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
               child: _getQrCodePayInfoView(),

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
@@ -44,6 +46,8 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
   RefreshController _refreshController;
 
   StreamSubscription _systemSubscreption;
+
+  StreamController _streamController;
   @override
   void initState() {
     // TODO: implement initState
@@ -60,6 +64,8 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
     _dataSource = [];
 
     _refreshController = RefreshController(initialRefresh:true);
+
+    _streamController = StreamController();
 
     _getOrderListDataWithPramaterModel(_pramaterModel);
 
@@ -109,9 +115,8 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
       if(model.page == 1){
         _dataSource = [];
       }
-      setState(() {
-        _dataSource.addAll(orderList);
-      });
+       _dataSource.addAll(orderList);
+       _streamController.sink.add(_dataSource);
       if (orderList.length > 0){
         _pramaterModel.page = model.page + 1;
       }
@@ -127,53 +132,19 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
 
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
-      controller: _refreshController,
-      header: _getHeaderRefreh(),
-      footer: _getFooterRefresh(),
-      onRefresh: (){
+    return TLDEmptyListView(
+      getListViewCellCallBack:(int index){
+        return _getListItem(context, index);
+      } , getEmptyViewCallBack: (){
+        return TLDEmptyDataView(imageAsset: 'assetss/images/creating_purse.png', title: '暂无订单');
+      }, streamController: _streamController,
+      refreshController: _refreshController,
+      refreshCallBack: (){
         _pramaterModel.page = 1;
         _getOrderListDataWithPramaterModel(_pramaterModel);
-      },
-      onLoading: ()=> _getOrderListDataWithPramaterModel(_pramaterModel),
-      child: ListView.builder(
-      itemCount: _dataSource.length,
-      itemBuilder: (context ,index) => _getListItem(context, index) 
-      ),
-      );
-  }
-
-  Widget _getHeaderRefreh(){
-    return WaterDropHeader(
-      complete: Text('刷新完成'),
-    );
-  }
-
-  Widget _getFooterRefresh(){
-    return CustomFooter(
-          builder: (BuildContext context,LoadStatus mode){
-            Widget body ;
-            if(mode==LoadStatus.idle){
-              body =  Text("上拉加载");
-            }
-            else if(mode==LoadStatus.loading){
-              body =  CupertinoActivityIndicator();
-            }
-            else if(mode == LoadStatus.failed){
-              body = Text("Load Failed!Click retry!");
-            }
-            else if(mode == LoadStatus.canLoading){
-                body = Text("release to load more");
-            }
-            else{
-              body = Text("No more Data");
-            }
-            return Container(
-              height: 55.0,
-              child: Center(child:body),
-            );
-          },
-        );
+      },loadCallBack: (){
+        _getOrderListDataWithPramaterModel(_pramaterModel);
+      },);
   }
 
   Widget _getListItem(BuildContext context,int index){

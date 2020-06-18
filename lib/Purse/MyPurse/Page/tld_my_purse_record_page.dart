@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
 import 'package:dragon_sword_purse/Purse/MyPurse/Model/tld_my_purse_model_manager.dart';
+import 'package:dragon_sword_purse/Purse/MyPurse/View/tld_empty_record_view.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
@@ -30,6 +32,8 @@ class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage> with Automa
 
   RefreshController _refreshController;
 
+  StreamController _streamController;
+
   StreamSubscription _systemSubscreiption;
 
   @override
@@ -44,6 +48,8 @@ class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage> with Automa
     _manager = TLDMyPurseModelManager();
 
     _refreshController = RefreshController(initialRefresh:true);
+
+    _streamController = StreamController();
 
     _getPurseTransferList(_page);
 
@@ -76,9 +82,8 @@ class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage> with Automa
       if(page == 1){
         _dataSource = [];
       }
-      setState(() {
-        _dataSource.addAll(value);
-      });
+      _dataSource.addAll(value);
+      _streamController.sink.add(_dataSource);
       if (value.length > 0){
         _page = page + 1;
       }
@@ -94,61 +99,21 @@ class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage> with Automa
   Widget build(BuildContext context) {
     return  Padding(
       padding: EdgeInsets.only(top :ScreenUtil().setHeight(20)),
-      child:  SmartRefresher(
-      controller: _refreshController,
-      header: WaterDropHeader(
-        complete: Text('刷新完成'),
-      ),
-      footer: _getRefreshFooter(),
-      onRefresh: (){
-        _page = 1;
-        _getPurseTransferList(_page);
-      },
-      onLoading: (){
-        _getPurseTransferList(_page);
-      },
-      child: getListView(),
-    ),
-    );
-  }
-
-   Widget _getRefreshFooter(){
-    return CustomFooter(
-          builder: (BuildContext context,LoadStatus mode){
-            Widget body ;
-            if(mode==LoadStatus.idle){
-              body =  Text("上拉加载");
-            }
-            else if(mode==LoadStatus.loading){
-              body =  CupertinoActivityIndicator();
-            }
-            else if(mode == LoadStatus.failed){
-              body = Text("Load Failed!Click retry!");
-            }
-            else if(mode == LoadStatus.canLoading){
-                body = Text("release to load more");
-            }
-            else{
-              body = Text("No more Data");
-            }
-            return Container(
-              height: 55.0,
-              child: Center(child:body),
-            );
-          },
-        );
-  }
-
-  Widget getListView(){
-    return ListView.builder(
-        itemCount: _dataSource.length,
-        itemBuilder: (BuildContext context , int index){
+      child: TLDEmptyListView(
+        getListViewCellCallBack:(int index){
           TLDPurseTransferInfoModel infoModel = _dataSource[index];
           return TLDMyPurseRecordCell(transferInfoModel: infoModel,walletAddress: widget.walletAddress,);
-      });
+        }, getEmptyViewCallBack:(){
+          return TLDEmptyRecordView();
+        }, streamController: _streamController
+        ,refreshCallBack:(){
+           _page = 1;
+        _getPurseTransferList(_page);
+        },loadCallBack: (){
+           _getPurseTransferList(_page);
+        },refreshController: _refreshController,) 
+    );
   }
-
-
 
   @override
   // TODO: implement wantKeepAlive

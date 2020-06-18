@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Purse/MyPurse/Page/tld_my_purse_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
@@ -129,6 +130,9 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
                   }
                 }
              Navigator.push(context,MaterialPageRoute(builder: (context) => TLDMyPursePage(wallet: wallet,changeNameSuccessCallBack: (str){},)));
+            }else if (model.contentType == 106){
+              int appealId = attrMap['appealId'];
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDJustNoticePage(appealId: appealId,)));
             }
           },
           child : TLDSystemMessageCell(messageModel: model,)
