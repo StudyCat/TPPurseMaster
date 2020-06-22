@@ -49,9 +49,11 @@ class _TLDIMMessageContentPageState extends State<TLDIMMessageContentPage> with 
   _searchIMChatGroup(){
     _modelManager.searchChatGroup((List groupList){
       _dataSource = [];
-      setState(() {
+      if (mounted){
+              setState(() {
         _dataSource.addAll(groupList);
       });
+      }
     });
   }
 

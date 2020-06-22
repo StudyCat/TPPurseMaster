@@ -1,7 +1,9 @@
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TLDDetailOrderPayMethodCell extends StatefulWidget {
   TLDDetailOrderPayMethodCell({Key key,this.paymentModel,this.isOpen,this.titleStyle,this.title,this.didClickCallBack,this.didClickQrCodeCallBack}) : super(key: key);
@@ -126,11 +128,18 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
 
   // 获取只有两个文字展示的支付信息view
   Widget _getNormalPayInfoView(String title , String content){
+    Size size = MediaQuery.of(context).size;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Text(title,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102))),
-        Text(content,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102))),
+        Container(
+          width: ScreenUtil().setWidth(100),
+          child :Text(title,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102)))
+        ),
+        Container(
+          width : size.width - ScreenUtil().setWidth(250),
+          child: Text(content,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102)),maxLines: null,textAlign: TextAlign.end,),
+        ),
       ],
     );
   }
@@ -152,18 +161,27 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
   //获取银行卡号信息
   Widget _getBankCodeInfoView(String bankAcount){
     Size size = MediaQuery.of(context).size;
-    return Row(
+    return GestureDetector(
+      onTap:(){
+        Clipboard.setData(ClipboardData(text : bankAcount == null ? "":bankAcount));
+                  Fluttertoast.showToast(msg: '已复制到剪切板',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      },
+      child : Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text('银行卡号',style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102))),
          Container(
-           width: ScreenUtil().setWidth(270),
+           width:  size.width - ScreenUtil().setWidth(250),
               child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(right : ScreenUtil().setWidth(20)),
-                  child: Text(bankAcount,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102))),
+                  child: Container(
+                    width : size.width - ScreenUtil().setWidth(300),
+                    child :Text(bankAcount,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102)),textAlign: TextAlign.end,maxLines: null,)
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(right : ScreenUtil().setWidth(0)),
@@ -172,6 +190,7 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
               ]
             ),
          )],
+    )
     );
   }
 

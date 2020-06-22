@@ -36,9 +36,11 @@ class _TLDUserFeedbackQuestionTypePageState extends State<TLDUserFeedbackQuestio
 
   void _getQuestionTypeList(){
     _manager.getQuestTypeList((List resultList){
-      setState(() {
+      if (mounted){
+              setState(() {
         _dataSource.addAll(resultList);
       });
+      }
     }, (TLDError error){
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);

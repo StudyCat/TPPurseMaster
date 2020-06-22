@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
@@ -63,13 +62,17 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
      _manager.getSystemMsssageList(page,
         (List messages) {
       if (page == 0) {
-        setState(() {
+        if (mounted){
+                  setState(() {
           _dataSource.addAll(messages);
         });
+        }
       } else {
-        setState(() {
+        if (mounted){
+                  setState(() {
           _dataSource.insertAll(0, messages);
         });
+        }
       }
       if (messages.length > 0) {
         _page = page + 1;
@@ -106,7 +109,7 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
         return GestureDetector(
           onTap:(){
             Map attrMap = jsonDecode(model.bizAttr);
-            if (model.contentType > 99 && model.contentType < 105){
+            if ((model.contentType > 99 && model.contentType < 105) || model.contentType == 107){
               String orderNo = attrMap['orderNo'];
               bool isBuyer = false;
               String buyerAddress = attrMap['buyerAddress'];

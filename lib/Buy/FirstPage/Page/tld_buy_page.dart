@@ -117,9 +117,11 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
         _isLoading = true;
       });
     _modelManager.buyTLDCoin(pramaterModel, (String orderNo){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       Fluttertoast.showToast(msg: '购买成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
       Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailOrderPage(orderNo: orderNo,isBuyer: true,))).then((value){
@@ -128,9 +130,11 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
         _loadBuyList(_keyword, _page);
       });
     }, (TLDError error){
-      setState(() {
+      if(mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });

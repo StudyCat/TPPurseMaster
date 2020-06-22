@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/CommonWidget/tld_amount_text_input_fprmatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -114,7 +115,7 @@ class _TLDBuyActionSheetInputViewState
           fontSize: ScreenUtil().setSp(24),
           color: Color.fromARGB(255, 153, 153, 153),height: 1.1),
       inputFormatters: [
-          WhitelistingTextInputFormatter.digitsOnly
+          TLDAmountTextInputFormatter()
       ],
       controller: _controller,
     );

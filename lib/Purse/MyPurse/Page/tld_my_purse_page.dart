@@ -56,14 +56,18 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
       _isloading = true;
     });
     _modelManager.getWalletData(widget.wallet, (TLDWalletInfoModel infoModel){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isloading = false;
         _infoModel = infoModel;
       });
+      }
     }, (TLDError error){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isloading = false;
       });
+      }
       Fluttertoast.showToast(msg: error.msg);
     });
   }

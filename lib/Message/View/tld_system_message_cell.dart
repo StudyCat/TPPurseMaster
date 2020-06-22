@@ -21,7 +21,6 @@ class _TLDSystemMessageCellState extends State<TLDSystemMessageCell> {
         borderRadius: BorderRadius.all(Radius.circular(4)),
         child: Container(
           color : Colors.white,
-          height : ScreenUtil().setHeight(168),
           padding: EdgeInsets.only(left : ScreenUtil().setWidth(28),right: ScreenUtil().setWidth(28),top: ScreenUtil().setHeight(20),bottom: ScreenUtil().setHeight(20)),
           child : Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

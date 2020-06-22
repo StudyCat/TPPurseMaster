@@ -36,9 +36,11 @@ class _TLDPurseSideslipViewState extends State<TLDPurseSideslipView> {
 
   void getTotalAmount(){
     _manager.getAllAmount((String total){
-      setState(() {
+      if (mounted){
+              setState(() {
         _totalAmount = total;
       });
+      }
     }, (TLDError error){
 
     });

@@ -21,12 +21,15 @@ class _TLDLeftImageBubbleViewState extends State<TLDLeftImageBubbleView> {
   Widget build(BuildContext context) {
     File file = File(widget.imageUrl);
    return Container(
-      padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
+      padding: EdgeInsets.all(ScreenUtil().setWidth(6)),
       decoration: BoxDecoration(
         color : Colors.white,
         borderRadius : BorderRadius.only(topRight: Radius.circular(20),bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
       ),
-       child: Image.file(file),
+      child : ClipRRect(
+         borderRadius: BorderRadius.only(topRight: Radius.circular(20),bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
+         child: Image.file(file),
+       )
     );
   }
 }

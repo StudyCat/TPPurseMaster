@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/CommonWidget/tld_amount_text_input_fprmatter.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +12,9 @@ class TLDExchangeInputCell extends StatefulWidget {
 
   final Function(String) inputCallBack;
 
-  TLDExchangeInputCell({Key key, this.title,this.infoModel,this.inputCallBack}) : super(key: key);
+  final FocusNode focusNode;
+
+  TLDExchangeInputCell({Key key, this.title,this.infoModel,this.inputCallBack,this.focusNode}) : super(key: key);
 
   @override
   _TLDExchangeInputCellState createState() => _TLDExchangeInputCellState();
@@ -21,13 +24,11 @@ class _TLDExchangeInputCellState extends State<TLDExchangeInputCell> {
 
   TextEditingController _controller;
 
-  FocusNode _commentFocus;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _commentFocus = FocusNode();
+
     _controller = TextEditingController(text: '0');
     _controller.addListener(() {
       String text = _controller.text;
@@ -37,7 +38,7 @@ class _TLDExchangeInputCellState extends State<TLDExchangeInputCell> {
             result = '0';
           }else{
              if(double.parse(text) > double.parse(widget.infoModel.value)){
-               _commentFocus.unfocus();
+               widget.focusNode.unfocus();
               _controller.text = widget.infoModel.value;
               result = widget.infoModel.value;
             }else{
@@ -49,12 +50,6 @@ class _TLDExchangeInputCellState extends State<TLDExchangeInputCell> {
     });
   }
 
-  @override
-  void deactivate() {
-    // TODO: implement deactivate
-    super.deactivate();
-    _commentFocus.unfocus();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,9 +94,9 @@ class _TLDExchangeInputCellState extends State<TLDExchangeInputCell> {
       enabled: widget.infoModel == null ? false : true,
       style: TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24),textBaseline: TextBaseline.alphabetic),
       controller: _controller,
-      focusNode: _commentFocus,
+      focusNode: widget.focusNode,
       inputFormatters: [
-        WhitelistingTextInputFormatter.digitsOnly
+        TLDAmountTextInputFormatter()
       ],
     )),
     Text('TLD',style:TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24)))

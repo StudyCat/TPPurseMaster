@@ -6,10 +6,13 @@ import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Page/tld_purse_page.dart';
 import 'package:dragon_sword_purse/Purse/MyPurse/Page/tld_my_purse_page.dart';
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_success_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -54,7 +57,7 @@ void main(){
             Map extras = message['extras'];
             Map dataMap = jsonDecode(extras['cn.jpush.android.EXTRA']);
             int type  = int.parse(dataMap['contentType']);
-            if (type == 100 || type == 101 || type == 102 || type == 103 || type == 104){
+            if (type == 100 || type == 101 || type == 102 || type == 103 || type == 104 || type == 107){
             bool isBuyer = false;
             String buyerAddress = dataMap['buyerAddress'];
             List purseList = TLDDataManager.instance.purseList;
@@ -78,8 +81,8 @@ void main(){
                 }
               navigatorKey.currentState.push( MaterialPageRoute(builder: (context) => TLDMyPursePage(wallet: wallet,changeNameSuccessCallBack: (str){},)));
             }else if (type == 106){
-              int appealId = dataMap['appealId'];
-              navigatorKey.currentState.push(MaterialPageRoute(builder: (context) => TLDJustNoticePage(appealId: appealId)));
+              String appealId = dataMap['appealId'];
+              navigatorKey.currentState.push(MaterialPageRoute(builder: (context) => TLDJustNoticePage(appealId: int.parse(appealId))));
             }
           }
           }
@@ -91,19 +94,125 @@ void main(){
 
   runApp(MyApp());
 
+  flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
   initPlatformState();
   }
 
   
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  MyApp({Key key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  StreamSubscription _messageSubscription;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+     var initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsIOS = IOSInitializationSettings(
+        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    var initializationSettings = InitializationSettings(
+        initializationSettingsAndroid, initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
+
+    _registerEvent();    
+  }
+
+  void _registerEvent(){
+    _messageSubscription = eventBus.on<TLDMessageEvent>().listen((event) {
+        List messageList = event.messageList;
+        for (TLDMessageModel item in messageList) {
+          if (item.messageType == 2){
+            _incrementCounter(item);
+          }
+        }
+    });
+  }
+
+    void _incrementCounter(TLDMessageModel model) async {
+       bool isFromOther = false; //是否为别人发的消息
+       String fromAddress = model.fromAddress;
+       List purseList = TLDDataManager.instance.purseList;
+       List addressList = [];          
+       for (TLDWallet item in purseList) {
+           addressList.add(item.address);
+       }
+      if (!addressList.contains(fromAddress)){
+          isFromOther = true;
+       }
+      if (isFromOther){
+       var android = new AndroidNotificationDetails(
+        'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
+        priority: Priority.High,importance: Importance.Max
+    );
+    var iOS = new IOSNotificationDetails();
+    var platform = new NotificationDetails(android, iOS);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'New Video is out', 'Flutter Local Notification', platform,
+        payload: 'Nitish Kumar Singh is part time Youtuber');
+      }
+    }
+
+  Future<void> onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {
+    // display a dialog with the notification details, tap ok to go to another page
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+            title: Text(title),
+            content: Text(body),
+            actions: [
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Text('Ok'),
+                onPressed: () async {
+                  // Navigator.of(context, rootNavigator: true).pop();
+                  // await Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => SecondScreen(payload),
+                  //   ),
+                  // );
+                },
+              )
+            ],
+          ),
+    );
+  }
+
+  Future<void> onSelectNotification(String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
+
+    // await Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => SecondScreen(payload)),
+    // );
+  }
+
+  @override
+  void dispose() { 
+    _messageSubscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    TLDDataManager.instance;
     return MaterialApp(
       title : '屠龙刀',
       navigatorKey: navigatorKey,
@@ -116,6 +225,8 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
 
 
 

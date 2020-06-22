@@ -4,11 +4,13 @@ import 'dart:io';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_image_show_page.dart';
 import 'package:dragon_sword_purse/IMUI/Model/tld_im_model_manager.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -84,15 +86,17 @@ class _TLDIMPageState extends State<TLDIMPage> {
     _manager.getMsssageList(widget.orderNo, page,
         (List messages) {
       if (page == 0) {
+        if (mounted){
         setState(() {
           _dataSource.addAll(messages);
         });
-        Timer(Duration(milliseconds: 500),
-            () => _controller.jumpTo(_controller.position.maxScrollExtent));
+        }
       } else {
-        setState(() {
+        if (mounted){
+                  setState(() {
           _dataSource.insertAll(0, messages);
         });
+        }
       }
       if (messages.length > 0) {
         _page = page + 1;
@@ -235,6 +239,7 @@ class _TLDIMPageState extends State<TLDIMPage> {
     return ListView.builder(
       itemCount: _dataSource.length,
       controller: _controller,
+      dragStartBehavior: DragStartBehavior.down,
       itemBuilder: (BuildContext context, int index) {
         TLDMessageModel model = _dataSource[index];
         if (model.contentType == 1) {
@@ -264,30 +269,49 @@ class _TLDIMPageState extends State<TLDIMPage> {
         } else {
           if (_isNeedToshowTimeLabel(index)) {
             if (widget.otherGuyWalletAddress == model.toAddress) {
-              return TLDIMUserTimeImageMessageCell(
+              return GestureDetector(
+                onTap : ()=> _openImage(model.content,context),
+                child : TLDIMUserTimeImageMessageCell(
                 imageUrl: model.content,
                 createTime: model.createTime,
+              )
               );
             } else {
-              return TLDIMOtherUserTimeImageMessageCell(
+              return GestureDetector(
+                onTap :()=> _openImage(model.content,context),
+                child : TLDIMOtherUserTimeImageMessageCell(
                 imageUrl: model.content,
                 createTime: model.createTime,
+              )
               );
             }
           } else {
             if (widget.otherGuyWalletAddress == model.toAddress) {
-              return TLDIMUserImageMessageCell(
+              return GestureDetector(
+                onTap:()=> _openImage(model.content,context),
+                child : TLDIMUserImageMessageCell(
                 imageUrl: model.content,
+              )
               );
             } else {
-              return TLDIMOtherUserImageMessageCell(
+             return GestureDetector(
+               onTap : ()=> _openImage(model.content,context),
+               child : TLDIMOtherUserImageMessageCell(
                 imageUrl: model.content,
-              );
+              )
+             );
             }
           }
         }
       },
     );
+  }
+
+  void _openImage(String filePath,BuildContext context){
+    PageController pageController = PageController();
+    Navigator.push(context, MaterialPageRoute(builder: (context){
+      return TLDImageShowPage(images: [File(filePath)],isShowDelete: false,pageController:pageController ,index: 0,heroTag: 'IMImage',);
+    }));
   }
 
 //判断是否需要展示时间标签

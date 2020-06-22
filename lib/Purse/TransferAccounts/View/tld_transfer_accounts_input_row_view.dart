@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/CommonWidget/tld_amount_text_input_fprmatter.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -131,7 +132,7 @@ class _TLDTransferAccountsInputRowViewState extends State<TLDTransferAccountsInp
       ),
       padding: EdgeInsets.only(top : ScreenUtil().setHeight(24),left: ScreenUtil().setWidth(20)),
       enabled: widget.enable == null ? true : widget.enable,
-      inputFormatters: isOnlyNeedNumber == true ? [WhitelistingTextInputFormatter.digitsOnly] : [],
+      inputFormatters: isOnlyNeedNumber == true ? [TLDAmountTextInputFormatter()] : [],
     );
   }
 }

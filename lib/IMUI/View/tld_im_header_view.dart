@@ -27,7 +27,7 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
 
   bool _isBuyer = false;
 
-  bool _isLoading = false;
+  // bool _isLoading = false;
 
   @override
   void initState() {
@@ -42,60 +42,81 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
   }
 
   void getOrderInfo(){
-     setState(() {
-      _isLoading = true;
-    });
+    //  setState(() {
+    //   _isLoading = true;
+    // });
     _modelManager.getDetailOrderInfoWithOrderNo(widget.orderNo, (TLDDetailOrderModel detailOrderModel){
       _jugeIsBuyer(detailOrderModel);
-      setState(() {
-        _isLoading = false;
+      if (mounted){
+              setState(() {
+        // _isLoading = false;
         _detailOrderModel = detailOrderModel;
       });
+      }
     }, (TLDError error){
-      setState(() {
-        _isLoading = false;
-      });
+      // setState(() {
+      //   _isLoading = false;
+      // });
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });
   }
 
   void _confirmPaid(){
-    setState(() {
-      _isLoading = true;
-    });
+    // setState(() {
+    //   _isLoading = true;
+    // });
     _modelManager.confirmPaid(widget.orderNo, _detailOrderModel.buyerAddress,  (){
-      setState(() {
-        _isLoading = false;
-      });
+      // setState(() {
+      //   _isLoading = false;
+      // });
       getOrderInfo();
       Fluttertoast.showToast(msg: '确认我已付款成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
-      setState(() {
-        _isLoading = false;
-      });
+      // setState(() {
+      //   _isLoading = false;
+      // });
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });
   }
 
   void _sureSentCoin(){
-    setState(() {
-      _isLoading = true;
-    });
+    // setState(() {
+    //   _isLoading = true;
+    // });
     _modelManager.sureSentCoin(widget.orderNo, _detailOrderModel.sellerAddress,  (){
-      setState(() {
-        _isLoading = false;
-      });
+      // setState(() {
+      //   _isLoading = false;
+      // });
       _detailOrderModel = null;
       getOrderInfo();
       Fluttertoast.showToast(msg: '确认释放积分成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
-      setState(() {
-        _isLoading = false;
-      });
+      // setState(() {
+      //   _isLoading = false;
+      // });
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    });
+  }
+
+    void _remindOrder(){
+    //  setState(() {
+    //   _isLoading = true;
+    // });
+    _modelManager.remindOrder(widget.orderNo, (){
+      // setState(() {
+      //   _isLoading = false;
+      // });
+      Fluttertoast.showToast(msg: '催单成功',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    },  (TLDError error){
+      // setState(() {
+      //   _isLoading = false;
+      // });
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });
@@ -122,9 +143,7 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
         _actionBtnTitleList = infoModel.sellerActionButtonTitle;
       }
     }
-    return LoadingOverlay(
-      isLoading: _isLoading, 
-      child: Container(
+    return  Container(
        child: Padding(
          padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right : ScreenUtil().setWidth(30)),
          child: Column(
@@ -146,7 +165,7 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
            ]
          )
        )
-    ));
+    );
   }
 
   Widget _getOrderInfoActionBtnView(){
@@ -211,6 +230,8 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
                         _confirmPaid();
                       }else if(_actionBtnTitleList.first == '确认释放积分'){
                         _sureSentCoin();
+                      }else if (_actionBtnTitleList.first == '催单'){
+                        _remindOrder();
                       }
                     }),
             );

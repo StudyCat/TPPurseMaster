@@ -48,6 +48,7 @@ dependencies:
   rflutter_alert: ^1.0.3
   bot_toast: ^3.0.0
   uuid_enhanced: ^3.0.2
+  flutter_local_notifications: ^1.4.4+1
   
 
   # The following adds the Cupertino Icons font to your application.

@@ -123,9 +123,11 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
                       timeInSecForIosWeb: 1);
         Navigator.of(context).pop();
       }, (TLDError error){
+      if (mounted){
       setState(() {
         _loading = false;
       });
+      }
       Fluttertoast.showToast(
                       msg: error.msg,
                       toastLength: Toast.LENGTH_SHORT,
@@ -149,9 +151,11 @@ class _TLDWechatAliPayInfoPageState extends State<TLDWechatAliPayInfoPage> {
                       timeInSecForIosWeb: 1);
         Navigator.of(context).pop();
       }, (TLDError error){
-      setState(() {
+      if (mounted){
+        setState(() {
         _loading = false;
       });
+      }
       Fluttertoast.showToast(
                       msg: error.msg,
                       toastLength: Toast.LENGTH_SHORT,

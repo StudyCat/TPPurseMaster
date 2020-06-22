@@ -111,4 +111,11 @@ class TLDDetailOrderModelManager {
       success();
     }, (error) => failure(error));
   }
+
+  void remindOrder(String orderNo,Function success, Function failure){
+    TLDBaseRequest request = TLDBaseRequest({'orderNo': orderNo}, 'order/reminder');
+    request.postNetRequest((dynamic value) {
+      success();
+    }, (error) => failure(error));
+  }
 }

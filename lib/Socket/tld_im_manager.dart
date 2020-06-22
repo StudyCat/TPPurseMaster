@@ -73,6 +73,7 @@ class TLDIMManager{
   String talkAddress = '';//聊天地址
   IOWebSocketChannel channel;
    bool isInBackState = false;
+   int reConnectNum = 0;
 
   TLDIMManager._internal() {
     // 初始化
@@ -92,8 +93,13 @@ class TLDIMManager{
       timer = null;
     }
 
+    if (reConnectNum > 5){
+      return;
+    }
+
     channel = IOWebSocketChannel.connect("ws://192.168.1.120:8030/webSocket/"+ this.userToken);
-     channel.stream.listen(( message)async { 
+     channel.stream.listen(( message)async {
+       reConnectNum = 0; 
       if (message == 'pong'){
         return;
       }
@@ -131,14 +137,17 @@ class TLDIMManager{
       }
     },onError: (error){
       if (!this.isInBackState){
+        reConnectNum ++;
         connectClient();
       }
     },onDone: (){
       if (!this.isInBackState){
+        reConnectNum ++;
         connectClient();
       }
     });
-    timer = Timer.periodic(Duration(seconds : 30), (timer) { 
+    timer = Timer.periodic(Duration(seconds : 30), (timer) {
+      reConnectNum = 0; 
       sendHeartMessage();
     });
   }

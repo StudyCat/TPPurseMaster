@@ -93,16 +93,20 @@ class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
       _loading = true;
     });
     _manager.sendFeedBack(_pramatersModel, (){
+      if (mounted){
       setState(() {
         _loading = false;
       });
+      }
       Fluttertoast.showToast(msg: '反馈成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
       Navigator.of(context).pop();
     }, (TLDError error){
+      if (mounted){
       setState(() {
         _loading = false;
       });
+      }
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });

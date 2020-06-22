@@ -57,9 +57,11 @@ class _TLDPaymentManagerPageState extends State<TLDPaymentManagerPage> {
     _manager.getPaymentInfoList(widget.walletAddress, widget.type, (List dataList){
       _dataSource = [];
       _refreshController.refreshCompleted();
+      if (mounted){
       setState(() {
         _dataSource.addAll(dataList);
       });
+      }
     }, (TLDError error) {
       _refreshController.refreshCompleted();
       Fluttertoast.showToast(

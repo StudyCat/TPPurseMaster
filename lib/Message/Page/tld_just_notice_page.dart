@@ -57,14 +57,18 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
       _isLoading = true;
     });
     _manager.getOrderAppealInfoWithAppealId(widget.appealId, (TLDOrderAppealModel model){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
         _orderAppealModel = model;
       });
+      }
     }, (TLDError error) {
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       Fluttertoast.showToast(msg: error.msg);
     });
   }
@@ -78,18 +82,22 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
       _isLoading = true;
     });
     _manager.voteOrderAppeal(_voteValue,widget.appealId, ()async{
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       Fluttertoast.showToast(msg: '投票成功');
       await TLDDataBaseManager.instance.openDataBase();
       await TLDDataBaseManager.instance.deleteVoteSystemMessage(widget.appealId);
       await TLDDataBaseManager.instance.closeDataBase(); 
       Navigator.of(context).pop();
     }, (TLDError error) {
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       Fluttertoast.showToast(msg: error.msg);
     });
   }

@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Page/tld_purse_page.dart';
+import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +18,8 @@ import 'tld_tabbar_page.dart';
 import 'Notification/tld_import_create_purse_success_notification.dart';
 import 'CommonWidget/tld_data_manager.dart';
 import 'main.dart';
+import 'package:jpush_flutter/jpush_flutter.dart';
+
 
 
 class TLDHomePage extends StatefulWidget {
@@ -30,6 +35,10 @@ class _TLDHomePageState extends State<TLDHomePage> {
 
   bool isHavePurse;
 
+  JPush jPush;
+
+  StreamSubscription _messageSubscription;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -42,7 +51,7 @@ class _TLDHomePageState extends State<TLDHomePage> {
 
      _searchAllPurse();
 
-    JPush jPush = JPush();
+    jPush = JPush();
     if (Platform.isAndroid){
       jPush.isNotificationEnabled().then((isOpen){
       if (!isOpen){
@@ -61,7 +70,6 @@ class _TLDHomePageState extends State<TLDHomePage> {
     }else{
       
     }
-
   }
 
   void _searchAllPurse()async{
@@ -71,10 +79,20 @@ class _TLDHomePageState extends State<TLDHomePage> {
     allPurse == null ? TLDDataManager.instance.purseList = [] : TLDDataManager.instance.purseList = List.from(allPurse);
 
       if(allPurse != null && allPurse.length > 0){
+        if (mounted){
         setState(() {
           isHavePurse = true;
         });
+        }
       }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _messageSubscription.cancel();
   }
 
 

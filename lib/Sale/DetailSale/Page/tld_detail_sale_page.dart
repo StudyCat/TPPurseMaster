@@ -60,14 +60,18 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
 
   void getDetailInfo(){
     _modelManager.getDetailSale(widget.sellNo, (TLDDetailSaleModel detailModel){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
         _saleModel = detailModel;
       });
+      }
     }, (TLDError error){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                       timeInSecForIosWeb: 1);
     });

@@ -98,18 +98,22 @@ class _TLDBankCardInfoPageState extends State<TLDBankCardInfoPage> {
       _loading = true;
     });
     _manager.createPayment(_pramaterModel, (){
-      setState(() {
-        _loading = false;
-      });
+      if (mounted){
+        setState(() {
+          _loading = false;
+        });
+      }
       Fluttertoast.showToast(
                       msg: "添加银行卡成功",
                       toastLength: Toast.LENGTH_SHORT,
                       timeInSecForIosWeb: 1);
       Navigator.of(context).pop();
     }, (TLDError error){
-      setState(() {
+      if (mounted){
+       setState(() {
         _loading = false;
       });
+      }
     });
   }
 
@@ -146,18 +150,22 @@ class _TLDBankCardInfoPageState extends State<TLDBankCardInfoPage> {
       _loading = true;
     });
     _manager.updatePayment(_pramaterModel, (){
+      if(mounted){
       setState(() {
         _loading = false;
       });
+      }
       Fluttertoast.showToast(
                       msg: "修改银行卡成功",
                       toastLength: Toast.LENGTH_SHORT,
                       timeInSecForIosWeb: 1);
       Navigator.of(context).pop();
     }, (TLDError error){
-      setState(() {
+      if (mounted){
+       setState(() {
         _loading = false;
       });
+      }
     });
   }
 

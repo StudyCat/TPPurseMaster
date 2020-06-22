@@ -74,15 +74,19 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       _isLoading = true;
     });
     _modelManager.getDetailOrderInfoWithOrderNo(widget.orderNo, (TLDDetailOrderModel detailModel){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       _detailOrderModel = detailModel;
       _controller.sink.add(detailModel);
     }, (TLDError error){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });
@@ -93,18 +97,22 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       _isLoading = true;
     });
     _modelManager.cancelOrderWithOrderNo(widget.orderNo, (){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       _detailOrderModel = null;
       _controller.sink.add(_detailOrderModel);
       _getDetailOrderInfo();
       Fluttertoast.showToast(msg: '取消订单成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });
@@ -115,18 +123,22 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       _isLoading = true;
     });
     _modelManager.confirmPaid(widget.orderNo, _detailOrderModel.buyerAddress,  (){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       _detailOrderModel = null;
       _controller.sink.add(_detailOrderModel);
       _getDetailOrderInfo();
       Fluttertoast.showToast(msg: '确认我已付款成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });
@@ -137,18 +149,45 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       _isLoading = true;
     });
     _modelManager.sureSentCoin(widget.orderNo, _detailOrderModel.sellerAddress,  (){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       _detailOrderModel = null;
       _controller.sink.add(_detailOrderModel);
       _getDetailOrderInfo();
       Fluttertoast.showToast(msg: '确认释放积分成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    });
+  }
+
+  void _remindOrder(){
+     setState(() {
+      _isLoading = true;
+    });
+    _modelManager.remindOrder(widget.orderNo, (){
+      if (mounted){
+              setState(() {
+        _isLoading = false;
+      });
+      }
+      Fluttertoast.showToast(msg: '催单成功',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    },  (TLDError error){
+      if (mounted){
+              setState(() {
+        _isLoading = false;
+      });
+      }
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });
@@ -248,9 +287,9 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
                   setState(() {
                     isOpen = !isOpen;
                   });
-                  if (_detailOrderModel.payMethodVO.type == 2){
+                  if (_detailOrderModel.payMethodVO.type == 2 && isOpen == true){
                       showDialog(context: context,builder: (context) => TLDDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
-                  }else if (_detailOrderModel.payMethodVO.type == 2){
+                  }else if (_detailOrderModel.payMethodVO.type == 2 && isOpen == true){
                       showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));                    
                   }
                 },
@@ -273,6 +312,8 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
                 _confirmPaid();
               }else if(buttonTitle == '确认释放积分'){
                 _sureSentCoin();
+              }else if (buttonTitle == '催单'){
+                _remindOrder();
               }
             },);
           }else {

@@ -70,17 +70,21 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
       _loading = true;
     });
     _manager.transferAmount(_pramaterModel, (){
-        setState(() {
+        if (mounted){
+                  setState(() {
           _loading = false;
         });
+        }
         Fluttertoast.showToast(msg: '转账成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
         widget.transferSuccessCallBack(_pramaterModel.value);
         Navigator.of(context).pop();
     }, (TLDError error){
-      setState(() {
+      if (mounted){
+              setState(() {
       _loading = false;
       });
+      }
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                           timeInSecForIosWeb: 1);
     });

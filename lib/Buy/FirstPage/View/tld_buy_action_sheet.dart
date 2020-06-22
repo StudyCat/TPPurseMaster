@@ -39,7 +39,11 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
+    return SingleChildScrollView(
+      child : Padding(
+      padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Container(
       height: ScreenUtil().setHeight(580),
       width: size.width,
       padding: EdgeInsets.only(
@@ -115,6 +119,8 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
           )
           )],
       ),
+    ),
+    )
     );
   }
 

@@ -23,7 +23,7 @@ class _TLDIMUserImageMessageCellState extends State<TLDIMUserImageMessageCell> {
         children: <Widget>[
           Container(
             width: ScreenUtil().setWidth(360),
-            height: ScreenUtil().setWidth(360),
+            // height: ScreenUtil().setWidth(360),
             child: TLDRightImageBubbleView(imageUrl: widget.imageUrl),
             constraints: BoxConstraints(
               maxWidth: size.width / 2

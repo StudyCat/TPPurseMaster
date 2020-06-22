@@ -1,20 +1,27 @@
+
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class TLDImageShowPage extends StatefulWidget {
   TLDImageShowPage(
-      {Key key, this.images, this.pageController, this.heroTag, this.index,this.isShowDelete,this.deleteCallBack})
+      {Key key, this.images, this.pageController, this.heroTag, this.index,this.isShowDelete,this.deleteCallBack,this.imagePathList})
       : super(key: key);
 
-  final images;
+  final List images;
   int index = 0;
   String heroTag;
   final PageController pageController;
   bool isShowDelete = true;
   final ValueChanged<int> deleteCallBack;
+  final List imagePathList;
   @override
   _TLDImageShowPageState createState() => _TLDImageShowPageState();
 }
@@ -43,14 +50,20 @@ class _TLDImageShowPageState extends State<TLDImageShowPage> {
                 child: PhotoViewGallery.builder(
               scrollPhysics: const BouncingScrollPhysics(),
               builder: (BuildContext context, int index) {
+                ImageProvider imageProvider;
+                if (widget.imagePathList != null){
+                  imageProvider = CachedNetworkImageProvider(widget.imagePathList[index]);
+                }else{
+                  imageProvider = FileImage(widget.images[index]);
+                }
                 return PhotoViewGalleryPageOptions(
-                  imageProvider: Image.file(widget.images[index]).image,
+                  imageProvider: imageProvider,
                   heroAttributes: widget.heroTag.isNotEmpty
                       ? PhotoViewHeroAttributes(tag: widget.heroTag)
                       : null,
                 );
               },
-              itemCount: widget.images.length,
+              itemCount: widget.imagePathList != null ? widget.imagePathList.length : widget.images.length,
               backgroundDecoration: null,
               pageController: widget.pageController,
               enableRotation: true,
@@ -63,11 +76,11 @@ class _TLDImageShowPageState extends State<TLDImageShowPage> {
           ),
           Positioned(
             //图片index显示
-            top: MediaQuery.of(context).padding.top + 15,
+            top: MediaQuery.of(context).padding.top + 18,
             width: MediaQuery.of(context).size.width,
             child: Center(
-              child: Text("${currentIndex + 1}/${widget.images.length}",
-                  style: TextStyle(color: Colors.white, fontSize: 16)),
+              child: Text("${currentIndex + 1}/${widget.imagePathList != null ? widget.imagePathList.length : widget.images.length}",
+                  style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(32))),
             ),
           ),
           Positioned(
@@ -85,6 +98,20 @@ class _TLDImageShowPageState extends State<TLDImageShowPage> {
               },
             ),
           ),
+          Positioned(
+            right: 50,
+            top: MediaQuery.of(context).padding.top,
+            child: CupertinoButton(child: Text('保存至相册',style: TextStyle(fontSize:ScreenUtil().setSp(32),color: Colors.white),), onPressed: () async{
+              if (widget.imagePathList != null){
+                String file = await CachedNetworkImageProvider(widget.imagePathList[currentIndex]).cacheManager.getFilePath();
+                ImageGallerySaver.saveFile(file);
+              }else{
+                File file = widget.images[currentIndex];
+                ImageGallerySaver.saveFile(file.path);
+              }
+              Fluttertoast.showToast(msg: '保存成功');
+            })
+            ),
           widget.isShowDelete == true ? Positioned(
             //右上角删除按钮
             left: 10,

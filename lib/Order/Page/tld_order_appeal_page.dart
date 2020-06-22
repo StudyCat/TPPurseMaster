@@ -59,23 +59,29 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
     });
     _manager.uploadImageToService(images, (List urlList){
       _manager.orderAppealToService(urlList, appealDesc, widget.orderModel.orderNo, (){
-        setState(() {
+        if (mounted){
+                  setState(() {
         _isLoading = false;
         });
+        }
         Fluttertoast.showToast(msg: '提交申请成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
         Navigator.of(context).pop();
       }, (TLDError error){
-        setState(() {
+        if (mounted){
+                  setState(() {
         _isLoading = false;
         });
+        }
         Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
       });
     }, (TLDError error){
-      setState(() {
+      if (mounted){
+              setState(() {
         _isLoading = false;
       });
+      }
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });

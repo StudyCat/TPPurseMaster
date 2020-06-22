@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/CommonWidget/tld_amount_text_input_fprmatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,8 @@ class TLDExchangeInputSliderCell extends StatefulWidget {
   final String title;
   final TLDWalletInfoModel infoModel;
   final Function(String) inputCallBack;
-  TLDExchangeInputSliderCell({Key key,this.title,this.infoModel,this.inputCallBack}) : super(key: key);
+  final FocusNode focusNode;
+  TLDExchangeInputSliderCell({Key key,this.title,this.infoModel,this.inputCallBack,this.focusNode}) : super(key: key);
 
   @override
   _TLDExchangeInputSliderCellState createState() => _TLDExchangeInputSliderCellState();
@@ -20,13 +22,11 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
 
   TextEditingController _controller;
 
-  FocusNode _commentFocus;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _commentFocus = FocusNode();
     _controller = TextEditingController(text: '0');
     _controller.addListener(() {
       String text = _controller.text;
@@ -35,7 +35,7 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
             _value = '0';
           }else{
              if(double.parse(text) > double.parse(widget.infoModel.value)){
-               _commentFocus.unfocus();
+               widget.focusNode.unfocus();
               _controller.text = widget.infoModel.value;
               _value = widget.infoModel.value;
             }else{
@@ -45,13 +45,6 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
       });
       widget.inputCallBack(_value);
     });
-  }
-
-  @override
-  void deactivate() {
-    // TODO: implement deactivate
-    super.deactivate();
-    _commentFocus.unfocus();
   }
 
   @override
@@ -108,9 +101,9 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
       enabled: widget.infoModel == null ? false : true,
       style: TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24),textBaseline: TextBaseline.alphabetic),
       controller: _controller,
-      focusNode: _commentFocus,
+      focusNode: widget.focusNode,
       inputFormatters: [
-        WhitelistingTextInputFormatter.digitsOnly
+        TLDAmountTextInputFormatter()
       ],
     )),
     Text('TLD',style:TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24)))
@@ -158,12 +151,12 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
               onDragging: (handlerIndex, lowerValue, upperValue) {
                 if(widget.infoModel != null){
                   setState(() {
-                  _commentFocus.unfocus();
+                  widget.focusNode.unfocus();
                   _value = lowerValue.toString();
                   _controller.text = _value;
                 });
                 }else{
-                  _commentFocus.unfocus();
+                  widget.focusNode.unfocus();
                   setState(() {
                     _value = '0';
                   });

@@ -72,9 +72,11 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
 
   void getSaleListInfo(){
     _modelManager.getSaleList(widget.type,(List dataList){
-      setState(() {
+      if (mounted){
+              setState(() {
         _saleDatas = List.from(dataList);
       });
+      }
       _refreshController.refreshCompleted();
     } , (TLDError error) {
       _refreshController.refreshCompleted();
@@ -88,14 +90,18 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
       _isLoading = true;
     });
     _modelManager.cancelSale(model, (){
-      setState(() {
+      if (mounted){
+              setState(() {
       _isLoading = false;
       _saleDatas.removeAt(index);
     });
+      }
     }, (TLDError error){
-      setState(() {
+      if (mounted){
+              setState(() {
       _isLoading = false;
       });
+      }
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
           timeInSecForIosWeb: 1);
     });
