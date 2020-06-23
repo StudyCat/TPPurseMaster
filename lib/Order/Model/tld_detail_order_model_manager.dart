@@ -17,6 +17,8 @@ class TLDDetailOrderModel {
   bool overtime;
   int status; //(-1：已取消，0：待支付，1：已支付，2：已完成，3：已超时)
   TLDPaymentModel payMethodVO;
+  int appealStatus; //申诉状态(-1：没有申诉，0：正在申诉，1：申诉成功，2：申诉失败)
+  int appealId;
 
   TLDDetailOrderModel(
       {this.finishTime,
@@ -33,7 +35,9 @@ class TLDDetailOrderModel {
       this.txCount,
       this.overtime,
       this.status,
-      this.payMethodVO});
+      this.payMethodVO,
+      this.appealStatus,
+      this.appealId});
 
   TLDDetailOrderModel.fromJson(Map<String, dynamic> json) {
     finishTime = json['finishTime'];
@@ -51,6 +55,8 @@ class TLDDetailOrderModel {
     overtime = json['overtime'];
     status = json['status'];
     payMethodVO = TLDPaymentModel.fromJson(json['payMethodVO']);
+    appealId = json['appealId'];
+    appealStatus = json['appealStatus'];
   }
 
   Map<String, dynamic> toJson() {
@@ -70,6 +76,8 @@ class TLDDetailOrderModel {
     data['overtime'] = this.overtime;
     data['status'] = this.status;
     data['payMethodVO'] = this.payMethodVO.toJson();
+    data['appealStatus'] = this.appealStatus;
+    data['appealId'] = this.appealId;
     return data;
   }
 }

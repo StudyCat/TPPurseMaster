@@ -11,6 +11,8 @@ class TLDOrderAppealModel {
   String appealDesc;
   String appealImgList;
   int createTime;
+  int appealStatus;
+  int finishTime;
 
   TLDOrderAppealModel(
       {this.appealId,
@@ -20,7 +22,9 @@ class TLDOrderAppealModel {
       this.buyerWalletAddress,
       this.appealDesc,
       this.appealImgList,
-      this.createTime});
+      this.createTime,
+      this.appealStatus,
+      this.finishTime});
 
   TLDOrderAppealModel.fromJson(Map<String, dynamic> json) {
     appealId = json['appealId'];
@@ -33,6 +37,8 @@ class TLDOrderAppealModel {
     appealDesc = json['appealDesc'];
     appealImgList = json['appealImgList'];
     createTime = json['createTime'];
+    appealStatus = json['appealStatus'];
+    finishTime = json['finishTime'];
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +53,8 @@ class TLDOrderAppealModel {
     data['appealDesc'] = this.appealDesc;
     data['appealImgList'] = this.appealImgList;
     data['createTime'] = this.createTime;
+    data['appealStatus'] = this.appealStatus;
+    data['finishTime'] = this.finishTime;
     return data;
   }
 }
@@ -118,6 +126,13 @@ class TLDJustVoteModelManager{
     int voteFlag = voteValue - 1;//客户端定义的flag需要-1
     String userToken = TLDDataManager.instance.userToken;
     TLDBaseRequest request = TLDBaseRequest({'appealId':appealId,'flag':voteFlag,'userToken':userToken},'appeal/appealVote');
+    request.postNetRequest((value) {
+      success();
+    }, (error) => failure(error));
+  }
+
+  void cancelAppeal(int appealId,Function success,Function(TLDError) failure){
+        TLDBaseRequest request = TLDBaseRequest({'appealId':appealId},'appeal/cancelAppeal');
     request.postNetRequest((value) {
       success();
     }, (error) => failure(error));

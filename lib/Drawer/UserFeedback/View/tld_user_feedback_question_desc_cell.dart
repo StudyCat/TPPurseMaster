@@ -1,15 +1,18 @@
+import 'package:dragon_sword_purse/Message/Model/tld_just_notice_vote_model_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDUserFeedbackQuestionDescCell extends StatefulWidget {
-  TLDUserFeedbackQuestionDescCell({Key key,this.title,this.placeholder,this.stringDidChangeCallBack}) : super(key: key);
+  TLDUserFeedbackQuestionDescCell({Key key,this.title,this.placeholder,this.stringDidChangeCallBack,this.appealModel}) : super(key: key);
 
   final String title;
 
   final String placeholder;
 
   final Function(String) stringDidChangeCallBack;
+
+  final TLDOrderAppealModel appealModel;
 
   @override
   _TLDUserFeedbackQuestionDescCellState createState() => _TLDUserFeedbackQuestionDescCellState();
@@ -23,7 +26,11 @@ class _TLDUserFeedbackQuestionDescCellState extends State<TLDUserFeedbackQuestio
     // TODO: implement initState
     super.initState();
 
-    _controller = TextEditingController();
+    if (widget.appealModel != null) {
+      _controller = TextEditingController(text: widget.appealModel.appealDesc);
+    }else{
+      _controller = TextEditingController();
+    }
     _controller.addListener(() {
       widget.stringDidChangeCallBack(_controller.text);
     });
@@ -61,6 +68,7 @@ class _TLDUserFeedbackQuestionDescCellState extends State<TLDUserFeedbackQuestio
                   decoration: BoxDecoration(
                       border: Border.all(color: Color.fromARGB(0, 0, 0, 0))),
                   maxLines: null,
+                  enabled: widget.appealModel == null,
                   placeholder: widget.placeholder,
                   placeholderStyle: TextStyle(fontSize : ScreenUtil().setSp(24),color :Color.fromARGB(255, 153, 153, 153)),
                   keyboardType: TextInputType.text,

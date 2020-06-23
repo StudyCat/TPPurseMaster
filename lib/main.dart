@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
+import 'package:dragon_sword_purse/IMUI/Page/tld_im_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Page/tld_purse_page.dart';
@@ -155,54 +156,37 @@ class _MyAppState extends State<MyApp> {
           isFromOther = true;
        }
       if (isFromOther){
+       String content;
+       if (model.contentType == 1){
+         content = model.content;
+       }else{
+         content = '[图片]';
+       }
+       Map map = model.toJson();
+       String mapJson = jsonEncode(map);
+       String title = '来自订单号'+ model.orderNo + '的聊天消息'; 
        var android = new AndroidNotificationDetails(
         'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
         priority: Priority.High,importance: Importance.Max
-    );
-    var iOS = new IOSNotificationDetails();
-    var platform = new NotificationDetails(android, iOS);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'New Video is out', 'Flutter Local Notification', platform,
-        payload: 'Nitish Kumar Singh is part time Youtuber');
-      }
+       );
+       var iOS = new IOSNotificationDetails();
+       var platform = new NotificationDetails(android, iOS);
+       await flutterLocalNotificationsPlugin.show(
+         0, title, content, platform,
+         payload:mapJson);
+       }
     }
 
   Future<void> onDidReceiveLocalNotification(
       int id, String title, String body, String payload) async {
     // display a dialog with the notification details, tap ok to go to another page
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-            title: Text(title),
-            content: Text(body),
-            actions: [
-              CupertinoDialogAction(
-                isDefaultAction: true,
-                child: Text('Ok'),
-                onPressed: () async {
-                  // Navigator.of(context, rootNavigator: true).pop();
-                  // await Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => SecondScreen(payload),
-                  //   ),
-                  // );
-                },
-              )
-            ],
-          ),
-    );
+   
   }
 
-  Future<void> onSelectNotification(String payload) async {
-    if (payload != null) {
-      debugPrint('notification payload: ' + payload);
-    }
-
-    // await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => SecondScreen(payload)),
-    // );
+  Future<void> onSelectNotification(String playload) async {
+    Map message = jsonDecode(playload);
+    TLDMessageModel model =  TLDMessageModel.fromJson(message);
+    navigatorKey.currentState.push(MaterialPageRoute(builder: (context) => TLDIMPage(otherGuyWalletAddress: model.fromAddress,selfWalletAddress: model.toAddress,orderNo: model.orderNo,)));
   }
 
   @override

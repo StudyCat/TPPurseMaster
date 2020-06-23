@@ -42,6 +42,7 @@ class TLDMessageModel {
     orderNo = json['orderNo'];
     messageType = json['messageType'];
     bizAttr = json['bizAttr'];
+    id = json['_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -53,7 +54,7 @@ class TLDMessageModel {
     data['createTime'] = this.createTime;
     data['orderNo'] = this.orderNo;
     data['messageType'] = this.messageType;
-    // data['unread'] = this.unread ? 1 : 0;
+    data['unread'] = this.unread ? 1 : 0;
     data['bizAttr'] = this.bizAttr;
     return data;
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/IMUI/Page/tld_im_page.dart';
+import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_order_appeal_page.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_alipay_qrcode_show_view.dart';
@@ -254,7 +255,13 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
           _detailOrderModel = null;
           _controller.sink.add(_detailOrderModel);
           _getDetailOrderInfo();
-        },didClickAppealBtnCallBack: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDOrderAppealPage(orderModel: _detailOrderModel,))),
+        },didClickAppealBtnCallBack: (){
+          if (_detailOrderModel.appealId != null) {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDJustNoticePage(appealId: _detailOrderModel.appealId,type: TLDJustNoticePageType.appealWatching,))).then((value) => _getDetailOrderInfo());
+          }else{
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDOrderAppealPage(orderModel: _detailOrderModel,))).then((value) => _getDetailOrderInfo());
+          }
+        },
         ),
       ),
     );

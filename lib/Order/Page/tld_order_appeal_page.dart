@@ -19,9 +19,11 @@ import 'package:image_picker/image_picker.dart';
 import '../../CommonWidget/tld_image_show_page.dart';
 
 class TLDOrderAppealPage extends StatefulWidget {
-  TLDOrderAppealPage({Key key,this.orderModel}) : super(key: key);
+  TLDOrderAppealPage({Key key,this.orderModel,this.isReAppeal = false}) : super(key: key);
 
   final TLDDetailOrderModel orderModel;
+
+  final bool isReAppeal;
 
   @override
   _TLDOrderAppealPageState createState() => _TLDOrderAppealPageState();
@@ -66,7 +68,11 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
         }
         Fluttertoast.showToast(msg: '提交申请成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
-        Navigator.of(context).pop();
+        if (widget.isReAppeal == true) {
+          Navigator.of(context)..pop()..pop();
+        }else{
+          Navigator.of(context).pop();
+        }
       }, (TLDError error){
         if (mounted){
                   setState(() {

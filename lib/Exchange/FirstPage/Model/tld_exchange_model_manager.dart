@@ -10,12 +10,13 @@ class TLDSaleFormModel{
   String payMethodName;
   String saleAmount;
   String tmpWalletAddress;
+  String rate;
 }
 
 class TLDExchangeModelManager{
 
   void submitSaleForm(TLDSaleFormModel formModel,Function success,Function(TLDError) failure){
-    TLDBaseRequest request = TLDBaseRequest({'walletAddress':formModel.infoModel.walletAddress,'payId':formModel.paymentModel.payId,'max':formModel.maxBuyAmount,'count':formModel.saleAmount},'sell/create');
+    TLDBaseRequest request = TLDBaseRequest({'walletAddress':formModel.infoModel.walletAddress,'payId':formModel.paymentModel.payId,'max':formModel.maxBuyAmount,'count':formModel.saleAmount,'rate':formModel.rate},'sell/create');
     request.postNetRequest((value) {
       Map dataMap = value;
       formModel.tmpWalletAddress = dataMap['tmpWalletAddress'];

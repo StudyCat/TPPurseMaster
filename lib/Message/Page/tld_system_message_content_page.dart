@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Message/Model/tld_system_message_model_manager.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Purse/MyPurse/Page/tld_my_purse_page.dart';
@@ -10,6 +11,7 @@ import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../View/tld_system_message_cell.dart';
 
@@ -32,6 +34,10 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
 
   StreamSubscription _messageSubscription;
 
+  TLDSystemMessageModelManager _modelManager;
+
+  bool _isLoading = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -39,6 +45,8 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
 
     _manager = TLDIMManager.instance;
     _manager.isOnChatPage = true;
+
+    _modelManager = TLDSystemMessageModelManager();
 
     _refreshController = RefreshController();
 
@@ -98,7 +106,9 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
 
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
+    return LoadingOverlay(
+      isLoading: _isLoading,
+      child: SmartRefresher(
       controller: _refreshController,
       header: WaterDropHeader(complete: Container()),
       onRefresh: () => _getSystemList(_page),
@@ -106,7 +116,29 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
       itemCount: _dataSource.length,
       itemBuilder: (BuildContext context, int index) {
         TLDMessageModel model = _dataSource[index];
-        return GestureDetector(
+        return Dismissible(
+          key: Key(UniqueKey().toString()), 
+          child: _getCellWidget(model),
+          onDismissed: (DismissDirection direction){
+            setState(() {
+              _isLoading = true;
+            });
+            _modelManager.deleteSystemMessage(model.id, (){
+              setState(() {
+              _isLoading = false;
+              });
+              _dataSource.remove(model);
+            });
+          },
+          );
+     },
+    ),
+    ),
+    );
+  }
+
+  Widget _getCellWidget(TLDMessageModel model){
+    return GestureDetector(
           onTap:(){
             Map attrMap = jsonDecode(model.bizAttr);
             if ((model.contentType > 99 && model.contentType < 105) || model.contentType == 107){
@@ -140,9 +172,6 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
           },
           child : TLDSystemMessageCell(messageModel: model,)
         );
-     },
-    ),
-    );
   }
 
   @override

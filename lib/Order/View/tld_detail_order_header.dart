@@ -114,6 +114,9 @@ class _TLDDetailOrderHeaderViewState extends State<TLDDetailOrderHeaderView> {
         break;
         }
       }
+    if (widget.detailOrderModel.appealStatus > -1){
+      isNeedAppeal = true;
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
@@ -123,11 +126,23 @@ class _TLDDetailOrderHeaderViewState extends State<TLDDetailOrderHeaderView> {
           offstage: !isNeedAppeal,
           child: GestureDetector(
             onTap: () => widget.didClickAppealBtnCallBack(),
-            child : Text('申诉',style: TextStyle(fontSize : ScreenUtil().setSp(32),color : Colors.white),),
+            child : Text(_getAppealStatusString(),style: TextStyle(fontSize : ScreenUtil().setSp(32),color : Colors.white),),
           ),
         ),
       ],
     );
+  }
+
+  String _getAppealStatusString(){
+    if (widget.detailOrderModel.appealStatus == -1){
+      return '申诉';
+    }else if (widget.detailOrderModel.appealStatus == 0){
+      return '申诉中';
+    }else if (widget.detailOrderModel.appealStatus == 1){
+      return '申诉成功';
+    }else{
+      return '申诉失败';
+    }
   }
 
   Widget _getStatusRowView(BuildContext context){

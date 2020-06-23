@@ -1966,6 +1966,9 @@ class _FlutterSliderState extends State<FlutterSlider>
 
   Positioned _tooltip(
       {String side, dynamic value, double opacity, Animation animation}) {
+       return Positioned(
+        child: Container(),
+      );
     if (_tooltipData.disabled || value == '')
       return Positioned(
         child: Container(),

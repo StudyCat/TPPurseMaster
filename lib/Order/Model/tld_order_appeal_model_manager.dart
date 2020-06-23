@@ -3,6 +3,7 @@
 
 import 'dart:convert';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Message/Model/tld_just_notice_vote_model_manager.dart';
 
 class TLDOrderAppealModelManager{
 
@@ -24,4 +25,13 @@ class TLDOrderAppealModelManager{
           success();
       }, (error) => failure(error));
     }
+
+  void getAppealInfo(int appealId,Function(TLDOrderAppealModel) success,Function(TLDError) failure){
+    TLDBaseRequest request = TLDBaseRequest({'appealId':appealId},'appeal/appealDetail');
+    request.postNetRequest((value) {
+      Map dataMap = value;
+      TLDOrderAppealModel appealModel = TLDOrderAppealModel.fromJson(dataMap);
+      success(appealModel);
+    }, (error) => failure(error));
+  }
 }

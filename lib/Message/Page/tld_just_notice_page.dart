@@ -3,21 +3,32 @@ import 'dart:convert';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_clip_common_cell.dart';
 import 'package:dragon_sword_purse/Message/Model/tld_just_notice_vote_model_manager.dart';
+import 'package:dragon_sword_purse/Message/View/tld_just_appeal_bottom_cell.dart';
 import 'package:dragon_sword_purse/Message/View/tld_just_notice_show_desc_cell.dart';
 import 'package:dragon_sword_purse/Message/View/tld_just_notice_show_image_cell.dart';
 import 'package:dragon_sword_purse/Message/View/tld_just_notice_vote_cell.dart';
+import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
+import 'package:dragon_sword_purse/Order/Page/tld_order_appeal_page.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_order_paymethod_cell.dart';
 import 'package:dragon_sword_purse/Order/View/tld_order_appeal_bottom_cell.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+enum TLDJustNoticePageType{
+  normal,//普通状态作投票用途
+  appealWatching//查看申诉进度用途
+}
+
 class TLDJustNoticePage extends StatefulWidget {
-  TLDJustNoticePage({Key key,this.appealId}) : super(key: key);
+  TLDJustNoticePage({Key key,this.appealId,this.type = TLDJustNoticePageType.normal}) : super(key: key);
+
+  final TLDJustNoticePageType type;
 
   final int appealId;
 
@@ -27,7 +38,7 @@ class TLDJustNoticePage extends StatefulWidget {
 
 class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
 
-  List titles = ['订单号', '卖家收款方式', '卖家地址', '买家地址', '描述', '截图上传','投票'];
+  List titles;
 
   bool isOpen = false;
 
@@ -47,6 +58,13 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    if (widget.type == TLDJustNoticePageType.normal) {
+      titles = ['订单号', '卖家收款方式', '卖家地址', '买家地址', '描述', '截图上传','投票'];
+    }else{
+      titles = ['订单号', '卖家收款方式', '卖家地址', '买家地址', '描述', '截图上传'];
+    }
+
     _manager = TLDJustVoteModelManager();
 
     _getOrderAppealInfo();
@@ -102,6 +120,28 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
     });
   }
 
+  void _cancelAppeal(){
+    setState(() {
+      _isLoading = true;
+    });
+    _manager.cancelAppeal(widget.appealId, (){
+      if (mounted){
+              setState(() {
+        _isLoading = false;
+      });
+      }
+      Fluttertoast.showToast(msg: '取消申诉成功'); 
+      Navigator.of(context).pop();
+    }, (TLDError error) {
+      if (mounted){
+              setState(() {
+        _isLoading = false;
+      });
+      }
+      Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -122,9 +162,67 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
 
    Widget _getBodyWidget(BuildContext context) {
     return ListView.builder(
-        itemCount: 8,
+        itemCount: titles.length + 1,
         itemBuilder: (BuildContext context, int index) {
-          if (index == 1) {
+         if (widget.type == TLDJustNoticePageType.normal) {
+           return _getNormalTypeCellBuild(context, index);
+         }else {
+           return _getAppealTypeCellBuild(context, index);
+         }
+      });
+  }
+
+  Widget _getAppealTypeCellBuild(BuildContext context, int index){
+    if (index == 1) {
+            return Padding(
+              padding: EdgeInsets.only(
+                  top: ScreenUtil().setHeight(2),
+                  left: ScreenUtil().setWidth(30),
+                  right: ScreenUtil().setWidth(30)),
+              child: TLDDetailOrderPayMethodCell(
+                title: titles[index],
+                titleStyle: TextStyle(
+                    fontSize: ScreenUtil().setSp(28),
+                    color: Color.fromARGB(255, 51, 51, 51)),
+                isOpen: isOpen,
+                paymentModel: _orderAppealModel == null ? null : _orderAppealModel.payMethodVO,
+                didClickCallBack: () {
+                  setState(() {
+                    isOpen = !isOpen;
+                  });
+                },
+              ),
+            );
+          } else if (index == 4) {
+            return _getPadding(TLDJustNoticeShowDescCell(
+              title: titles[index],
+              description: _orderAppealModel == null ? '':_orderAppealModel.appealDesc,
+            ));
+          } else if (index == 5) {
+            return _getPadding(TLDJustNoticeShowImageCell(
+                title: titles[index],
+                images: _orderAppealModel == null ? [] : jsonDecode(_orderAppealModel.appealImgList),
+               ));
+          }else if(index == 6){
+            return  _getPadding(TLDJustAppealBottomCell(appealStatus : _orderAppealModel.appealStatus,finishTime: _orderAppealModel.finishTime,didClickItemCallBack: (String title){
+              if (title == '撤销') {
+                _cancelAppeal();
+              }else if(title == '重新申请'){
+                TLDDetailOrderModel orderModel = TLDDetailOrderModel();
+                orderModel.orderNo = _orderAppealModel.orderNo;
+                orderModel.payMethodVO = _orderAppealModel.payMethodVO;
+                orderModel.sellerAddress = _orderAppealModel.sellerWalletAddress;
+                orderModel.buyerAddress = _orderAppealModel.buyerWalletAddress;
+                orderModel.createTime = _orderAppealModel.createTime;
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDOrderAppealPage(orderModel: orderModel,isReAppeal: true,)));
+              }
+            },));
+          }
+          return _getNormalCell(context, ScreenUtil().setHeight(2), index);
+  }
+
+  Widget _getNormalTypeCellBuild(BuildContext context, int index){
+     if (index == 1) {
             return Padding(
               padding: EdgeInsets.only(
                   top: ScreenUtil().setHeight(2),
@@ -165,7 +263,6 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
           }
 
           return _getNormalCell(context, ScreenUtil().setHeight(2), index);
-        });
   }
 
   Widget _getNormalCell(BuildContext context, num top, int index) {

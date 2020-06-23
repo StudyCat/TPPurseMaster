@@ -143,22 +143,9 @@ class TLDDataBaseManager {
           model.content = filePath;
         }
     }
-
-    String valuesStr = '';
-    for (int i = 0; i < messageList.length ; i++) {
-      TLDMessageModel model = messageList[i];
-      int unread = model.unread ? 1 : 0;
-      String str1 = '(\"'+model.content+'\",'+ '${model.contentType}'+',\"'+model.fromAddress+'\",\"'+model.toAddress+'\",'+'$unread'+',';
-      String str2 = '${model.createTime}'+ ',\"' + model.orderNo +'\",'+'${model.messageType}'+',\''+ model.bizAttr +'\''+')';
-      String str = str1 + str2;
-      if(i == 0){
-        valuesStr = str;
-      }else{
-        valuesStr = valuesStr + ',' + str;
-      }
+    for (TLDMessageModel item in messageList) {
+      item.id = await db.insert(tableIM, item.toJson()); 
     }
-    String sql = 'INSERT INTO $tableIM($contentIM,$contentTypeIM,$fromIM,$toIM,$unreadIM,$createTimeIM,$orderNoIM,$messageTypeIM,$bizAttrIM) VALUES'+valuesStr;
-    await db.rawInsert(sql);
   }
 
   //存储Base64图片到本地，存储本地路径
@@ -283,6 +270,10 @@ class TLDDataBaseManager {
     Map bizAttrMap = {'appealId':appealId};
     String bizStr = jsonEncode(bizAttrMap);
     db.rawDelete('DELETE FROM $tableIM WHERE $messageTypeIM = 1 AND $contentTypeIM = 106 AND $bizAttrIM = \'$bizStr\''); 
+  }
+
+  deleteSystemMessage(int id) async{
+    db.rawDelete('DELETE FROM $tableIM WHERE _id = $id');
   }
 
   //搜索数据库中以toAdress分组IM的分组

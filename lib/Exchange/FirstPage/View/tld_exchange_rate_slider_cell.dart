@@ -1,51 +1,33 @@
-import 'package:date_format/date_format.dart';
-import 'package:dragon_sword_purse/CommonWidget/tld_amount_text_input_fprmatter.dart';
+import 'package:dragon_sword_purse/Exchange/FirstPage/View/flutter_xlider.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
-import 'flutter_xlider.dart';
-import '../../../Purse/FirstPage/Model/tld_wallet_info_model.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/screenutil.dart';
 
-class TLDExchangeInputSliderCell extends StatefulWidget {
+class TLDExchangeRateSliderCell extends StatefulWidget {
+  TLDExchangeRateSliderCell({Key key,this.title,this.didChangeRateCallBack,this.infoModel}) : super(key: key);
+
   final String title;
+
   final TLDWalletInfoModel infoModel;
-  final Function(String) inputCallBack;
-  final FocusNode focusNode;
-  TLDExchangeInputSliderCell({Key key,this.title,this.infoModel,this.inputCallBack,this.focusNode}) : super(key: key);
+
+  final Function(String) didChangeRateCallBack;
 
   @override
-  _TLDExchangeInputSliderCellState createState() => _TLDExchangeInputSliderCellState();
+  _TLDExchangeRateSliderCellState createState() => _TLDExchangeRateSliderCellState();
 }
 
-class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell> {
+class _TLDExchangeRateSliderCellState extends State<TLDExchangeRateSliderCell> {
   String _value = '0';
-
-  TextEditingController _controller;
-
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller = TextEditingController(text: '0');
-    _controller.addListener(() {
-      String text = _controller.text;
-      setState(() {
-          if(text.length == 0){
-            _value = '0';
-          }else{
-             if(double.parse(text) > double.parse(widget.infoModel.value)){
-               widget.focusNode.unfocus();
-              _controller.text = widget.infoModel.value;
-              _value = widget.infoModel.value;
-            }else{
-              _value = text;
-            }
-          }
-      });
-      widget.inputCallBack(_value);
-    });
+
+    if (widget.infoModel != null){
+
+    }
   }
 
   @override
@@ -84,35 +66,29 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
                           fontSize: ScreenUtil().setSp(24),
                           color: Color.fromARGB(255, 51, 51, 51))),
                 ),
-                getTextField()
+                getText()
               ],
             )
     );
   }
 
-  Widget getTextField(){
-    return Stack(
-      alignment : FractionalOffset(0.8,0.6),
-      children: <Widget>[
-        Container(
-      width: ScreenUtil().setWidth(200),
-      height: ScreenUtil().setWidth(48),
+  Widget getText(){
+    double value;
+    if (widget.infoModel != null) {
+      double min = double.parse(widget.infoModel.minRate) * 100;
+      value = (double.parse(_value) / 10 + min);
+    }else{
+      value = 0;
+    }
+    return Padding(
       padding: EdgeInsets.only(right : ScreenUtil().setWidth(20)),
-      child: CupertinoTextField(
-      enabled: widget.infoModel == null ? false : true,
-      style: TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24),textBaseline: TextBaseline.alphabetic),
-      controller: _controller,
-      focusNode: widget.focusNode,
-      inputFormatters: [
-        TLDAmountTextInputFormatter()
-      ],
-    )),
-    Text('TLD',style:TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24)))
-      ],
+      child: Text('$value'+'%',style:TextStyle(color:Color.fromARGB(255, 153, 153, 153),fontSize: ScreenUtil().setSp(24))),
     );
   }
 
   Widget getSliderView(){
+    double min = widget.infoModel != null ? double.parse(widget.infoModel.minRate) * 1000 : 0;
+    double max = widget.infoModel != null ? double.parse(widget.infoModel.maxRate) * 1000 : 100;
     bool disabled = widget.infoModel == null;
     return Container(
       padding : EdgeInsets.only(right : ScreenUtil().setWidth(20),left : ScreenUtil().setWidth(20),top : ScreenUtil().setWidth(8)),
@@ -120,7 +96,7 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
               values: [double.parse(_value)],
               min: 0,
               disabled: disabled,
-              max: widget.infoModel == null ? 100 : double.parse(widget.infoModel.value),
+              max: max - min,
               handlerHeight: ScreenUtil().setHeight(40),
               handlerWidth: ScreenUtil().setHeight(40),
               trackBar: FlutterSliderTrackBar(
@@ -152,22 +128,15 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
                 ),
               ),
               onDragging: (handlerIndex, lowerValue, upperValue) {
-                if(widget.infoModel != null){
-                  setState(() {
-                  widget.focusNode.unfocus();
-                  _value = lowerValue.toString();
-                  _controller.text = _value;
-                });
-                }else{
-                  widget.focusNode.unfocus();
-                  setState(() {
-                    _value = '0';
-                  });
-                }
-                widget.inputCallBack(_value);    
+                  if (widget.infoModel != null) {
+                     setState(() {
+                      _value = lowerValue.toString();
+                    }); 
+                  widget.didChangeRateCallBack(((lowerValue + min) / 1000).toString());
+                  }
               },
+
             ),
     );
   }
-
 }
