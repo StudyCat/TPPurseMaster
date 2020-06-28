@@ -151,6 +151,7 @@ class _TLDInputViewState extends State<TLDInputView> {
                       messageModel.messageType = 2;
                       messageModel.orderNo = widget.orderNo;
                       messageModel.bizAttr = '';
+                      messageModel.unread = true;
                       TLDIMManager manager = TLDIMManager.instance;
                       manager.sendMessage(messageModel);
                       _controller.text = '';

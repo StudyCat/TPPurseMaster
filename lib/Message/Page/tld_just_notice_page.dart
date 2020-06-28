@@ -151,7 +151,7 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
         ),
         heroTag: 'just_notice_page',
         transitionBetweenRoutes: false,
-        middle: Text('公正通知'),
+        middle: Text(widget.type == TLDJustNoticePageType.normal ? '公正通知' : '申诉详情'),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -204,7 +204,7 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
                 images: _orderAppealModel == null ? [] : jsonDecode(_orderAppealModel.appealImgList),
                ));
           }else if(index == 6){
-            return  _getPadding(TLDJustAppealBottomCell(appealStatus : _orderAppealModel.appealStatus,finishTime: _orderAppealModel.finishTime,didClickItemCallBack: (String title){
+            return  _getPadding(TLDJustAppealBottomCell(appealStatus : _orderAppealModel != null ? _orderAppealModel.appealStatus : 0,finishTime: _orderAppealModel != null ? _orderAppealModel.finishTime : 0,didClickItemCallBack: (String title){
               if (title == '撤销') {
                 _cancelAppeal();
               }else if(title == '重新申请'){

@@ -193,7 +193,15 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
   }
 
   Widget _getBodyWidget(double screenWidth){
-    return TLDEmptyListView(getListViewCellCallBack:(int index){
+    return Column(
+      children: <Widget>[
+        Padding(padding: EdgeInsets.only(left : 15 , top : 5 ,right: 15),child: TLDBuySearchField(textFieldDidChangeCallBack: (String text){
+          _keyword = text;
+        },didClickSearchBtnCallBack: (){
+           _page = 1;
+          _loadBuyList(_keyword, _page);
+        },),),
+        Expanded(child: TLDEmptyListView(getListViewCellCallBack:(int index){
         TLDBuyListInfoModel model = _dataSource[index];
           return TLDBuyFirstPageCell(model: model,didClickBuyBtnCallBack: (){
             showCupertinoModalPopup(context: context, builder: (BuildContext context){
@@ -211,7 +219,9 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
           _loadBuyList(_keyword, _page);
       },loadCallBack: (){
           _loadBuyList(_keyword, _page);
-      },);
+      },))
+      ],
+    );
   }
 
   @override

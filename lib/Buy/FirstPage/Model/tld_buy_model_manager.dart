@@ -66,7 +66,7 @@ class TLDBuyModelManager{
 
   void getBuyListData(String keywords,int page,Function(List) success,Function(TLDError) failure){
     Map pramaters;
-    if(keywords != null){
+    if(keywords != null && keywords.length > 0){
       pramaters = {'keywords':keywords,'pageNo':page,'pageSize':10};
     }else{
       pramaters = {'pageNo':page,'pageSize':10};

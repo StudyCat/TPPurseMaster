@@ -200,6 +200,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title : '屠龙刀',
       navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
       navigatorObservers: [BotToastNavigatorObserver()],
       theme: ThemeData(
         primaryColor : Color.fromARGB(255, 22, 128, 205),

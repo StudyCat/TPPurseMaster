@@ -1,3 +1,4 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/View/flutter_xlider.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,7 +35,7 @@ class _TLDExchangeRateSliderCellState extends State<TLDExchangeRateSliderCell> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.only(left: 15, top: 20, right: 15),
+      padding: EdgeInsets.only(left: 15, top: 1, right: 15),
       width: screenSize.width - 30,
       child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -80,9 +81,10 @@ class _TLDExchangeRateSliderCellState extends State<TLDExchangeRateSliderCell> {
     }else{
       value = 0;
     }
+    String rate =  (NumUtil.getNumByValueDouble(value, 1)).toStringAsFixed(1);
     return Padding(
       padding: EdgeInsets.only(right : ScreenUtil().setWidth(20)),
-      child: Text('$value'+'%',style:TextStyle(color:Color.fromARGB(255, 153, 153, 153),fontSize: ScreenUtil().setSp(24))),
+      child: Text(rate+'%',style:TextStyle(color:Color.fromARGB(255, 153, 153, 153),fontSize: ScreenUtil().setSp(24))),
     );
   }
 
@@ -135,7 +137,6 @@ class _TLDExchangeRateSliderCellState extends State<TLDExchangeRateSliderCell> {
                   widget.didChangeRateCallBack(((lowerValue + min) / 1000).toString());
                   }
               },
-
             ),
     );
   }

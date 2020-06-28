@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_choose_wallet.dart';
 import 'package:dragon_sword_purse/Drawer/UserAgreement/Page/tld_user_agreement_page.dart';
+import 'package:dragon_sword_purse/Mission/FirstPage/Page/tld_mission_root_page.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_tab_sale_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
@@ -54,9 +55,16 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
             fontSize: 10,
           )),
     ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.menu),
+      title: Text('任务',
+          style: TextStyle(
+            fontSize: 10,
+          ))
+    )
   ];
 
-  List pages = [TLDPursePage(), TLDBuyPage(), TLDTabSalePage()];
+  List pages = [TLDPursePage(), TLDBuyPage(), TLDTabSalePage(),TLDMissionRootPage()];
 
   int currentIndex;
 

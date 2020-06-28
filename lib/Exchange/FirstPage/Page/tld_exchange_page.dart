@@ -53,6 +53,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
 
     if (widget.infoModel != null){
       _formModel.infoModel = widget.infoModel;
+      _formModel.rate = widget.infoModel.minRate;
     }
 
     _saleAmountFocusNode = FocusNode();

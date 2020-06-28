@@ -72,6 +72,8 @@ class _TLDEmptyListViewState extends State<TLDEmptyListView> {
     if (_isNeedRefreh == true){
       if (_isNeedLoad == true){
         return SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: true,
           controller: widget.refreshController,
           onRefresh: widget.refreshCallBack,
           onLoading: widget.loadCallBack,
@@ -81,6 +83,8 @@ class _TLDEmptyListViewState extends State<TLDEmptyListView> {
         );
       }else{
         return SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: false,
           controller: widget.refreshController,
           onRefresh: widget.refreshCallBack,
           header: _refreshHeaderBuild(),
@@ -90,6 +94,8 @@ class _TLDEmptyListViewState extends State<TLDEmptyListView> {
     }else{
       if (_isNeedLoad == true){
         return SmartRefresher(
+          enablePullUp: true,
+          enablePullDown: false,
           controller: widget.refreshController,
           onLoading: widget.loadCallBack,
           footer: _loadFooterBuild(),
@@ -105,6 +111,8 @@ class _TLDEmptyListViewState extends State<TLDEmptyListView> {
     if (_isNeedRefreh == true){
       if (_isNeedLoad == true){
         return SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: true,
           controller: widget.refreshController,
           onRefresh: widget.refreshCallBack,
           onLoading: widget.loadCallBack,
@@ -114,6 +122,8 @@ class _TLDEmptyListViewState extends State<TLDEmptyListView> {
         );
       }else{
         return SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: false,
           controller: widget.refreshController,
           onRefresh: widget.refreshCallBack,
           header: _refreshHeaderBuild(),
@@ -123,6 +133,8 @@ class _TLDEmptyListViewState extends State<TLDEmptyListView> {
     }else{
       if (_isNeedLoad == true){
         return SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: false,
           controller: widget.refreshController,
           onLoading: widget.loadCallBack,
           footer: _loadFooterBuild(),
@@ -151,14 +163,8 @@ class _TLDEmptyListViewState extends State<TLDEmptyListView> {
             else if(mode==LoadStatus.loading){
               body =  CupertinoActivityIndicator();
             }
-            else if(mode == LoadStatus.failed){
-              body = Text("Load Failed!Click retry!");
-            }
             else if(mode == LoadStatus.canLoading){
-                body = Text("release to load more");
-            }
-            else{
-              body = Text("No more Data");
+                body = Text("放下加载更多数据");
             }
             return Container(
               height: 55.0,

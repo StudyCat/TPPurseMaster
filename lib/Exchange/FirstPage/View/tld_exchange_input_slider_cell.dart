@@ -52,7 +52,7 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.only(left: 15, top: 20, right: 15),
+      padding: EdgeInsets.only(left: 15, top: 1, right: 15),
       width: screenSize.width - 30,
       child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(4)),

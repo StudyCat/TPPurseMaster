@@ -256,20 +256,30 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
           _controller.sink.add(_detailOrderModel);
           _getDetailOrderInfo();
         },didClickAppealBtnCallBack: (){
-          if (_detailOrderModel.appealId != null) {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDJustNoticePage(appealId: _detailOrderModel.appealId,type: TLDJustNoticePageType.appealWatching,))).then((value) => _getDetailOrderInfo());
-          }else{
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDOrderAppealPage(orderModel: _detailOrderModel,))).then((value) => _getDetailOrderInfo());
-          }
+         _jumpToOrderAppeal();
         },
         ),
       ),
     );
   }
 
+  void _jumpToOrderAppeal(){
+     if (_detailOrderModel.appealId == -1) {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDOrderAppealPage(orderModel: _detailOrderModel,))).then((value) => _getDetailOrderInfo());
+          }else{
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDJustNoticePage(appealId: _detailOrderModel.appealId,type: TLDJustNoticePageType.appealWatching,))).then((value) => _getDetailOrderInfo());
+          }
+  }
+
   Widget _getBodyWidget(BuildContext context) {
+   bool isNeedAppeal = false;
+    String appealTitle = '';
+    _getAppealStatusAndAppealTitle((bool isNeed, String title){
+      isNeedAppeal = isNeed;
+      appealTitle = title;
+    });
     return ListView.builder(
-        itemCount: 7,
+        itemCount: isNeedAppeal ? 8 : 7,
         itemBuilder: (BuildContext context, int index) {
           num top;
           if (index == 2) {
@@ -312,6 +322,18 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
           }else if(index == 5){
             return _getIMCell();
           }else if(index == 6){
+            return isNeedAppeal ? _getAppealCell(appealTitle) : TLDDetailOrderBottomCell(detailOrderModel:_detailOrderModel,isBuyer: widget.isBuyer,didClickActionBtnCallBack: (String buttonTitle){
+              if (buttonTitle == '取消订单'){
+                _cancelOrder();
+              }else if(buttonTitle == '我已付款'){
+                _confirmPaid();
+              }else if(buttonTitle == '确认释放积分'){
+                _sureSentCoin();
+              }else if (buttonTitle == '催单'){
+                _remindOrder();
+              }
+            },);
+          }else if(index == 7){
             return TLDDetailOrderBottomCell(detailOrderModel:_detailOrderModel,isBuyer: widget.isBuyer,didClickActionBtnCallBack: (String buttonTitle){
               if (buttonTitle == '取消订单'){
                 _cancelOrder();
@@ -327,6 +349,36 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
             return _getNormalCell(context, top, index);
           }
         });
+  }
+
+  void _getAppealStatusAndAppealTitle(Function(bool,String) callBack){
+     bool isNeedAppeal = false;
+     String appealTitle = '';
+    if (_detailOrderModel != null){
+      switch (_detailOrderModel.status) {
+        case 1 :{
+          isNeedAppeal = true;
+          appealTitle = '订单申诉';
+        }
+        break;
+        default :{         
+        }
+        break;
+        }
+      }
+    if (_detailOrderModel.appealStatus > -1){
+      isNeedAppeal = true;
+      if (_detailOrderModel.appealStatus == 0) {
+        appealTitle = '订单申诉中';
+      }else if(_detailOrderModel.appealStatus == 1){
+        appealTitle = '订单申诉成功';
+      }else if(_detailOrderModel.appealStatus == 2){
+        appealTitle = '订单申诉失败';
+      }else {
+        appealTitle = '订单申诉';
+      }
+    }
+    callBack(isNeedAppeal,appealTitle);
   }
 
   Widget _getNormalCell(BuildContext context, num top, int index) {
@@ -390,4 +442,33 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
     ),
     );
   }
+
+  Widget _getAppealCell(String appealTitle){
+    return GestureDetector(
+      onTap: () {
+        _jumpToOrderAppeal();
+      },
+      child:  Padding(
+      padding: EdgeInsets.only(
+          top: ScreenUtil().setHeight(2),
+          left: ScreenUtil().setWidth(30),
+          right: ScreenUtil().setWidth(30)),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(4)),
+        child: TLDClipCommonCell(
+          type: TLDClipCommonCellType.normalArrow,
+          title: appealTitle,
+          titleStyle: TextStyle(
+              fontSize: ScreenUtil().setSp(24),
+              color: Color.fromARGB(255, 51, 51, 51)),
+          content: '',
+          contentStyle: TextStyle(
+              fontSize: ScreenUtil().setSp(24),
+              color: Color.fromARGB(255, 102, 102, 102)),
+        ),
+      ),
+    ),
+    );
+  }
+
 }
