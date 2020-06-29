@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
-import 'package:dragon_sword_purse/Mission/FirstPage/Page/tld_mission_hall_page.dart';
-import 'package:dragon_sword_purse/Mission/FirstPage/Page/tld_my_mission_page.dart';
+import 'package:dragon_sword_purse/Mission/FirstPage/View/tld_get_mission_action_sheet.dart';
+import 'package:dragon_sword_purse/Mission/FirstPage/View/tld_mission_first_mission_cell.dart';
+import 'package:dragon_sword_purse/Mission/FirstPage/View/tld_mission_first_wallet_cell.dart';
+import 'package:dragon_sword_purse/Mission/WalletMission/Page/tld_mission_root_page.dart';
 import 'package:dragon_sword_purse/Notification/tld_more_btn_click_notification.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_order_list_page.dart';
-import 'package:dragon_sword_purse/Order/View/tld_order_list_cell.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
@@ -12,26 +13,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
-class TLDMissionRootPage extends StatefulWidget {
-  TLDMissionRootPage({Key key}) : super(key: key);
+class TLDMissionFirstPage extends StatefulWidget {
+  TLDMissionFirstPage({Key key}) : super(key: key);
 
   @override
-  _TLDMissionRootPageState createState() => _TLDMissionRootPageState();
+  _TLDMissionFirstPageState createState() => _TLDMissionFirstPageState();
 }
 
-class _TLDMissionRootPageState extends State<TLDMissionRootPage> with SingleTickerProviderStateMixin ,AutomaticKeepAliveClientMixin {
-
-  List<String> _tabTitles = [
-    "任务大厅",
-    "我的任务"
-  ];
-
-  List<Widget> _pages = [
-    TLDMissionHallPage(),TLDMyMissionPage()
-  ];
-
-  TabController _tabController;
+class _TLDMissionFirstPageState extends State<TLDMissionFirstPage> {
 
   StreamSubscription _unreadSubscription;
 
@@ -41,8 +30,6 @@ class _TLDMissionRootPageState extends State<TLDMissionRootPage> with SingleTick
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    _tabController = TabController(length: 2, vsync: this);
 
     _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
 
@@ -66,7 +53,7 @@ class _TLDMissionRootPageState extends State<TLDMissionRootPage> with SingleTick
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       body: _getBodyWidget(),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
@@ -122,39 +109,25 @@ class _TLDMissionRootPageState extends State<TLDMissionRootPage> with SingleTick
   }
 
   Widget _getBodyWidget(){
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(
-          left: ScreenUtil().setWidth(30),
-          right: ScreenUtil().setWidth(30),
-          top: ScreenUtil().setHeight(20)),
-          child: TabBar(
-            tabs: _tabTitles.map((title) {
-              return Tab(text: title);
-            }).toList(),
-            labelStyle: TextStyle(
-                fontSize: ScreenUtil().setSp(32), fontWeight: FontWeight.bold),
-            unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(24)),
-            indicatorColor: Theme.of(context).primaryColor,
-            labelColor: Color.fromARGB(255, 51, 51, 51),
-            unselectedLabelColor: Color.fromARGB(255, 153, 153, 153),
-            controller: _tabController,
-            indicatorSize: TabBarIndicatorSize.label,
-          ),
-        ),
-        Expanded(
-          child: TabBarView(
-            children: _pages,
-            controller: _tabController,
-          )
-          )
-      ],
+    return ListView.builder(
+      itemCount: 2,
+      itemBuilder: (BuildContext context, int index) {
+        if (index == 0) {
+          return TLDMissionFirstMissionCell(didClickGetBtnCallBack: (){
+            showCupertinoModalPopup(context: context, builder: (BuildContext context){
+              return TLDGetMissionActionSheet(            
+              );
+            });
+          },);
+        }else{
+          return TLDMissionFirstWalletCell(
+            didClickItemCallBack: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDMissionRootPage()));
+            },
+          );
+        }
+     },
     );
   }
-
-      @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
 
 }

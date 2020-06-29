@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/Mission/WalletMission/View/tld_mission_hall_cell.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,11 @@ class TLDMyMissionPage extends StatefulWidget {
 class _TLDMyMissionPageState extends State<TLDMyMissionPage> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return ListView.builder(
+      itemCount: 2,
+      itemBuilder: (BuildContext context, int index) {
+      return TLDMissionHallCell();
+     },
     );
   }
 
