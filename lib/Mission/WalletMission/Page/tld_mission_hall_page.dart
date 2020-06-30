@@ -1,5 +1,4 @@
-import 'package:dragon_sword_purse/Mission/DetailMission/Page/tld_detail_mission_page.dart';
-import 'package:dragon_sword_purse/Mission/WalletMission/View/tld_mission_hall_cell.dart';
+
 import 'package:dragon_sword_purse/Mission/WalletMission/View/tld_my_mission_body_cell.dart';
 import 'package:dragon_sword_purse/Mission/WalletMission/View/tld_my_mission_header_cell.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,7 +24,7 @@ class _TLDMissionHallPageState extends State<TLDMissionHallPage> with AutomaticK
       expandedHeaderPadding: EdgeInsets.zero,
       children: <ExpansionPanel>[
         ExpansionPanel(headerBuilder: (BuildContext context,bool isOpen){
-          return TLDMyMissionHeaderCell(didClickItemCallBack: (){
+          return TLDMyMissionHeaderCell(isOpen: _isOpen,didClickItemCallBack: (){
             setState(() {
               _isOpen = ! isOpen;
             });
@@ -38,22 +37,6 @@ class _TLDMissionHallPageState extends State<TLDMissionHallPage> with AutomaticK
         ),
         isExpanded: _isOpen
         ),
-        ExpansionPanel(headerBuilder: (BuildContext context,bool isOpen){
-          return TLDMyMissionHeaderCell(didClickItemCallBack: (){
-            setState(() {
-              _isOpen = ! isOpen;
-            });
-          },);
-        }, body: ListBody(
-          children:<Widget>[
-            TLDMYMissionBodyCell(didClickItemCallBack: (){
-              Navigator.push(context, MaterialPageRoute(builder: (contenxt)=> TLDDetailMissionPage()));
-            },),
-            TLDMYMissionBodyCell()
-          ]
-        ),
-        isExpanded: _isOpen
-        )
       ],
     )
     ) 

@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 
 class TLDMyMissionHeaderCell extends StatefulWidget {
-  TLDMyMissionHeaderCell({Key key,this.didClickItemCallBack}) : super(key: key);
+  TLDMyMissionHeaderCell({Key key,this.didClickItemCallBack,this.isOpen}) : super(key: key);
 
   final Function didClickItemCallBack;
+
+  final bool isOpen;
 
   @override
   _TLDMyMissionHeaderCellState createState() => _TLDMyMissionHeaderCellState();
@@ -43,7 +45,7 @@ class _TLDMyMissionHeaderCellState extends State<TLDMyMissionHeaderCell> {
               child: Padding(
               padding: EdgeInsets.only(top:ScreenUtil().setHeight(20)),
               child: Center(
-                child: Icon(Icons.keyboard_arrow_down,color:Theme.of(context).primaryColor),
+                child: Icon(widget.isOpen ? Icons.keyboard_arrow_up:Icons.keyboard_arrow_down,color:Theme.of(context).primaryColor),
               ),
             ),
             )

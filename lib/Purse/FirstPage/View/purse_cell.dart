@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../Model/tld_wallet_info_model.dart';
 
 class TLDPurseFirstPageCell extends StatefulWidget {
@@ -41,7 +43,7 @@ class _TLDPurseFirstPageCellState extends State<TLDPurseFirstPageCell> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Text(widget.walletInfo.wallet.name,style : TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize: 14),),
+                     _getWalletNameRowView(),
                       Container(
                         padding: EdgeInsets.only(top : 8,right: 15),
                         child: Text(double.parse(widget.walletInfo.value).toStringAsFixed(2)+'TLD',style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18),),
@@ -58,6 +60,29 @@ class _TLDPurseFirstPageCellState extends State<TLDPurseFirstPageCell> {
          ),
        ),
     )
+    );
+  }
+
+  Widget _getWalletNameRowView(){
+    Size size = MediaQuery.of(context).size;
+    return  Container(
+        width : size.width - 100,
+        child : Row(
+        mainAxisAlignment:MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Text(widget.walletInfo.wallet.name,style:TextStyle(fontSize : ScreenUtil().setSp(28),color:Color.fromARGB(255, 51, 51, 51))),
+          Padding(
+            padding: EdgeInsets.only(right : ScreenUtil().setWidth(20)),
+            child: RichText(text: TextSpan(children:<InlineSpan>[
+            WidgetSpan(child: CachedNetworkImage(imageUrl: 'http://oss.thyc.com/2020/06/29/f4aacae548004e68b373e1e4b7d01ebe.png',width: ScreenUtil().setWidth(24),height: ScreenUtil().setWidth(24),),),
+            TextSpan(text :'(20/200)',style:TextStyle(
+                  fontSize: ScreenUtil().setSp(28),
+                  color: Color.fromARGB(255, 51, 51, 51)))
+          ])),
+          )
+        ],
+      )
     );
   }
 }

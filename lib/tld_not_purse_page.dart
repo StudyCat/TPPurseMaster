@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +16,9 @@ import 'ceatePurse&importPurse/CreatePurse/Page/tld_creating_purse_page.dart';
 import 'CommonFunction/tld_common_function.dart';
 import 'ceatePurse&importPurse/ImportPurse/Page/tld_import_purse_page.dart';
 import 'ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
+import 'dart:io';
+import 'package:uni_links/uni_links.dart';
+import 'package:flutter/services.dart';
 
 class TLDNotPurseHomePage extends StatefulWidget {
   TLDNotPurseHomePage({Key key}) : super(key: key);
@@ -21,13 +29,65 @@ class TLDNotPurseHomePage extends StatefulWidget {
 
 class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> with WidgetsBindingObserver {
 
+  TLDDataBaseManager _manager;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     WidgetsBinding.instance.addObserver(this);
+
+    _manager = TLDDataBaseManager();
+
+    _initPlatformStateForStringUniLinks();
   }
+
+    /// An implementation using a [String] link
+  _initPlatformStateForStringUniLinks() async {
+    // Get the latest link
+    bool isHaveWallet = await _searchAllPurse();
+    if (!isHaveWallet) {
+      String initialLink;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      initialLink = await getInitialLink();
+      if (initialLink == null) {
+        return;
+      }
+      Uri uri = Uri.parse(initialLink);
+      Map queryParameter = uri.queryParameters;
+      if (queryParameter.containsKey('path')) {
+        String path = queryParameter['path'];
+        if (path == 'createWallet') {
+        jugeHavePassword(context, (){
+          Future.delayed(Duration.zero,(){
+             navigatorKey.currentState.push(MaterialPageRoute(builder: (context)=> TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));
+          });
+        },TLDCreatePursePageType.create,null);
+        }
+      }
+
+    } on PlatformException {
+      initialLink = 'Failed to get initial link.';
+    } on FormatException {
+      initialLink = 'Failed to parse the initial link as Uri.';
+    }
+    }
+  }
+
+  Future<bool> _searchAllPurse()async{
+    await _manager.openDataBase();
+     List allPurse = await _manager.searchAllWallet();
+    await _manager.closeDataBase();
+    allPurse == null ? TLDDataManager.instance.purseList = [] : TLDDataManager.instance.purseList = List.from(allPurse);
+
+      if(allPurse != null && allPurse.length > 0){
+          return true;
+      }else{
+        return false;
+      }
+    }
 
   @override
   Widget build(BuildContext context) {

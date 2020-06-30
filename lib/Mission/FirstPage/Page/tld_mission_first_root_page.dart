@@ -1,10 +1,10 @@
 import 'dart:async';
+
 import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
-import 'package:dragon_sword_purse/Mission/WalletMission/Page/tld_mission_hall_page.dart';
-import 'package:dragon_sword_purse/Mission/WalletMission/Page/tld_my_mission_page.dart';
+import 'package:dragon_sword_purse/Mission/FirstPage/Page/tld_mission_first_my_mission_page.dart';
+import 'package:dragon_sword_purse/Mission/FirstPage/Page/tld_mission_first_page.dart';
 import 'package:dragon_sword_purse/Notification/tld_more_btn_click_notification.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_order_list_page.dart';
-import 'package:dragon_sword_purse/Order/View/tld_order_list_cell.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
@@ -12,23 +12,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
-class TLDMissionRootPage extends StatefulWidget {
-  TLDMissionRootPage({Key key}) : super(key: key);
+class TLDMissionFirstRootPage extends StatefulWidget {
+  TLDMissionFirstRootPage({Key key}) : super(key: key);
 
   @override
-  _TLDMissionRootPageState createState() => _TLDMissionRootPageState();
+  _TLDMissionFirstRootPageState createState() => _TLDMissionFirstRootPageState();
 }
 
-class _TLDMissionRootPageState extends State<TLDMissionRootPage> with SingleTickerProviderStateMixin ,AutomaticKeepAliveClientMixin {
-
+class _TLDMissionFirstRootPageState extends State<TLDMissionFirstRootPage> with SingleTickerProviderStateMixin ,AutomaticKeepAliveClientMixin {
   List<String> _tabTitles = [
-    "做任务",
-    "任务进度"
+    "待领取任务",
+    "我的任务"
   ];
 
   List<Widget> _pages = [
-    TLDMyMissionPage(),TLDMissionHallPage()
+    TLDMissionFirstPage(),TLDMissionFirstMyMissionPage()
   ];
 
   TabController _tabController;
@@ -70,6 +68,19 @@ class _TLDMissionRootPageState extends State<TLDMissionRootPage> with SingleTick
       body: _getBodyWidget(),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
+       leading: Builder(builder: (BuildContext context) {
+          return CupertinoButton(
+              child: Icon(
+                IconData(0xe608, fontFamily: 'appIconFonts'),
+                color: Color.fromARGB(255, 51, 51, 51),
+              ),
+              padding: EdgeInsets.all(0),
+              minSize: 20,
+              onPressed: () {
+                TLDMoreBtnClickNotification().dispatch(context);
+              });
+        }),
+        automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         border: Border.all(
           color: Color.fromARGB(0, 0, 0, 0),

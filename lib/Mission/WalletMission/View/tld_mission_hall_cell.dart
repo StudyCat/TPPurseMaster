@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDMissionHallCell extends StatefulWidget {
-  TLDMissionHallCell({Key key}) : super(key: key);
+  TLDMissionHallCell({Key key,this.didClickBuyBtnCallBack}) : super(key: key);
+
+  final Function didClickBuyBtnCallBack;
 
   @override
   _TLDMissionHallCellState createState() => _TLDMissionHallCellState();
@@ -27,7 +29,7 @@ class _TLDMissionHallCellState extends State<TLDMissionHallCell> {
            padding: EdgeInsets.only(top : 10,bottom : 17),
            child: Column(
              children : <Widget>[
-               TLDMissionHallCellHeaderView(),
+               TLDMissionHallCellHeaderView(didClickBuyBtnCallBack: widget.didClickBuyBtnCallBack,),
               _getCellBottomView(),
              ]
            ),

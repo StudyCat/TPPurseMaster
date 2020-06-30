@@ -1,15 +1,33 @@
+import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
+import 'package:dragon_sword_purse/Mission/FirstPage/Model/tld_mission_first_model_manager.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDGetMissionActionSheet extends StatefulWidget {
-  TLDGetMissionActionSheet({Key key}) : super(key: key);
+  TLDGetMissionActionSheet({Key key,this.taskNo,this.didClickSureGetBtnCallBack}) : super(key: key);
+
+  final String taskNo;
+
+  final Function(TLDGetTaskPramaterModel) didClickSureGetBtnCallBack;
 
   @override
   _TLDGetMissionActionSheetState createState() => _TLDGetMissionActionSheetState();
 }
 
 class _TLDGetMissionActionSheetState extends State<TLDGetMissionActionSheet> {
+
+  TLDGetTaskPramaterModel _pramaterModel;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _pramaterModel = TLDGetTaskPramaterModel();
+    _pramaterModel.taskNo = widget.taskNo;
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -34,9 +52,18 @@ class _TLDGetMissionActionSheetState extends State<TLDGetMissionActionSheet> {
                   fontWeight: FontWeight.w700,
                   color: Color.fromARGB(255, 51, 51, 51),
                   decoration: TextDecoration.none)),
-          Padding(
+          GestureDetector(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDEchangeChooseWalletPage(isNeedFliter: false,didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
+                  setState(() {
+                    _pramaterModel.walletAddress = infoModel.walletAddress;
+                  });
+                },)));
+            },
+            child: Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
             child: _getWalletAddressRowView(),
+          ),
           ),
           Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(40)),
@@ -44,6 +71,7 @@ class _TLDGetMissionActionSheetState extends State<TLDGetMissionActionSheet> {
             width: size.width,
             height: ScreenUtil().setHeight(80),
             child: CupertinoButton(child: Text('确认领取',style: TextStyle(fontSize : ScreenUtil().setSp(28)),), onPressed: (){
+              widget.didClickSureGetBtnCallBack(_pramaterModel);
             }
             ,color: Theme.of(context).primaryColor,padding: EdgeInsets.all(0),),
           )
@@ -74,7 +102,7 @@ class _TLDGetMissionActionSheetState extends State<TLDGetMissionActionSheet> {
         ),
         Row(children: <Widget>[
           Container(width : ScreenUtil().setWidth(400),child : Text(
-            'huohwdo238932h9d2d20',
+            _pramaterModel.walletAddress != null ? _pramaterModel.walletAddress : '请选择钱包',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.end,

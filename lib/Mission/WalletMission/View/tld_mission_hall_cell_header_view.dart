@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDMissionHallCellHeaderView extends StatefulWidget {
-  TLDMissionHallCellHeaderView({Key key}) : super(key: key);
+  TLDMissionHallCellHeaderView({Key key,this.didClickBuyBtnCallBack}) : super(key: key);
+
+  final Function didClickBuyBtnCallBack;
 
   @override
   _TLDMissionHallCellHeaderViewState createState() => _TLDMissionHallCellHeaderViewState();
@@ -30,7 +32,7 @@ class _TLDMissionHallCellHeaderViewState extends State<TLDMissionHallCellHeaderV
                    ),
                    Offstage(
                      offstage : false,
-                     child : picAndTextButton('assetss/images/firspage_buy.png', '购买', (){},128)
+                     child : picAndTextButton('assetss/images/firspage_buy.png', '购买', widget.didClickBuyBtnCallBack,128)
                    )
                  ],
                ),

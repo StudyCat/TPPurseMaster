@@ -1,29 +1,28 @@
-import 'dart:async';
-import 'dart:convert';
 
+import 'dart:convert';
+import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_choose_wallet.dart';
 import 'package:dragon_sword_purse/Drawer/UserAgreement/Page/tld_user_agreement_page.dart';
-import 'package:dragon_sword_purse/Mission/FirstPage/Page/tld_mission_first_page.dart';
+import 'package:dragon_sword_purse/Mission/FirstPage/Page/tld_mission_first_root_page.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_tab_sale_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
+import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_creating_purse_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
-import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:jpush_flutter/jpush_flutter.dart';
+import 'package:flutter/services.dart';
 import './Buy/FirstPage/Page/tld_buy_page.dart';
-import './Exchange/FirstPage/Page/tld_exchange_page.dart';
 import './Purse/FirstPage/Page/tld_purse_page.dart';
-import './Sale/FirstPage/Page/tld_sale_page.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'Purse/FirstPage/View/purse_firstpage_sideslip.dart';
-import 'Drawer/PaymentTerm/Page/tld_choose_payment_page.dart';
 import 'Notification/tld_more_btn_click_notification.dart';
 import 'Drawer/IntegrationDesc/Page/tld_integration_desc_page.dart';
 import 'Drawer/AboutUs/Page/tld_about_us_page.dart';
 import 'Drawer/UserFeedback/Page/tld_user_feedback_page.dart';
+import 'package:uni_links/uni_links.dart';
+
 
 class TLDTabbarPage extends StatefulWidget {
   TLDTabbarPage({Key key}) : super(key: key);
@@ -56,7 +55,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
           )),
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.menu),
+      icon: Icon(IconData(0xe611, fontFamily: 'appIconFonts')),
       title: Text('任务',
           style: TextStyle(
             fontSize: 10,
@@ -64,7 +63,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
     )
   ];
 
-  List pages = [TLDPursePage(), TLDBuyPage(), TLDTabSalePage(),TLDMissionFirstPage()];
+  List pages = [TLDPursePage(), TLDBuyPage(), TLDTabSalePage(),TLDMissionFirstRootPage()];
 
   int currentIndex;
 
@@ -88,6 +87,38 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
      String addressListJson = jsonEncode(addressList);
     TLDIMManager manager = TLDIMManager.instance;
     manager.connectClient();
+
+    _initPlatformStateForStringUniLinks();
+  }
+
+   _initPlatformStateForStringUniLinks() async {
+    // Get the latest link
+    String initialLink;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      initialLink = await getInitialLink();
+      if (initialLink == null) {
+        return;
+      }
+      Uri uri = Uri.parse(initialLink);
+      Map queryParameter = uri.queryParameters;
+      if (queryParameter.containsKey('path')) {
+        String path = queryParameter['path'];
+        if (path == 'createWallet') {
+        jugeHavePassword(context, (){
+          Future.delayed(Duration.zero,(){
+             navigatorKey.currentState.push(MaterialPageRoute(builder: (context)=> TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));
+          });
+        },TLDCreatePursePageType.create,null);
+        }
+      }
+
+    } on PlatformException {
+      initialLink = 'Failed to get initial link.';
+    } on FormatException {
+      initialLink = 'Failed to parse the initial link as Uri.';
+    }
+
   }
 
   @override

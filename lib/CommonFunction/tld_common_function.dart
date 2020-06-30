@@ -14,8 +14,9 @@ import 'dart:io';
 
 
 
-void jugeHavePassword(BuildContext context,Function passwordRightCallBack,TLDCreatePursePageType type,Function setPasswordSuccessCallBack){
-   if(TLDDataManager.instance.password == null){
+void jugeHavePassword(BuildContext context,Function passwordRightCallBack,TLDCreatePursePageType type,Function setPasswordSuccessCallBack) async{
+  String password = await TLDDataManager.instance.getPassword();
+   if(password == null){
       Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDCreatePursePage(type: type,setPasswordSuccessCallBack: setPasswordSuccessCallBack,)));
     }else{
       String password;

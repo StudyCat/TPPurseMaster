@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
+import 'package:dragon_sword_purse/Mission/FirstPage/Model/tld_mission_first_model_manager.dart';
 import 'package:dragon_sword_purse/Mission/FirstPage/View/tld_get_mission_action_sheet.dart';
 import 'package:dragon_sword_purse/Mission/FirstPage/View/tld_mission_first_mission_cell.dart';
 import 'package:dragon_sword_purse/Mission/FirstPage/View/tld_mission_first_wallet_cell.dart';
@@ -20,27 +22,24 @@ class TLDMissionFirstPage extends StatefulWidget {
   _TLDMissionFirstPageState createState() => _TLDMissionFirstPageState();
 }
 
-class _TLDMissionFirstPageState extends State<TLDMissionFirstPage> {
+class _TLDMissionFirstPageState extends State<TLDMissionFirstPage> with AutomaticKeepAliveClientMixin {
 
-  StreamSubscription _unreadSubscription;
 
-  bool _haveUnreadMessage;
+  TLDMissionFirstModelManager _modelManager;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
-
-    _registerUnreadMessageEvent();
+    _modelManager = TLDMissionFirstModelManager();
   }
 
-  void _registerUnreadMessageEvent(){
-    _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
-      setState(() {
-        _haveUnreadMessage = event.haveUnreadMessage;
-      });
+  void _getMission(TLDGetTaskPramaterModel pramaterModel){
+    _modelManager.getMission(pramaterModel, (){
+
+    }, (TLDError error){
+
     });
   }
 
@@ -48,86 +47,32 @@ class _TLDMissionFirstPageState extends State<TLDMissionFirstPage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _unreadSubscription.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: _getBodyWidget(),
-      backgroundColor: Color.fromARGB(255, 242, 242, 242),
-      appBar: CupertinoNavigationBar(
-        backgroundColor: Color.fromARGB(255, 242, 242, 242),
-        border: Border.all(
-          color: Color.fromARGB(0, 0, 0, 0),
-        ),
-        heroTag: 'sale_page',
-        transitionBetweenRoutes: false,
-        middle: Text('TLD钱包'),
-        leading: Builder(builder: (BuildContext context) {
-          return CupertinoButton(
-              child: Icon(
-                IconData(0xe608, fontFamily: 'appIconFonts'),
-                color: Color.fromARGB(255, 51, 51, 51),
-              ),
-              padding: EdgeInsets.all(0),
-              minSize: 20,
-              onPressed: () {
-                TLDMoreBtnClickNotification().dispatch(context);
-              });
-        }),
-        automaticallyImplyLeading: false,
-        trailing: Container(
-            width: ScreenUtil().setWidth(160),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                CupertinoButton(
-                    child: Icon(
-                      IconData(0xe663, fontFamily: 'appIconFonts'),
-                      color: Color.fromARGB(255, 51, 51, 51),
-                    ),
-                    padding: EdgeInsets.all(0),
-                    minSize: 20,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TLDOrderListPage()));
-                    }),
-                MessageButton(
-                  isHaveUnReadMessage: _haveUnreadMessage,
-                  didClickCallBack: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TLDMessagePage())),
-                )
-              ],
-            )),
-      ),
-    );
+    return _getBodyWidget();
   }
 
   Widget _getBodyWidget(){
     return ListView.builder(
       itemCount: 2,
       itemBuilder: (BuildContext context, int index) {
-        if (index == 0) {
           return TLDMissionFirstMissionCell(didClickGetBtnCallBack: (){
             showCupertinoModalPopup(context: context, builder: (BuildContext context){
-              return TLDGetMissionActionSheet(            
+              return TLDGetMissionActionSheet(
+                didClickSureGetBtnCallBack: (TLDGetTaskPramaterModel pramaterModel){
+                  this._getMission(pramaterModel);
+                },            
               );
             });
           },);
-        }else{
-          return TLDMissionFirstWalletCell(
-            didClickItemCallBack: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDMissionRootPage()));
-            },
-          );
-        }
      },
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
 }

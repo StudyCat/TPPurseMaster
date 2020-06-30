@@ -35,11 +35,13 @@ class TLDDataManager{
   Future<String>  getPassword()async{
     SharedPreferences pre = await SharedPreferences.getInstance();
     password = pre.getString('password');
+    return password;
   } 
 
   Future<String> getUserToken()async{
     SharedPreferences pre = await SharedPreferences.getInstance();
     userToken = pre.getString('userToken');
+    return userToken;
   }
 
 
