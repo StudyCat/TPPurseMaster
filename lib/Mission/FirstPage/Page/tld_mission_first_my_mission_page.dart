@@ -87,7 +87,7 @@ class _TLDMissionFirstMyMissionPageState extends State<TLDMissionFirstMyMissionP
             },
           );
        }, getEmptyViewCallBack: (){
-      return TLDEmptyDataView(imageAsset: 'assetss/images/no_purse_page_icon.png', title: '暂无任务');
+      return TLDEmptyDataView(imageAsset: 'assetss/images/no_data.png', title: '暂无任务');
     }, streamController: _streamController,
     refreshController: _refreshController,
     refreshCallBack: (){

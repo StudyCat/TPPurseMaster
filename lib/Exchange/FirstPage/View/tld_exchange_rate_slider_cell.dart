@@ -106,18 +106,18 @@ class _TLDExchangeRateSliderCellState extends State<TLDExchangeRateSliderCell> {
                 activeTrackBarHeight: ScreenUtil().setHeight(40),
                 inactiveTrackBar: BoxDecoration(
                   borderRadius:  BorderRadius.circular(20.0),
-                  color: Color.fromARGB(255, 148, 170, 218)
+                  color: Theme.of(context).primaryColor
                 ),
                 activeTrackBar: BoxDecoration(
                   borderRadius:  BorderRadius.circular(20.0),
-                  color: Theme.of(context).primaryColor
+                  color: Theme.of(context).hintColor
                 ),
                 ),
               handler: FlutterSliderHandler(
                 child : Container(
                   decoration: BoxDecoration(
                   borderRadius:  BorderRadius.circular(20.0),
-                  color: Theme.of(context).primaryColor
+                  color: Theme.of(context).hintColor
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12.0),

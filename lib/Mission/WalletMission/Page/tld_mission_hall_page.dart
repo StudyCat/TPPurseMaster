@@ -143,7 +143,7 @@ class _TLDMissionHallPageState extends State<TLDMissionHallPage> with AutomaticK
       controller: _refreshController,
       header: _refreshHeaderBuild(),
       onRefresh: ()=> _getMissionProgress(),
-      child: TLDEmptyDataView(imageAsset: 'assetss/images/no_purse_page_icon.png', title: '暂无任务'),
+      child: TLDEmptyDataView(imageAsset: 'assetss/images/no_data.png', title: '暂无任务'),
       );
   }
 

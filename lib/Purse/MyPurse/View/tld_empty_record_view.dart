@@ -20,7 +20,7 @@ class _TLDEmptyRecordViewState extends State<TLDEmptyRecordView> {
             top: ScreenUtil().setHeight(214),
           ),
           child: Center(
-              child: Image.asset('assetss/images/no_purse_page_icon.png',width:ScreenUtil().setWidth(260),height: ScreenUtil().setWidth(260),) 
+              child: Image.asset('assetss/images/no_data.png',width:ScreenUtil().setWidth(260),height: ScreenUtil().setWidth(260),) 
               ),
         ),
         Container(

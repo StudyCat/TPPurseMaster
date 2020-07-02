@@ -58,11 +58,7 @@ class _TLDPurseBackupWordSuccessPageState
             top: ScreenUtil().setHeight(214),
           ),
           child: Center(
-              child: Icon(
-            IconData(0xe65d, fontFamily: 'appIconFonts'),
-            size: ScreenUtil().setWidth(150),
-            color: Color.fromARGB(255, 218, 225, 238),
-          )),
+              child: Image.asset('assetss/images/purse_success.png')),
         ),
         Container(
            padding: EdgeInsets.only(

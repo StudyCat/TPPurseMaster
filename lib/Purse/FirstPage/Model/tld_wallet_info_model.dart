@@ -15,6 +15,8 @@ class TLDWalletInfoModel {
   TLDWallet wallet;
   String minRate;
   String maxRate;
+  String expProgress;
+  String levelIcon;
 
   TLDWalletInfoModel(
       {this.createTime,
@@ -28,7 +30,10 @@ class TLDWalletInfoModel {
       this.chargeWalletAddress,
       this.wallet,
       this.minRate,
-      this.maxRate});
+      this.maxRate,
+      this.expProgress,
+      this.levelIcon
+      });
 
   TLDWalletInfoModel.fromJson(Map<String, dynamic> json) {
     createTime = json['createTime'];
@@ -47,6 +52,8 @@ class TLDWalletInfoModel {
     chargeWalletAddress = json['chargeWalletAddress'];
     minRate = json['minRate'];
     maxRate = json['maxRate'];
+    expProgress = json['expProgress'];
+    levelIcon = json['levelIcon'];
   }
 
   Map<String, dynamic> toJson() {
@@ -65,6 +72,8 @@ class TLDWalletInfoModel {
     data['chargeWalletAddress'] = this.chargeWalletAddress;
     data['minRate'] = this.minRate;
     data['maxRate'] = this.maxRate;
+    data['expProgress'] = this.expProgress;
+    data['levelIcon'] = this.levelIcon;
     return data;
   }
 }

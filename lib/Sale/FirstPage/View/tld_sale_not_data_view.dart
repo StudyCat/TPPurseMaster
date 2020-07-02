@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,12 +28,8 @@ class _TLDSaleNotDataViewState extends State<TLDSaleNotDataView> {
             Padding(
               padding: EdgeInsets.only(top: ScreenUtil().setHeight(250)),
               child: Center(
-                  child: Icon(
-                IconData(0xe65d, fontFamily: 'appIconFonts'),
-                size: ScreenUtil().setWidth(150),
-                color: Color.fromARGB(255, 218, 225, 238),
+                  child: Image.asset('assetss/images/no_data.png'),
               )),
-            ),
             Padding(
               padding: EdgeInsets.only(top: ScreenUtil().setHeight(68)),
               child: Text('暂无订单',

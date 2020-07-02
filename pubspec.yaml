@@ -85,6 +85,12 @@ flutter:
      - assetss/images/no_purse_page_icon.png
      - assetss/images/wechat_qrcode.png
      - assetss/images/alipay_qrcode.png
+     - assetss/images/no_data.png
+     - assetss/images/creat_purse_wait.png
+     - assetss/images/purse_success.png
+     - assetss/images/sale_button.png
+
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

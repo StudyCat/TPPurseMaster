@@ -129,7 +129,7 @@ class _TLDMissionFirstPageState extends State<TLDMissionFirstPage> with Automati
          _getMissionList(_page);
        },);
     }, getEmptyViewCallBack: (){
-      return TLDEmptyDataView(imageAsset: 'assetss/images/no_purse_page_icon.png', title: '暂无可领取的任务');
+      return TLDEmptyDataView(imageAsset: 'assetss/images/no_data.png', title: '暂无可领取的任务');
     }, streamController: _streamController,
     refreshController: _refreshController,
     refreshCallBack: (){

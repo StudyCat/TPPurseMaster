@@ -60,8 +60,8 @@ class _TLDPurseFirstPageCellState extends State<TLDPurseFirstPageCell> {
           Padding(
             padding: EdgeInsets.only(right : ScreenUtil().setWidth(20)),
             child: RichText(text: TextSpan(children:<InlineSpan>[
-            WidgetSpan(child: CachedNetworkImage(imageUrl: 'http://oss.thyc.com/2020/06/29/f4aacae548004e68b373e1e4b7d01ebe.png',width: ScreenUtil().setWidth(24),height: ScreenUtil().setWidth(24),),),
-            TextSpan(text :'(20/200)',style:TextStyle(
+            WidgetSpan(child: CachedNetworkImage(imageUrl: widget.walletInfo.levelIcon,width: ScreenUtil().setWidth(24),height: ScreenUtil().setWidth(24),),),
+            TextSpan(text :widget.walletInfo.expProgress,style:TextStyle(
                   fontSize: ScreenUtil().setSp(28),
                   color: Color.fromARGB(255, 51, 51, 51)))
           ])),

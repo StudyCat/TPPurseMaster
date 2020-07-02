@@ -152,7 +152,7 @@ class _TLDCreatingPursePageState extends State<TLDCreatingPursePage> {
         Padding(
           padding: EdgeInsets.only(top: ScreenUtil().setHeight(250)),
           child: Image.asset(
-            'assetss/images/creating_purse.png',
+            'assetss/images/creat_purse_wait.png',
             width: ScreenUtil().setWidth(176),
             height: ScreenUtil().setHeight(212),
           ),

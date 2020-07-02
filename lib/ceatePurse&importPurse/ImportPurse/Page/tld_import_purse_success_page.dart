@@ -57,11 +57,7 @@ class _TLDImportPurseSuccessPageState extends State<TLDImportPurseSuccessPage> {
         Padding(
           padding: EdgeInsets.only(top: ScreenUtil().setHeight(250)),
           child:  Center(
-              child: Icon(
-            IconData(0xe65d, fontFamily: 'appIconFonts'),
-            size: ScreenUtil().setWidth(150),
-            color: Color.fromARGB(255, 218, 225, 238),
-          )),
+              child:Image.asset('assetss/images/purse_success.png')),
         ),
         Padding(
           padding: EdgeInsets.only(top: ScreenUtil().setHeight(68)),
