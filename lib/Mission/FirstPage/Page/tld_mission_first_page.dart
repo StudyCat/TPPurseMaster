@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
 import 'package:dragon_sword_purse/Mission/FirstPage/Model/tld_mission_first_model_manager.dart';
 import 'package:dragon_sword_purse/Mission/FirstPage/View/tld_get_mission_action_sheet.dart';
@@ -14,6 +16,9 @@ import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TLDMissionFirstPage extends StatefulWidget {
   TLDMissionFirstPage({Key key}) : super(key: key);
@@ -27,19 +32,75 @@ class _TLDMissionFirstPageState extends State<TLDMissionFirstPage> with Automati
 
   TLDMissionFirstModelManager _modelManager;
 
+  int _page = 1;
+
+  List _dataSource = [];
+
+  StreamController _streamController;
+
+  RefreshController _refreshController;
+
+  bool _isLoading = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
+    _streamController = StreamController();
+
+    _refreshController = RefreshController(initialRefresh: true);
+
     _modelManager = TLDMissionFirstModelManager();
+
+    _getMissionList(_page);
+  }
+
+  void _getMissionList(int page){
+    _modelManager.getMissionListInfo(page, (List resultList){
+      _refreshController.refreshCompleted();
+      _refreshController.loadComplete();
+      if (page == 1) {
+        _dataSource = [];
+      }
+      _dataSource.addAll(resultList);
+      _streamController.add(_dataSource);
+      if (resultList.length > 0) {
+        _page = page + 1;
+      }
+    }, (TLDError error) {
+      _refreshController.refreshCompleted();
+      _refreshController.loadComplete();
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    });
   }
 
   void _getMission(TLDGetTaskPramaterModel pramaterModel){
-    _modelManager.getMission(pramaterModel, (){
-
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+    _modelManager.getMission(pramaterModel, (int taskWalletId){
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Fluttertoast.showToast(msg: '领取任务成功',toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDMissionRootPage(taskWalletId: taskWalletId,))).then((value){
+        _page = 1;
+        _getMissionList(_page);
+      }); 
     }, (TLDError error){
-
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      }
     });
   }
 
@@ -51,24 +112,34 @@ class _TLDMissionFirstPageState extends State<TLDMissionFirstPage> with Automati
 
   @override
   Widget build(BuildContext context) {
-    return _getBodyWidget();
+    return LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget());
   }
 
   Widget _getBodyWidget(){
-    return ListView.builder(
-      itemCount: 2,
-      itemBuilder: (BuildContext context, int index) {
-          return TLDMissionFirstMissionCell(didClickGetBtnCallBack: (){
-            showCupertinoModalPopup(context: context, builder: (BuildContext context){
-              return TLDGetMissionActionSheet(
-                didClickSureGetBtnCallBack: (TLDGetTaskPramaterModel pramaterModel){
-                  this._getMission(pramaterModel);
-                },            
-              );
-            });
-          },);
-     },
-    );
+    return TLDEmptyListView(getListViewCellCallBack: (int index){
+      TLDMissionListModel model = _dataSource[index];
+       return TLDMissionFirstMissionCell(model: model,didClickGetBtnCallBack:(){
+         showModalBottomSheet(context: context, builder: (context){
+          return TLDGetMissionActionSheet(taskNo: model.taskNo,didClickSureGetBtnCallBack: (pramaterModel){
+             _getMission(pramaterModel);
+           },);
+         });
+       },timeIsOverRefreshUICallBack: (){
+         _page = 1;
+         _getMissionList(_page);
+       },);
+    }, getEmptyViewCallBack: (){
+      return TLDEmptyDataView(imageAsset: 'assetss/images/no_purse_page_icon.png', title: '暂无可领取的任务');
+    }, streamController: _streamController,
+    refreshController: _refreshController,
+    refreshCallBack: (){
+      _page = 1;
+      _getMissionList(_page);
+    },
+    loadCallBack: (){
+      _getMissionList(_page);
+    },
+    ); 
   }
 
   @override

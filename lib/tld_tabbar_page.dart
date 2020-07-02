@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:convert';
 import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
@@ -69,6 +70,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
 
   PageController _pageController;
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -100,6 +102,10 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
       if (initialLink == null) {
         return;
       }
+      if (initialLink == TLDDataManager.instance.lastLink) {
+        return;
+      }
+      TLDDataManager.instance.lastLink = initialLink;
       Uri uri = Uri.parse(initialLink);
       Map queryParameter = uri.queryParameters;
       if (queryParameter.containsKey('path')) {

@@ -1,12 +1,15 @@
 import 'package:dragon_sword_purse/Buy/FirstPage/View/tld_buy_cell_bottom.dart';
 import 'package:dragon_sword_purse/CommonWidget/ltd_sale_buy_cell_header.dart';
+import 'package:dragon_sword_purse/Mission/WalletMission/Model/tld_do_mission_model_manager.dart';
 import 'package:dragon_sword_purse/Mission/WalletMission/View/tld_mission_hall_cell_header_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDMissionHallCell extends StatefulWidget {
-  TLDMissionHallCell({Key key,this.didClickBuyBtnCallBack}) : super(key: key);
+  TLDMissionHallCell({Key key,this.didClickBuyBtnCallBack,this.model}) : super(key: key);
+
+  final TLDMissionBuyInfoModel model;
 
   final Function didClickBuyBtnCallBack;
 
@@ -29,7 +32,7 @@ class _TLDMissionHallCellState extends State<TLDMissionHallCell> {
            padding: EdgeInsets.only(top : 10,bottom : 17),
            child: Column(
              children : <Widget>[
-               TLDMissionHallCellHeaderView(didClickBuyBtnCallBack: widget.didClickBuyBtnCallBack,),
+               TLDMissionHallCellHeaderView(infoModel: widget.model,didClickBuyBtnCallBack: widget.didClickBuyBtnCallBack,),
               _getCellBottomView(),
              ]
            ),
@@ -40,13 +43,13 @@ class _TLDMissionHallCellState extends State<TLDMissionHallCell> {
 
   Widget _getCellBottomView(){
   int iconInt;
-  // if (model.payMethodVO.type == 1){
-  //   iconInt = 0xe679;
-  // }else if(model.payMethodVO.type == 2){
-  //   iconInt = 0xe61d;
-  // }else{
+  if (widget.model.payMethodVO.type == 1){
+    iconInt = 0xe679;
+  }else if(widget.model.payMethodVO.type == 2){
+    iconInt = 0xe61d;
+  }else{
     iconInt = 0xe630;
-  // }
+  }
   return Container(
     padding: EdgeInsets.only(top : ScreenUtil().setHeight(18),bottom: ScreenUtil().setHeight(30)),
     child: Row(

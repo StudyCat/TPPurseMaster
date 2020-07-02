@@ -14,7 +14,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class TLDMissionRootPage extends StatefulWidget {
-  TLDMissionRootPage({Key key}) : super(key: key);
+  TLDMissionRootPage({Key key,this.taskWalletId}) : super(key: key);
+
+  final int taskWalletId;
 
   @override
   _TLDMissionRootPageState createState() => _TLDMissionRootPageState();
@@ -27,9 +29,7 @@ class _TLDMissionRootPageState extends State<TLDMissionRootPage> with SingleTick
     "任务进度"
   ];
 
-  List<Widget> _pages = [
-    TLDMyMissionPage(),TLDMissionHallPage()
-  ];
+  List<Widget> _pages;
 
   TabController _tabController;
 
@@ -41,6 +41,10 @@ class _TLDMissionRootPageState extends State<TLDMissionRootPage> with SingleTick
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    _pages = [
+      TLDMyMissionPage(taskWalletId: widget.taskWalletId,),TLDMissionHallPage(taskWalletId: widget.taskWalletId)
+    ];
 
     _tabController = TabController(length: 2, vsync: this);
 

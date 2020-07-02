@@ -1,12 +1,21 @@
 
+import 'package:date_format/date_format.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Mission/WalletMission/Model/tld_mission_progress_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 
 class TLDMYMissionBodyCell extends StatefulWidget {
-  TLDMYMissionBodyCell({Key key,this.didClickItemCallBack}) : super(key: key);
+  TLDMYMissionBodyCell({Key key,this.model,this.didClickItemCallBack,this.taskNo,this.didClickIMBtnCallBack}) : super(key: key);
 
   final Function didClickItemCallBack;
+
+  final String taskNo;
+
+  final TaskOrderListModel model;
+
+  final Function didClickIMBtnCallBack;
 
   @override
   _TLDMYMissionBodyCellState createState() => _TLDMYMissionBodyCellState();
@@ -45,9 +54,10 @@ class _TLDMYMissionBodyCellState extends State<TLDMYMissionBodyCell> {
   }
 
   Widget _getTimeTextWidget(){
+    DateTime time = DateTime.fromMillisecondsSinceEpoch(int.parse(widget.model.createTime));
     return Padding(
       padding: EdgeInsets.only(top : ScreenUtil().setHeight(40)),
-      child: Text('2020-04-23 28:32:56',style: TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153))),
+      child: Text(formatDate(time, [yyyy,'-',mm,'-',dd,' ',HH,':',nn,':',ss]),style: TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153))),
     );
   }
 
@@ -57,31 +67,37 @@ class _TLDMYMissionBodyCellState extends State<TLDMYMissionBodyCell> {
       mainAxisAlignment: MainAxisAlignment.end,
       children:<Widget>[
         Container(
-          child : Text('任务编号：82372932',style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153))),
+          child : Text('任务编号：' + widget.taskNo,style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153))),
           width : size.width - ScreenUtil().setWidth(200) 
         ),
-        Container(
+        GestureDetector(
+          onTap: widget.didClickIMBtnCallBack,
+          child: Container(
           width: ScreenUtil().setWidth(74),
           height: ScreenUtil().setHeight(60),
           decoration: BoxDecoration(
             borderRadius : BorderRadius.only(topLeft:Radius.circular(ScreenUtil().setHeight(30)),bottomLeft:Radius.circular(ScreenUtil().setHeight(30))),
             color: Theme.of(context).primaryColor
           ),
+          child: Icon(IconData(0xe609,fontFamily : 'appIconFonts'),color: Colors.white,),
+        ),
         )
       ]
     );
   }
 
   Widget _getMissionInfoView(){
+    Map statusMap = TLDDataManager.orderListStatusMap;
+    TLDOrderStatusInfoModel statusInfoModel = statusMap[widget.model.status];
     return Padding(
       padding: EdgeInsets.only(top : ScreenUtil().setHeight(14)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children : <Widget>[
-          _getMissionInfoColumWidget('等级', 'L1', null),
-          _getMissionInfoColumWidget('额度', '983TLD', null),
-          _getMissionInfoColumWidget('奖励金', '0.67TLD', null),
-          _getMissionInfoColumWidget('状态', '已支付', Color.fromARGB(255, 240, 131, 30))
+          _getMissionInfoColumWidget('等级', 'L' +'${widget.model.taskLevel}', null),
+          _getMissionInfoColumWidget('额度',  widget.model.quote+'TLD', null),
+          _getMissionInfoColumWidget('奖励金', widget.model.profit+'TLD', null),
+          _getMissionInfoColumWidget('状态', statusInfoModel.orderStatusName, statusInfoModel.orderStatusColor)
         ]
       ),
     );

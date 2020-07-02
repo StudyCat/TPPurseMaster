@@ -1,16 +1,64 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:date_format/date_format.dart';
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Mission/DetailMission/Model/tld_detail_mission_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TLDDetailMissionPage extends StatefulWidget {
-  TLDDetailMissionPage({Key key}) : super(key: key);
+  TLDDetailMissionPage({Key key,this.taskWalletId}) : super(key: key);
+
+  final int taskWalletId;
 
   @override
   _TLDDetailMissionPageState createState() => _TLDDetailMissionPageState();
 }
 
 class _TLDDetailMissionPageState extends State<TLDDetailMissionPage> {
+  TLDDetailMissionInfoModel _infoModel;
+
+  TLDDetailMissionModelManager _modelManager;
+
+  Timer _timer;
+
+  int _countdownTime;
+
+  String _subStr = '';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _modelManager = TLDDetailMissionModelManager();
+    _getDetailMissionInfo();
+  }
+
+  void _getDetailMissionInfo(){
+    _modelManager.getDetailMissionInfo(widget.taskWalletId, (TLDDetailMissionInfoModel model){
+      setState(() {
+        _infoModel = model;
+        _countdownTime = model.expireTime;
+      });
+    }, (TLDError error){
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    if(_timer != null){
+      _timer.cancel();
+      _timer = null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +72,7 @@ class _TLDDetailMissionPageState extends State<TLDDetailMissionPage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getBodyWidget(),
+      body: _infoModel != null ? _getBodyWidget() : Container(),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -50,8 +98,8 @@ class _TLDDetailMissionPageState extends State<TLDDetailMissionPage> {
             _getInfoView(),
             _getFinishMissionTextWidget(),
             _getTimeRowWidget(),
-            _getAddressText('我的-钱包地址  ', 'hue2832903hd'),
-            _getAddressText('任务-钱包地址  ', 'hue2832903hd')
+            _getAddressText('我的-钱包地址  ', _infoModel.receiveWalletAddress),
+            _getAddressText('任务-钱包地址  ', _infoModel.releaseWalletAddress)
           ],
         ),
       ),
@@ -66,7 +114,7 @@ class _TLDDetailMissionPageState extends State<TLDDetailMissionPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              '任务编号：82372932',
+              '任务编号：' + _infoModel.taskNo,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(24),
                   color: Color.fromARGB(255, 153, 153, 153)),
@@ -76,13 +124,13 @@ class _TLDDetailMissionPageState extends State<TLDDetailMissionPage> {
               WidgetSpan(
                 child: CachedNetworkImage(
                   imageUrl:
-                      'http://oss.thyc.com/2020/06/29/f4aacae548004e68b373e1e4b7d01ebe.png',
+                      _infoModel.levelIcon,
                   width: ScreenUtil().setWidth(24),
                   height: ScreenUtil().setWidth(24),
                 ),
               ),
               TextSpan(
-                  text: '(20/200)',
+                  text: _infoModel.progressCount,
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(28),
                       color: Color.fromARGB(255, 51, 51, 51)))
@@ -98,9 +146,9 @@ class _TLDDetailMissionPageState extends State<TLDDetailMissionPage> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             _getAmountColumnView(
-                '实际收益', '0.323TLD', Theme.of(context).primaryColor),
+                '实际收益', _infoModel.realProfit + 'TLD', Theme.of(context).primaryColor),
             _getAmountColumnView(
-                '累计收益', '0.7823TLD', Color.fromARGB(255, 51, 51, 51))
+                '累计收益', _infoModel.totalProfit + 'TLD', Color.fromARGB(255, 51, 51, 51))
           ]),
     );
   }
@@ -132,10 +180,10 @@ class _TLDDetailMissionPageState extends State<TLDDetailMissionPage> {
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            _getInfoColumnView('最小购买量', '50TLD'),
-            _getInfoColumnView('奖励金比例', '0.5%'),
-            _getInfoColumnView('奖励金', '0.67TLD'),
-            _getInfoColumnView('手续费比例', '5%')
+            _getInfoColumnView('最小购买量',  _infoModel.quote+'TLD'),
+            _getInfoColumnView('奖励金比例',  '${double.parse(_infoModel.profitRate) * 100}' + '%'),
+            _getInfoColumnView('奖励金', _infoModel.profit + 'TLD'),
+            _getInfoColumnView('手续费比例', '${double.parse(_infoModel.chargeRate) * 100}'+ '%')
           ]),
     );
   }
@@ -171,7 +219,7 @@ class _TLDDetailMissionPageState extends State<TLDDetailMissionPage> {
         decoration: BoxDecoration(
             color: Color.fromARGB(255, 242, 242, 242),
             borderRadius: BorderRadius.all(Radius.circular(4))),
-        child: Text('当前任务钱包累计完成：100TLD',
+        child: Text('当前任务钱包累计完成：'+ _infoModel.totalQuote +'TLD',
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(24),
                 color: Color.fromARGB(255, 51, 51, 51))),
@@ -210,22 +258,64 @@ class _TLDDetailMissionPageState extends State<TLDDetailMissionPage> {
   }
 
   Widget _getTimeContentColumView() {
+    if (_timer == null){
+              _timer = Timer.periodic(Duration(minutes : 1), (timer) { 
+                _timerFunction();
+              });
+    }
+    int minute = _countdownTime % 60;
+    int hour = _countdownTime ~/ 60;
+    if (_countdownTime < 5) {
+        _subStr = '任务即将结束';
+    }else{
+        _subStr = hour > 0 ? hour.toString()+'时'+minute.toString()+'分' :   minute.toString()+'分';        
+    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('14:00-18:00',
+        Text(_getTimeStr(),
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(32),
                 color: Color.fromARGB(255, 51, 51, 51),
                 fontWeight: FontWeight.bold)),
-        Text('2:30:32',
+        Text(_subStr,
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(32),
                 color: Color.fromARGB(255, 51, 51, 51),
                 fontWeight: FontWeight.bold)),
       ],
     );
+  }
+
+   void _timerFunction(){
+    if(_countdownTime > 0){
+      int minute = _countdownTime % 60;
+      int hour = minute ~/ 60;
+      if (mounted) {
+     setState(() {
+        if (_countdownTime < 5) {
+          _subStr = '任务即将结束';
+        }else{
+          _subStr = hour > 0 ? hour.toString()+'时'+minute.toString()+'分' :   minute.toString()+'分';
+        }
+      });
+      }
+       if (_countdownTime < 0){            
+          _timer.cancel();
+          _timer = null;
+          // widget.timeIsOverRefreshUICallBack();
+        }
+      _countdownTime = _countdownTime - 1;
+    }
+  }
+
+   String _getTimeStr(){
+    DateTime startTime = DateTime.fromMillisecondsSinceEpoch(_infoModel.startTime);
+    String startTimeStr = formatDate(startTime, [HH,':',nn]);
+    DateTime endTime = DateTime.fromMillisecondsSinceEpoch(_infoModel.endTime);
+    String endTimeStr = formatDate(endTime, [HH,':',nn]);
+    return startTimeStr + '-' + endTimeStr;
   }
 
   Widget _getAddressText(String title, String content) {

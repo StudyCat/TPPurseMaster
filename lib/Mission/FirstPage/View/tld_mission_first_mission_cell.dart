@@ -1,11 +1,19 @@
+import 'dart:async';
+
+import 'package:date_format/date_format.dart';
+import 'package:dragon_sword_purse/Mission/FirstPage/Model/tld_mission_first_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDMissionFirstMissionCell extends StatefulWidget {
-  TLDMissionFirstMissionCell({Key key,this.didClickGetBtnCallBack}) : super(key: key);
+  TLDMissionFirstMissionCell({Key key,this.didClickGetBtnCallBack,this.model,this.timeIsOverRefreshUICallBack}) : super(key: key);
 
   final Function didClickGetBtnCallBack;
+
+  final TLDMissionListModel model;
+
+  final Function timeIsOverRefreshUICallBack;
 
   @override
   _TLDMissionFirstMissionCellState createState() =>
@@ -14,6 +22,31 @@ class TLDMissionFirstMissionCell extends StatefulWidget {
 
 class _TLDMissionFirstMissionCellState
     extends State<TLDMissionFirstMissionCell> {
+  
+  Timer _timer;
+
+  int _countdownTime;
+
+  String _subStr = '';
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _countdownTime = widget.model.expireTime;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    if (_timer != null) {
+      _timer.cancel();
+      _timer = null;
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -52,7 +85,42 @@ class _TLDMissionFirstMissionCellState
     );
   }
 
+  void _timerFunction(){
+    if(_countdownTime > 0){
+      int minute = _countdownTime % 60;
+      int hour = minute ~/ 60;
+      if (mounted) {
+     setState(() {
+        if (_countdownTime < 5) {
+          _subStr = '任务即将结束';
+        }else{
+          _subStr = hour > 0 ? hour.toString()+'时'+minute.toString()+'分' :   minute.toString()+'分';
+        }
+      });
+      }
+       if (_countdownTime < 0){            
+          _timer.cancel();
+          _timer = null;
+          // widget.timeIsOverRefreshUICallBack();
+        }
+      _countdownTime = _countdownTime - 1;
+    }
+  }
+
+  
   Widget _getLeftColumnView() {
+    if (_timer == null){
+              _timer = Timer.periodic(Duration(minutes : 1), (timer) { 
+                _timerFunction();
+              });
+    }
+    int minute = _countdownTime % 60;
+    int hour = _countdownTime ~/ 60;
+    if (_countdownTime < 5) {
+        _subStr = '任务即将结束';
+    }else{
+        _subStr = hour > 0 ? hour.toString()+'时'+minute.toString()+'分' :   minute.toString()+'分';        
+    }
     return Padding(
       padding: EdgeInsets.only(
           left: ScreenUtil().setWidth(20),
@@ -68,15 +136,23 @@ class _TLDMissionFirstMissionCellState
                   color: Color.fromARGB(255, 51, 51, 51))),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(12)),
-            child: _getRichText('任务时间段 ', '14:00—18:00'),
+            child: _getRichText('任务时间段 ', _getTimeStr()),
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(12)),
-            child: _getRichText('结束剩余时间 ', '2时30分'),
+            child: _getRichText('结束剩余时间 ', _subStr),
           ),
         ],
       ),
     );
+  }
+
+  String _getTimeStr(){
+    DateTime startTime = DateTime.fromMillisecondsSinceEpoch(widget.model.startTime);
+    String startTimeStr = formatDate(startTime, [HH,':',nn]);
+    DateTime endTime = DateTime.fromMillisecondsSinceEpoch(widget.model.endTime);
+    String endTimeStr = formatDate(endTime, [HH,':',nn]);
+    return startTimeStr + '-' + endTimeStr;
   }
 
   Widget _getRichText(String title, String content) {

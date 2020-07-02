@@ -20,6 +20,8 @@ class TLDDataManager{
 
   List purseList;
 
+  String lastLink;
+
   String registrationID = '';
 
   String userToken;

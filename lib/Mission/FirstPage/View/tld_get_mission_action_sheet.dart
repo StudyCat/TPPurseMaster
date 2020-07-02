@@ -72,6 +72,7 @@ class _TLDGetMissionActionSheetState extends State<TLDGetMissionActionSheet> {
             height: ScreenUtil().setHeight(80),
             child: CupertinoButton(child: Text('确认领取',style: TextStyle(fontSize : ScreenUtil().setSp(28)),), onPressed: (){
               widget.didClickSureGetBtnCallBack(_pramaterModel);
+              Navigator.of(context).pop();
             }
             ,color: Theme.of(context).primaryColor,padding: EdgeInsets.all(0),),
           )

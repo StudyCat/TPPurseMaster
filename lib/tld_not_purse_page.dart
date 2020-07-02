@@ -55,6 +55,10 @@ class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> with WidgetsB
       if (initialLink == null) {
         return;
       }
+       if (initialLink == TLDDataManager.instance.lastLink) {
+        return;
+      }
+      TLDDataManager.instance.lastLink = initialLink;
       Uri uri = Uri.parse(initialLink);
       Map queryParameter = uri.queryParameters;
       if (queryParameter.containsKey('path')) {

@@ -1,10 +1,23 @@
+
+import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
+import 'package:dragon_sword_purse/Mission/WalletMission/Model/tld_do_mission_model_manager.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TLDMissionHallBuyActionSheet extends StatefulWidget {
-  TLDMissionHallBuyActionSheet({Key key}) : super(key: key);
+  TLDMissionHallBuyActionSheet({Key key,this.walletAddress,this.buyInfoModel,this.taskWalletId,this.didClickBuyBtnCallBack}) : super(key: key);
 
+  final TLDMissionBuyInfoModel buyInfoModel;
+
+  final Function(TLDMissionBuyPramaterModel) didClickBuyBtnCallBack;
+
+  final int taskWalletId;
+
+  final String walletAddress;
+  
   @override
   _TLDMissionHallBuyActionSheetState createState() =>
       _TLDMissionHallBuyActionSheetState();
@@ -12,6 +25,20 @@ class TLDMissionHallBuyActionSheet extends StatefulWidget {
 
 class _TLDMissionHallBuyActionSheetState
     extends State<TLDMissionHallBuyActionSheet> {
+  TLDMissionBuyPramaterModel _pramaterModel;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _pramaterModel = TLDMissionBuyPramaterModel();
+    _pramaterModel.quote = widget.buyInfoModel.quote;
+    _pramaterModel.taskWalletId = widget.taskWalletId;
+    _pramaterModel.taskBuyNo = widget.buyInfoModel.taskBuyNo;
+    _pramaterModel.buyerWalletAddress = widget.buyInfoModel.receiveWalletAddress;
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -36,15 +63,30 @@ class _TLDMissionHallBuyActionSheetState
                     fontWeight: FontWeight.w700,
                     color: Color.fromARGB(255, 51, 51, 51),
                     decoration: TextDecoration.none)),
-            _getNormalRowView('数量', '100TLD'),
-            _getNormalRowView('应付款', '100CNY'),
-            _getArrowRowView('接收地址', 'deiwdgiq120e3030dfh'),
+            _getNormalRowView('数量', widget.buyInfoModel.quote + 'TLD'),
+            _getNormalRowView('应付款', widget.buyInfoModel.quote + 'CNY'),
+            GestureDetector(
+              onTap: (){
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => TLDEchangeChooseWalletPage(isNeedFliter: false,didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
+                //   setState(() {
+                //     _pramaterModel.buyerWalletAddress = infoModel.walletAddress;
+                //   });
+                // },)));
+              },
+              child: _getNormalRowView('接收地址', _pramaterModel.buyerWalletAddress),
+            ),
             Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(40)),
             child: Container(
             width: size.width,
             height: ScreenUtil().setHeight(80),
             child: CupertinoButton(child: Text('下单',style: TextStyle(fontSize : ScreenUtil().setSp(28)),), onPressed: (){
+              if (_pramaterModel.buyerWalletAddress == null) {
+                Fluttertoast.showToast(msg: '请选择钱包');
+                return;
+              }
+              widget.didClickBuyBtnCallBack(_pramaterModel);
+              Navigator.of(context).pop();
             }
             ,color: Theme.of(context).primaryColor,padding: EdgeInsets.all(0),),
           )
@@ -72,13 +114,17 @@ class _TLDMissionHallBuyActionSheetState
                     fontWeight: FontWeight.w700,
                     color: Color.fromARGB(255, 51, 51, 51)),
               ),
-              Text(
+              Container(
+                width: ScreenUtil().setWidth(450),
+                child:  Text(
                 content,
+                textAlign: TextAlign.end,
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(28),
                     decoration: TextDecoration.none,
                     fontWeight: FontWeight.w400,
                     color: Color.fromARGB(255, 51, 51, 51)),
+              ),
               )
             ]),
       ),
