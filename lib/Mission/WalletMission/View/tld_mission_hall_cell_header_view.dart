@@ -35,7 +35,7 @@ class _TLDMissionHallCellHeaderViewState extends State<TLDMissionHallCellHeaderV
                    ),
                    Offstage(
                      offstage : false,
-                     child : picAndTextButton('assetss/images/firspage_buy.png', '购买', widget.didClickBuyBtnCallBack,128)
+                     child : picAndTextButton('购买', widget.didClickBuyBtnCallBack)
                    )
                  ],
                ),

@@ -40,7 +40,7 @@ class _TLDCommonCellHeaderViewState extends State<TLDCommonCellHeaderView> {
                    ),
                    Offstage(
                      offstage : widget.buyModel != null ? widget.buyModel.isMine : widget.isHiddenBtn,
-                     child : picAndTextButton('assetss/images/firspage_buy.png', widget.buttonTitle, widget.onPressCallBack,widget.buttonWidth)
+                     child : picAndTextButton(widget.buttonTitle, widget.onPressCallBack)
                    )
                  ],
                ),

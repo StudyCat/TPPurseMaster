@@ -26,10 +26,12 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Theme.of(context).primaryColor,
       padding: EdgeInsets.only(
           left: ScreenUtil().setWidth(30),
           right: ScreenUtil().setWidth(30),
-          top: ScreenUtil().setHeight(48)),
+          top: ScreenUtil().setHeight(48),
+          bottom: ScreenUtil().setHeight(20)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -52,11 +54,11 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
             RichText(
                   text: TextSpan(
                     text : getMoneyStyleStr(widget.infoModel == null ? '0':widget.infoModel.value),
-                    style : TextStyle(fontSize : ScreenUtil().setSp(52),color : Theme.of(context).primaryColor),
+                    style : TextStyle(fontSize : ScreenUtil().setSp(52),color : Theme.of(context).hintColor),
                     children: <InlineSpan>[
                       TextSpan(
                         text : '  TLD',
-                        style: TextStyle(fontSize : ScreenUtil().setSp(24),color :Theme.of(context).primaryColor)
+                        style: TextStyle(fontSize : ScreenUtil().setSp(24),color :Theme.of(context).hintColor)
                       )
                     ],
                   ),
@@ -68,12 +70,13 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
                 borderRadius: BorderRadius.all(Radius.circular(4)),
                 // color: Color.fromARGB(255, 51, 114, 245)
               ),
-              child: RaisedButton(
+              child: CupertinoButton(
+                padding: EdgeInsets.zero,
                 child: Text('出售',
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(28), color: Colors.white)),
                 onPressed: widget.didClickChangeBtnCallBack,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).hintColor,
               ),
             ),
           ],
@@ -93,7 +96,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
       height: ScreenUtil().setHeight(80),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
-        color: Color.fromARGB(255, 230, 230, 230),
+        color: Color.fromARGB(255, 82, 82, 82),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -106,7 +109,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
               widget.infoModel == null ? "":widget.infoModel.walletAddress,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(28),
-                  color: Color.fromARGB(255, 102, 102, 102)),
+                  color: Colors.white),
             ),
           ),
           Container(
@@ -119,6 +122,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
                 icon: Icon(
                   IconData(0xe601, fontFamily: 'appIconFonts'),
                   size: ScreenUtil().setWidth(32),
+                  color: Colors.white,
                 ),
                 onPressed: () {}),
           )
@@ -141,18 +145,18 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
               height: ScreenUtil().setHeight(80),
               child: OutlineButton(
                 onPressed: widget.didClickQRCodeBtnCallBack,
-                shape: BeveledRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                shape: StadiumBorder(
+                 
                 ),
                 borderSide: BorderSide(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).hintColor,
                     width: 1,
                   ),
                 child: Text(
                   '收款码',
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(28),
-                      color: Theme.of(context).primaryColor),
+                      color: Theme.of(context).hintColor),
                 ),
               )),
           Container(
@@ -165,9 +169,9 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(28), color: Colors.white),
                 ),
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).hintColor,
                 padding: EdgeInsets.all(0),
-                borderRadius: BorderRadius.all(Radius.circular(4)),
+                borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(40))),
               )),
         ],
       ),

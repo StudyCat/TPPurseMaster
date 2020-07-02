@@ -28,18 +28,19 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size; 
     return Container(
-      padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 5),
+      color: Theme.of(context).primaryColor,
+      padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
       width: screenSize.width - 30,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text('总积分',style: TextStyle(color:Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
+          Text('总积分',style: TextStyle(color:Theme.of(context).hintColor,fontSize: 12),),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                 width: screenSize.width - ScreenUtil().setWidth(150),
-                child: Text(_isShowMoney ? getMoneyStyleStr(widget.totalAmount.toString()) :'***',style : TextStyle(fontSize : 26,color : Color.fromARGB(255,22, 128, 205))),
+                child: Text(_isShowMoney ? getMoneyStyleStr(widget.totalAmount.toString()) :'***',style : TextStyle(fontSize : 26,color : Theme.of(context).hintColor)),
               ),
               GestureDetector(
                 onTap: (){
@@ -51,7 +52,7 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
                 width: ScreenUtil().setWidth(80),
                 height: ScreenUtil().setHeight(40),
                 padding : EdgeInsets.only(right : 0,left: 10),
-                child:  _isShowMoney ? Icon(IconData(0xe60c,fontFamily: 'appIconFonts'),color: Color.fromARGB(255, 22, 128, 205),size: ScreenUtil().setWidth(50),) : Icon(IconData(0xe648,fontFamily: 'appIconFonts'),color: Color.fromARGB(255,22, 128, 205),size: ScreenUtil().setWidth(50)),
+                child:  _isShowMoney ? Icon(IconData(0xe60c,fontFamily: 'appIconFonts'),color: Theme.of(context).hintColor,size: ScreenUtil().setWidth(50),) : Icon(IconData(0xe648,fontFamily: 'appIconFonts'),color: Theme.of(context).hintColor,size: ScreenUtil().setWidth(50)),
               ),
               )
             ],
@@ -59,7 +60,7 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
           
           Container(
             padding: EdgeInsets.only(left : 0 ,top : 6),
-            child: Text('1.00TLD=1.00CNY',style: TextStyle(color:Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
+            child: Text('1.00TLD=1.00CNY',style: TextStyle(color:Theme.of(context).hintColor,fontSize: 12),),
           ),
 
           Container(
@@ -81,19 +82,16 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
   Widget getButton(Function didClickCallBack,String title, double scrrenWidth){
       return Container(
                  width : scrrenWidth / 2.0 - 30,
-                  child: RaisedButton(
-                  color: Color.fromARGB(255,22, 128, 205),
+                  child: CupertinoButton(
+                  color: Theme.of(context).hintColor,
               onPressed: () => didClickCallBack(),
-                  child: ClipRRect(
-           borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                  child: Container(
-                    child : Text(
+              padding: EdgeInsets.zero,
+              borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(40))),
+                  child: Text(
                            title,
                            textAlign: TextAlign.center,
                            style : TextStyle(color: Colors.white,fontSize: 14)),
                       ),
-                  ),
-                    ), 
-                );
+              );
   } 
 }

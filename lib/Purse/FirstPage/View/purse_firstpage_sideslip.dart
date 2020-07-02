@@ -59,7 +59,7 @@ class _TLDPurseSideslipViewState extends State<TLDPurseSideslipView> {
           return ListTile(
             leading : Container(
               padding : EdgeInsets.only(left: 35),
-              child: Icon(IconData(iconList[index - 1],fontFamily: 'appIconFonts'),color: Color.fromARGB(255,51, 114, 255),),
+              child: Icon(IconData(iconList[index - 1],fontFamily: 'appIconFonts'),color: Theme.of(context).hintColor,),
             ),
             title: Text(titleList[index - 1],style : TextStyle(color : Color.fromARGB(255, 153, 153, 153),fontSize: 14),textAlign: TextAlign.left,),
             onTap: (){

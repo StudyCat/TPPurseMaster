@@ -98,7 +98,7 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
         ),
         heroTag: 'my_purse_page',
         transitionBetweenRoutes: false,
-        middle: Text(widget.wallet.name),
+        middle: Text(widget.wallet.name,style: TextStyle(color : Colors.white),),
         trailing: Container(
             width: ScreenUtil().setWidth(160),
             child: Row(
@@ -107,7 +107,7 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
                 CupertinoButton(
                     child: Icon(
                       IconData(0xe663, fontFamily: 'appIconFonts'),
-                      color: Color.fromARGB(255, 51, 51, 51),
+                      color: Colors.white,
                     ),
                     padding: EdgeInsets.all(0),
                     minSize: 20,
@@ -117,7 +117,7 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
                 CupertinoButton(
                     child: Icon(
                       IconData(0xe615, fontFamily: 'appIconFonts'),
-                      color: Color.fromARGB(255, 51, 51, 51),
+                      color: Colors.white,
                     ),
                     padding: EdgeInsets.all(0),
                     minSize: 20,
@@ -138,8 +138,8 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
                     }),
               ],
             )),
-        backgroundColor: Color.fromARGB(255, 242, 242, 242),
-        actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
+        backgroundColor: Theme.of(context).primaryColor,
+        actionsForegroundColor: Colors.white,
       ),
       body: LoadingOverlay(isLoading: _isloading, child: _getBodyWidget(context)),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),

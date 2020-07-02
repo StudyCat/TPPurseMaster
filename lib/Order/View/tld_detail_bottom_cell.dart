@@ -64,14 +64,14 @@ class _TLDDetailOrderBottomCellState extends State<TLDDetailOrderBottomCell> {
             borderRadius: BorderRadius.all(Radius.circular(4)),
           ),
           borderSide: BorderSide(
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).hintColor,
             width: 1,
           ),
           child: Text(
             _actionBtnTitleList.first,
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(24),
-                color: Theme.of(context).primaryColor),
+                color: Theme.of(context).hintColor),
           ),
         ));
   }
@@ -91,14 +91,14 @@ class _TLDDetailOrderBottomCellState extends State<TLDDetailOrderBottomCell> {
               borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
             borderSide: BorderSide(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).hintColor,
               width: 1,
             ),
             child: Text(
               _actionBtnTitleList[0],
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(24),
-                  color: Theme.of(context).primaryColor),
+                  color: Theme.of(context).hintColor),
             ),
           ),
         ),
@@ -113,7 +113,7 @@ class _TLDDetailOrderBottomCellState extends State<TLDDetailOrderBottomCell> {
                 ),
                 padding: EdgeInsets.all(0),
                 borderRadius: BorderRadius.all(Radius.circular(4)),
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).hintColor,
                 onPressed: () => widget.didClickActionBtnCallBack(_actionBtnTitleList[1]))),
       ],
     );

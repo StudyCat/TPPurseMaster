@@ -159,7 +159,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
       bottomNavigationBar: CupertinoTabBar(
         items: items,
         currentIndex: currentIndex,
-        activeColor: Theme.of(context).primaryColor,
+        activeColor: Theme.of(context).hintColor,
         inactiveColor: Color.fromARGB(255, 153, 153, 153),
         iconSize: 26,
         onTap: (index) => _getPage(index),

@@ -7,7 +7,6 @@ import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:loading_overlay/loading_overlay.dart';
 import '../../../Message/Page/tld_message_page.dart';
 import '../../../Notification/tld_more_btn_click_notification.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
@@ -129,7 +128,7 @@ class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProvid
             labelStyle: TextStyle(
                 fontSize: ScreenUtil().setSp(32), fontWeight: FontWeight.bold),
             unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(24)),
-            indicatorColor: Theme.of(context).primaryColor,
+            indicatorColor: Theme.of(context).hintColor,
             labelColor: Color.fromARGB(255, 51, 51, 51),
             unselectedLabelColor: Color.fromARGB(255, 153, 153, 153),
             controller: _tabController,

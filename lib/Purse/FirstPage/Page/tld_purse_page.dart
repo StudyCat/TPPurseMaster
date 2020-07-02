@@ -89,18 +89,18 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
         ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
-        backgroundColor: Color.fromARGB(255, 242, 242, 242),
+        backgroundColor: Theme.of(context).primaryColor,
         border: Border.all(
           color : Color.fromARGB(0, 0, 0, 0),
         ),
         heroTag: 'purse_page',
         transitionBetweenRoutes: false,
-        middle: Text('TLD钱包'),
+        middle: Text('TLD钱包',style: TextStyle(color : Colors.white),),
         leading: Builder(builder: (BuildContext context) {
           return CupertinoButton(
               child: Icon(
                 IconData(0xe608, fontFamily: 'appIconFonts'),
-                color: Color.fromARGB(255, 51, 51, 51),
+                color: Colors.white,
               ),
               padding: EdgeInsets.all(0),
               minSize: 20,
@@ -109,7 +109,7 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
               });
         }),
         automaticallyImplyLeading: false,
-        trailing: MessageButton(isHaveUnReadMessage: _haveUnreadMessage,didClickCallBack: () {
+        trailing: MessageButton(color : Colors.white,isHaveUnReadMessage: _haveUnreadMessage,didClickCallBack: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage()));
         }),
       ),

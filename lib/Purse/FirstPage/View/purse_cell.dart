@@ -27,19 +27,7 @@ class _TLDPurseFirstPageCellState extends State<TLDPurseFirstPageCell> {
          child : Container(
            color: Colors.white,
            padding: EdgeInsets.only(top : 9 ,left:10,right: 10),
-           child: Row(
-             mainAxisAlignment : MainAxisAlignment.start,
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: <Widget>[
-               Container(
-                 padding : EdgeInsets.only(top : 10,left: 0),
-                 width: 36,
-                 height: 36,
-                 child: Image.asset('assetss/images/home_purse_icon.png'),
-               ),
-                Container(
-                  padding: EdgeInsets.only(left : 10,top: 0,bottom: 9),
-                  child: Column(
+           child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -49,14 +37,11 @@ class _TLDPurseFirstPageCellState extends State<TLDPurseFirstPageCell> {
                         child: Text(double.parse(widget.walletInfo.value).toStringAsFixed(2)+'TLD',style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18),),
                       ),
                       Container(
-                        padding: EdgeInsets.only(top : 4,right: 15),
+                        padding: EdgeInsets.only(top : 4,right: 15,bottom: 10),
                         child: Text('='+double.parse(widget.walletInfo.value).toStringAsFixed(2)+'CNY',style: TextStyle(color: Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
                       )
                     ],
                   ),
-                )
-             ],
-           ),
          ),
        ),
     )
@@ -66,7 +51,7 @@ class _TLDPurseFirstPageCellState extends State<TLDPurseFirstPageCell> {
   Widget _getWalletNameRowView(){
     Size size = MediaQuery.of(context).size;
     return  Container(
-        width : size.width - 100,
+        width : size.width - 30,
         child : Row(
         mainAxisAlignment:MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,

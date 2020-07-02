@@ -47,7 +47,7 @@ class _TLDMyPurseContentViewState extends State<TLDMyPurseContentView>
             labelStyle: TextStyle(
                 fontSize: ScreenUtil().setSp(32), fontWeight: FontWeight.bold),
             unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(24)),
-            indicatorColor: Theme.of(context).primaryColor,
+            indicatorColor: Theme.of(context).hintColor,
             labelColor: Color.fromARGB(255, 51, 51, 51),
             unselectedLabelColor: Color.fromARGB(255, 153, 153, 153),
             controller: _tabController,

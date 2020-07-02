@@ -17,18 +17,18 @@ class _TLDPurseSideSlipHeaderCellState extends State<TLDPurseSideSlipHeaderCell>
     return Container(
       padding: EdgeInsets.all(0),
       width: size.width - 70,
-      color: Color.fromARGB(255,51, 114, 255),
+      color: Theme.of(context).primaryColor,
       height: 146,
       child: Column(
         mainAxisAlignment : MainAxisAlignment.center,
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(left : 15,bottom: 5),
-            child: Text('总积分（TLD）',style : TextStyle(fontSize : 14 ,color : Colors.white))
+            child: Text('总积分（TLD）',style : TextStyle(fontSize : 14 ,color : Theme.of(context).hintColor))
           ),
           Container(
             padding: EdgeInsets.only(left : 15),
-            child: Text(widget.totalAmount,style : TextStyle(fontSize : 20 ,color : Colors.white,fontWeight: FontWeight.bold),)
+            child: Text(widget.totalAmount,style : TextStyle(fontSize : 20 ,color : Theme.of(context).hintColor,fontWeight: FontWeight.bold),)
           ),
         ],
       ),

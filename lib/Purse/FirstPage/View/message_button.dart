@@ -6,7 +6,9 @@ class MessageButton extends StatefulWidget {
 
   final bool isHaveUnReadMessage;
 
-  MessageButton({Key key,this.didClickCallBack,this.isHaveUnReadMessage = false}) : super(key: key);
+  final Color color;
+
+  MessageButton({Key key,this.color,this.didClickCallBack,this.isHaveUnReadMessage = false}) : super(key: key);
 
   @override
   _MessageButtonState createState() => _MessageButtonState();
@@ -21,7 +23,7 @@ class _MessageButtonState extends State<MessageButton> {
          alignment : FractionalOffset(0.8,0.3),
          children: <Widget>[
            CupertinoButton(
-             child: Icon(IconData(0xe63f,fontFamily: 'appIconFonts'),color: Color.fromARGB(255, 51, 51, 51),),
+             child: Icon(IconData(0xe63f,fontFamily: 'appIconFonts'),color: widget.color != null ? widget.color : Color.fromARGB(255, 51, 51, 51),),
              onPressed: () => widget.didClickCallBack(),
               padding: EdgeInsets.all(0),
             ),

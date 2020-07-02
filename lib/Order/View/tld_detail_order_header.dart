@@ -121,12 +121,12 @@ class _TLDDetailOrderHeaderViewState extends State<TLDDetailOrderHeaderView> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Text(_subStr,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),
+        Text(_subStr,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Theme.of(context).hintColor),),
         Offstage(
           offstage: !isNeedAppeal,
           child: GestureDetector(
             onTap: () => widget.didClickAppealBtnCallBack(),
-            child : Text(_getAppealStatusString(),style: TextStyle(fontSize : ScreenUtil().setSp(32),color : Colors.white),),
+            child : Text(_getAppealStatusString(),style: TextStyle(fontSize : ScreenUtil().setSp(32),color : Theme.of(context).hintColor),),
           ),
         ),
       ],
@@ -157,8 +157,8 @@ class _TLDDetailOrderHeaderViewState extends State<TLDDetailOrderHeaderView> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Text(statusStr,style :TextStyle(fontSize : ScreenUtil().setSp(44),color: Colors.white)),
-        IconButton(icon: Icon(IconData(0xe6a2,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(46),color: Colors.white,),onPressed:widget.didClickChatBtnCallBack,)
+        Text(statusStr,style :TextStyle(fontSize : ScreenUtil().setSp(44),color: Theme.of(context).hintColor)),
+        IconButton(icon: Icon(IconData(0xe6a2,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(46),color:Theme.of(context).hintColor),onPressed:widget.didClickChatBtnCallBack,)
       ],
     );
   }

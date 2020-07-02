@@ -209,7 +209,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       navigatorObservers: [BotToastNavigatorObserver()],
       theme: ThemeData(
-        primaryColor : Color.fromARGB(255, 22, 128, 205),
+        primaryColor : Color.fromARGB(255, 57, 57, 57),
+        hintColor: Color.fromARGB(255, 217, 176, 123)
       ),
       home: TLDHomePage(),
       // home: PlatformChannel(),
