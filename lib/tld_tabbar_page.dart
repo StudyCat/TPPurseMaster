@@ -1,11 +1,14 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui';
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_choose_wallet.dart';
 import 'package:dragon_sword_purse/Drawer/UserAgreement/Page/tld_user_agreement_page.dart';
 import 'package:dragon_sword_purse/Mission/FirstPage/Page/tld_mission_first_root_page.dart';
+import 'package:dragon_sword_purse/Purse/TransferAccounts/Page/tld_transfer_accounts_page.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_tab_sale_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
@@ -15,6 +18,8 @@ import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import './Buy/FirstPage/Page/tld_buy_page.dart';
 import './Purse/FirstPage/Page/tld_purse_page.dart';
 import 'Purse/FirstPage/View/purse_firstpage_sideslip.dart';
@@ -35,28 +40,32 @@ class TLDTabbarPage extends StatefulWidget {
 class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserver {
   List<BottomNavigationBarItem> items = [
     BottomNavigationBarItem(
-      icon: Icon(IconData(0xe723, fontFamily: 'appIconFonts')),
+      activeIcon: Image.asset('assetss/images/icon_purse.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      icon: Image.asset('assetss/images/icon_purse_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       title: Text(
         '钱包',
         style: TextStyle(fontSize: 10),
       ),
     ),
     BottomNavigationBarItem(
-      icon: Icon(IconData(0xe680, fontFamily: 'appIconFonts')),
+      activeIcon: Image.asset('assetss/images/icon_buy.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      icon: Image.asset('assetss/images/icon_buy_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       title: Text('购买',
           style: TextStyle(
             fontSize: 10,
           )),
     ),
     BottomNavigationBarItem(
-      icon: Icon(IconData(0xe620, fontFamily: 'appIconFonts')),
+      activeIcon: Image.asset('assetss/images/icon_sale.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      icon: Image.asset('assetss/images/icon_sale_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       title: Text('售卖',
           style: TextStyle(
             fontSize: 10,
           )),
     ),
     BottomNavigationBarItem(
-      icon: Icon(IconData(0xe611, fontFamily: 'appIconFonts')),
+      activeIcon: Image.asset('assetss/images/icon_mission.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      icon: Image.asset('assetss/images/icon_mission_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       title: Text('任务',
           style: TextStyle(
             fontSize: 10,
@@ -92,7 +101,8 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
 
     _initPlatformStateForStringUniLinks();
   }
-
+  
+  //处理外部应用调起屠龙刀
    _initPlatformStateForStringUniLinks() async {
     // Get the latest link
     String initialLink;
@@ -116,6 +126,12 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
              navigatorKey.currentState.push(MaterialPageRoute(builder: (context)=> TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));
           });
         },TLDCreatePursePageType.create,null);
+        }else if(path == 'transferAccounts'){
+          thirdAppTransferAccount(queryParameter, (){
+            navigatorKey.currentState.push(MaterialPageRoute(builder: (context)=> TLDTransferAccountsPage(thirdAppFromWalletAddress: queryParameter['fromAddress'],thirdAppToWalletAddress: queryParameter['toAddress'],)));
+          }, (TLDError error){
+            Fluttertoast.showToast(msg: error.msg);
+          });
         }
       }
 
@@ -159,7 +175,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
       bottomNavigationBar: CupertinoTabBar(
         items: items,
         currentIndex: currentIndex,
-        activeColor: Theme.of(context).hintColor,
+        activeColor: Theme.of(context).primaryColor,
         inactiveColor: Color.fromARGB(255, 153, 153, 153),
         iconSize: 26,
         onTap: (index) => _getPage(index),

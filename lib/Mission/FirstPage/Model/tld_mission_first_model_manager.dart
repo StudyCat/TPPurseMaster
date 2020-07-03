@@ -19,6 +19,7 @@ class TLDMissionListModel {
   int endTime;
   int expireTime;//剩余时间 以分为单位
   String taskDesc;
+  String levelIcon;
 
   TLDMissionListModel(
       {this.taskId,
@@ -27,7 +28,8 @@ class TLDMissionListModel {
       this.startTime,
       this.endTime,
       this.expireTime,
-      this.taskDesc});
+      this.taskDesc,
+      this.levelIcon});
 
   TLDMissionListModel.fromJson(Map<String, dynamic> json) {
     taskId = json['taskId'];
@@ -37,6 +39,7 @@ class TLDMissionListModel {
     endTime = json['endTime'];
     expireTime = json['expireTime'];
     taskDesc = json['taskDesc'];
+    levelIcon = json['levelIcon'];
   }
 
   Map<String, dynamic> toJson() {
@@ -48,6 +51,7 @@ class TLDMissionListModel {
     data['endTime'] = this.endTime;
     data['expireTime'] = this.expireTime;
     data['taskDesc'] = this.taskDesc;
+    data['levelIcon'] = this.levelIcon;
     return data;
   }
 }

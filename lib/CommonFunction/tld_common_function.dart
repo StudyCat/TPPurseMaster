@@ -1,6 +1,8 @@
 import 'dart:isolate';
 import 'dart:typed_data';
 
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../CommonWidget/tld_data_manager.dart';
@@ -35,6 +37,27 @@ void jugeHavePassword(BuildContext context,Function passwordRightCallBack,TLDCre
         },);
       });
     }
+}
+
+void thirdAppTransferAccount(Map queryParameter,Function success,Function(TLDError) failure){
+  String fromAddress = queryParameter['fromAddress'];
+  String toAddress = queryParameter['toAddress'];
+  if (fromAddress != null && toAddress != null){
+    List purseList = TLDDataManager.instance.purseList;
+    List addressList = [];
+    for (TLDWallet wallet in purseList) {
+      addressList.add(wallet.address);
+    }
+    if (addressList.contains(fromAddress)){
+      success();
+    }else{
+      TLDError error = TLDError(801,'尚未拥有转账钱包');
+      failure(error);
+    }
+  }else{
+    TLDError error = TLDError(800,'地址不能为空');
+    failure(error);
+  }
 }
 
  String getMoneyStyleStr(String text) {

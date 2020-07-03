@@ -23,7 +23,7 @@ class _TLDRightImageBubbleViewState extends State<TLDRightImageBubbleView> {
    return Container(
       padding: EdgeInsets.all(ScreenUtil().setWidth(6)),
       decoration: BoxDecoration(
-        color : Theme.of(context).primaryColor,
+        color : Theme.of(context).hintColor,
         borderRadius : BorderRadius.only(topLeft: Radius.circular(20),bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
       ),
        child: ClipRRect(

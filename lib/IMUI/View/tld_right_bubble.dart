@@ -17,7 +17,7 @@ class _TLDRightBubbleViewState extends State<TLDRightBubbleView> {
     return Container(
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color : Theme.of(context).primaryColor,
+        color : Theme.of(context).hintColor,
         borderRadius : BorderRadius.only(topLeft: Radius.circular(20),bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
       ),
        child: Text(widget.text,style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Colors.white),maxLines: null,),

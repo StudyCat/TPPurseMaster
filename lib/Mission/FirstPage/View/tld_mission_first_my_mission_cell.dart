@@ -98,8 +98,8 @@ Widget _getAddressTextWidget(String content){
       children: <Widget>[
         Text('任务编号：'+widget.model.taskNo,style: TextStyle(fontSize:ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
         RichText(text: TextSpan(children:<InlineSpan>[
-            WidgetSpan(child: CachedNetworkImage(imageUrl: widget.model.levelIcon,width: ScreenUtil().setWidth(24),height: ScreenUtil().setWidth(24),),),
-            TextSpan(text :widget.model.progressCount,style:TextStyle(
+            WidgetSpan(child: CachedNetworkImage(imageUrl: widget.model.levelIcon,width: ScreenUtil().setWidth(32),height: ScreenUtil().setWidth(32),),),
+            TextSpan(text :' ('+widget.model.progressCount+')',style:TextStyle(
                   fontSize: ScreenUtil().setSp(28),
                   color: Color.fromARGB(255, 51, 51, 51)))
           ]))

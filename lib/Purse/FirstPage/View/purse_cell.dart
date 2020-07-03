@@ -60,8 +60,8 @@ class _TLDPurseFirstPageCellState extends State<TLDPurseFirstPageCell> {
           Padding(
             padding: EdgeInsets.only(right : ScreenUtil().setWidth(20)),
             child: RichText(text: TextSpan(children:<InlineSpan>[
-            WidgetSpan(child: CachedNetworkImage(imageUrl: widget.walletInfo.levelIcon,width: ScreenUtil().setWidth(24),height: ScreenUtil().setWidth(24),),),
-            TextSpan(text :widget.walletInfo.expProgress,style:TextStyle(
+            WidgetSpan(child: CachedNetworkImage(imageUrl: widget.walletInfo.levelIcon,width: ScreenUtil().setSp(32),height: ScreenUtil().setSp(32),fit: BoxFit.fill,),),
+            TextSpan(text :' (' + widget.walletInfo.expProgress + ')',style:TextStyle(
                   fontSize: ScreenUtil().setSp(28),
                   color: Color.fromARGB(255, 51, 51, 51)))
           ])),

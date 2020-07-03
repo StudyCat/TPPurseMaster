@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragon_sword_purse/Mission/FirstPage/Model/tld_mission_first_model_manager.dart';
 import 'package:flutter/cupertino.dart';
@@ -130,10 +131,15 @@ class _TLDMissionFirstMissionCellState
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('任务',
-              style: TextStyle(
-                  fontSize: ScreenUtil().setSp(24),
-                  color: Color.fromARGB(255, 51, 51, 51))),
+          RichText(
+            text: TextSpan(
+              children:<InlineSpan>[
+            WidgetSpan(child: CachedNetworkImage(imageUrl: widget.model.levelIcon,width: ScreenUtil().setWidth(32),height: ScreenUtil().setWidth(32),),),
+            TextSpan(text :' ' + widget.model.taskDesc,style:TextStyle(
+                  fontSize: ScreenUtil().setSp(28),
+                  color: Color.fromARGB(255, 51, 51, 51)))
+              ]),
+          ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(12)),
             child: _getRichText('任务时间段 ', _getTimeStr()),
@@ -146,6 +152,8 @@ class _TLDMissionFirstMissionCellState
       ),
     );
   }
+
+
 
   String _getTimeStr(){
     DateTime startTime = DateTime.fromMillisecondsSinceEpoch(widget.model.startTime);

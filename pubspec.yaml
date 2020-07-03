@@ -89,7 +89,15 @@ flutter:
      - assetss/images/creat_purse_wait.png
      - assetss/images/purse_success.png
      - assetss/images/sale_button.png
-
+     - assetss/images/icon_buy.png
+     - assetss/images/icon_buy_unsel.png
+     - assetss/images/icon_sale_unsel.png
+     - assetss/images/icon_mission.png
+     - assetss/images/icon_mission_unsel.png
+     - assetss/images/icon_purse.png
+     - assetss/images/icon_purse_unsel.png
+     - assetss/images/icon_sale.png
+     - assetss/images/icon_sale_unsel.png
 
 
   # To add assets to your application, add an assets section, like this:

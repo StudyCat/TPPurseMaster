@@ -125,12 +125,12 @@ class _TLDDetailMissionPageState extends State<TLDDetailMissionPage> {
                 child: CachedNetworkImage(
                   imageUrl:
                       _infoModel.levelIcon,
-                  width: ScreenUtil().setWidth(24),
-                  height: ScreenUtil().setWidth(24),
+                  width: ScreenUtil().setWidth(32),
+                  height: ScreenUtil().setWidth(32),
                 ),
               ),
               TextSpan(
-                  text: _infoModel.progressCount,
+                  text:' ('+ _infoModel.progressCount+')',
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(28),
                       color: Color.fromARGB(255, 51, 51, 51)))

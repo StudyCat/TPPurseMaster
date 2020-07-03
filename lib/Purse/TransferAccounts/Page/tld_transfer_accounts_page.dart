@@ -6,6 +6,7 @@ import 'package:dragon_sword_purse/Purse/TransferAccounts/Model/tld_transfer_acc
 import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +19,13 @@ import 'dart:async';
 import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 
 class TLDTransferAccountsPage extends StatefulWidget {
-  TLDTransferAccountsPage({Key key,this.walletInfoModel,this.transferSuccessCallBack}) : super(key: key);
+  TLDTransferAccountsPage({Key key,this.walletInfoModel,this.transferSuccessCallBack,this.thirdAppFromWalletAddress,this.thirdAppToWalletAddress}) : super(key: key);
 
   final TLDWalletInfoModel walletInfoModel;
+
+  final String thirdAppFromWalletAddress;
+
+  final String thirdAppToWalletAddress;
 
   final Function(String) transferSuccessCallBack;
 
@@ -29,6 +34,8 @@ class TLDTransferAccountsPage extends StatefulWidget {
 }
 
 class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
+
+  TLDWalletInfoModel _infoModel;
 
   TLDTransferAccountsModelManager _manager;
 
@@ -48,11 +55,43 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
     _inputRowControl = TLDTransferAccountsInputRowControl('');
 
     _pramaterModel = TLDTranferAmountPramaterModel();
-    _pramaterModel.chargeWalletAddress = widget.walletInfoModel.chargeWalletAddress;
-    _pramaterModel.fromWalletAddress = widget.walletInfoModel.walletAddress;
-    _pramaterModel.chargeValue = '0.0';
-    _pramaterModel.toWalletAddress = "";
-    _pramaterModel.value = '0.0';
+    _pramaterModel.toWalletAddress = '';
+    if (widget.thirdAppFromWalletAddress != null){
+      _getWalletInfo();
+    }else{
+      _infoModel = widget.walletInfoModel;
+
+      _pramaterModel.chargeWalletAddress = _infoModel.chargeWalletAddress;
+      _pramaterModel.fromWalletAddress = _infoModel.walletAddress;
+      _pramaterModel.chargeValue = '0.0';
+      _pramaterModel.toWalletAddress = "";
+      _pramaterModel.value = '0.0';
+    }
+  }
+
+  void _getWalletInfo(){
+    setState(() {
+      _loading = true;
+    });
+    _manager.getWalletInfo(widget.thirdAppFromWalletAddress, (TLDWalletInfoModel walletInfoModel){
+      setState(() {
+        _loading = false;
+        _infoModel = walletInfoModel;
+
+        _pramaterModel.chargeWalletAddress = _infoModel.chargeWalletAddress;
+        _pramaterModel.fromWalletAddress = _infoModel.walletAddress;
+        _pramaterModel.chargeValue = '0.0';
+        _pramaterModel.toWalletAddress = "";
+        _pramaterModel.value = '0.0';
+        _pramaterModel.toWalletAddress = widget.thirdAppToWalletAddress;
+      });
+    }, (TLDError error){
+      setState(() {
+      _loading = false;
+    });
+      Fluttertoast.showToast(msg: error.msg);
+      Navigator.of(context).pop();
+    });
   }
 
   void tranferAmount(){
@@ -77,7 +116,9 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
         }
         Fluttertoast.showToast(msg: '转账成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
-        widget.transferSuccessCallBack(_pramaterModel.value);
+        if (widget.transferSuccessCallBack != null){
+          widget.transferSuccessCallBack(_pramaterModel.value);
+        }
         Navigator.of(context).pop();
     }, (TLDError error){
       if (mounted){
@@ -104,7 +145,7 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: LoadingOverlay(isLoading: _loading, child: _getBodyWidget(context,size)),
+      body: LoadingOverlay(isLoading: _loading, child: _infoModel != null ?  _getBodyWidget(context,size) :Container()),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -125,13 +166,13 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children : <Widget>[
-              TLDTransferAccountsNormalRowView(title: '数量',content: '当前钱包余额:'+widget.walletInfoModel.value + 'TLD',),
+              TLDTransferAccountsNormalRowView(title: '数量',content: '当前钱包余额:'+_infoModel.value + 'TLD',),
               Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
-                child: TLDTransferAccountsInputRowView(type : TLDTransferAccountsInputRowViewType.allTransfer,allAmount: widget.walletInfoModel.value,stringEditingCallBack: (String amount){
+                child: TLDTransferAccountsInputRowView(type : TLDTransferAccountsInputRowViewType.allTransfer,allAmount: _infoModel.value,stringEditingCallBack: (String amount){
                   _pramaterModel.value = amount;
-                  setState(() {
-                    _pramaterModel.chargeValue = (double.parse(amount) * double.parse(widget.walletInfoModel.rate)).toStringAsFixed(2);
+                  setState(() { 
+                    _pramaterModel.chargeValue = (double.parse(amount) * double.parse(_infoModel.rate)).toStringAsFixed(2);
                   });
                 },),
               ),
@@ -142,14 +183,14 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
               Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
                 child: TLDTransferAccountsInputRowView(type : TLDTransferAccountsInputRowViewType.normal,
-              content: widget.walletInfoModel.walletAddress,enable: false,), ),
+              content: _infoModel.walletAddress,enable: false,), ),
               Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
                 child: _getTitleLabel('接收地址'),
               ),
                Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
-                child: TLDTransferAccountsInputRowView(type : TLDTransferAccountsInputRowViewType.scanCode,didClickScanBtnCallBack: (){
+                child: TLDTransferAccountsInputRowView(content: _pramaterModel.toWalletAddress,type : TLDTransferAccountsInputRowViewType.scanCode,didClickScanBtnCallBack: (){
                   _scanPhoto();
                 },
                 inputRowControl: _inputRowControl,
@@ -159,7 +200,7 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
               ), ),
               Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setWidth(20)),
-                child: TLDTransferAccountsNormalRowView(title: '手续费率',content: (double.parse(widget.walletInfoModel.rate) * 100).toString()+'%',),
+                child: TLDTransferAccountsNormalRowView(title: '手续费率',content: (double.parse(_infoModel.rate) * 100).toString()+'%',),
               ),
               Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setWidth(20)),

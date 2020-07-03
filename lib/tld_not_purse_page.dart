@@ -142,7 +142,7 @@ class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> with WidgetsB
         ),
         Padding(
           padding: EdgeInsets.only(top: ScreenUtil().setHeight(60)),
-          child: Text('您还没有天和钱包',
+          child: Text('您还没有钱包',
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(28),
                   color: Color.fromARGB(255, 153, 153, 153))),
