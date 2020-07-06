@@ -34,9 +34,8 @@ class _TLDMissionHallBuyActionSheetState
 
     _pramaterModel = TLDMissionBuyPramaterModel();
     _pramaterModel.quote = widget.buyInfoModel.quote;
-    _pramaterModel.taskWalletId = widget.taskWalletId;
     _pramaterModel.taskBuyNo = widget.buyInfoModel.taskBuyNo;
-    _pramaterModel.buyerWalletAddress = widget.buyInfoModel.receiveWalletAddress;
+    _pramaterModel.buyerWalletAddress = widget.walletAddress;
   }
 
   @override

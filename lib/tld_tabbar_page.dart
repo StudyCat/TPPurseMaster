@@ -8,6 +8,7 @@ import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_choose_wallet.dart';
 import 'package:dragon_sword_purse/Drawer/UserAgreement/Page/tld_user_agreement_page.dart';
 import 'package:dragon_sword_purse/Mission/FirstPage/Page/tld_mission_first_root_page.dart';
+import 'package:dragon_sword_purse/NewMission/FirstPage/Page/tld_new_mission_first_page.dart';
 import 'package:dragon_sword_purse/Purse/TransferAccounts/Page/tld_transfer_accounts_page.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_tab_sale_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
@@ -73,7 +74,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
     )
   ];
 
-  List pages = [TLDPursePage(), TLDBuyPage(), TLDTabSalePage(),TLDMissionFirstRootPage()];
+  List pages = [TLDPursePage(), TLDBuyPage(), TLDTabSalePage(),TLDNewMissionFirstPage()];
 
   int currentIndex;
 

@@ -20,7 +20,11 @@ class TLDOrderListModel {
   int expireTime;
   bool overtime;
   String remarkPayNo;
+  int taskLevel;
   TLDPaymentModel payMethodVO;
+  String quote;
+  String profit;
+  String taskBuyNo;
 
   TLDOrderListModel(
       {this.orderId,
@@ -37,7 +41,8 @@ class TLDOrderListModel {
       this.expireTime,
       this.overtime,
       this.remarkPayNo,
-      this.payMethodVO});
+      this.payMethodVO,
+      this.taskLevel,this.quote,this.profit,this.taskBuyNo});
 
   TLDOrderListModel.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
@@ -55,6 +60,10 @@ class TLDOrderListModel {
     overtime = json['overtime'];
     remarkPayNo = json['remarkPayNo'];
     payMethodVO = TLDPaymentModel.fromJson(json['payMethodVO']);
+    taskLevel = json['taskLevel'];
+    quote = json['quote'];
+    profit = json['profit'];
+    taskBuyNo = json['taskBuyNo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -74,6 +83,10 @@ class TLDOrderListModel {
     data['overtime'] = this.overtime;
     data['remarkPayNo'] = this.remarkPayNo;
     data['payMethodVO'] = this.payMethodVO.toJson();
+    data['taskLevel'] = this.taskLevel;
+    data['quote'] = this.quote;
+    data['profit'] = this.profit;
+    data['taskBuyNo'] = this.taskBuyNo;
     return data;
   }
 }

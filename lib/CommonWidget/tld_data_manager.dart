@@ -26,11 +26,15 @@ class TLDDataManager{
 
   String userToken;
 
+  String missionWalletAddress;
+
   TLDDataManager._internal() {
     // 初始化
    getPassword();
 
    getUserToken();
+
+   getMissionWalletAddress();
   }
 
 
@@ -44,6 +48,13 @@ class TLDDataManager{
     SharedPreferences pre = await SharedPreferences.getInstance();
     userToken = pre.getString('userToken');
     return userToken;
+  }
+
+
+  Future<String> getMissionWalletAddress()async{
+    SharedPreferences pre = await SharedPreferences.getInstance();
+    missionWalletAddress = pre.getString('missionWalletAddress');
+    return missionWalletAddress;
   }
 
 

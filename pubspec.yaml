@@ -98,6 +98,7 @@ flutter:
      - assetss/images/icon_purse_unsel.png
      - assetss/images/icon_sale.png
      - assetss/images/icon_sale_unsel.png
+     - assetss/images/mission_publish_icon.png
 
 
   # To add assets to your application, add an assets section, like this:

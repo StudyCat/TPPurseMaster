@@ -84,34 +84,34 @@ class _TLDMissionHallPageState extends State<TLDMissionHallPage> with AutomaticK
   }
 
   Widget _haveDataViewBuild(TLDMissionProgressModel model){
-    return SmartRefresher(
-      controller: _refreshController,
-      header: _refreshHeaderBuild(),
-      onRefresh: ()=> _getMissionProgress(),
-      child: Padding(
-      padding:EdgeInsets.only(left : ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),
-      child :SingleChildScrollView(
-      child : ExpansionLayoutList(
-      expandedHeaderPadding: EdgeInsets.zero,
-      children: <ExpansionPanel>[
-        ExpansionPanel(headerBuilder: (BuildContext context,bool isOpen){
-          return TLDMyMissionHeaderCell(progressModel: model,isOpen: _isOpen,didClickOpenBtnCallBack: (){
-            setState(() {
-              _isOpen = ! isOpen;
-            });
-          },didClickItemCallBack: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailMissionPage(taskWalletId: widget.taskWalletId,)));
-          },);
-        }, body: ListBody(
-          children: _getExpansionContent(model.taskOrderList, model.taskNo)
-        ),
-        isExpanded: _isOpen
-        ),
-      ],
-    )
-    ) 
-      ),
-      );
+    // return SmartRefresher(
+    //   controller: _refreshController,
+    //   header: _refreshHeaderBuild(),
+    //   onRefresh: ()=> _getMissionProgress(),
+    //   child: Padding(
+    //   padding:EdgeInsets.only(left : ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),
+    //   child :SingleChildScrollView(
+    //   child : ExpansionLayoutList(
+    //   expandedHeaderPadding: EdgeInsets.zero,
+    //   children: <ExpansionPanel>[
+    //     ExpansionPanel(headerBuilder: (BuildContext context,bool isOpen){
+    //       return TLDMyMissionHeaderCell(progressModel: model,isOpen: _isOpen,didClickOpenBtnCallBack: (){
+    //         setState(() {
+    //           _isOpen = ! isOpen;
+    //         });
+    //       },didClickItemCallBack: (){
+    //         Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailMissionPage(taskWalletId: widget.taskWalletId,)));
+    //       },);
+    //     }, body: ListBody(
+    //       children: _getExpansionContent(model.taskOrderList, model.taskBuyNo
+    //     ),
+    //     isExpanded: _isOpen
+    //     ),
+    //   ],
+    // )
+    // ) 
+    //   ),
+    //   );
   }
 
    Widget _refreshHeaderBuild(){
@@ -122,19 +122,19 @@ class _TLDMissionHallPageState extends State<TLDMissionHallPage> with AutomaticK
 
   List<Widget> _getExpansionContent(List orderList,String taskNo){
     List<Widget> result = [];
-    for (TaskOrderListModel item in orderList) {
-      result.add(TLDMYMissionBodyCell(model: item,taskNo: taskNo,didClickItemCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailOrderPage(orderNo: item.orderNo,isBuyer: true,))).then((value){
-          _refreshController.requestRefresh();
-          _getMissionProgress();
-        });
-      },didClickIMBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDIMPage(selfWalletAddress: item.buyerWalletAddress,otherGuyWalletAddress: item.sellerWalletAddress,orderNo: item.orderNo,))).then((value){
-          _refreshController.requestRefresh();
-          _getMissionProgress();
-        });
-      },));
-    }
+    // for (TaskOrderListModel item in orderList) {
+    //   result.add(TLDMYMissionBodyCell(model: item,taskNo: taskNo,didClickItemCallBack: (){
+    //     Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailOrderPage(orderNo: item.orderNo,isBuyer: true,))).then((value){
+    //       _refreshController.requestRefresh();
+    //       _getMissionProgress();
+    //     });
+    //   },didClickIMBtnCallBack: (){
+    //     Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDIMPage(selfWalletAddress: item.buyerWalletAddress,otherGuyWalletAddress: item.sellerWalletAddress,orderNo: item.orderNo,))).then((value){
+    //       _refreshController.requestRefresh();
+    //       _getMissionProgress();
+    //     });
+    //   },));
+    // }
     return result;
   }
 
