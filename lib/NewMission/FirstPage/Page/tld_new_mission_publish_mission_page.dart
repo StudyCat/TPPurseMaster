@@ -8,10 +8,11 @@ import 'package:dragon_sword_purse/Mission/WalletMission/View/tld_my_mission_bod
 import 'package:dragon_sword_purse/Mission/WalletMission/View/tld_my_mission_header_cell.dart';
 import 'package:dragon_sword_purse/NewMission/FirstPage/Model/tld_new_mission_publish_mission_model_manager.dart';
 import 'package:dragon_sword_purse/NewMission/FirstPage/Page/tld_new_mission_first_page.dart';
+import 'package:dragon_sword_purse/NewMission/FirstPage/Page/tld_publish_mission_page.dart';
+import 'package:dragon_sword_purse/NewMission/FirstPage/View/tld_new_mission_no_publish_mission_view.dart';
 import 'package:dragon_sword_purse/NewMission/FirstPage/View/tld_publish_mission_button.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/View/tld_sale_not_data_view.dart';
-import 'package:dragon_sword_purse/Sale/FirstPage/View/tld_sale_suspend_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -106,27 +107,30 @@ class _TLDNewMissionPublishMissionPageState
     });
   }
 
-  //   void _cancelSale(TLDSaleListInfoModel model,int index){
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   _modelManager.cancelSale(model, (){
-  //     if (mounted){
-  //             setState(() {
-  //     _isLoading = false;
-  //     _saleDatas.removeAt(index);
-  //   });
-  //     }
-  //   }, (TLDError error){
-  //     if (mounted){
-  //             setState(() {
-  //     _isLoading = false;
-  //     });
-  //     }
-  //     Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
-  //         timeInSecForIosWeb: 1);
-  //   });
-  // }
+    void _cancelPublish(String taskBuyNo,int index){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.cancelPublish(taskBuyNo, (){
+      Fluttertoast.showToast(msg: '取消发布成功',toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 1);
+      if (mounted){
+      setState(() {
+      _isLoading = false;
+      });
+      _dataSource.removeAt(index);
+      _streamController.sink.add(_dataSource);
+      }
+    }, (TLDError error){
+      if (mounted){
+              setState(() {
+      _isLoading = false;
+      });
+      }
+      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 1);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +162,8 @@ class _TLDNewMissionPublishMissionPageState
 
   List<ExpansionPanel> _getExpansionPanelList() {
     List<ExpansionPanel> result = [];
-    for (TLDMissionProgressModel item in _dataSource) {
+    for (int i = 0; i < _dataSource.length; i++) {
+      TLDMissionProgressModel item = _dataSource[i];
       ExpansionPanel panel = ExpansionPanel(
           headerBuilder: (BuildContext context, bool isOpen) {
             return TLDMyMissionHeaderCell(
@@ -172,6 +177,7 @@ class _TLDNewMissionPublishMissionPageState
               didClickItemCallBack: () {
                 // Navigator.push(context, MaterialPageRoute(builder: (context)=> tlddetail(taskWalletId: widget.taskWalletId,)));
               },
+              didClickCanccelBtnCallBack: ()=> _cancelPublish(item.taskBuyNo,i),
             );
           },
           body: ListBody(
@@ -228,19 +234,25 @@ class _TLDNewMissionPublishMissionPageState
             children: <Widget>[
               _getRsfreshWidget(_getHaveDataBodyWidget()),
               TLDPublishMissionButton(
-                didClickCallBack: () {},
+                didClickCallBack: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TLDPublishMissionPage(walletAddress: widget.walletAddress,))).then((dynamic value){
+                _refreshController.requestRefresh();
+                _page = 1;
+                _getPublishList(_page);
+              });
+                },
               )
             ],
           );
         } else {
-          return _getRsfreshWidget(TLDSaleNotDataView(
+          return _getRsfreshWidget(TLDNewMissionNoPublishMissionView(
             didClickCallBack: () {
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => TLDExchangePage())).then((dynamic value){
-              //   _refreshController.requestRefresh();
-              //   getSaleListInfo();
-              // });
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TLDPublishMissionPage(walletAddress: widget.walletAddress,))).then((dynamic value){
+                _refreshController.requestRefresh();
+                _page = 1;
+                _getPublishList(_page);
             },
-          ));
+          );}));
         }
       },
     );

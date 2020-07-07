@@ -15,4 +15,11 @@ class TLDNewMissionPublishMissionModelManager{
       success(result);
     }, (error) => failure(error));
   }
+
+  void cancelPublish(String taskBuyNo,Function success,Function(TLDError) failure){
+    TLDBaseRequest request = TLDBaseRequest({'taskBuyNo':taskBuyNo,},'newTask/cancelRelease');
+    request.postNetRequest((value) {
+      success();
+    }, (error) => failure(error));
+  }
 }

@@ -9,9 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 
 class TLDMyMissionHeaderCell extends StatefulWidget {
-  TLDMyMissionHeaderCell({Key key,this.didClickItemCallBack,this.isOpen,this.progressModel,this.didClickOpenBtnCallBack}) : super(key: key);
+  TLDMyMissionHeaderCell({Key key,this.didClickItemCallBack,this.isOpen,this.progressModel,this.didClickOpenBtnCallBack,this.didClickCanccelBtnCallBack}) : super(key: key);
 
   final Function didClickItemCallBack;
+
+  final Function didClickCanccelBtnCallBack;
 
   final bool isOpen;
 
@@ -88,7 +90,7 @@ class _TLDMyMissionHeaderCellState extends State<TLDMyMissionHeaderCell> {
         children : <Widget>[
           Text('任务单号：' + widget.progressModel.taskBuyNo,style: TextStyle(fontSize:ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
           picAndTextButton('取消', (){
-
+            widget.didClickCanccelBtnCallBack();
           })
         ]
       ),
@@ -168,9 +170,6 @@ Widget _getTimeAndLevelWidget(){
         Text(_getTimeStr(),style : TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153))),
        RichText(text: TextSpan(children:<InlineSpan>[
             WidgetSpan(child: CachedNetworkImage(imageUrl: widget.progressModel.levelIcon,width: ScreenUtil().setWidth(32),height: ScreenUtil().setWidth(32),),),
-            TextSpan(text :' ('+'20/200'+')',style:TextStyle(
-                  fontSize: ScreenUtil().setSp(28),
-                  color: Color.fromARGB(255, 51, 51, 51)))
           ])),
       ],
     ),
@@ -200,14 +199,5 @@ Widget _getTimeAndLevelWidget(){
     return startTimeStr;
   }
 
-  Widget _getTimeColumnView(String title,String timeStr){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children : <Widget>[
-        Text(title,style:TextStyle(color:Color.fromARGB(255, 153, 153, 153),fontSize: ScreenUtil().setSp(24))),
-        Text(timeStr,style:TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(32),fontWeight: FontWeight.bold))
-      ]
-    );
-  }
 
 }

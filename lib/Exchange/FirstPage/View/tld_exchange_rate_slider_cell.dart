@@ -41,7 +41,6 @@ class _TLDExchangeRateSliderCellState extends State<TLDExchangeRateSliderCell> {
           borderRadius: BorderRadius.all(Radius.circular(4)),
           child: Container(
             color: Colors.white,
-            height: ScreenUtil().setHeight(200),
             child: Column(
               children: <Widget>[
                 getCellTopView(),

@@ -22,7 +22,6 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:web3dart/contracts.dart';
 
 class TLDNewMissionPageControl extends ValueNotifier<String>{
   TLDNewMissionPageControl(String adressWallet) : super(adressWallet);
@@ -319,8 +318,8 @@ class _TLDNewMissionFirstPageState extends State<TLDNewMissionFirstPage> with Au
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children:<Widget>[
-        Icon(Icons.change_history),
-        Text( '切换钱包',
+        Icon(IconData(0xe644,fontFamily: 'appIconFonts'),color: Theme.of(context).primaryColor,size: ScreenUtil().setWidth(30),),
+        Text( '  切换钱包',
             style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(24)))
       ]
     );
