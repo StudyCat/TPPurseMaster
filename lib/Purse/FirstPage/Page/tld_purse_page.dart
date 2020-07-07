@@ -40,6 +40,8 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
 
   StreamSubscription _unreadSubscription;
 
+  StreamSubscription _refreshSubscription;
+
   bool _haveUnreadMessage;
 
   @override
@@ -59,6 +61,8 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
 
     _registerUnreadMessageEvent();
 
+    _registerRefreshEvent();
+
     _getPurseInfoList(context);
   }
 
@@ -70,12 +74,21 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
     });
   }
 
+  void _registerRefreshEvent(){
+    _refreshSubscription = eventBus.on<TLDRefreshFirstPageEvent>().listen((event) {
+      _controller.requestRefresh();
+      _getPurseInfoList(context);
+    });
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
 
     _unreadSubscription.cancel();
+
+    _refreshSubscription.cancel();
   }
 
   @override

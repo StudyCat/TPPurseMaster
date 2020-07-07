@@ -7,6 +7,7 @@ import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_choose_wallet.dart';
 import 'package:dragon_sword_purse/Drawer/UserAgreement/Page/tld_user_agreement_page.dart';
+import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
 import 'package:dragon_sword_purse/Mission/FirstPage/Page/tld_mission_first_root_page.dart';
 import 'package:dragon_sword_purse/NewMission/FirstPage/Page/tld_new_mission_first_page.dart';
 import 'package:dragon_sword_purse/Purse/TransferAccounts/Page/tld_transfer_accounts_page.dart';
@@ -15,6 +16,7 @@ import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_creating_purse_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +59,14 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
           )),
     ),
     BottomNavigationBarItem(
+      activeIcon: Image.asset('assetss/images/icon_message.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      icon: Image.asset('assetss/images/icon_message_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      title: Text('消息',
+          style: TextStyle(
+            fontSize: 10,
+          )),
+    ),
+    BottomNavigationBarItem(
       activeIcon: Image.asset('assetss/images/icon_sale.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_sale_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       title: Text('售卖',
@@ -74,7 +84,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
     )
   ];
 
-  List pages = [TLDPursePage(), TLDBuyPage(), TLDTabSalePage(),TLDNewMissionFirstPage()];
+  List pages = [TLDPursePage(), TLDBuyPage(), TLDMessagePage(),TLDTabSalePage(),TLDNewMissionFirstPage()];
 
   int currentIndex;
 
@@ -96,7 +106,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
       for (TLDWallet item in purseList) {
         addressList.add(item.address);
       }
-     String addressListJson = jsonEncode(addressList);
+    String addressListJson = jsonEncode(addressList);
     TLDIMManager manager = TLDIMManager.instance;
     manager.connectClient();
 
@@ -197,6 +207,11 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
             onPageChanged: (int index) {
               setState(() {
                 currentIndex = index;
+                if (index == 0){
+                  eventBus.fire(TLDRefreshFirstPageEvent());
+                }else if(index == 2){
+                  eventBus.fire(TLDRefreshMessageListEvent(3));
+                }
               });
             },
           ),

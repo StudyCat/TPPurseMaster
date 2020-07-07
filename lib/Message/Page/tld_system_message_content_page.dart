@@ -38,6 +38,8 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
 
   bool _isLoading = false;
 
+  StreamSubscription _refreshSubscription;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -63,6 +65,7 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
     super.dispose();
 
     _messageSubscription.cancel();
+    _refreshSubscription.cancel();
   }
 
 
@@ -70,14 +73,15 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
      _manager.getSystemMsssageList(page,
         (List messages) {
       if (page == 0) {
+        _dataSource = [];
         if (mounted){
-                  setState(() {
+        setState(() {
           _dataSource.addAll(messages);
         });
         }
       } else {
         if (mounted){
-                  setState(() {
+        setState(() {
           _dataSource.insertAll(0, messages);
         });
         }
@@ -100,6 +104,14 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
       setState(() {
         _dataSource;
       });
+    });
+
+      _refreshSubscription = eventBus.on<TLDRefreshMessageListEvent>().listen((event) {
+        if(event.refreshPage == 2 || event.refreshPage == 3){
+          _refreshController.requestRefresh();
+          _page = 0;
+          _getSystemList(_page); 
+        }
     });
   }
 

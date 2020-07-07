@@ -20,6 +20,7 @@ class TLDMessageModel {
   String orderNo;
   int messageType;// 1.系统消息 2.IM
   String bizAttr; // 系统消息 业务字段
+  int unreadCount;//未读消息
 
   TLDMessageModel(
       {this.contentType,

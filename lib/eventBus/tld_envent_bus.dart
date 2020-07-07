@@ -21,4 +21,15 @@ class TLDSystemMessageEvent{
   TLDSystemMessageEvent(this.messageModel);
 }
 
+//更新消息列表广播
+class TLDRefreshMessageListEvent{
+  int refreshPage; // 1为普通IM页 2位系统页 3为两者
+  TLDRefreshMessageListEvent(this.refreshPage);
+}
+
+//更新首页广播
+class TLDRefreshFirstPageEvent{
+  TLDRefreshFirstPageEvent();
+}
+
 //消息推送通知

@@ -27,7 +27,7 @@ class _TLDIMMessageContentPageState extends State<TLDIMMessageContentPage> with 
 
   StreamSubscription _unreadSubscription;
 
-
+  StreamSubscription _refreshSubscription;
   @override
   void initState() { 
     super.initState();
@@ -36,6 +36,8 @@ class _TLDIMMessageContentPageState extends State<TLDIMMessageContentPage> with 
     _searchIMChatGroup();
 
     _registerUnreadEvent();
+
+    _registerRefreshEvent();
   }
 
   _registerUnreadEvent(){
@@ -43,6 +45,14 @@ class _TLDIMMessageContentPageState extends State<TLDIMMessageContentPage> with 
       if (event.haveUnreadMessage){
         _searchIMChatGroup();
       }
+    });
+  }
+
+  _registerRefreshEvent(){
+    _refreshSubscription = eventBus.on<TLDRefreshMessageListEvent>().listen((event) {
+        if(event.refreshPage == 1 || event.refreshPage == 3){
+          _searchIMChatGroup();
+        }
     });
   }
 
@@ -94,6 +104,7 @@ class _TLDIMMessageContentPageState extends State<TLDIMMessageContentPage> with 
     // TODO: implement dispose
     super.dispose();
     _unreadSubscription.cancel();
+    _refreshSubscription.cancel();
   }
 
   @override

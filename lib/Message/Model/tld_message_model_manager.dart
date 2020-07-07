@@ -1,4 +1,5 @@
 import 'package:common_utils/common_utils.dart';
+import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 
 import '../../dataBase/tld_database_manager.dart';
@@ -11,26 +12,17 @@ class TLDMessageModelManager{
     //  List toList = await _manager.searchToAddressChatGroup();
     List result = await _manager.searchOrderNoChatGroup();
     await _manager.closeDataBase();
-    // List groupList = [];
-    // List deleteList = [];
-    // if(fromList.length == 0 || toList.length == 0){
-    //   groupList.addAll(fromList);
-    //   groupList.addAll(toList);
-    // }else{
-    //   for (TLDMessageModel fromMessageModel in fromList) {
-    //     for (TLDMessageModel toMessageModel in toList) {
-    //       if (fromMessageModel.fromAddress == toMessageModel.toAddress){
-    //         if (fromMessageModel.createTime > toMessageModel.createTime){
-    //           groupList.add(fromMessageModel);
-    //         }else{
-    //           groupList.add(toMessageModel);
-    //         }
-    //         deleteList.add(fromMessageModel);
-    //         deleteList.add(toMessageModel);
-    //     }
-    //   }
-    // }
-    // }
+
+    for (TLDMessageModel item in result) {
+      int unreadCount = 0;
+      for (TLDMessageModel  unreadMessage in TLDIMManager.instance.unreadMessage) {
+        if (unreadMessage.orderNo == item.orderNo){
+          unreadCount = unreadCount + 1;
+        }
+      }
+      item.unreadCount = unreadCount;
+    }
+
     success(result);
   }
 
