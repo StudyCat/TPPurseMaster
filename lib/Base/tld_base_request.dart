@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:convert/convert.dart';
+import 'package:crypto/crypto.dart';
+import 'package:uuid_enhanced/uuid.dart';
 
 class TLDError{
   int code;
@@ -15,7 +18,7 @@ class TLDError{
 }
 
 class TLDBaseRequest{
-  static String baseUrl = 'http://192.168.1.120:8030/';
+  static String baseUrl = 'http://47.101.170.209:8030/';
   Map pramatersMap;
   String subUrl;
   CancelToken cancelToken;
@@ -25,15 +28,34 @@ class TLDBaseRequest{
     this.subUrl = subUrl;
     cancelToken = CancelToken();
   }
+  
+  String _authorizationEncode(String userToken,int time,String uuid){
+     var content = new Utf8Encoder().convert(userToken);
+     var digest = md5.convert(content);
+     String md5Str = hex.encode(digest.bytes);
+  
 
+     Map authorizationMap = {'userToken':md5Str,'time':time,'uuid':uuid};
+     String jsonStr = jsonEncode(authorizationMap);
+     var base64Content = utf8.encode(jsonStr);
+     var base64Digest = base64Encode(base64Content);
+     return base64Digest;
+  }
 
   void getNetRequest(Function(String) success, Function(TLDError) failure) async{
     try{
       Dio dio = Dio();
-      Options options = Options(
+      String userToken = await TLDDataManager.instance.getUserToken();
+       Options options = Options(
         contentType : 'application/json', 
-        receiveDataWhenStatusError: false
+        receiveDataWhenStatusError: false,
      );
+      if (userToken != null){
+        int time = DateTime.now().millisecondsSinceEpoch;
+        String uuid = Uuid.randomUuid().toString();
+        String authorization = _authorizationEncode(userToken, time, uuid);
+        options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':'1.0.1'};
+      }
      Response response = await dio.get(baseUrl+this.subUrl,queryParameters: this.pramatersMap,options: options,cancelToken: cancelToken);
      String jsonString = response.data;
      Map responseMap = jsonDecode(jsonString);
@@ -52,11 +74,18 @@ class TLDBaseRequest{
   }
 
   void postNetRequest(ValueChanged<dynamic> success, Function(TLDError) failure) async{
-    // try{
+    try{
+      String userToken = await TLDDataManager.instance.getUserToken();
       BaseOptions options = BaseOptions(
         contentType : 'application/json',
         receiveDataWhenStatusError: false
      );
+       if (userToken != null){
+        int time = DateTime.now().millisecondsSinceEpoch;
+        String uuid = Uuid.randomUuid().toString();
+        String authorization = _authorizationEncode(userToken, time, uuid);
+        options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':'1.0.1'};
+      }
       Dio dio = Dio(options);
      String url = baseUrl + this.subUrl;
      Response response = await dio.post(url,queryParameters: Map<String, dynamic>.from(this.pramatersMap),cancelToken: cancelToken);
@@ -69,10 +98,10 @@ class TLDBaseRequest{
        TLDError error = TLDError(int.parse(codeStr),responseMap['msg']);
        failure(error);
      }
-    // }catch(e){
-    //   TLDError error = TLDError(400,'网络接口出错');
-    //    failure(error);
-    // }
+    }catch(e){
+      TLDError error = TLDError(400,'网络接口出错');
+       failure(error);
+    }
   } 
 
 

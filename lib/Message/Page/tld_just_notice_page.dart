@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_clip_common_cell.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_image_show_page.dart';
 import 'package:dragon_sword_purse/Message/Model/tld_just_notice_vote_model_manager.dart';
 import 'package:dragon_sword_purse/Message/View/tld_just_appeal_bottom_cell.dart';
 import 'package:dragon_sword_purse/Message/View/tld_just_notice_show_desc_cell.dart';
@@ -12,6 +13,7 @@ import 'package:dragon_sword_purse/Order/Page/tld_order_appeal_page.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_order_paymethod_cell.dart';
 import 'package:dragon_sword_purse/Order/View/tld_order_appeal_bottom_cell.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +52,8 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
 
   int _voteValue = 0;
 
+  PageController _controller;
+
   TLDJustVoteModelManager _manager;
 
   TLDOrderAppealModel _orderAppealModel;
@@ -64,6 +68,8 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
     }else{
       titles = ['订单号', '卖家收款方式', '卖家地址', '买家地址', '描述', '截图上传'];
     }
+
+    _controller = PageController();
 
     _manager = TLDJustVoteModelManager();
 
@@ -202,6 +208,18 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
             return _getPadding(TLDJustNoticeShowImageCell(
                 title: titles[index],
                 images: _orderAppealModel == null ? [] : jsonDecode(_orderAppealModel.appealImgList),
+                didClickImageItemCallBack: (int index){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TLDImageShowPage(
+                                imagePathList: jsonDecode(_orderAppealModel.appealImgList),
+                                pageController: _controller,
+                                index: index,
+                                heroTag: 'just_notice',
+                                isShowDelete: false,
+                              )));
+                }
                ));
           }else if(index == 6){
             return  _getPadding(TLDJustAppealBottomCell(appealStatus : _orderAppealModel != null ? _orderAppealModel.appealStatus : 0,finishTime: _orderAppealModel != null ? _orderAppealModel.finishTime : 0,didClickItemCallBack: (String title){
@@ -251,6 +269,18 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
             return _getPadding(TLDJustNoticeShowImageCell(
                 title: titles[index],
                 images: _orderAppealModel == null ? [] : jsonDecode(_orderAppealModel.appealImgList),
+                didClickImageItemCallBack: (int index){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TLDImageShowPage(
+                                imagePathList: jsonDecode(_orderAppealModel.appealImgList),
+                                pageController: _controller,
+                                index: index,
+                                heroTag: 'just_notice',
+                                isShowDelete: false,
+                              )));
+                },
                ));
           }else if(index == 6){
             return  _getPadding( TLDJustNoticeVoteCell(title: titles[index],didVoteCallBack: (int voteValue){

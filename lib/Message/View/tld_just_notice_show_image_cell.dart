@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 
 class TLDJustNoticeShowImageCell extends StatefulWidget {
-  TLDJustNoticeShowImageCell({Key key,this.title,this.images}) : super(key: key);
+  TLDJustNoticeShowImageCell({Key key,this.title,this.images,this.didClickImageItemCallBack}) : super(key: key);
 
   final String title;
 
   final List images;
+
+  final Function(int) didClickImageItemCallBack;
 
   @override
   _TLDJustNoticeShowImageCellState createState() => _TLDJustNoticeShowImageCellState();
@@ -57,7 +59,12 @@ class _TLDJustNoticeShowImageCellState extends State<TLDJustNoticeShowImageCell>
                             mainAxisSpacing: ScreenUtil().setHeight(10)),
                         itemCount: widget.images.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return CachedNetworkImage(imageUrl:widget.images[index],fit : BoxFit.fill);
+                          return GestureDetector(
+                            onTap: (){
+                              widget.didClickImageItemCallBack(index);
+                            },
+                            child: CachedNetworkImage(imageUrl:widget.images[index],fit : BoxFit.fill),
+                          );
                         }),
                     )
             ]),

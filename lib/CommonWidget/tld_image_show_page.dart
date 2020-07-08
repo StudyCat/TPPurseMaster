@@ -12,14 +12,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class TLDImageShowPage extends StatefulWidget {
   TLDImageShowPage(
-      {Key key, this.images, this.pageController, this.heroTag, this.index,this.isShowDelete,this.deleteCallBack,this.imagePathList})
+      {Key key, this.images, this.pageController, this.heroTag, this.index = 0,this.isShowDelete = true,this.deleteCallBack,this.imagePathList})
       : super(key: key);
 
   final List images;
-  int index = 0;
-  String heroTag;
+  final int index;
+  final String heroTag;
   final PageController pageController;
-  bool isShowDelete = true;
+  final bool isShowDelete;
   final ValueChanged<int> deleteCallBack;
   final List imagePathList;
   @override

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';

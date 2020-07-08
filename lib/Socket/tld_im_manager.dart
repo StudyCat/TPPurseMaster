@@ -77,6 +77,8 @@ class TLDIMManager{
    bool isInBackState = false;
    int reConnectNum = 0;
 
+  bool _isHeartConnect;//作心脏重连
+
   TLDIMManager._internal() {
     // 初始化
     getUnreadMessageList();
@@ -99,9 +101,10 @@ class TLDIMManager{
       return;
     }
 
-    channel = IOWebSocketChannel.connect("ws://192.168.1.120:8030/webSocket/"+ this.userToken);
+    channel = IOWebSocketChannel.connect("ws://47.101.170.209:8030/webSocket/"+ this.userToken);
      channel.stream.listen(( message)async {
        reConnectNum = 0; 
+       _isHeartConnect = true;
       if (message == 'pong'){
         return;
       }
@@ -197,7 +200,14 @@ class TLDIMManager{
   }
 
   void sendHeartMessage(){
+    _isHeartConnect = false;
     channel.sink.add('ping');
+
+    Future.delayed(Duration(seconds: 5),()async{
+      if (_isHeartConnect == false){
+        await connectClient();
+      }
+    });
   }
 
 

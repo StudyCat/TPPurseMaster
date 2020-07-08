@@ -27,6 +27,8 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
 
   bool _isBuyer = false;
 
+  bool _buttonEnable = true;
+
   // bool _isLoading = false;
 
   @override
@@ -64,18 +66,18 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
 
   void _confirmPaid(){
     // setState(() {
-    //   _isLoading = true;
+      _buttonEnable = false;
     // });
     _modelManager.confirmPaid(widget.orderNo, _detailOrderModel.buyerAddress,  (){
       // setState(() {
-      //   _isLoading = false;
+        _buttonEnable = true;
       // });
       getOrderInfo();
       Fluttertoast.showToast(msg: '确认我已付款成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
       // setState(() {
-      //   _isLoading = false;
+        _buttonEnable = true;
       // });
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
@@ -83,12 +85,12 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
   }
 
   void _sureSentCoin(){
-    // setState(() {
-    //   _isLoading = true;
-    // });
+      // setState(() {
+        _buttonEnable = false;
+      // });
     _modelManager.sureSentCoin(widget.orderNo, _detailOrderModel.sellerAddress,  (){
       // setState(() {
-      //   _isLoading = false;
+        _buttonEnable = true;
       // });
       _detailOrderModel = null;
       getOrderInfo();
@@ -96,7 +98,7 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
       // setState(() {
-      //   _isLoading = false;
+        _buttonEnable = true;
       // });
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
@@ -104,18 +106,18 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
   }
 
     void _remindOrder(){
-    //  setState(() {
-    //   _isLoading = true;
-    // });
+      // setState(() {
+        _buttonEnable = false;
+      // });
     _modelManager.remindOrder(widget.orderNo, (){
       // setState(() {
-      //   _isLoading = false;
+        _buttonEnable = true;
       // });
       Fluttertoast.showToast(msg: '催单成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
       // setState(() {
-      //   _isLoading = false;
+        _buttonEnable = true;
       // });
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
@@ -226,12 +228,14 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
                     child: Text(_actionBtnTitleList.first,style : TextStyle(color : Colors.white,fontSize : ScreenUtil().setSp(24))),
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     onPressed: () {
-                      if (_actionBtnTitleList.first == '我已付款'){
-                        _confirmPaid();
-                      }else if(_actionBtnTitleList.first == '确认释放积分'){
-                        _sureSentCoin();
-                      }else if (_actionBtnTitleList.first == '催单'){
-                        _remindOrder();
+                      if (_buttonEnable == true){
+                        if (_actionBtnTitleList.first == '我已付款'){
+                          _confirmPaid();
+                        }else if(_actionBtnTitleList.first == '确认释放积分'){
+                          _sureSentCoin();
+                        }else if (_actionBtnTitleList.first == '催单'){
+                          _remindOrder();
+                        }
                       }
                     }),
             );

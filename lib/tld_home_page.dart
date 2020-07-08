@@ -1,24 +1,15 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:bot_toast/bot_toast.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
-import 'package:dragon_sword_purse/Purse/FirstPage/Page/tld_purse_page.dart';
-import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
-import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dataBase/tld_database_manager.dart';
 import 'tld_not_purse_page.dart';
 import 'tld_tabbar_page.dart';
-import 'Notification/tld_import_create_purse_success_notification.dart';
 import 'CommonWidget/tld_data_manager.dart';
-import 'main.dart';
-import 'package:jpush_flutter/jpush_flutter.dart';
 
 
 
@@ -36,8 +27,6 @@ class _TLDHomePageState extends State<TLDHomePage> {
   bool isHavePurse;
 
   JPush jPush;
-
-  StreamSubscription _messageSubscription;
 
   @override
   void initState() {
@@ -91,8 +80,6 @@ class _TLDHomePageState extends State<TLDHomePage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-
-    _messageSubscription.cancel();
   }
 
 
