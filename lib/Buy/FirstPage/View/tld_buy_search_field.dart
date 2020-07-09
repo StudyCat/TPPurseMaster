@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:dragon_sword_purse/CommonWidget/tld_amount_text_input_fprmatter.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,13 +11,14 @@ class TLDBuySearchField extends StatefulWidget {
   TLDBuySearchField(
       {Key key,
       this.textFieldDidChangeCallBack,
-      this.didClickSearchBtnCallBack})
+      this.didClickSearchBtnCallBack,this.focusNode})
       : super(key: key);
 
   final Function(String) textFieldDidChangeCallBack;
 
   final Function didClickSearchBtnCallBack;
 
+  final FocusNode focusNode;
   @override
   _TLDBuySearchFieldState createState() => _TLDBuySearchFieldState();
 }
@@ -22,20 +26,18 @@ class TLDBuySearchField extends StatefulWidget {
 class _TLDBuySearchFieldState extends State<TLDBuySearchField> {
   TextEditingController _textEditingController;
 
-  FocusNode _focusNode;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    _focusNode = FocusNode();
-
     _textEditingController = TextEditingController();
     _textEditingController.addListener(() {
       widget.textFieldDidChangeCallBack(_textEditingController.text);
     });
+
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class _TLDBuySearchFieldState extends State<TLDBuySearchField> {
                   alignment: Alignment.centerLeft,
                   child: TextField(
                     controller: _textEditingController,
-                    // focusNode: _focusNode,
+                    focusNode: widget.focusNode,
                     inputFormatters: [TLDAmountTextInputFormatter()],
                     textInputAction: TextInputAction.search,
                     onSubmitted:(str)=> widget.didClickSearchBtnCallBack(),

@@ -12,7 +12,7 @@ class TLDMissionProgressModel {
   String realCount;
   String currentCount;
   int payId;
-  PayMethodVO payMethodVO;
+  TLDPaymentModel payMethodVO;
   String releaseWalletAddress;
   int createTime;
   int status;
@@ -44,7 +44,7 @@ class TLDMissionProgressModel {
     currentCount = json['currentCount'];
     payId = json['payId'];
     payMethodVO = json['payMethodVO'] != null
-        ? new PayMethodVO.fromJson(json['payMethodVO'])
+        ? new TLDPaymentModel.fromJson(json['payMethodVO'])
         : null;
     releaseWalletAddress = json['releaseWalletAddress'];
     createTime = json['createTime'];
@@ -81,58 +81,7 @@ class TLDMissionProgressModel {
   }
 }
 
-class PayMethodVO {
-  int payId;
-  String realName;
-  String walletAddress;
-  int type;
-  String payMethodName;
-  String account;
-  Null imageUrl;
-  String subBranch;
-  String quota;
-  int createTime;
 
-  PayMethodVO(
-      {this.payId,
-      this.realName,
-      this.walletAddress,
-      this.type,
-      this.payMethodName,
-      this.account,
-      this.imageUrl,
-      this.subBranch,
-      this.quota,
-      this.createTime});
-
-  PayMethodVO.fromJson(Map<String, dynamic> json) {
-    payId = json['payId'];
-    realName = json['realName'];
-    walletAddress = json['walletAddress'];
-    type = json['type'];
-    payMethodName = json['payMethodName'];
-    account = json['account'];
-    imageUrl = json['imageUrl'];
-    subBranch = json['subBranch'];
-    quota = json['quota'];
-    createTime = json['createTime'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['payId'] = this.payId;
-    data['realName'] = this.realName;
-    data['walletAddress'] = this.walletAddress;
-    data['type'] = this.type;
-    data['payMethodName'] = this.payMethodName;
-    data['account'] = this.account;
-    data['imageUrl'] = this.imageUrl;
-    data['subBranch'] = this.subBranch;
-    data['quota'] = this.quota;
-    data['createTime'] = this.createTime;
-    return data;
-  }
-}
 
 class TaskOrderListModel {
   int orderId;

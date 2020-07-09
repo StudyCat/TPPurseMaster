@@ -42,10 +42,14 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
   String _keyword;
 
   List _dataSource;
+
+  FocusNode _focusNode;
    
   StreamSubscription _unreadSubscription;
 
   StreamSubscription _systemSubscription;
+
+  StreamSubscription _tabbatClickSubscription;
 
   bool _haveUnreadMessage;
 
@@ -53,6 +57,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
   void initState() {
     // TODO: implement initState
     super.initState();
+    _focusNode = FocusNode();
     _isLoading = false;
     _modelManager = TLDBuyModelManager();
     _refreshController = RefreshController(initialRefresh: true);
@@ -73,6 +78,14 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     });
   }
 
+  void _registerTabbarClickEvent(){
+    _tabbatClickSubscription = eventBus.on<TLDBottomTabbarClickEvent>().listen((event) {
+      if(event.index != 1){
+        _focusNode.unfocus();
+      }
+    });
+  }
+
   void _registerSystemMessageEvent(){
     _systemSubscription = eventBus.on<TLDSystemMessageEvent>().listen((event) {
        TLDMessageModel messageModel = event.messageModel;
@@ -83,12 +96,14 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     });
   }
 
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _unreadSubscription.cancel();
     _systemSubscription.cancel();
+    _tabbatClickSubscription.cancel();
   }
 
   void _loadBuyList(String keyword,int page){
@@ -123,6 +138,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
       }
       Fluttertoast.showToast(msg: '购买成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
+      _focusNode.unfocus();
       Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailOrderPage(orderNo: orderNo,isBuyer: true,))).then((value){
         _refreshController.requestRefresh();
         _page = 1;
@@ -162,6 +178,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
               padding: EdgeInsets.all(0),
               minSize: 20,
               onPressed: () {
+                _focusNode.unfocus();
                 TLDMoreBtnClickNotification().dispatch(context);
               });
         }),
@@ -179,10 +196,14 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
                 padding: EdgeInsets.all(0),
                 minSize: 20,
                 onPressed: () {
+                  _focusNode.unfocus();
                   Navigator.push(context, MaterialPageRoute(builder: (context) => TLDOrderListPage()));
                 }),
             MessageButton(isHaveUnReadMessage: _haveUnreadMessage,
-              didClickCallBack: () =>  Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage())),
+              didClickCallBack: (){
+                _focusNode.unfocus(); 
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage()));
+                },
             )
           ],
         )
@@ -194,7 +215,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
   Widget _getBodyWidget(double screenWidth){
     return Column(
       children: <Widget>[
-        Padding(padding: EdgeInsets.only(left : 15 , top : 5 ,right: 15),child: TLDBuySearchField(textFieldDidChangeCallBack: (String text){
+        Padding(padding: EdgeInsets.only(left : 15 , top : 5 ,right: 15),child: TLDBuySearchField(focusNode: _focusNode,textFieldDidChangeCallBack: (String text){
           _keyword = text;
         },didClickSearchBtnCallBack: (){
            _page = 1;

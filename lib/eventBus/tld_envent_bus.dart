@@ -32,4 +32,10 @@ class TLDRefreshFirstPageEvent{
   TLDRefreshFirstPageEvent();
 }
 
+//底部导航栏点击广播
+class TLDBottomTabbarClickEvent{
+  int index;
+  TLDBottomTabbarClickEvent(this.index);
+}
+
 //消息推送通知

@@ -205,14 +205,16 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
             physics: NeverScrollableScrollPhysics(),
             itemCount: items.length,
             onPageChanged: (int index) {
+
               setState(() {
                 currentIndex = index;
-                if (index == 0){
-                  eventBus.fire(TLDRefreshFirstPageEvent());
-                }else if(index == 2){
-                  eventBus.fire(TLDRefreshMessageListEvent(3));
-                }
               });
+              eventBus.fire(TLDBottomTabbarClickEvent(index));
+              if (index == 0){
+                  eventBus.fire(TLDRefreshFirstPageEvent());
+              }else if(index == 2){
+                  eventBus.fire(TLDRefreshMessageListEvent(3));
+              }
             },
           ),
         );

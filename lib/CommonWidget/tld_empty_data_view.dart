@@ -16,7 +16,8 @@ class TLDEmptyDataView extends StatefulWidget {
 class _TLDEmptyDataViewState extends State<TLDEmptyDataView> {
   @override
    Widget build(BuildContext context) {
-    return Column(
+    return SingleChildScrollView(
+      child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Container(
@@ -39,6 +40,7 @@ class _TLDEmptyDataViewState extends State<TLDEmptyDataView> {
           ),
         ),
       ],
+    ),
     );
   }
 }
