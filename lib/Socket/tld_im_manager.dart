@@ -91,70 +91,70 @@ class TLDIMManager{
     return unreadMessage;
   }
 
-   connectClient() async{
-    if(timer != null){
-      timer.cancel();
-      timer = null;
-    }
+   connectClient(Function sdasd) async{
+    // if(timer != null){
+    //   timer.cancel();
+    //   timer = null;
+    // }
 
-    if (reConnectNum > 5){
-      return;
-    }
+    // if (reConnectNum > 5){
+    //   return;
+    // }
 
-    channel = IOWebSocketChannel.connect("ws://47.101.170.209:8030/webSocket/"+ this.userToken);
-     channel.stream.listen(( message)async {
-       reConnectNum = 0; 
-       _isHeartConnect = true;
-      if (message == 'pong'){
-        return;
-      }
-      Map map =  convert.jsonDecode(message);
-      if (map != null){
-        Map data = map['data'];
-        List messageList = data['list'];
-        List result = [];
-        bool isHaveUnreadMessage = false;
-        for (Map item in messageList) {
-          TLDMessageModel messageModel = TLDMessageModel.fromJson(item);
-          if (this.isOnChatPage == true && (messageModel.toAddress == talkAddress || messageModel.fromAddress == talkAddress)){
-            messageModel.unread = false;
-          }else{
-            messageModel.unread = true;
-            isHaveUnreadMessage = true;
-            this.unreadMessage.add(messageModel);
-          }
-          result.add(messageModel); 
-        }
-        TLDDataBaseManager dataManager = TLDDataBaseManager();
-        await dataManager.openDataBase();
-        await dataManager.insertIMDataBase(result);
-        await dataManager.closeDataBase();
+    // channel = IOWebSocketChannel.connect("ws://47.101.170.209:8030/webSocket/"+ this.userToken);
+    //  channel.stream.listen(( message)async {
+    //    reConnectNum = 0; 
+    //    _isHeartConnect = true;
+    //   if (message == 'pong'){
+    //     return;
+    //   }
+    //   Map map =  convert.jsonDecode(message);
+    //   if (map != null){
+    //     Map data = map['data'];
+    //     List messageList = data['list'];
+    //     List result = [];
+    //     bool isHaveUnreadMessage = false;
+    //     for (Map item in messageList) {
+    //       TLDMessageModel messageModel = TLDMessageModel.fromJson(item);
+    //       if (this.isOnChatPage == true && (messageModel.toAddress == talkAddress || messageModel.fromAddress == talkAddress)){
+    //         messageModel.unread = false;
+    //       }else{
+    //         messageModel.unread = true;
+    //         isHaveUnreadMessage = true;
+    //         this.unreadMessage.add(messageModel);
+    //       }
+    //       result.add(messageModel); 
+    //     }
+    //     TLDDataBaseManager dataManager = TLDDataBaseManager();
+    //     await dataManager.openDataBase();
+    //     await dataManager.insertIMDataBase(result);
+    //     await dataManager.closeDataBase();
 
-        eventBus.fire(TLDMessageEvent(result));
-        if (isHaveUnreadMessage == true){
-          eventBus.fire(TLDHaveUnreadMessageEvent(true)); 
-        }
-        for (TLDMessageModel messageModel  in result) {
-          if (messageModel.messageType == 1){
-            eventBus.fire(TLDSystemMessageEvent(messageModel));
-          }
-        }
-      }
-    },onError: (error){
-      if (!this.isInBackState){
-        reConnectNum ++;
-        connectClient();
-      }
-    },onDone: (){
-      if (!this.isInBackState){
-        reConnectNum ++;
-        connectClient();
-      }
-    });
-    timer = Timer.periodic(Duration(seconds : 30), (timer) {
-      reConnectNum = 0; 
-      sendHeartMessage();
-    });
+    //     eventBus.fire(TLDMessageEvent(result));
+    //     if (isHaveUnreadMessage == true){
+    //       eventBus.fire(TLDHaveUnreadMessageEvent(true)); 
+    //     }
+    //     for (TLDMessageModel messageModel  in result) {
+    //       if (messageModel.messageType == 1){
+    //         eventBus.fire(TLDSystemMessageEvent(messageModel));
+    //       }
+    //     }
+    //   }
+    // },onError: (error){
+    //   if (!this.isInBackState){
+    //     reConnectNum ++;
+    //     connectClient();
+    //   }
+    // },onDone: (){
+    //   if (!this.isInBackState){
+    //     reConnectNum ++;
+    //     connectClient();
+    //   }
+    // });
+    // timer = Timer.periodic(Duration(seconds : 30), (timer) {
+    //   reConnectNum = 0; 
+    //   sendHeartMessage();
+    // });
   }
 
   //移除进入聊天界面之后编程已读状态的消息
@@ -205,7 +205,7 @@ class TLDIMManager{
 
     Future.delayed(Duration(seconds: 5),()async{
       if (_isHeartConnect == false){
-        await connectClient();
+        await connectClient((){});
       }
     });
   }

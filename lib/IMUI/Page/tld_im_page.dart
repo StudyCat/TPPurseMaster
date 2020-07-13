@@ -8,6 +8,7 @@ import 'package:dragon_sword_purse/CommonWidget/tld_image_show_page.dart';
 import 'package:dragon_sword_purse/IMUI/Model/tld_im_model_manager.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,17 +27,15 @@ import '../View/tld_im_other_user_image_message_cell.dart';
 import '../View/tld_im_user_image_message_cell.dart';
 import '../View/tld_im_other_user_time_image_message_cell.dart';
 import '../View/tld_im_user_time_image_message_cell.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 
 class TLDIMPage extends StatefulWidget {
-  TLDIMPage({Key key, this.selfWalletAddress, this.otherGuyWalletAddress,this.orderNo})
+  TLDIMPage({Key key,  this.toUserName,this.orderNo})
       : super(key: key);
-
-  final String selfWalletAddress;
-
-  final String otherGuyWalletAddress;
 
   final String orderNo;
 
+  final String toUserName;
   @override
   _TLDIMPageState createState() => _TLDIMPageState();
 }
@@ -46,15 +45,13 @@ class _TLDIMPageState extends State<TLDIMPage> {
 
   int _page;
 
-  TLDIMManager _manager;
+  TLDNewIMManager _manager;
 
   ScrollController _controller;
 
   TLDIMModelManager _modelManager;
 
   RefreshController _refreshController;
-
-  StreamSubscription _messageSubscription;
 
   @override
   void initState() {
@@ -67,28 +64,35 @@ class _TLDIMPageState extends State<TLDIMPage> {
 
     _modelManager = TLDIMModelManager();
 
-    _manager = TLDIMManager.instance;
-    _manager.isOnChatPage = true;
-    _manager.talkAddress = widget.otherGuyWalletAddress;
+    _manager = TLDNewIMManager();
+    _manager.getReciveeMessageCallBack(widget.toUserName, (dynamic message){
+      if (mounted){
+        setState(() {
+          _dataSource.add(message);
+        });
+      }
+    });
 
     _refreshController = RefreshController(initialRefresh: false);
     
-    getMessageList(_page);
-
-    registerEvent();
+    getMessageList();
   }
 
   
 
-  void getMessageList(int page) {
-    _manager.getMsssageList(widget.orderNo, page,
+  void getMessageList() {
+    int page = _dataSource.length ;
+    _manager.getHistoryMessage(widget.toUserName,page,
         (List messages) {
       if (page == 0) {
         if (mounted){
         setState(() {
+          _dataSource = [];
           _dataSource.addAll(messages);
         });
         }
+        Timer(Duration(milliseconds: 500),
+              () => _controller.jumpTo(_controller.position.maxScrollExtent));
       } else {
         if (mounted){
                   setState(() {
@@ -96,36 +100,16 @@ class _TLDIMPageState extends State<TLDIMPage> {
         });
         }
       }
-      if (messages.length > 0) {
-        _page = page + 1;
-      }
       _refreshController.refreshCompleted();
-    });
-  }
-  //注册广播
-  void registerEvent(){
-    _messageSubscription = eventBus.on<TLDMessageEvent>().listen((event) {
-      for (TLDMessageModel item in event.messageList) {
-          if (item.messageType == 2){
-            _dataSource.add(item);
-          }
-        }
-      setState(() {
-        _dataSource;
-      });
-      Timer(Duration(milliseconds: 500),
-              () => _controller.jumpTo(_controller.position.maxScrollExtent));
     });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
+    
+    _manager.removeRecieveMessageCallBack(widget.toUserName);
 
-    _messageSubscription.cancel();
-    _manager.isOnChatPage = false;
-    _manager.talkAddress = '';
+    super.dispose();
   }
 
   @override
@@ -203,33 +187,26 @@ class _TLDIMPageState extends State<TLDIMPage> {
     }
   }
 
-  void sendImageMessage(File image) {
-    _modelManager.uploadImageInservice(image, (String url) {
-      TLDMessageModel messageModel = TLDMessageModel();
-      messageModel.content = url;
-      messageModel.fromAddress = widget.selfWalletAddress;
-      messageModel.toAddress = widget.otherGuyWalletAddress;
+  void sendImageMessage(File image) async {
+      TLDNewMessageModel messageModel = TLDNewMessageModel();
       messageModel.contentType = 2;
-      messageModel.createTime = DateTime.now().millisecondsSinceEpoch;
-      messageModel.messageType = 2;
-      messageModel.orderNo = widget.orderNo;
-      messageModel.bizAttr = '';
-      messageModel.unread = true;
-      TLDIMManager manager = TLDIMManager.instance;
-      manager.sendMessage(messageModel);
-    }, (TLDError error) {
-      Fluttertoast.showToast(
-          msg: error.msg,
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 1);
-    });
+      messageModel.imageFile = image;
+      messageModel.toUserName = widget.toUserName;
+      JMImageMessage imageMessage = await _manager.sendMessage(messageModel);
+      if (mounted && imageMessage.state == JMMessageState.send_succeed){
+          setState(() {
+            _dataSource.add(imageMessage); 
+          }); 
+      }
+       Timer(Duration(milliseconds: 500),
+              () => _controller.jumpTo(_controller.position.maxScrollExtent));
   }
 
   Widget _getFreshWidget(BuildContext context) {
     return SmartRefresher(
       controller: _refreshController,
       header: WaterDropHeader(complete: Container()),
-      onRefresh: () => getMessageList(_page),
+      onRefresh: () => getMessageList(),
       child: _getMessageListView(context),
     );
   }
@@ -240,63 +217,65 @@ class _TLDIMPageState extends State<TLDIMPage> {
       controller: _controller,
       dragStartBehavior: DragStartBehavior.down,
       itemBuilder: (BuildContext context, int index) {
-        TLDMessageModel model = _dataSource[index];
-        if (model.contentType == 1) {
+        var message = _dataSource[index];
+        if (message.runtimeType.toString() == 'JMTextMessage') {
+          JMTextMessage textMessage = message;
           if (_isNeedToshowTimeLabel(index)) {
-            if (widget.otherGuyWalletAddress == model.toAddress) {
+            if (textMessage.isSend == true) {
               return TLDIMUserTimeWordMessageCell(
-                content: model.content,
-                createTime: model.createTime,
+                content: textMessage.text,
+                createTime: textMessage.createTime,
               );
             } else {
               return TLDIMOtherUserTimeWordMessageCell(
-                content: model.content,
-                createTime: model.createTime,
+                content: textMessage.text,
+                createTime: textMessage.createTime,
               );
             }
           } else {
-            if (widget.otherGuyWalletAddress == model.toAddress) {
+            if (textMessage.isSend == true) {
               return TLDIMUserWordMessageCell(
-                content: model.content,
+                content: textMessage.text
               );
             } else {
               return TLDIMOtherUserWordMessageCell(
-                content: model.content,
+                content: textMessage.text,
               );
             }
           }
         } else {
+          JMImageMessage imageMessage = message;
           if (_isNeedToshowTimeLabel(index)) {
-            if (widget.otherGuyWalletAddress == model.toAddress) {
+            if (imageMessage.isSend == true) {
               return GestureDetector(
-                onTap : ()=> _openImage(model.content,context),
+                onTap : ()=> _openImage(imageMessage.thumbPath,context),
                 child : TLDIMUserTimeImageMessageCell(
-                imageUrl: model.content,
-                createTime: model.createTime,
+                imageUrl: imageMessage.thumbPath,
+                createTime: imageMessage.createTime,
               )
               );
             } else {
               return GestureDetector(
-                onTap :()=> _openImage(model.content,context),
+                onTap :()=> _openImage(imageMessage.thumbPath,context),
                 child : TLDIMOtherUserTimeImageMessageCell(
-                imageUrl: model.content,
-                createTime: model.createTime,
+                message: imageMessage,
+                createTime: imageMessage.createTime,
               )
               );
             }
           } else {
-            if (widget.otherGuyWalletAddress == model.toAddress) {
+            if (imageMessage.isSend == true) {
               return GestureDetector(
-                onTap:()=> _openImage(model.content,context),
+                onTap:()=> _openImage(imageMessage.thumbPath,context),
                 child : TLDIMUserImageMessageCell(
-                imageUrl: model.content,
+                imageUrl: imageMessage.thumbPath,
               )
               );
             } else {
              return GestureDetector(
-               onTap : ()=> _openImage(model.content,context),
+               onTap : ()=> _openImage(imageMessage.thumbPath,context),
                child : TLDIMOtherUserImageMessageCell(
-                imageUrl: model.content,
+                message: imageMessage,
               )
              );
             }
@@ -318,8 +297,8 @@ class _TLDIMPageState extends State<TLDIMPage> {
     if (index == 0) {
       return true;
     } else {
-      TLDMessageModel lastModel = _dataSource[index - 1];
-      TLDMessageModel currentModel = _dataSource[index];
+      JMNormalMessage lastModel = _dataSource[index - 1];
+      JMNormalMessage currentModel = _dataSource[index];
       return currentModel.createTime - lastModel.createTime > 30000;
     }
   }
@@ -327,14 +306,13 @@ class _TLDIMPageState extends State<TLDIMPage> {
   Widget _getBody(BuildContext context) {
     return Column(
       children: <Widget>[
-        TLDIMHeaderView(orderNo: widget.orderNo,),
+        // TLDIMHeaderView(orderNo: widget.orderNo,),
         Expanded(
           child: _getFreshWidget(context),
         ),
         TLDInputView(
           orderNo: widget.orderNo,
-          selfAddress: widget.selfWalletAddress,
-          otherGuyAddress: widget.otherGuyWalletAddress,
+          toUserName: widget.toUserName,
           beginEditingCallBack: () {
             _controller.jumpTo(_controller.position.maxScrollExtent);
           },
@@ -343,6 +321,16 @@ class _TLDIMPageState extends State<TLDIMPage> {
           },
           didClickPhotoBtnCallBack: () {
             _openGallery();
+          },
+          didSencMessageCallBack: (TLDNewMessageModel messageModel) async {
+           JMTextMessage textMessage =  await _manager.sendMessage(messageModel);
+           if (mounted && textMessage.state == JMMessageState.send_succeed){
+               setState(() {
+                 _dataSource.add(textMessage);
+               });
+           }
+           Timer(Duration(milliseconds: 500),
+              () => _controller.jumpTo(_controller.position.maxScrollExtent));
           },
         ),
       ],

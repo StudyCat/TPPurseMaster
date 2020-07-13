@@ -17,7 +17,7 @@ class TLDPurseSideslipView extends StatefulWidget {
 class _TLDPurseSideslipViewState extends State<TLDPurseSideslipView> {
 
   List iconList = [0xe641,0xe672,0xe8ac,0xe665,0xe60e];
-  List titleList = ['收款方式','积分兑换说明','反馈','关于我们','用户协议'];
+  List titleList = ['收款方式','TLD兑换说明','反馈','关于我们','用户协议'];
 
   String _totalAmount;
 

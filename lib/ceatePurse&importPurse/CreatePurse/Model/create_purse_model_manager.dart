@@ -16,15 +16,19 @@ import '../../../Base/tld_base_request.dart';
 
 class TLDCreatePurseModelManager {
 
-  void createSafeSecretPasswordRegisterUser(Function success,Function(TLDError) failure){
+  void createSafeSecretPasswordRegisterUser(String password,Function(String) success,Function(TLDError) failure){
     String registerId = TLDDataManager.instance.registrationID;
-    TLDBaseRequest request = TLDBaseRequest({'registrationId': registerId},'wallet/registerUser');
+    TLDBaseRequest request = TLDBaseRequest({'registrationId': registerId,'password':password},'wallet/registerUser');
     request.postNetRequest((value) async{
-      String token = value;
+      Map data = value;
+      String token = data['token'];
+      String username = data['username'];
       SharedPreferences perference = await SharedPreferences.getInstance();
       perference.setString('userToken',token);
       TLDDataManager.instance.userToken = token;
-      success();
+      perference.setString('username', username);
+      
+      success(username);
     }, (error)=> failure(error));
   }
 

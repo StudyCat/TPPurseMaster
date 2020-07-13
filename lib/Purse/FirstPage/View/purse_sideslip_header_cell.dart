@@ -24,7 +24,7 @@ class _TLDPurseSideSlipHeaderCellState extends State<TLDPurseSideSlipHeaderCell>
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(left : 15,bottom: 5),
-            child: Text('总积分（TLD）',style : TextStyle(fontSize : 14 ,color : Theme.of(context).hintColor))
+            child: Text('TLD',style : TextStyle(fontSize : 14 ,color : Theme.of(context).hintColor))
           ),
           Container(
             padding: EdgeInsets.only(left : 15),

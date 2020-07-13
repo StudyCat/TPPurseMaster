@@ -67,6 +67,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
     _registerUnreadMessageEvent();
     _registerSystemMessageEvent();
+    _registerTabbarClickEvent();
     _loadBuyList(_keyword, _page);
   }
 

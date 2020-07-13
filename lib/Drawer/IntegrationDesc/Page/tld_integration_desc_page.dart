@@ -25,7 +25,7 @@ class _TLDIntegrationDescPageState extends State<TLDIntegrationDescPage> {
         ),
         heroTag: 'integration_desc_page',
         transitionBetweenRoutes: false,
-        middle: Text('积分兑换说明'),
+        middle: Text('TLD兑换说明'),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),

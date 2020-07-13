@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/ImportPurse/Page/tld_import_purse_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -169,7 +170,9 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
   }
 
   void _registerUser(){
-    _manager.createSafeSecretPasswordRegisterUser((){
+    _manager.createSafeSecretPasswordRegisterUser(_password,(String username){
+      //登录IM
+      TLDNewIMManager().loginJpush(username, _password);
       _savePassword();
       if (widget.type == TLDCreatePursePageType.create){
           Navigator.push(context, MaterialPageRoute(builder: (context) => TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));

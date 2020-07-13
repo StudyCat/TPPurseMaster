@@ -1,10 +1,11 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../CommonFunction/tld_common_function.dart';
 
 class TLDPurseHeaderCell extends StatefulWidget {
-  TLDPurseHeaderCell({Key key,this.didClickCreatePurseButtonCallBack,this.didClickImportPurseButtonCallBack,this.totalAmount = 0.0}) : super(key: key);
+  TLDPurseHeaderCell({Key key,this.didClickCreatePurseButtonCallBack,this.didClickImportPurseButtonCallBack,this.totalAmount = 0.000}) : super(key: key);
 
   final Function didClickCreatePurseButtonCallBack;
   final Function didClickImportPurseButtonCallBack;
@@ -26,7 +27,8 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size; 
+    Size screenSize = MediaQuery.of(context).size;
+    String moneyStr = widget.totalAmount > 0 ?  NumUtil.getNumByValueDouble(widget.totalAmount, 3).toStringAsFixed(3) : '0.0';
     return Container(
       color: Theme.of(context).primaryColor,
       padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
@@ -34,13 +36,13 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text('总积分',style: TextStyle(color:Theme.of(context).hintColor,fontSize: 12),),
+          Text('TLD',style: TextStyle(color:Theme.of(context).hintColor,fontSize: 12),),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                 width: screenSize.width - ScreenUtil().setWidth(150),
-                child: Text(_isShowMoney ? getMoneyStyleStr(widget.totalAmount.toString()) :'***',style : TextStyle(fontSize : 26,color : Theme.of(context).hintColor)),
+                child: Text(_isShowMoney ? getMoneyStyleStr(moneyStr):'***',style : TextStyle(fontSize : 26,color : Theme.of(context).hintColor)),
               ),
               GestureDetector(
                 onTap: (){

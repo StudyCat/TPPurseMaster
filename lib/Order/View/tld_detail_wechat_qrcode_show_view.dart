@@ -56,13 +56,16 @@ class _TLDDetailWechatQrCodeShowViewState extends State<TLDDetailWechatQrCodeSho
   }
 
   Widget _getStackQrCodeView(){
-    return Stack(
+    return RepaintBoundary(
+          key : repainKey,
+          child:  Stack(
       alignment : FractionalOffset(0.5,0.37),
       children: <Widget>[
         Image.asset('assetss/images/wechat_qrcode.png',width:ScreenUtil().setWidth(584),height: ScreenUtil().setWidth(792),fit: BoxFit.fill,),
         _getQRCodeImageAndPriceLabel()
       ],
-    );
+    ),
+        );
   }
 
   Widget _getQRCodeImageAndPriceLabel(){
@@ -70,10 +73,7 @@ class _TLDDetailWechatQrCodeShowViewState extends State<TLDDetailWechatQrCodeSho
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        RepaintBoundary(
-          key : repainKey,
-          child: QrImage(data: widget.qrCode,size :ScreenUtil().setWidth(340)),
-        ),
+        QrImage(data: widget.qrCode,size :ScreenUtil().setWidth(340)),
         Padding(
           padding: EdgeInsets.only(top : ScreenUtil().setHeight(60)),
           child: Text('支付：¥'+widget.amount,style:TextStyle(color : Colors.white,fontSize: ScreenUtil().setSp(32),decoration: TextDecoration.none)),

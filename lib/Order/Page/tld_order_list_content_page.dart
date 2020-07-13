@@ -150,8 +150,8 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
   Widget _getListItem(BuildContext context,int index){
     TLDOrderListModel model = _dataSource[index];
     bool isBuyer =  widget.type == 1 ? true : false;
-    String selfAddress = isBuyer == true ? model.buyerAddress : model.sellerAddress;
-     String otherAddress = isBuyer == false ? model.buyerAddress : model.sellerAddress;
+    // String selfAddress = isBuyer == true ? model.buyerAddress : model.sellerAddress;
+    //  String otherAddress = isBuyer == false ? model.buyerAddress : model.sellerAddress;
     return TLDOrderListCell(
       orderListModel: model,
       didClickDetailBtnCallBack: (){
@@ -162,11 +162,11 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
         });
         },
       didClickIMBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: model.orderNo,))).then((value) {
-          _pramaterModel.page = 1;
-          _refreshController.requestRefresh();
-          _getOrderListDataWithPramaterModel(_pramaterModel);
-        });
+        // Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: model.orderNo,))).then((value) {
+        //   _pramaterModel.page = 1;
+        //   _refreshController.requestRefresh();
+        //   _getOrderListDataWithPramaterModel(_pramaterModel);
+        // });
       },
       didClickItemCallBack: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: model.orderNo,isBuyer: isBuyer,))).then((value) {

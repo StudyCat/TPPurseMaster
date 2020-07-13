@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 import '../View/tld_im_message_cell.dart';
 
 class TLDIMMessageContentPage extends StatefulWidget {
@@ -60,7 +61,7 @@ class _TLDIMMessageContentPageState extends State<TLDIMMessageContentPage> with 
     _modelManager.searchChatGroup((List groupList){
       _dataSource = [];
       if (mounted){
-              setState(() {
+      setState(() {
         _dataSource.addAll(groupList);
       });
       }
@@ -72,31 +73,20 @@ class _TLDIMMessageContentPageState extends State<TLDIMMessageContentPage> with 
     return ListView.builder(
       itemCount: _dataSource.length,
       itemBuilder: (BuildContext context, int index) {
-      TLDMessageModel messageModel = _dataSource[index];
+      JMConversationInfo conversationInfo = _dataSource[index];
       return GestureDetector(
-        onTap: () => _jumpToChatPage(messageModel),
-        child: TLDIMMessageCell(messageModel: messageModel),
+        onTap: (){
+          _jumpToChatPage(conversationInfo);
+        },
+        child: TLDIMMessageCell(conversationInfo : conversationInfo),
       );
      },
     );
   }
 
-  void _jumpToChatPage(TLDMessageModel messageModel){
-    List purseList =  TLDDataManager.instance.purseList;
-    List addressList = [];
-    String selfAddress = '';
-    String toAddress = '';
-    for (TLDWallet wallet in purseList) {
-      addressList.add(wallet.address);
-    }
-    if (addressList.contains(messageModel.fromAddress)){
-      selfAddress = messageModel.fromAddress;
-      toAddress = messageModel.toAddress;
-    }else{
-      selfAddress = messageModel.toAddress;
-      toAddress = messageModel.fromAddress;
-    }
-    Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress:selfAddress,otherGuyWalletAddress: toAddress,orderNo: messageModel.orderNo,))).then((value) => _searchIMChatGroup());
+  void _jumpToChatPage(JMConversationInfo conversationInfo){
+    JMUserInfo userInfo = conversationInfo.target;
+    Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(toUserName: userInfo.username))).then((value) => _searchIMChatGroup());
   }
 
   @override

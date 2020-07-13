@@ -1,22 +1,23 @@
 import 'dart:convert';
 
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDInputView extends StatefulWidget {
-  TLDInputView({Key key,this.selfAddress,this.otherGuyAddress,this.orderNo,this.beginEditingCallBack,this.didClickCameraBtnCallBack,this.didClickPhotoBtnCallBack}) : super(key: key);
+  TLDInputView({Key key,this.toUserName,this.orderNo,this.beginEditingCallBack,this.didClickCameraBtnCallBack,this.didClickPhotoBtnCallBack,this.didSencMessageCallBack}) : super(key: key);
 
-  final String selfAddress;
-
-  final String otherGuyAddress;
+  final String toUserName;
 
   final Function beginEditingCallBack;
 
   final Function didClickCameraBtnCallBack;
 
   final Function didClickPhotoBtnCallBack;
+
+  final Function(TLDNewMessageModel) didSencMessageCallBack; 
 
   final String orderNo;
 
@@ -142,18 +143,11 @@ class _TLDInputViewState extends State<TLDInputView> {
                     child: Text('发送',style : TextStyle(color : Colors.white,fontSize : ScreenUtil().setSp(28))),
                     // padding: EdgeInsets.all(0),
                     onPressed: () {
-                      TLDMessageModel messageModel = TLDMessageModel();
-                      messageModel.content = _text;
-                      messageModel.fromAddress = widget.selfAddress;
-                      messageModel.toAddress = widget.otherGuyAddress;
+                      TLDNewMessageModel messageModel = TLDNewMessageModel();
+                      messageModel.text = _text;
                       messageModel.contentType = 1;
-                      messageModel.createTime = DateTime.now().millisecondsSinceEpoch;
-                      messageModel.messageType = 2;
-                      messageModel.orderNo = widget.orderNo;
-                      messageModel.bizAttr = '';
-                      messageModel.unread = true;
-                      TLDIMManager manager = TLDIMManager.instance;
-                      manager.sendMessage(messageModel);
+                      messageModel.toUserName = widget.toUserName;
+                      widget.didSencMessageCallBack(messageModel);
                       _controller.text = '';
                     }),
               )

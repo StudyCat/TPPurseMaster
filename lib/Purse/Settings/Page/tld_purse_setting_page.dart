@@ -1,8 +1,12 @@
+import 'dart:ffi';
+
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Purse/Settings/Page/tld_purse_level_desc_page.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import '../View/tld_purse_setting_cell.dart';
@@ -41,10 +45,10 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
 
     if (widget.wallet.mnemonic.length != null && widget.wallet.mnemonic.length > 0){
       hasMnemonicWord = true;
-      titles = [ '更改钱包名称','备份钱包助记词','导出私钥','删除钱包',];
+      titles = [ '更改钱包名称','备份钱包助记词','导出私钥','删除钱包','等级说明'];
     }else{
       hasMnemonicWord = false;
-      titles = [ '更改钱包名称','导出私钥','删除钱包',];
+      titles = [ '更改钱包名称','导出私钥','删除钱包','等级说明'];
     }  
   }
 
@@ -87,12 +91,22 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
                 }else{
                   _deletePurse(context);
                 }
-              } else {
-                _deletePurse(context);
+              } else if(index == 3){
+                if (hasMnemonicWord){
+                  _deletePurse(context);
+                }else{
+                  _jumpLevelPage();
+                }
+              }else{
+                _jumpLevelPage();
               }
             },
           );
         });
+  }
+
+  void _jumpLevelPage(){
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPurseLevelDescPage()));
   }
 
   void _backUpMnemonicWord(){

@@ -49,6 +49,11 @@ android {
             storePassword 'tlddollar'
         }
         }
+        // ndk {
+        //     //选择要添加的对应cpu类型的.so库。
+        //     abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a'
+        //     // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        // }
         applicationId "com.example.dragon_sword_purse"
         minSdkVersion 18
         targetSdkVersion 28

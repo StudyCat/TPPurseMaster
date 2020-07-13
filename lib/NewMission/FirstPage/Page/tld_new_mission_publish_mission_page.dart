@@ -206,16 +206,17 @@ class _TLDNewMissionPublishMissionPageState
           });
         },
         didClickIMBtnCallBack: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TLDIMPage(
-                        selfWalletAddress: item.sellerWalletAddress,
-                        otherGuyWalletAddress: item.buyerWalletAddress,
-                        orderNo: item.orderNo,
-                      ))).then((value) {
-            // _refreshController.requestRefresh();
-          });
+          
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => TLDIMPage(
+          //               selfWalletAddress: item.sellerWalletAddress,
+          //               otherGuyWalletAddress: item.buyerWalletAddress,
+          //               orderNo: item.orderNo,
+          //             ))).then((value) {
+          //   // _refreshController.requestRefresh();
+          // });
         },
       ));
     }

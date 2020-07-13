@@ -1,40 +1,29 @@
 import 'dart:convert';
 
 import 'package:bot_toast/bot_toast.dart';
-import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
-import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/IMUI/Page/tld_im_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
-import 'package:dragon_sword_purse/Purse/FirstPage/Page/tld_purse_page.dart';
 import 'package:dragon_sword_purse/Purse/MyPurse/Page/tld_my_purse_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
-import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
-import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_success_page.dart';
-import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_creating_purse_page.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'tld_tabbar_page.dart';
-import 'Purse/Settings/Page/tld_purse_setting_page.dart';
-import 'Purse/Settings/Page/tld_purse_backup_word_success_page.dart';
-import 'package:flutter/services.dart';
 import 'dart:async';
 import 'CommonWidget/tld_data_manager.dart';
 import 'tld_home_page.dart';
 import 'dart:io';
-import 'package:uni_links/uni_links.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 
 void main(){
   final JPush jPush = JPush();
 
   Future<void> initPlatformState() async {
+    TLDNewIMManager().init();
 
     jPush.setup(
       appKey: 'fbc4ec1832b255c5dcb7944c',
@@ -192,7 +181,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> onSelectNotification(String playload) async {
     Map message = jsonDecode(playload);
     TLDMessageModel model =  TLDMessageModel.fromJson(message);
-    navigatorKey.currentState.push(MaterialPageRoute(builder: (context) => TLDIMPage(otherGuyWalletAddress: model.fromAddress,selfWalletAddress: model.toAddress,orderNo: model.orderNo,)));
+    // navigatorKey.currentState.push(MaterialPageRoute(builder: (context) => TLDIMPage(otherGuyWalletAddress: model.fromAddress,selfWalletAddress: model.toAddress,orderNo: model.orderNo,)));
   }
 
   @override

@@ -94,7 +94,7 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
       // });
       _detailOrderModel = null;
       getOrderInfo();
-      Fluttertoast.showToast(msg: '确认释放积分成功',toastLength: Toast.LENGTH_SHORT,
+      Fluttertoast.showToast(msg: '确认释放TLD成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
       // setState(() {
@@ -231,7 +231,7 @@ class _TLDIMHeaderViewState extends State<TLDIMHeaderView> {
                       if (_buttonEnable == true){
                         if (_actionBtnTitleList.first == '我已付款'){
                           _confirmPaid();
-                        }else if(_actionBtnTitleList.first == '确认释放积分'){
+                        }else if(_actionBtnTitleList.first == '确认释放TLD'){
                           _sureSentCoin();
                         }else if (_actionBtnTitleList.first == '催单'){
                           _remindOrder();

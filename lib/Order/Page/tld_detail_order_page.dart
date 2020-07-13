@@ -158,7 +158,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       _detailOrderModel = null;
       _controller.sink.add(_detailOrderModel);
       _getDetailOrderInfo();
-      Fluttertoast.showToast(msg: '确认释放积分成功',toastLength: Toast.LENGTH_SHORT,
+      Fluttertoast.showToast(msg: '确认释放TLD成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
       if (mounted){
@@ -245,11 +245,11 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       flexibleSpace: FlexibleSpaceBar(
         background: TLDDetailOrderHeaderView(detailOrderModel: _detailOrderModel,isBuyer: widget.isBuyer,
         didClickChatBtnCallBack: (){
-          String selfAddress = widget.isBuyer == true ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
-          String otherAddress = widget.isBuyer == false ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
-          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: _detailOrderModel.orderNo,))).then((value){
-            _getDetailOrderInfo();
-          });
+          // String selfAddress = widget.isBuyer == true ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
+          // String otherAddress = widget.isBuyer == false ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
+          // Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: _detailOrderModel.orderNo,))).then((value){
+          //   _getDetailOrderInfo();
+          // });
         },
         timeIsOverRefreshUICallBack: (){
           _detailOrderModel = null;
@@ -327,7 +327,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
                 _cancelOrder();
               }else if(buttonTitle == '我已付款'){
                 _confirmPaid();
-              }else if(buttonTitle == '确认释放积分'){
+              }else if(buttonTitle == '确认释放TLD'){
                 _sureSentCoin();
               }else if (buttonTitle == '催单'){
                 _remindOrder();
@@ -339,7 +339,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
                 _cancelOrder();
               }else if(buttonTitle == '我已付款'){
                 _confirmPaid();
-              }else if(buttonTitle == '确认释放积分'){
+              }else if(buttonTitle == '确认释放TLD'){
                 _sureSentCoin();
               }else if (buttonTitle == '催单'){
                 _remindOrder();
@@ -416,10 +416,12 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
 
   Widget _getIMCell(){
     String title = widget.isBuyer == true ? '联系卖家' : '联系买家';
-    String selfAddress = widget.isBuyer == true ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
-    String otherAddress = widget.isBuyer == false ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
+    // String selfAddress = widget.isBuyer == true ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
+    // String otherAddress = widget.isBuyer == false ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: _detailOrderModel.orderNo,))).then((value) => _getDetailOrderInfo()),
+      onTap: () { 
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(toUserName: 'e2c8faa034ce4272aecf94a8a216cb2f',orderNo: _detailOrderModel.orderNo,))).then((value) => _getDetailOrderInfo());
+      },
       child:  Padding(
       padding: EdgeInsets.only(
           top: ScreenUtil().setHeight(2),

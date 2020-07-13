@@ -153,7 +153,7 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
     return GestureDetector(
           onTap:(){
             Map attrMap = jsonDecode(model.bizAttr);
-            if ((model.contentType > 99 && model.contentType < 105) || model.contentType == 107){
+            if ((model.contentType > 99 && model.contentType < 105) || model.contentType == 107 || model.contentType == 108){
               String orderNo = attrMap['orderNo'];
               bool isBuyer = false;
               String buyerAddress = attrMap['buyerAddress'];

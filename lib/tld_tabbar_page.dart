@@ -13,6 +13,7 @@ import 'package:dragon_sword_purse/NewMission/FirstPage/Page/tld_new_mission_fir
 import 'package:dragon_sword_purse/Purse/TransferAccounts/Page/tld_transfer_accounts_page.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_tab_sale_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_creating_purse_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
@@ -101,16 +102,17 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
     currentIndex = 0;
     _pageController = PageController();
     
-    List purseList = TLDDataManager.instance.purseList;
-      List addressList = [];
-      for (TLDWallet item in purseList) {
-        addressList.add(item.address);
-      }
-    String addressListJson = jsonEncode(addressList);
-    TLDIMManager manager = TLDIMManager.instance;
-    manager.connectClient();
+    _loginIM();
 
     _initPlatformStateForStringUniLinks();
+  }
+
+  _loginIM()async{
+    String username = await TLDDataManager.instance.getUserName();
+    String password = await TLDDataManager.instance.getPassword();
+    if (username != null && password != null){
+          TLDNewIMManager().loginJpush(username, password);
+    }
   }
   
   //处理外部应用调起屠龙刀
@@ -234,20 +236,15 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
     print("--" + state.toString());
     switch (state) {
       case AppLifecycleState.inactive: {
-        TLDIMManager.instance.isInBackState = true;
       }// 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
         break;
       case AppLifecycleState.resumed:{
-        TLDIMManager.instance.isInBackState = false;
-        TLDIMManager.instance.connectClient();
       }
         break;
       case AppLifecycleState.paused:{
-        TLDIMManager.instance.isInBackState = true;
       } // 应用程序不可见，后台
         break;
       default : {
-        TLDIMManager.instance.isInBackState = true;
       }
         break;
     }

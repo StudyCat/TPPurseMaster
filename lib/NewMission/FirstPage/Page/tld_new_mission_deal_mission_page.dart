@@ -28,7 +28,7 @@ class TLDNewMissionDealMissionPage extends StatefulWidget {
   _TLDNewMissionDealMissionPageState createState() => _TLDNewMissionDealMissionPageState();
 }
 
-class _TLDNewMissionDealMissionPageState extends State<TLDNewMissionDealMissionPage> {
+class _TLDNewMissionDealMissionPageState extends State<TLDNewMissionDealMissionPage> with AutomaticKeepAliveClientMixin {
   TLDNewMissionDealMissionModelManager _modelManager;
 
   List _dataSource = [];

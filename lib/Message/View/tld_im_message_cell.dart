@@ -4,11 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:date_format/date_format.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 
 class TLDIMMessageCell extends StatefulWidget {
-  TLDIMMessageCell({Key key,this.messageModel}) : super(key: key);
+  TLDIMMessageCell({Key key,this.conversationInfo}) : super(key: key);
 
-  final TLDMessageModel messageModel;
+  final JMConversationInfo conversationInfo;
 
   @override
   _TLDIMMessageCellState createState() => _TLDIMMessageCellState();
@@ -19,10 +20,12 @@ class _TLDIMMessageCellState extends State<TLDIMMessageCell> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     String content;
-    if(widget.messageModel.contentType == 2){
-      content = '[图片]';
+    var message = widget.conversationInfo.latestMessage;
+    if(message.runtimeType.toString() == 'JMTextMessage'){
+      JMTextMessage textMessage = message;
+      content = textMessage.text;
     }else{
-      content = widget.messageModel.content;
+      content = '[图片]';
     }
     return Padding(
       padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right : ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(2)),
@@ -52,19 +55,19 @@ class _TLDIMMessageCellState extends State<TLDIMMessageCell> {
 
   Widget _getOrderNoWidget(){
     String unreadCount = '';
-    if(widget.messageModel.unreadCount > 99){
+    if(widget.conversationInfo.unreadCount > 99){
       unreadCount = '99+';
     }else{
-      unreadCount = '${widget.messageModel.unreadCount}';
+      unreadCount = '${widget.conversationInfo.unreadCount}';
     }
     return Container(
       width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(100),
       child : Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text('订单号：'+ widget.messageModel.orderNo,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51))),
+          Text('订单号：'+ '',style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51))),
           Offstage(
-            offstage : !widget.messageModel.unread,
+            offstage : widget.conversationInfo.unreadCount == 0,
             child: Container(
               width:ScreenUtil().setWidth(40),
               height : ScreenUtil().setWidth(40),
@@ -81,13 +84,14 @@ class _TLDIMMessageCellState extends State<TLDIMMessageCell> {
   }
 
   Widget _getTimeAndStatusWidget(){
+    JMNormalMessage message = widget.conversationInfo.latestMessage;
     return Container(
       width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(100),
       child : Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.messageModel.createTime),[yyyy,'-',mm,'-',dd,' ',HH,':',nn,':',ss]),style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
-          Text(widget.messageModel.unread ? '未读':'已读',style: TextStyle(fontSize : ScreenUtil().setSp(20),color : widget.messageModel.unread ? Color.fromARGB(255, 208, 2, 27):Color.fromARGB(255, 153, 153, 153))),
+          Text(formatDate(DateTime.fromMillisecondsSinceEpoch(message.createTime),[yyyy,'-',mm,'-',dd,' ',HH,':',nn,':',ss]),style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
+          Text(widget.conversationInfo.unreadCount > 0 ? '未读':'已读',style: TextStyle(fontSize : ScreenUtil().setSp(20),color : widget.conversationInfo.unreadCount > 0 ? Color.fromARGB(255, 208, 2, 27):Color.fromARGB(255, 153, 153, 153))),
         ],
       )
     );

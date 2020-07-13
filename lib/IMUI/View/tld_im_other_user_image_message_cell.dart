@@ -2,12 +2,13 @@ import 'package:dragon_sword_purse/IMUI/View/tld_left_bubble.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 import 'tld_left_image_bubble.dart';
 
 class TLDIMOtherUserImageMessageCell extends StatefulWidget {
-  TLDIMOtherUserImageMessageCell({Key key,this.imageUrl}) : super(key: key);
+  TLDIMOtherUserImageMessageCell({Key key,this.message}) : super(key: key);
 
-  final String imageUrl;
+  final JMImageMessage message;
 
   @override
   _TLDIMOtherUserImageMessageCellState createState() => _TLDIMOtherUserImageMessageCellState();
@@ -24,7 +25,7 @@ class _TLDIMOtherUserImageMessageCellState extends State<TLDIMOtherUserImageMess
           Container(
             width: ScreenUtil().setWidth(360),
             // height: ScreenUtil().setWidth(360),
-            child: TLDLeftImageBubbleView(imageUrl: widget.imageUrl),
+            child: TLDLeftImageBubbleView(messageId : widget.message.id, username: widget.message.from.username,),
             constraints: BoxConstraints(
               maxWidth: size.width / 2
             ),

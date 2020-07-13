@@ -171,8 +171,7 @@ class TLDDataBaseManager {
 
 //搜索历史消息（通过orderNo为条件）
   Future<List> searchIMDataBase(String orderNo,int page) async{
-    int pageLimit = page * 10;
-    List<Map> maps = await db.rawQuery('SELECT * FROM $tableIM WHERE $orderNoIM = \"$orderNo\" AND $messageTypeIM = 2 ORDER BY _id DESC LIMIT $pageLimit,10');
+    List<Map> maps = await db.rawQuery('SELECT * FROM $tableIM WHERE $orderNoIM = \"$orderNo\" AND $messageTypeIM = 2 ORDER BY _id DESC LIMIT $page,10');
      if (maps == null || maps.length == 0) {
       return [];
     }
