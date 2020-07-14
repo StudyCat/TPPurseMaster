@@ -38,11 +38,11 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
 
   RefreshController _controller;
 
-  StreamSubscription _unreadSubscription;
+  // StreamSubscription _unreadSubscription;
 
   StreamSubscription _refreshSubscription;
 
-  bool _haveUnreadMessage;
+  // bool _haveUnreadMessage;
 
   @override
   void initState() {
@@ -57,22 +57,22 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
 
     _controller = RefreshController(initialRefresh: true);
 
-    _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
+    // _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
 
-    _registerUnreadMessageEvent();
+    // _registerUnreadMessageEvent();
 
     _registerRefreshEvent();
 
     _getPurseInfoList(context);
   }
 
-  void _registerUnreadMessageEvent(){
-    _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
-      setState(() {
-        _haveUnreadMessage = event.haveUnreadMessage;
-      });
-    });
-  }
+  // void _registerUnreadMessageEvent(){
+  //   _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
+  //     setState(() {
+  //       _haveUnreadMessage = event.haveUnreadMessage;
+  //     });
+  //   });
+  // }
 
   void _registerRefreshEvent(){
     _refreshSubscription = eventBus.on<TLDRefreshFirstPageEvent>().listen((event) {
@@ -86,7 +86,7 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
     // TODO: implement dispose
     super.dispose();
 
-    _unreadSubscription.cancel();
+    // _unreadSubscription.cancel();
 
     _refreshSubscription.cancel();
   }
@@ -122,7 +122,7 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
               });
         }),
         automaticallyImplyLeading: false,
-        trailing: MessageButton(color : Colors.white,isHaveUnReadMessage: _haveUnreadMessage,didClickCallBack: () {
+        trailing: MessageButton(color : Colors.white,didClickCallBack: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage()));
         }),
       ),

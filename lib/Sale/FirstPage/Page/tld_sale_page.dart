@@ -5,10 +5,12 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Model/tld_sale_list_info_model.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/View/tld_sale_suspend_button.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../View/tld_sale_firstpage_cell.dart';
 import '../../DetailSale/Page/tld_detail_sale_page.dart';
@@ -35,7 +37,7 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
 
   bool _isLoading;
 
-  StreamSubscription _systemSubscreption;
+  // StreamSubscription _systemSubscreption;
 
   @override
   void initState() {
@@ -49,7 +51,8 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
 
     getSaleListInfo();
 
-    _registerSystemEvent();
+    // _registerSystemEvent();
+    _addSystemMessageCallBack();
   }
 
   @override
@@ -57,18 +60,32 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
     // TODO: implement dispose
     super.dispose();
 
-    _systemSubscreption.cancel();
+    // _systemSubscreption.cancel();
+    TLDNewIMManager().removeSystemMessageReceiveCallBack();
   }
 
-  void _registerSystemEvent(){
-    _systemSubscreption = eventBus.on<TLDSystemMessageEvent>().listen((event) {
-      TLDMessageModel messageModel = event.messageModel;
-      if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103 || messageModel.contentType == 104){
+    void _addSystemMessageCallBack(){
+    TLDNewIMManager().addSystemMessageReceiveCallBack((dynamic message){
+      JMNormalMessage normalMessage = message;
+      Map extras = normalMessage.extras;
+      int contentType = int.parse(extras['contentType']);
+      if (contentType == 100 || contentType == 101 || contentType == 103 || contentType == 104){
         _refreshController.requestRefresh();
         getSaleListInfo();
       }
     });
   }
+
+
+  // void _registerSystemEvent(){
+  //   _systemSubscreption = eventBus.on<TLDSystemMessageEvent>().listen((event) {
+  //     TLDMessageModel messageModel = event.messageModel;
+  //     if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103 || messageModel.contentType == 104){
+  //       _refreshController.requestRefresh();
+  //       getSaleListInfo();
+  //     }
+  //   });
+  // }
 
   void getSaleListInfo(){
     _modelManager.getSaleList(widget.type,(List dataList){

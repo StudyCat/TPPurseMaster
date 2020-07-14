@@ -6,11 +6,13 @@ import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Purse/MyPurse/Page/tld_my_purse_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../View/tld_system_message_cell.dart';
@@ -24,15 +26,13 @@ class TLDSystemMessageContentPage extends StatefulWidget {
 
 class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPage> with AutomaticKeepAliveClientMixin {
 
-  TLDIMManager _manager;
-
-  int _page;
+  // TLDIMManager _manager;
 
   List _dataSource = [];
 
   RefreshController _refreshController;
 
-  StreamSubscription _messageSubscription;
+  StreamSubscription _tabbarClickSubscription;
 
   TLDSystemMessageModelManager _modelManager;
 
@@ -40,23 +40,34 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
 
   StreamSubscription _refreshSubscription;
 
+  TLDNewIMManager _imManager;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    _manager = TLDIMManager.instance;
-    _manager.isOnChatPage = true;
+    // _manager = TLDIMManager.instance;
+    // _manager.isOnChatPage = true;
 
     _modelManager = TLDSystemMessageModelManager();
 
+    _imManager = TLDNewIMManager();
+
     _refreshController = RefreshController();
 
-    _page = 0;
-
-    _getSystemList(_page);
+    _getSystemList();
 
     registerEvent();
+
+    
+    _imManager.addSystemMessageReceiveCallBack((dynamic message){
+       if (mounted){
+         setState(() {
+           _dataSource.insert(0, message);
+         });
+       }
+    });
   }
 
   @override
@@ -64,54 +75,44 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
     // TODO: implement dispose
     super.dispose();
 
-    _messageSubscription.cancel();
+    _imManager.exitSystemConversation();
+    _imManager.removeSystemMessageReceiveCallBack();
+    // _messageSubscription.cancel();
     _refreshSubscription.cancel();
+    _tabbarClickSubscription.cancel();
   }
 
 
-  void _getSystemList(int page){
-     _manager.getSystemMsssageList(page,
-        (List messages) {
-      if (page == 0) {
-        _dataSource = [];
+  void _getSystemList(){
+    int page = _dataSource.length;
+    _modelManager.getSystemMessageList(page, (List messageList){
         if (mounted){
         setState(() {
-          _dataSource.addAll(messages);
+          _dataSource = [];
+          _dataSource.addAll(messageList);
         });
         }
-      } else {
-        if (mounted){
-        setState(() {
-          _dataSource.insertAll(0, messages);
-        });
-        }
-      }
-      if (messages.length > 0) {
-        _page = page + 1;
-      }
+      _refreshController.loadComplete();
       _refreshController.refreshCompleted();
     });
   }
 
    //注册广播
   void registerEvent(){
-    _messageSubscription = eventBus.on<TLDMessageEvent>().listen((event) {
-      for (TLDMessageModel item in event.messageList) {
-          if (item.messageType == 1){
-            _dataSource.add(item);
-          }
-        }
-      setState(() {
-        _dataSource;
-      });
-    });
-
       _refreshSubscription = eventBus.on<TLDRefreshMessageListEvent>().listen((event) {
         if(event.refreshPage == 2 || event.refreshPage == 3){
           _refreshController.requestRefresh();
-          _page = 0;
-          _getSystemList(_page); 
+          _dataSource = [];
+          _getSystemList(); 
+        }else{
+          TLDNewIMManager().exitSystemConversation();
         }
+    });
+
+    _tabbarClickSubscription = eventBus.on<TLDBottomTabbarClickEvent>().listen((event) {
+      if (event.index != 2){
+        TLDNewIMManager().exitSystemConversation();
+      }
     });
   }
 
@@ -122,24 +123,48 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
       isLoading: _isLoading,
       child: SmartRefresher(
       controller: _refreshController,
-      header: WaterDropHeader(complete: Container()),
-      onRefresh: () => _getSystemList(_page),
+      header: WaterDropHeader(
+      complete : Text('刷新完成')
+    ),
+      footer: CustomFooter(
+          builder: (BuildContext context,LoadStatus mode){
+            Widget body ;
+            if(mode==LoadStatus.idle){
+              body =  Text("上拉加载");
+            }
+            else if(mode==LoadStatus.loading){
+              body =  CupertinoActivityIndicator();
+            }
+            else if(mode == LoadStatus.canLoading){
+                body = Text("放下加载更多数据");
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child:body),
+            );
+          },
+        ),
+      onRefresh: (){
+        _dataSource = [];
+        _getSystemList();
+      },
+      onLoading: () => _getSystemList(),
       child: ListView.builder(
       itemCount: _dataSource.length,
       itemBuilder: (BuildContext context, int index) {
-        TLDMessageModel model = _dataSource[index];
+        JMTextMessage textMessage = _dataSource[index];
         return Dismissible(
           key: Key(UniqueKey().toString()), 
-          child: _getCellWidget(model),
+          child: _getCellWidget(textMessage),
           onDismissed: (DismissDirection direction){
             setState(() {
               _isLoading = true;
             });
-            _modelManager.deleteSystemMessage(model.id, (){
+            _modelManager.deleteSystemMessage(textMessage.id, (){
               setState(() {
               _isLoading = false;
               });
-              _dataSource.remove(model);
+              _dataSource.remove(textMessage);
             });
           },
           );
@@ -149,24 +174,15 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
     );
   }
 
-  Widget _getCellWidget(TLDMessageModel model){
+  Widget _getCellWidget(JMTextMessage textMessage){
     return GestureDetector(
           onTap:(){
-            Map attrMap = jsonDecode(model.bizAttr);
-            if ((model.contentType > 99 && model.contentType < 105) || model.contentType == 107 || model.contentType == 108){
+            Map attrMap = textMessage.extras;
+            int contentType = int.parse(attrMap['contentType']);
+            if ((contentType > 99 && contentType < 105) ||contentType == 107 || contentType == 108){
               String orderNo = attrMap['orderNo'];
-              bool isBuyer = false;
-              String buyerAddress = attrMap['buyerAddress'];
-              List purseList = TLDDataManager.instance.purseList;
-              List addressList = [];
-              for (TLDWallet item in purseList) {
-                addressList.add(item.address);
-              }
-              if (addressList.contains(buyerAddress)){
-                isBuyer = true;
-              }
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDDetailOrderPage(orderNo: orderNo,isBuyer: isBuyer,)));
-            }else if(model.contentType == 105){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDDetailOrderPage(orderNo: orderNo)));
+            }else if(contentType == 105){
               String address = attrMap['toAddress'];
               List purseList = TLDDataManager.instance.purseList;
                 TLDWallet wallet;
@@ -177,12 +193,12 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
                   }
                 }
              Navigator.push(context,MaterialPageRoute(builder: (context) => TLDMyPursePage(wallet: wallet,changeNameSuccessCallBack: (str){},)));
-            }else if (model.contentType == 106){
+            }else if (contentType == 106){
               int appealId = attrMap['appealId'];
               Navigator.push(context, MaterialPageRoute(builder: (context) => TLDJustNoticePage(appealId: appealId,)));
             }
           },
-          child : TLDSystemMessageCell(messageModel: model,)
+          child : TLDSystemMessageCell(textMessage: textMessage,)
         );
   }
 

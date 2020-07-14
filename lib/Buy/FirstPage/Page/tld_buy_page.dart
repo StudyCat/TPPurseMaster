@@ -4,11 +4,13 @@ import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import '../View/tld_buy_search_field.dart';
 import '../View/tld_buy_firstpage_cell.dart';
@@ -45,13 +47,13 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
 
   FocusNode _focusNode;
    
-  StreamSubscription _unreadSubscription;
+  // StreamSubscription _unreadSubscription;
 
-  StreamSubscription _systemSubscription;
+  // StreamSubscription _systemSubscription;
 
   StreamSubscription _tabbatClickSubscription;
 
-  bool _haveUnreadMessage;
+  // bool _haveUnreadMessage;
 
   @override
   void initState() {
@@ -64,20 +66,22 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     _streamController = StreamController();
     _page = 1;
     _dataSource = [];
-    _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
-    _registerUnreadMessageEvent();
-    _registerSystemMessageEvent();
+    // _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
+    // _registerUnreadMessageEvent();
+    // _registerSystemMessageEvent();
     _registerTabbarClickEvent();
     _loadBuyList(_keyword, _page);
+
+    _addSystemMessageCallBack();
   }
 
-    void _registerUnreadMessageEvent(){
-    _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
-      setState(() {
-        _haveUnreadMessage = event.haveUnreadMessage;
-      });
-    });
-  }
+  //   void _registerUnreadMessageEvent(){
+  //   _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
+  //     setState(() {
+  //       _haveUnreadMessage = event.haveUnreadMessage;
+  //     });
+  //   });
+  // }
 
   void _registerTabbarClickEvent(){
     _tabbatClickSubscription = eventBus.on<TLDBottomTabbarClickEvent>().listen((event) {
@@ -87,24 +91,38 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     });
   }
 
-  void _registerSystemMessageEvent(){
-    _systemSubscription = eventBus.on<TLDSystemMessageEvent>().listen((event) {
-       TLDMessageModel messageModel = event.messageModel;
-      if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103){
+  void _addSystemMessageCallBack(){
+    TLDNewIMManager().addSystemMessageReceiveCallBack((dynamic message){
+      JMNormalMessage normalMessage = message;
+      Map extras = normalMessage.extras;
+      int contentType = int.parse(extras['contentType']);
+      if (contentType == 100 || contentType == 101 || contentType == 103){
         _page = 1;
         _loadBuyList(_keyword, _page);
       }
     });
   }
 
+  // void _registerSystemMessageEvent(){
+  //   _systemSubscription = eventBus.on<TLDSystemMessageEvent>().listen((event) {
+  //      TLDMessageModel messageModel = event.messageModel;
+  //     if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103){
+  //       _page = 1;
+  //       _loadBuyList(_keyword, _page);
+  //     }
+  //   });
+  // }
+
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _unreadSubscription.cancel();
-    _systemSubscription.cancel();
+    // _unreadSubscription.cancel();
+    // _systemSubscription.cancel();
     _tabbatClickSubscription.cancel();
+
+    TLDNewIMManager().removeSystemMessageReceiveCallBack();
   }
 
   void _loadBuyList(String keyword,int page){
@@ -140,7 +158,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
       Fluttertoast.showToast(msg: '购买成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
       _focusNode.unfocus();
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailOrderPage(orderNo: orderNo,isBuyer: true,))).then((value){
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailOrderPage(orderNo: orderNo,))).then((value){
         _refreshController.requestRefresh();
         _page = 1;
         _loadBuyList(_keyword, _page);
@@ -200,7 +218,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
                   _focusNode.unfocus();
                   Navigator.push(context, MaterialPageRoute(builder: (context) => TLDOrderListPage()));
                 }),
-            MessageButton(isHaveUnReadMessage: _haveUnreadMessage,
+            MessageButton(
               didClickCallBack: (){
                 _focusNode.unfocus(); 
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage()));

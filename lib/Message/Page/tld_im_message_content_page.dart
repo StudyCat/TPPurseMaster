@@ -5,6 +5,7 @@ import 'package:dragon_sword_purse/IMUI/Page/tld_im_page.dart';
 import 'package:dragon_sword_purse/Message/Model/tld_message_model_manager.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,8 +27,6 @@ class _TLDIMMessageContentPageState extends State<TLDIMMessageContentPage> with 
 
   List _dataSource = [];
 
-  StreamSubscription _unreadSubscription;
-
   StreamSubscription _refreshSubscription;
   @override
   void initState() { 
@@ -36,24 +35,10 @@ class _TLDIMMessageContentPageState extends State<TLDIMMessageContentPage> with 
 
     _searchIMChatGroup();
 
-    _registerUnreadEvent();
-
-    _registerRefreshEvent();
-  }
-
-  _registerUnreadEvent(){
-    _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
-      if (event.haveUnreadMessage){
+    TLDNewIMManager().conversationRecieveMessageCallBack((dynamic message){
+      if (message != null){
         _searchIMChatGroup();
       }
-    });
-  }
-
-  _registerRefreshEvent(){
-    _refreshSubscription = eventBus.on<TLDRefreshMessageListEvent>().listen((event) {
-        if(event.refreshPage == 1 || event.refreshPage == 3){
-          _searchIMChatGroup();
-        }
     });
   }
 
@@ -65,6 +50,16 @@ class _TLDIMMessageContentPageState extends State<TLDIMMessageContentPage> with 
         _dataSource.addAll(groupList);
       });
       }
+    });
+  }
+
+    void registerEvent(){
+      _refreshSubscription = eventBus.on<TLDRefreshMessageListEvent>().listen((event) {
+        if(event.refreshPage == 2 || event.refreshPage == 3){
+          _searchIMChatGroup();
+        }else{
+          TLDNewIMManager().exitSystemConversation();
+        }
     });
   }
 
@@ -93,8 +88,8 @@ class _TLDIMMessageContentPageState extends State<TLDIMMessageContentPage> with 
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _unreadSubscription.cancel();
-    _refreshSubscription.cancel();
+
+    TLDNewIMManager().conversationRemoveRecieveMessageCallBack();
   }
 
   @override

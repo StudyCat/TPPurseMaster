@@ -1,20 +1,68 @@
+import 'dart:async';
+
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MessageButton extends StatefulWidget {
   final Function didClickCallBack;
 
-  final bool isHaveUnReadMessage;
-
   final Color color;
 
-  MessageButton({Key key,this.color,this.didClickCallBack,this.isHaveUnReadMessage = false}) : super(key: key);
+  MessageButton({Key key,this.color,this.didClickCallBack}) : super(key: key);
 
   @override
   _MessageButtonState createState() => _MessageButtonState();
 }
 
 class _MessageButtonState extends State<MessageButton> {
+
+  bool _isHaveUnReadMessage = false;
+
+  StreamSubscription _inIMPageSubscription;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _getUnreadStatus();
+
+    TLDNewIMManager().conversationRecieveMessageCallBack((dynamic message){
+      _getUnreadStatus();
+    });
+
+    _registerEvent();
+  }
+
+  _registerEvent(){
+    _inIMPageSubscription = eventBus.on<TLDInIMPageEvent>().listen((event) {
+      _getUnreadStatus();
+    });
+  }
+
+  _getUnreadStatus() async {
+    num unreadCount = await TLDNewIMManager().getUnreadMessageCount();
+    bool haveUnRead = false;
+    if (unreadCount > 0){
+      haveUnRead = true;
+    }
+    if(mounted){
+      setState(() {
+        _isHaveUnReadMessage = haveUnRead;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    TLDNewIMManager().conversationRemoveRecieveMessageCallBack();
+    _inIMPageSubscription.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +76,7 @@ class _MessageButtonState extends State<MessageButton> {
               padding: EdgeInsets.all(0),
             ),
            Offstage(
-             offstage: !widget.isHaveUnReadMessage,
+             offstage: !_isHaveUnReadMessage,
              child: ClipRRect(
              borderRadius: BorderRadius.all(Radius.circular(3.5)),
              child : Container(

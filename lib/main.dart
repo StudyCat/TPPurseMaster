@@ -53,17 +53,7 @@ void main(){
             Map dataMap = jsonDecode(extras['cn.jpush.android.EXTRA']);
             int type  = int.parse(dataMap['contentType']);
             if (type == 100 || type == 101 || type == 102 || type == 103 || type == 104 || type == 107){
-            bool isBuyer = false;
-            String buyerAddress = dataMap['buyerAddress'];
-            List purseList = TLDDataManager.instance.purseList;
-            List addressList = [];
-            for (TLDWallet item in purseList) {
-                addressList.add(item.address);
-            }
-            if (addressList.contains(buyerAddress)){
-               isBuyer = true;
-            }
-              navigatorKey.currentState.push( MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: dataMap['orderNo'],isBuyer: isBuyer,)));
+              navigatorKey.currentState.push( MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: dataMap['orderNo'],)));
             }else if (type == 105){
               String walletAddress = dataMap['toAddress'];
                 List purseList = TLDDataManager.instance.purseList;
@@ -124,53 +114,53 @@ class _MyAppState extends State<MyApp> {
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: onSelectNotification);
 
-    _registerEvent();  
+    // _registerEvent();  
   }
 
 
-  void _registerEvent(){
-    _messageSubscription = eventBus.on<TLDMessageEvent>().listen((event) {
-        List messageList = event.messageList;
-        for (TLDMessageModel item in messageList) {
-          if (item.messageType == 2){
-            _incrementCounter(item);
-          }
-        }
-    });
-  }
+  // void _registerEvent(){
+  //   _messageSubscription = eventBus.on<TLDMessageEvent>().listen((event) {
+  //       List messageList = event.messageList;
+  //       for (TLDMessageModel item in messageList) {
+  //         if (item.messageType == 2){
+  //           _incrementCounter(item);
+  //         }
+  //       }
+  //   });
+  // }
 
-    void _incrementCounter(TLDMessageModel model) async {
-       bool isFromOther = false; //是否为别人发的消息
-       String fromAddress = model.fromAddress;
-       List purseList = TLDDataManager.instance.purseList;
-       List addressList = [];          
-       for (TLDWallet item in purseList) {
-           addressList.add(item.address);
-       }
-      if (!addressList.contains(fromAddress)){
-          isFromOther = true;
-       }
-      if (isFromOther){
-       String content;
-       if (model.contentType == 1){
-         content = model.content;
-       }else{
-         content = '[图片]';
-       }
-       Map map = model.toJson();
-       String mapJson = jsonEncode(map);
-       String title = '来自订单号'+ model.orderNo + '的聊天消息'; 
-       var android = new AndroidNotificationDetails(
-        'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
-        priority: Priority.High,importance: Importance.Max
-       );
-       var iOS = new IOSNotificationDetails();
-       var platform = new NotificationDetails(android, iOS);
-       await flutterLocalNotificationsPlugin.show(
-         0, title, content, platform,
-         payload:mapJson);
-       }
-    }
+    // void _incrementCounter(TLDMessageModel model) async {
+    //    bool isFromOther = false; //是否为别人发的消息
+    //    String fromAddress = model.fromAddress;
+    //    List purseList = TLDDataManager.instance.purseList;
+    //    List addressList = [];          
+    //    for (TLDWallet item in purseList) {
+    //        addressList.add(item.address);
+    //    }
+    //   if (!addressList.contains(fromAddress)){
+    //       isFromOther = true;
+    //    }
+    //   if (isFromOther){
+    //    String content;
+    //    if (model.contentType == 1){
+    //      content = model.content;
+    //    }else{
+    //      content = '[图片]';
+    //    }
+    //    Map map = model.toJson();
+    //    String mapJson = jsonEncode(map);
+    //    String title = '来自订单号'+ model.orderNo + '的聊天消息'; 
+    //    var android = new AndroidNotificationDetails(
+    //     'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
+    //     priority: Priority.High,importance: Importance.Max
+    //    );
+    //    var iOS = new IOSNotificationDetails();
+    //    var platform = new NotificationDetails(android, iOS);
+    //    await flutterLocalNotificationsPlugin.show(
+    //      0, title, content, platform,
+    //      payload:mapJson);
+    //    }
+    // }
 
   Future<void> onDidReceiveLocalNotification(
       int id, String title, String body, String payload) async {
@@ -180,7 +170,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> onSelectNotification(String playload) async {
     Map message = jsonDecode(playload);
-    TLDMessageModel model =  TLDMessageModel.fromJson(message);
+    // TLDMessageModel model =  TLDMessageModel.fromJson(message);
     // navigatorKey.currentState.push(MaterialPageRoute(builder: (context) => TLDIMPage(otherGuyWalletAddress: model.fromAddress,selfWalletAddress: model.toAddress,orderNo: model.orderNo,)));
   }
 

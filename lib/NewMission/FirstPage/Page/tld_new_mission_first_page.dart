@@ -35,9 +35,9 @@ class TLDNewMissionFirstPage extends StatefulWidget {
 }
 
 class _TLDNewMissionFirstPageState extends State<TLDNewMissionFirstPage> with AutomaticKeepAliveClientMixin ,TickerProviderStateMixin {
-  StreamSubscription _unreadSubscription;
+  // StreamSubscription _unreadSubscription;
 
-  bool _haveUnreadMessage;
+  // bool _haveUnreadMessage;
 
   List<Widget> _pages = [];
 
@@ -64,9 +64,9 @@ class _TLDNewMissionFirstPageState extends State<TLDNewMissionFirstPage> with Au
 
     _control = TLDNewMissionPageControl(null);
 
-    _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
+    // _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
 
-    _registerUnreadMessageEvent();
+    // _registerUnreadMessageEvent();
 
     String walletAddress = TLDDataManager.instance.missionWalletAddress;
     if (walletAddress != null){
@@ -76,13 +76,13 @@ class _TLDNewMissionFirstPageState extends State<TLDNewMissionFirstPage> with Au
     }
   }
 
-  void _registerUnreadMessageEvent(){
-    _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
-      setState(() {
-        _haveUnreadMessage = event.haveUnreadMessage;
-      });
-    });
-  }
+  // void _registerUnreadMessageEvent(){
+  //   _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
+  //     setState(() {
+  //       _haveUnreadMessage = event.haveUnreadMessage;
+  //     });
+  //   });
+  // }
 
   void _getMissionWallet(String walletAddress){
     // Future.delayed(Duration.zero,(){
@@ -143,7 +143,7 @@ class _TLDNewMissionFirstPageState extends State<TLDNewMissionFirstPage> with Au
     // TODO: implement dispose
     super.dispose();
 
-    _unreadSubscription.cancel();
+    // _unreadSubscription.cancel();
   }
 
   void _getTabControlAndPage(){
@@ -229,7 +229,6 @@ class _TLDNewMissionFirstPageState extends State<TLDNewMissionFirstPage> with Au
                               builder: (context) => TLDOrderListPage()));
                     }),
                 MessageButton(
-                  isHaveUnReadMessage: _haveUnreadMessage,
                   didClickCallBack: () => Navigator.push(
                       context,
                       MaterialPageRoute(

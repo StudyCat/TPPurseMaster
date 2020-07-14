@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:date_format/date_format.dart';
 import 'package:jmessage_flutter/jmessage_flutter.dart';
 
+
 class TLDIMMessageCell extends StatefulWidget {
   TLDIMMessageCell({Key key,this.conversationInfo}) : super(key: key);
 
@@ -60,12 +61,13 @@ class _TLDIMMessageCellState extends State<TLDIMMessageCell> {
     }else{
       unreadCount = '${widget.conversationInfo.unreadCount}';
     }
+    JMUserInfo userInfo = widget.conversationInfo.target;
     return Container(
       width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(100),
       child : Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text('订单号：'+ '',style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51))),
+          Text('用户编号：'+ userInfo.username,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51))),
           Offstage(
             offstage : widget.conversationInfo.unreadCount == 0,
             child: Container(

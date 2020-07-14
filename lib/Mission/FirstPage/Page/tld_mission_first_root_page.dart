@@ -33,7 +33,7 @@ class _TLDMissionFirstRootPageState extends State<TLDMissionFirstRootPage> with 
 
   StreamSubscription _unreadSubscription;
 
-  bool _haveUnreadMessage;
+  // bool _haveUnreadMessage;
 
   @override
   void initState() {
@@ -42,18 +42,18 @@ class _TLDMissionFirstRootPageState extends State<TLDMissionFirstRootPage> with 
 
     _tabController = TabController(length: 2, vsync: this);
 
-    _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
+    // _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
 
-    _registerUnreadMessageEvent();
+    // _registerUnreadMessageEvent();
   }
 
-  void _registerUnreadMessageEvent(){
-    _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
-      setState(() {
-        _haveUnreadMessage = event.haveUnreadMessage;
-      });
-    });
-  }
+  // void _registerUnreadMessageEvent(){
+  //   _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
+  //     setState(() {
+  //       _haveUnreadMessage = event.haveUnreadMessage;
+  //     });
+  //   });
+  // }
 
   @override
   void dispose() {
@@ -107,7 +107,6 @@ class _TLDMissionFirstRootPageState extends State<TLDMissionFirstRootPage> with 
                               builder: (context) => TLDOrderListPage()));
                     }),
                 MessageButton(
-                  isHaveUnReadMessage: _haveUnreadMessage,
                   didClickCallBack: () => Navigator.push(
                       context,
                       MaterialPageRoute(

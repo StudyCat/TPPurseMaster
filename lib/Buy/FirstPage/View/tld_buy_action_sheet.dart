@@ -107,11 +107,11 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
                         timeInSecForIosWeb: 1);
                 return;
               }
-              if (double.parse(_pramaterModel.buyCount) < double.parse(widget.model.max) && double.parse(widget.model.max) < double.parse(widget.model.totalCount)){
-                Fluttertoast.showToast(msg: '输入的购买数量低于最低购买额度',toastLength: Toast.LENGTH_SHORT,
-                        timeInSecForIosWeb: 1);
-                return;
-              }
+              // if (double.parse(_pramaterModel.buyCount) < double.parse(widget.model.max) && double.parse(widget.model.max) < double.parse(widget.model.totalCount)){
+              //   Fluttertoast.showToast(msg: '输入的购买数量低于最低购买额度',toastLength: Toast.LENGTH_SHORT,
+              //           timeInSecForIosWeb: 1);
+              //   return;
+              // }
               widget.didClickBuyBtnCallBack(_pramaterModel);
               Navigator.of(context).pop();
             }

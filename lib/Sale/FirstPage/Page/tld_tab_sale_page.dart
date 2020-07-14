@@ -31,9 +31,9 @@ class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProvid
 
   TabController _tabController;
 
-  StreamSubscription _unreadSubscription;
+  // StreamSubscription _unreadSubscription;
 
-  bool _haveUnreadMessage;
+  // bool _haveUnreadMessage;
 
   @override
   void initState() {
@@ -42,18 +42,18 @@ class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProvid
 
     _tabController = TabController(length: 3, vsync: this);
 
-    _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
+    // _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
 
-    _registerUnreadMessageEvent();
+    // _registerUnreadMessageEvent();
   }
 
-  void _registerUnreadMessageEvent(){
-    _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
-      setState(() {
-        _haveUnreadMessage = event.haveUnreadMessage;
-      });
-    });
-  }
+  // void _registerUnreadMessageEvent(){
+  //   _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
+  //     setState(() {
+  //       _haveUnreadMessage = event.haveUnreadMessage;
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,6 @@ class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProvid
                               builder: (context) => TLDOrderListPage()));
                     }),
                 MessageButton(
-                  isHaveUnReadMessage: _haveUnreadMessage,
                   didClickCallBack: () => Navigator.push(
                       context,
                       MaterialPageRoute(

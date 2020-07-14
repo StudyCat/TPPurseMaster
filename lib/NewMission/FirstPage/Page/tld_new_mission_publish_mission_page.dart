@@ -200,23 +200,21 @@ class _TLDNewMissionPublishMissionPageState
               MaterialPageRoute(
                   builder: (context) => TLDDetailOrderPage(
                         orderNo: item.orderNo,
-                        isBuyer: false,
                       ))).then((value) {
             // _refreshController.requestRefresh();
           });
         },
         didClickIMBtnCallBack: () {
           
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => TLDIMPage(
-          //               selfWalletAddress: item.sellerWalletAddress,
-          //               otherGuyWalletAddress: item.buyerWalletAddress,
-          //               orderNo: item.orderNo,
-          //             ))).then((value) {
-          //   // _refreshController.requestRefresh();
-          // });
+        String toUserName = '';
+        if (item.amIBuyer){
+          toUserName = item.sellerUserName;
+        }else{
+          toUserName = item.buyerUserName;
+        }
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDIMPage(toUserName: toUserName,orderNo: item.orderNo,))).then((value){
+          _refreshController.requestRefresh();
+        });
         },
       ));
     }

@@ -25,6 +25,9 @@ class TLDOrderListModel {
   String quote;
   String profit;
   String taskBuyNo;
+  String buyerUserName;
+  String sellerUserName;
+  bool amIBuyer;
 
   TLDOrderListModel(
       {this.orderId,
@@ -42,7 +45,7 @@ class TLDOrderListModel {
       this.overtime,
       this.remarkPayNo,
       this.payMethodVO,
-      this.taskLevel,this.quote,this.profit,this.taskBuyNo});
+      this.taskLevel,this.quote,this.profit,this.taskBuyNo,this.buyerUserName,this.sellerUserName,this.amIBuyer});
 
   TLDOrderListModel.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
@@ -64,6 +67,9 @@ class TLDOrderListModel {
     quote = json['quote'];
     profit = json['profit'];
     taskBuyNo = json['taskBuyNo'];
+    buyerUserName = json['buyerUserName'];
+    sellerUserName = json['sellerUserName'];
+    amIBuyer = json['amIBuyer'];
   }
 
   Map<String, dynamic> toJson() {
@@ -87,6 +93,9 @@ class TLDOrderListModel {
     data['quote'] = this.quote;
     data['profit'] = this.profit;
     data['taskBuyNo'] = this.taskBuyNo;
+    data['buyerUserName'] = this.buyerUserName;
+    data['sellerUserName'] = this.sellerUserName;
+    data['amIBuyer'] = this.amIBuyer;
     return data;
   }
 }

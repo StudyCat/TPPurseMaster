@@ -3,11 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 
 class TLDSystemMessageCell extends StatefulWidget {
-  TLDSystemMessageCell({Key key,this.messageModel}) : super(key: key);
+  TLDSystemMessageCell({Key key,this.textMessage}) : super(key: key);
 
-  final TLDMessageModel messageModel;
+  final JMTextMessage textMessage;
   @override
   _TLDSystemMessageCellState createState() => _TLDSystemMessageCellState();
 }
@@ -27,7 +28,7 @@ class _TLDSystemMessageCellState extends State<TLDSystemMessageCell> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               _getTopRowView(),
-              Text(widget.messageModel.content,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 102, 102, 102)))
+              Text(widget.textMessage.text,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 102, 102, 102)))
             ],
           ),
         ),
@@ -40,7 +41,7 @@ class _TLDSystemMessageCellState extends State<TLDSystemMessageCell> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
          Text('TLD官方',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51),fontWeight: FontWeight.w700),),
-         Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.messageModel.createTime),[yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss]),style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
+         Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.textMessage.createTime),[yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss]),style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
       ],
     );
   }

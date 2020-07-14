@@ -112,9 +112,9 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
       });
       }
       Fluttertoast.showToast(msg: '投票成功');
-      await TLDDataBaseManager.instance.openDataBase();
-      await TLDDataBaseManager.instance.deleteVoteSystemMessage(widget.appealId);
-      await TLDDataBaseManager.instance.closeDataBase(); 
+      // await TLDDataBaseManager.instance.openDataBase();
+      // await TLDDataBaseManager.instance.deleteVoteSystemMessage(widget.appealId);
+      // await TLDDataBaseManager.instance.closeDataBase(); 
       Navigator.of(context).pop();
     }, (TLDError error) {
       if (mounted){

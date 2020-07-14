@@ -65,6 +65,9 @@ class _TLDIMPageState extends State<TLDIMPage> {
     _modelManager = TLDIMModelManager();
 
     _manager = TLDNewIMManager();
+
+    getMessageList();
+
     _manager.getReciveeMessageCallBack(widget.toUserName, (dynamic message){
       if (mounted){
         setState(() {
@@ -74,13 +77,12 @@ class _TLDIMPageState extends State<TLDIMPage> {
     });
 
     _refreshController = RefreshController(initialRefresh: false);
-    
-    getMessageList();
   }
 
   
 
-  void getMessageList() {
+  void getMessageList() async {
+    await _manager.getConversation(widget.toUserName);
     int page = _dataSource.length ;
     _manager.getHistoryMessage(widget.toUserName,page,
         (List messages) {

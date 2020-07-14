@@ -85,7 +85,7 @@ class _TLDMyMissionPageState extends State<TLDMyMissionPage> with AutomaticKeepA
       }
       Fluttertoast.showToast(msg: '购买任务成功',toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailOrderPage(orderNo: orderNo,isBuyer: true,))).then((value){
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailOrderPage(orderNo: orderNo,))).then((value){
         _page = 1;
         _getMissionBuyList(_page);
       });

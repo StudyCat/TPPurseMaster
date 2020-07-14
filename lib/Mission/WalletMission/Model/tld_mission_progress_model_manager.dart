@@ -94,6 +94,9 @@ class TaskOrderListModel {
   String sellerWalletAddress;
   String createTime;
   int status;
+  String buyerUserName;
+  String sellerUserName;
+  bool amIBuyer;
 
   TaskOrderListModel(
       {this.orderId,
@@ -105,7 +108,10 @@ class TaskOrderListModel {
       this.buyerWalletAddress,
       this.sellerWalletAddress,
       this.createTime,
-      this.status});
+      this.status,
+      this.buyerUserName,
+      this.sellerUserName,
+      this.amIBuyer});
 
   TaskOrderListModel.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
@@ -118,6 +124,9 @@ class TaskOrderListModel {
     sellerWalletAddress = json['sellerWalletAddress'];
     createTime = json['createTime'];
     status = json['status'];
+    buyerUserName = json['buyerUserName'];
+    sellerUserName = json['sellerUserName'];
+    amIBuyer = json['amIBuyer'];
   }
 
   Map<String, dynamic> toJson() {
@@ -132,6 +141,9 @@ class TaskOrderListModel {
     data['sellerWalletAddress'] = this.sellerWalletAddress;
     data['createTime'] = this.createTime;
     data['status'] = this.status;
+    data['buyerUserName'] = this.buyerUserName;
+    data['sellerUserName'] = this.sellerUserName;
+    data['amIBuyer'] = this.amIBuyer;
     return data;
   }
 }

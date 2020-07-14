@@ -8,22 +8,22 @@ import 'package:dragon_sword_purse/Order/View/tld_detail_alipay_qrcode_show_view
 import 'package:dragon_sword_purse/Order/View/tld_detail_bottom_cell.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_wechat_qrcode_show_view.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import '../View/tld_detail_order_header.dart';
 import '../../CommonWidget/tld_clip_common_cell.dart';
 import '../View/tld_detail_order_paymethod_cell.dart';
 
 class TLDDetailOrderPage extends StatefulWidget {
-  TLDDetailOrderPage({Key key,this.orderNo,this.isBuyer}) : super(key: key);
+  TLDDetailOrderPage({Key key,this.orderNo}) : super(key: key);
 
   final String orderNo;
-
-  final bool isBuyer;
 
   @override
   _TLDDetailOrderPageState createState() => _TLDDetailOrderPageState();
@@ -36,7 +36,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
   TLDDetailOrderModel _detailOrderModel;
   StreamController _controller;
   bool _isLoading;
-  StreamSubscription _systemSubscreption;
+  // StreamSubscription _systemSubscreption;
 
   @override
   void initState() {
@@ -50,7 +50,8 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
     _isLoading = false;
     _getDetailOrderInfo();
 
-    _registerSystemEvent();
+    _addSystemMessageCallBack();
+    // _registerSystemEvent();
   }
 
   @override
@@ -58,17 +59,29 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
     // TODO: implement dispose
     super.dispose();
 
-    _systemSubscreption.cancel();
+    TLDNewIMManager().removeSystemMessageReceiveCallBack();
+    // _systemSubscreption.cancel();
   }
 
-  void _registerSystemEvent(){
-    _systemSubscreption = eventBus.on<TLDSystemMessageEvent>().listen((event) {
-      TLDMessageModel messageModel = event.messageModel;
-      if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103 || messageModel.contentType == 104){
+  void _addSystemMessageCallBack(){
+    TLDNewIMManager().addSystemMessageReceiveCallBack((dynamic message){
+      JMNormalMessage normalMessage = message;
+      Map extras = normalMessage.extras;
+      int contentType = int.parse(extras['contentType']);
+      if (contentType == 100 || contentType == 101 || contentType == 103 || contentType == 104){
         _getDetailOrderInfo();
       }
     });
   }
+
+  // void _registerSystemEvent(){
+  //   _systemSubscreption = eventBus.on<TLDSystemMessageEvent>().listen((event) {
+  //     TLDMessageModel messageModel = event.messageModel;
+  //     if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103 || messageModel.contentType == 104){
+  //       _getDetailOrderInfo();
+  //     }
+  //   });
+  // }
 
   void _getDetailOrderInfo(){
     setState(() {
@@ -243,13 +256,17 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       pinned: true, //不固定在顶部
       title: Text('订单详情'),
       flexibleSpace: FlexibleSpaceBar(
-        background: TLDDetailOrderHeaderView(detailOrderModel: _detailOrderModel,isBuyer: widget.isBuyer,
+        background: TLDDetailOrderHeaderView(detailOrderModel: _detailOrderModel,isBuyer: _detailOrderModel.amIBuyer,
         didClickChatBtnCallBack: (){
-          // String selfAddress = widget.isBuyer == true ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
-          // String otherAddress = widget.isBuyer == false ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
-          // Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: _detailOrderModel.orderNo,))).then((value){
-          //   _getDetailOrderInfo();
-          // });
+          String toUserName = '';
+          if (_detailOrderModel.amIBuyer){
+            toUserName = _detailOrderModel.sellerUserName;
+          }else{
+            toUserName = _detailOrderModel.buyerUserName;
+          }
+          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(toUserName: toUserName,orderNo: _detailOrderModel.orderNo,))).then((value){
+            _getDetailOrderInfo();
+          });
         },
         timeIsOverRefreshUICallBack: (){
           _detailOrderModel = null;
@@ -322,7 +339,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
           }else if(index == 5){
             return _getIMCell();
           }else if(index == 6){
-            return isNeedAppeal ? _getAppealCell(appealTitle) : TLDDetailOrderBottomCell(detailOrderModel:_detailOrderModel,isBuyer: widget.isBuyer,didClickActionBtnCallBack: (String buttonTitle){
+            return isNeedAppeal ? _getAppealCell(appealTitle) : TLDDetailOrderBottomCell(detailOrderModel:_detailOrderModel,isBuyer: _detailOrderModel.amIBuyer,didClickActionBtnCallBack: (String buttonTitle){
               if (buttonTitle == '取消订单'){
                 _cancelOrder();
               }else if(buttonTitle == '我已付款'){
@@ -334,7 +351,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
               }
             },);
           }else if(index == 7){
-            return TLDDetailOrderBottomCell(detailOrderModel:_detailOrderModel,isBuyer: widget.isBuyer,didClickActionBtnCallBack: (String buttonTitle){
+            return TLDDetailOrderBottomCell(detailOrderModel:_detailOrderModel,isBuyer: _detailOrderModel.amIBuyer,didClickActionBtnCallBack: (String buttonTitle){
               if (buttonTitle == '取消订单'){
                 _cancelOrder();
               }else if(buttonTitle == '我已付款'){
@@ -415,12 +432,18 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
   }
 
   Widget _getIMCell(){
-    String title = widget.isBuyer == true ? '联系卖家' : '联系买家';
-    // String selfAddress = widget.isBuyer == true ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
-    // String otherAddress = widget.isBuyer == false ? _detailOrderModel.buyerAddress : _detailOrderModel.sellerAddress;
+    String title = _detailOrderModel.amIBuyer == true ? '联系卖家' : '联系买家';
     return GestureDetector(
       onTap: () { 
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(toUserName: 'e2c8faa034ce4272aecf94a8a216cb2f',orderNo: _detailOrderModel.orderNo,))).then((value) => _getDetailOrderInfo());
+        String toUserName = '';
+          if (_detailOrderModel.amIBuyer){
+            toUserName = _detailOrderModel.sellerUserName;
+          }else{
+            toUserName = _detailOrderModel.buyerUserName;
+          }
+          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(toUserName: toUserName,orderNo: _detailOrderModel.orderNo,))).then((value){
+            _getDetailOrderInfo();
+          });
       },
       child:  Padding(
       padding: EdgeInsets.only(

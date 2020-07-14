@@ -18,7 +18,8 @@ class TLDError{
 }
 
 class TLDBaseRequest{
-  static String baseUrl = 'http://192.168.1.120:8030/';
+  //47.101.170.209
+  static String baseUrl = 'http://47.101.170.209:8030/';
   Map pramatersMap;
   String subUrl;
   CancelToken cancelToken;

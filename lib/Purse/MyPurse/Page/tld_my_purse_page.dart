@@ -5,11 +5,13 @@ import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_page.dar
 import 'package:dragon_sword_purse/Order/Page/tld_order_list_page.dart';
 import 'package:dragon_sword_purse/Purse/MyPurse/Model/tld_my_purse_model_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import '../View/tld_my_purse_header.dart';
 import '../View/tld_my_purse_content_view.dart';
@@ -37,7 +39,7 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
 
   bool _isloading;
 
-  StreamSubscription _systemSubscription;
+  // StreamSubscription _systemSubscription;
 
   @override
   void initState() {
@@ -48,7 +50,8 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
 
     _getWalletInfo();
 
-    _registerSystemEvent();
+    // _registerSystemEvent();
+    _addSystemMessageCallBack();
   }
 
   void _getWalletInfo(){
@@ -72,21 +75,34 @@ class _TLDMyPursePageState extends State<TLDMyPursePage> {
     });
   }
 
-  void _registerSystemEvent(){
-    _systemSubscription = eventBus.on<TLDSystemMessageEvent>().listen((event) {
-      TLDMessageModel messageModel = event.messageModel;
-      if(messageModel.contentType == 105){
+  void _addSystemMessageCallBack(){
+    TLDNewIMManager().addSystemMessageReceiveCallBack((dynamic message){
+      JMNormalMessage normalMessage = message;
+      Map extras = normalMessage.extras;
+      int contentType = int.parse(extras['contentType']);
+      if (contentType == 105){
         _getWalletInfo();
       }
     });
   }
+
+
+  // void _registerSystemEvent(){
+  //   _systemSubscription = eventBus.on<TLDSystemMessageEvent>().listen((event) {
+  //     TLDMessageModel messageModel = event.messageModel;
+  //     if(messageModel.contentType == 105){
+  //       _getWalletInfo();
+  //     }
+  //   });
+  // }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
 
-    _systemSubscription.cancel();
+    TLDNewIMManager().removeSystemMessageReceiveCallBack();
+    // _systemSubscription.cancel();
   }
 
   @override

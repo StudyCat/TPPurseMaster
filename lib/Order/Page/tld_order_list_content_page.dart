@@ -4,12 +4,14 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../View/tld_order_list_cell.dart';
 import 'tld_detail_order_page.dart';
@@ -45,7 +47,7 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
 
   RefreshController _refreshController;
 
-  StreamSubscription _systemSubscreption;
+  // StreamSubscription _systemSubscreption;
 
   StreamController _streamController;
   @override
@@ -88,7 +90,9 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
       }
     });
     
-    _registerSystemEvent();
+    // _registerSystemEvent();
+
+    _addSystemMessageCallBack();
   }
 
     @override
@@ -96,19 +100,33 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
     // TODO: implement dispose
     super.dispose();
 
-    _systemSubscreption.cancel();
+    TLDNewIMManager().removeSystemMessageReceiveCallBack();
+    // _systemSubscreption.cancel();
   }
 
-  void _registerSystemEvent(){
-    _systemSubscreption = eventBus.on<TLDSystemMessageEvent>().listen((event) {
-      TLDMessageModel messageModel = event.messageModel;
-      if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103 || messageModel.contentType == 104){
+    void _addSystemMessageCallBack(){
+    TLDNewIMManager().addSystemMessageReceiveCallBack((dynamic message){
+      JMNormalMessage normalMessage = message;
+      Map extras = normalMessage.extras;
+      int contentType = int.parse(extras['contentType']);
+      if (contentType == 100 || contentType == 101 || contentType == 103 || contentType == 104){
         _pramaterModel.page = 1;
         _refreshController.requestRefresh();
         _getOrderListDataWithPramaterModel(_pramaterModel);
       }
     });
   }
+
+  // void _registerSystemEvent(){
+  //   _systemSubscreption = eventBus.on<TLDSystemMessageEvent>().listen((event) {
+  //     TLDMessageModel messageModel = event.messageModel;
+  //     if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103 || messageModel.contentType == 104){
+  //       _pramaterModel.page = 1;
+  //       _refreshController.requestRefresh();
+  //       _getOrderListDataWithPramaterModel(_pramaterModel);
+  //     }
+  //   });
+  // }
 
   void _getOrderListDataWithPramaterModel(TLDOrderListPramaterModel model){
     _modelManager.getOrderList(model, (List orderList){
@@ -155,21 +173,27 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
     return TLDOrderListCell(
       orderListModel: model,
       didClickDetailBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: model.orderNo,isBuyer:isBuyer,))).then((value) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: model.orderNo,))).then((value) {
           _pramaterModel.page = 1;
           _refreshController.requestRefresh();
           _getOrderListDataWithPramaterModel(_pramaterModel);
         });
         },
       didClickIMBtnCallBack: (){
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(selfWalletAddress: selfAddress,otherGuyWalletAddress: otherAddress,orderNo: model.orderNo,))).then((value) {
-        //   _pramaterModel.page = 1;
-        //   _refreshController.requestRefresh();
-        //   _getOrderListDataWithPramaterModel(_pramaterModel);
-        // });
+         String toUserName = '';
+          if (model.amIBuyer){
+            toUserName = model.sellerUserName;
+          }else{
+            toUserName = model.buyerUserName;
+          }
+          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(toUserName: toUserName,orderNo: model.orderNo,))).then((value) {
+            _pramaterModel.page = 1;
+            _refreshController.requestRefresh();
+            _getOrderListDataWithPramaterModel(_pramaterModel);
+          });
       },
       didClickItemCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: model.orderNo,isBuyer: isBuyer,))).then((value) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: model.orderNo,))).then((value) {
           _pramaterModel.page = 1;
           _refreshController.requestRefresh();
           _getOrderListDataWithPramaterModel(_pramaterModel);

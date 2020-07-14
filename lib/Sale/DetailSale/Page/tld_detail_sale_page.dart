@@ -6,11 +6,13 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Sale/DetailSale/Model/tld_detail_sale_model.dart';
 import 'package:dragon_sword_purse/Sale/DetailSale/Model/tld_detail_sale_model_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import '../View/tld_detail_sale_info_view.dart';
 import '../View/tld_detail_sale_row_view.dart';
@@ -30,7 +32,7 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
 
   bool _isLoading;
 
-  StreamSubscription _systemSubscreption;
+  // StreamSubscription _systemSubscreption;
 
   List titles = [
     '收款方式',
@@ -54,7 +56,8 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
 
     getDetailInfo();
 
-    _registerSystemEvent();
+    // _registerSystemEvent();
+    _addSystemMessageCallBack();
   }
 
 
@@ -82,13 +85,16 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
     // TODO: implement dispose
     super.dispose();
 
-    _systemSubscreption.cancel();
+    // _systemSubscreption.cancel();
+    TLDNewIMManager().removeSystemMessageReceiveCallBack();
   }
 
-  void _registerSystemEvent(){
-    _systemSubscreption = eventBus.on<TLDSystemMessageEvent>().listen((event) {
-      TLDMessageModel messageModel = event.messageModel;
-      if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103 || messageModel.contentType == 104){
+  void _addSystemMessageCallBack(){
+    TLDNewIMManager().addSystemMessageReceiveCallBack((dynamic message){
+      JMNormalMessage normalMessage = message;
+      Map extras = normalMessage.extras;
+      int contentType = int.parse(extras['contentType']);
+      if (contentType == 100 || contentType == 101 || contentType == 103 || contentType == 104){
         setState(() {
           _isLoading = true;
         });
@@ -96,6 +102,18 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
       }
     });
   }
+
+  // void _registerSystemEvent(){
+  //   _systemSubscreption = eventBus.on<TLDSystemMessageEvent>().listen((event) {
+  //     TLDMessageModel messageModel = event.messageModel;
+  //     if (messageModel.contentType == 100 || messageModel.contentType == 101 || messageModel.contentType == 103 || messageModel.contentType == 104){
+  //       setState(() {
+  //         _isLoading = true;
+  //       });
+  //       getDetailInfo();
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -33,9 +33,9 @@ class _TLDMissionRootPageState extends State<TLDMissionRootPage> with SingleTick
 
   TabController _tabController;
 
-  StreamSubscription _unreadSubscription;
+  // StreamSubscription _unreadSubscription;
 
-  bool _haveUnreadMessage;
+  // bool _haveUnreadMessage;
 
   @override
   void initState() {
@@ -48,24 +48,24 @@ class _TLDMissionRootPageState extends State<TLDMissionRootPage> with SingleTick
 
     _tabController = TabController(length: 2, vsync: this);
 
-    _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
+    // _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
 
-    _registerUnreadMessageEvent();
+    // _registerUnreadMessageEvent();
   }
 
-  void _registerUnreadMessageEvent(){
-    _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
-      setState(() {
-        _haveUnreadMessage = event.haveUnreadMessage;
-      });
-    });
-  }
+  // void _registerUnreadMessageEvent(){
+  //   _unreadSubscription = eventBus.on<TLDHaveUnreadMessageEvent>().listen((event) {
+  //     setState(() {
+  //       _haveUnreadMessage = event.haveUnreadMessage;
+  //     });
+  //   });
+  // }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _unreadSubscription.cancel();
+    // _unreadSubscription.cancel();
   }
 
   @override
@@ -100,7 +100,6 @@ class _TLDMissionRootPageState extends State<TLDMissionRootPage> with SingleTick
                               builder: (context) => TLDOrderListPage()));
                     }),
                 MessageButton(
-                  isHaveUnReadMessage: _haveUnreadMessage,
                   didClickCallBack: () => Navigator.push(
                       context,
                       MaterialPageRoute(

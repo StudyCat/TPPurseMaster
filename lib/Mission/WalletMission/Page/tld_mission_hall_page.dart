@@ -122,19 +122,25 @@ class _TLDMissionHallPageState extends State<TLDMissionHallPage> with AutomaticK
 
   List<Widget> _getExpansionContent(List orderList,String taskNo){
     List<Widget> result = [];
-    // for (TaskOrderListModel item in orderList) {
-    //   result.add(TLDMYMissionBodyCell(model: item,taskNo: taskNo,didClickItemCallBack: (){
-    //     Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailOrderPage(orderNo: item.orderNo,isBuyer: true,))).then((value){
-    //       _refreshController.requestRefresh();
-    //       _getMissionProgress();
-    //     });
-    //   },didClickIMBtnCallBack: (){
-    //     Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDIMPage(selfWalletAddress: item.buyerWalletAddress,otherGuyWalletAddress: item.sellerWalletAddress,orderNo: item.orderNo,))).then((value){
-    //       _refreshController.requestRefresh();
-    //       _getMissionProgress();
-    //     });
-    //   },));
-    // }
+    for (TaskOrderListModel item in orderList) {
+      result.add(TLDMYMissionBodyCell(model: item,taskNo: taskNo,didClickItemCallBack: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailOrderPage(orderNo: item.orderNo))).then((value){
+          _refreshController.requestRefresh();
+          _getMissionProgress();
+        });
+      },didClickIMBtnCallBack: (){
+        String toUserName = '';
+        if (item.amIBuyer){
+          toUserName = item.sellerUserName;
+        }else{
+          toUserName = item.buyerUserName;
+        }
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDIMPage(toUserName: toUserName,orderNo: item.orderNo,))).then((value){
+          _refreshController.requestRefresh();
+          _getMissionProgress();
+        });
+      },));
+    }
     return result;
   }
 

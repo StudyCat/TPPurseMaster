@@ -171,8 +171,6 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
 
   void _registerUser(){
     _manager.createSafeSecretPasswordRegisterUser(_password,(String username){
-      //登录IM
-      TLDNewIMManager().loginJpush(username, _password);
       _savePassword();
       if (widget.type == TLDCreatePursePageType.create){
           Navigator.push(context, MaterialPageRoute(builder: (context) => TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));
