@@ -7,6 +7,7 @@ import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_choose_wallet.dart';
 import 'package:dragon_sword_purse/Drawer/UserAgreement/Page/tld_user_agreement_page.dart';
+import 'package:dragon_sword_purse/Find/RootPage/Page/tld_find_root_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
 import 'package:dragon_sword_purse/Mission/FirstPage/Page/tld_mission_first_root_page.dart';
 import 'package:dragon_sword_purse/NewMission/FirstPage/Page/tld_new_mission_first_page.dart';
@@ -76,16 +77,16 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
           )),
     ),
     BottomNavigationBarItem(
-      activeIcon: Image.asset('assetss/images/icon_mission.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      icon: Image.asset('assetss/images/icon_mission_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      title: Text('任务',
+      activeIcon: Image.asset('assetss/images/icon_find.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      icon: Image.asset('assetss/images/icon_find_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      title: Text('发现',
           style: TextStyle(
             fontSize: 10,
           ))
     )
   ];
 
-  List pages = [TLDPursePage(), TLDBuyPage(), TLDMessagePage(),TLDTabSalePage(),TLDNewMissionFirstPage()];
+  List pages = [TLDPursePage(), TLDBuyPage(), TLDMessagePage(),TLDTabSalePage(),TLDFindRootPage()];
 
   int currentIndex;
 

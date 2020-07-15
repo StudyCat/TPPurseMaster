@@ -4,6 +4,7 @@ import 'package:dragon_sword_purse/ceatePurse&importPurse/ImportPurse/Page/tld_i
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../CommonWidget/tld_clip_input_cell.dart';
 import '../View/tld_verify_password_view.dart';
@@ -36,6 +37,8 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
 
   TLDCreatePurseModelManager _manager;
 
+  bool _isLoading = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -58,7 +61,7 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
       body: SingleChildScrollView(
-        child: _getBodyWidget(context),
+        child: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget(context)),
       ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
@@ -170,7 +173,15 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
   }
 
   void _registerUser(){
+    setState(() {
+      _isLoading = true;
+    });
     _manager.createSafeSecretPasswordRegisterUser(_password,(String username){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
       _savePassword();
       if (widget.type == TLDCreatePursePageType.create){
           Navigator.push(context, MaterialPageRoute(builder: (context) => TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));
@@ -183,6 +194,11 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
           Navigator.pop(context);
       }
     }, (TLDError error){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     });

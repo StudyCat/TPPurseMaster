@@ -51,6 +51,10 @@ dependencies:
   flutter_local_notifications: ^1.4.4+1
   uni_links: ^0.4.0
   jmessage_flutter: ^0.6.3
+  flutter_swiper: ^1.1.6
+  flutter_custom_calendar:
+    git:
+      url: https://github.com/LXD312569496/flutter_custom_calendar.git
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -102,6 +106,11 @@ flutter:
      - assetss/images/mission_publish_icon.png
      - assetss/images/icon_message.png
      - assetss/images/icon_message_unsel.png
+     - assetss/images/icon_choose_accept.png
+     - assetss/images/icon_choose_mission.png
+     - assetss/images/icon_choose_rank.png
+     - assetss/images/icon_find.png
+     - assetss/images/icon_find_unsel.png
 
 
   # To add assets to your application, add an assets section, like this:

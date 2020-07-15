@@ -1,0 +1,122 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+enum TLDAcceptanceSignDayViewType{
+  signFail,
+  signComplete,
+  signToday,
+  signWait
+}
+
+class TLDAcceptanceSignDayView extends StatefulWidget {
+  TLDAcceptanceSignDayView({Key key,this.type,this.day}) : super(key: key);
+
+  final TLDAcceptanceSignDayViewType type;
+
+  final int day;
+
+  @override
+  _TLDAcceptanceSignDayViewState createState() => _TLDAcceptanceSignDayViewState();
+}
+
+class _TLDAcceptanceSignDayViewState extends State<TLDAcceptanceSignDayView> {
+  @override
+  Widget build(BuildContext context) {
+    if (widget.type == TLDAcceptanceSignDayViewType.signFail){
+      return _getFailSignWidget();
+    }else if(widget.type == TLDAcceptanceSignDayViewType.signComplete){
+      return _getCompleteSignWidget();
+    }else if(widget.type == TLDAcceptanceSignDayViewType.signToday){
+      return _getTodaySignWidget();
+    }else{
+      return _getWaitSignWidget();
+    }
+  }
+
+  Widget _getFailSignWidget(){
+    return Padding(
+      padding:EdgeInsets.zero,
+      child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text('${widget.day}',style: TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(32)),)
+      ],
+    ), 
+    );
+  }
+
+  Widget _getCompleteSignWidget(){
+    return Padding(
+      padding:EdgeInsets.zero,
+      child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text('${widget.day}',style: TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(32)),),
+        Padding(
+          padding: EdgeInsets.only(top: ScreenUtil().setHeight(4)),
+          child: Container(
+            height: ScreenUtil().setHeight(32),
+            width: ScreenUtil().setWidth(80),
+            decoration : BoxDecoration(
+              border: Border.all(color: Color.fromARGB(255, 217, 176, 123), width: 0.5),
+              borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(16))),
+              color: Color.fromARGB(255, 236, 213, 174)
+            ),
+            child: Center(
+              child: Text('已签',style : TextStyle(fontSize:ScreenUtil().setSp(20),color:Color.fromARGB(255, 57, 57, 57))),
+            ),
+          ),
+          )
+      ],
+    ), 
+    );
+  }  
+
+  Widget _getWaitSignWidget(){
+    return Padding(
+      padding:EdgeInsets.zero,
+      child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text('${widget.day}',style: TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(32)),),
+        Padding(
+          padding: EdgeInsets.only(top: ScreenUtil().setHeight(4)),
+          child: Container(
+            height: ScreenUtil().setHeight(32),
+            width: ScreenUtil().setWidth(80),
+            decoration : BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(16))),
+              color: Color.fromARGB(255, 57, 57, 57)
+            ),
+            child: Center(
+              child: Text('签到',style : TextStyle(fontSize:ScreenUtil().setSp(20),color:Theme.of(context).hintColor)),
+            ),
+          ),
+          )
+      ],
+    ), 
+    );
+  }
+
+  Widget _getTodaySignWidget(){
+    return Padding(
+      padding:EdgeInsets.zero,
+      child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text('${widget.day}',style: TextStyle(color:Theme.of(context).hintColor,fontSize:ScreenUtil().setSp(32)),),
+        Padding(
+          padding:EdgeInsets.only(top: ScreenUtil().setHeight(4)),
+          child: Icon(Icons.check,size : ScreenUtil().setWidth(32)), 
+          )
+      ],
+    ), 
+    );
+  }
+}
+
