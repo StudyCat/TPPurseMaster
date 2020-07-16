@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceSignHeaderView extends StatefulWidget {
-  TLDAcceptanceSignHeaderView({Key key}) : super(key: key);
+  TLDAcceptanceSignHeaderView({Key key,this.didClickLoginCallBack}) : super(key: key);
+
+  final Function didClickLoginCallBack;
 
   @override
   _TLDAcceptanceSignHeaderViewState createState() => _TLDAcceptanceSignHeaderViewState();
@@ -45,7 +47,7 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
             padding: EdgeInsets.zero,
             color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(30))),
-            onPressed: (){},
+            onPressed: widget.didClickLoginCallBack,
           ),
         )
       ],

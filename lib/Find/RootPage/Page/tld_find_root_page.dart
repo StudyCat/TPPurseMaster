@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_login_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_page.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/TabbarPage/Page/tld_acceptance_tabbar_page.dart';
 import 'package:dragon_sword_purse/Find/RootPage/Model/tld_find_root_model_manager.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_ad_banner_view.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_page_cell.dart';
@@ -85,7 +86,7 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
             if (title == '任务'){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDNewMissionFirstPage()));
             }else if (title == '承兑'){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceSignPage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceTabbarPage()));
             }
           },);
         }
