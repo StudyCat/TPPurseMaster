@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDAcceptanceBillListOpenCell extends StatefulWidget {
-  TLDAcceptanceBillListOpenCell({Key key,this.didClickBuyButtonCallBack}) : super(key: key);
+  TLDAcceptanceBillListOpenCell({Key key,this.didClickBuyButtonCallBack,this.didClickCheckButtonCallBack}) : super(key: key);
 
   final Function didClickBuyButtonCallBack;
+
+  final Function didClickCheckButtonCallBack;
 
   @override
   _TLDAcceptanceBillListOpenCellState createState() =>
@@ -86,7 +88,9 @@ class _TLDAcceptanceBillListOpenCellState
                     color: Color.fromARGB(255, 102, 102, 102),
                     fontSize: ScreenUtil().setSp(28)))
           ])),
-            RichText(
+          GestureDetector(
+            onTap:widget.didClickCheckButtonCallBack,
+            child : RichText(
               text: TextSpan(text: '1份',style: TextStyle(fontSize:ScreenUtil().setSp(28),color:Color.fromARGB(255, 51, 51, 51)),children: <InlineSpan>[
             TextSpan(
                 text: '  查看',
@@ -94,6 +98,7 @@ class _TLDAcceptanceBillListOpenCellState
                     color: Theme.of(context).hintColor,
                     fontSize: ScreenUtil().setSp(28)))
           ]))
+          )
           ]
         ),
       ),

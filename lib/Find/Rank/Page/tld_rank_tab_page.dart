@@ -1,23 +1,23 @@
-import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Page/tld_acceptance_invitation_earnings_page.dart';
-import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Page/tld_acceptance_invitation_qr_code_page.dart';
+import 'package:dragon_sword_purse/Find/Rank/Page/tld_rank_mine_page.dart';
+import 'package:dragon_sword_purse/Find/Rank/Page/tld_rank_normal_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TLDAcceptanceInvitationTabPage extends StatefulWidget {
-  TLDAcceptanceInvitationTabPage({Key key}) : super(key: key);
+class TLDRankTabPage extends StatefulWidget {
+  TLDRankTabPage({Key key}) : super(key: key);
 
   @override
-  _TLDAcceptanceInvitationTabPageState createState() => _TLDAcceptanceInvitationTabPageState();
+  _TLDRankTabPageState createState() => _TLDRankTabPageState();
 }
 
-class _TLDAcceptanceInvitationTabPageState extends State<TLDAcceptanceInvitationTabPage> with SingleTickerProviderStateMixin {
-
+class _TLDRankTabPageState extends State<TLDRankTabPage> with SingleTickerProviderStateMixin {
   TabController _tabController;
 
   List<String> _tabTitles = [
-    "邀请码",
-    "推广收益",
+    "周排行",
+    "月排行",
+    '我的记录'
   ];
 
   @override
@@ -25,7 +25,7 @@ class _TLDAcceptanceInvitationTabPageState extends State<TLDAcceptanceInvitation
     // TODO: implement initState
     super.initState();
 
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
     });
   }
@@ -51,11 +51,34 @@ class _TLDAcceptanceInvitationTabPageState extends State<TLDAcceptanceInvitation
    Widget _getBodyWidget(BuildContext context) {
     return Column(
         children: <Widget>[
-          Padding(
+          _getTabbar(),
+          Expanded(
+              child: TabBarView(
+            children: [
+              TLDRankNormalPage(),
+              TLDRankNormalPage(),
+              TLDRankMinePage()
+            ],
+            controller: _tabController,
+          ))
+        ],
+      );
+  }
+
+  Widget _getTabbar(){
+    return Stack(
+      children: <Widget>[
+        Container(
+            decoration : BoxDecoration(
+                image: DecorationImage(image: AssetImage('assetss/images/rank_back.png'),fit: BoxFit.fitWidth)
+            ),
+            height: MediaQuery.of(context).size.width / 1025 * 276,
+        ),
+         Padding(
             padding: EdgeInsets.only(
                 left: ScreenUtil().setWidth(50),
                 right: ScreenUtil().setWidth(50),
-                top: ScreenUtil().setHeight(20)),
+                top: ScreenUtil().setHeight(10)),
             child: TabBar(
               tabs: _tabTitles.map((title) {
                 return Tab(text: title);
@@ -65,21 +88,14 @@ class _TLDAcceptanceInvitationTabPageState extends State<TLDAcceptanceInvitation
                   fontWeight: FontWeight.bold),
               unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(24)),
               indicatorColor: Theme.of(context).hintColor,
-              labelColor: Color.fromARGB(255, 51, 51, 51),
-              unselectedLabelColor: Color.fromARGB(255, 153, 153, 153),
+              labelColor: Theme.of(context).hintColor,
+              unselectedLabelColor: Colors.white,
               controller: _tabController,
               indicatorSize: TabBarIndicatorSize.label,
             ),
-          ),
-          Expanded(
-              child: TabBarView(
-            children: [
-              TLDAcceptanceInvitationQRCodePage(),
-              TLDAcceptanceInvitationEarningsPage()
-            ],
-            controller: _tabController,
-          ))
-        ],
-      );
+          )
+      ],
+    );
+
   }
 }

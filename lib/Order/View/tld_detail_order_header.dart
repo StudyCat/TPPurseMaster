@@ -72,7 +72,7 @@ class _TLDDetailOrderHeaderViewState extends State<TLDDetailOrderHeaderView> {
       int minute = _countdownTime ~/ 60;
           int second = _countdownTime % 60;
         setState(() {
-          _subStr = minute > 0 ? '请于'+minute.toString()+'分'+second.toString()+'秒内向某某某支付。' :   '请于'+second.toString()+'秒内向某某某支付。';
+          _subStr = minute > 0 ? '请于'+minute.toString()+'分'+second.toString()+'秒内向某某某支付。' :   '请于'+second.toString()+'秒内支付。';
           if (_countdownTime < 0){
             timer.cancel();
             timer = null;

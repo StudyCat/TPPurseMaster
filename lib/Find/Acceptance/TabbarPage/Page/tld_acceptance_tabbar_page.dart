@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Page/tld_acceptance_bill_list_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Page/tld_acceptance_invitation_tab_page.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Order/Page/tld_acceptance_order_list_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Page/tld_acceptance_detail_bill_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,7 +51,7 @@ class _TLDAcceptanceTabbarPageState extends State<TLDAcceptanceTabbarPage> {
     ),
   ];
 
-  List pages = [TLDAcceptanceBillListPage(), Container(), TLDAcceptanceInvitationTabPage(),TLDAcceptanceSignPage()];
+  List pages = [TLDAcceptanceBillListPage(), TLDAcceptanceOrderListPage(), TLDAcceptanceInvitationTabPage(),TLDAcceptanceSignPage()];
 
   
   int currentIndex;

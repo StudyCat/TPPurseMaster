@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceBillBuyActionSheet extends StatefulWidget {
-  TLDAcceptanceBillBuyActionSheet({Key key}) : super(key: key);
+  TLDAcceptanceBillBuyActionSheet({Key key,this.didClickChooseWallet,this.didChooseCountCallBack,this.walletName}) : super(key: key);
+
+  final Function didClickChooseWallet;
+
+  final Function(int) didChooseCountCallBack;
+
+  final String walletName;
 
   @override
   _TLDAcceptanceBillBuyActionSheetState createState() =>
@@ -20,7 +26,7 @@ class _TLDAcceptanceBillBuyActionSheetState
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
-        height: ScreenUtil().setHeight(500),
+        height: ScreenUtil().setHeight(600),
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(
             top: ScreenUtil().setHeight(40),
@@ -47,6 +53,10 @@ class _TLDAcceptanceBillBuyActionSheetState
             Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
                 child: _getRealAmount()),
+            Padding(
+              padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
+              child: _getChooseWalletRowWidget(),
+            ),
             Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(28)),
                 child: Container(
@@ -132,6 +142,7 @@ class _TLDAcceptanceBillBuyActionSheetState
           setState(() {
             _vote = value;
           });
+          widget.didChooseCountCallBack(value);
         },
       ),
       Padding(
@@ -162,5 +173,22 @@ class _TLDAcceptanceBillBuyActionSheetState
             ),
           )
         ]));
+  }
+
+  Widget _getChooseWalletRowWidget(){
+    return GestureDetector(
+      onTap: widget.didClickChooseWallet,
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(widget.walletName != null ? widget.walletName : '选择支付钱包',
+              style: TextStyle(
+                  color: Color.fromARGB(255, 51, 51, 51),
+                  fontSize: ScreenUtil().setSp(28),
+                  decoration: TextDecoration.none),),
+        Icon(Icons.keyboard_arrow_right)
+      ],
+    ),
+    );
   }
 }

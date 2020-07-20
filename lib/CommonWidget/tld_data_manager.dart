@@ -22,6 +22,8 @@ class TLDDataManager{
 
   String lastLink;
 
+  String acceptanceToken;
+
   String registrationID = '';
 
   String userToken;
@@ -39,6 +41,8 @@ class TLDDataManager{
    getUserName();
 
    getMissionWalletAddress();
+
+   getAcceptanceToken();
   }
 
 
@@ -66,6 +70,12 @@ class TLDDataManager{
     SharedPreferences pre = await SharedPreferences.getInstance();
     missionWalletAddress = pre.getString('missionWalletAddress');
     return missionWalletAddress;
+  }
+
+  Future<String> getAcceptanceToken()async{
+     SharedPreferences pre = await SharedPreferences.getInstance();
+    acceptanceToken = pre.getString('acceptanceToken');
+    return acceptanceToken;
   }
 
 

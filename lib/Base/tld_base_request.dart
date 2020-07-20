@@ -19,7 +19,7 @@ class TLDError{
 
 class TLDBaseRequest{
   //47.101.170.209
-  static String baseUrl = 'http://47.101.170.209:8030/';
+  static String baseUrl = 'http://192.168.1.120:8030/';
   Map pramatersMap;
   String subUrl;
   CancelToken cancelToken;
@@ -47,6 +47,7 @@ class TLDBaseRequest{
     try{
       Dio dio = Dio();
       String userToken = await TLDDataManager.instance.getUserToken();
+      String acceptanceToken = await TLDDataManager.instance.getAcceptanceToken();
        Options options = Options(
         contentType : 'application/json', 
         receiveDataWhenStatusError: false,
@@ -56,6 +57,9 @@ class TLDBaseRequest{
         String uuid = Uuid.randomUuid().toString();
         String authorization = _authorizationEncode(userToken, time, uuid);
         options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':'1.0.1'};
+      }
+      if (acceptanceToken != null){
+        options.headers.addEntries({'jwtToken':acceptanceToken}.entries);
       }
      Response response = await dio.get(baseUrl+this.subUrl,queryParameters: this.pramatersMap,options: options,cancelToken: cancelToken);
      String jsonString = response.data;
@@ -77,6 +81,7 @@ class TLDBaseRequest{
   void postNetRequest(ValueChanged<dynamic> success, Function(TLDError) failure) async{
     try{
       String userToken = await TLDDataManager.instance.getUserToken();
+      String acceptanceToken = await TLDDataManager.instance.getAcceptanceToken();
       BaseOptions options = BaseOptions(
         contentType : 'application/json',
         receiveDataWhenStatusError: false
@@ -86,6 +91,9 @@ class TLDBaseRequest{
         String uuid = Uuid.randomUuid().toString();
         String authorization = _authorizationEncode(userToken, time, uuid);
         options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':'1.0.1'};
+      }
+      if (acceptanceToken != null){
+        options.headers.addEntries({'jwtToken':acceptanceToken}.entries);
       }
       Dio dio = Dio(options);
      String url = baseUrl + this.subUrl;

@@ -1,11 +1,15 @@
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance-sign_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceSignHeaderView extends StatefulWidget {
-  TLDAcceptanceSignHeaderView({Key key,this.didClickLoginCallBack}) : super(key: key);
+  TLDAcceptanceSignHeaderView({Key key,this.didClickLoginCallBack,this.userInfoModel}) : super(key: key);
 
   final Function didClickLoginCallBack;
+
+  final TLDAcceptanceUserInfoModel userInfoModel;
 
   @override
   _TLDAcceptanceSignHeaderViewState createState() => _TLDAcceptanceSignHeaderViewState();
@@ -35,6 +39,7 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
   }
 
   Widget _getTopRowWidget(){
+    String token = TLDDataManager.instance.acceptanceToken;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -42,12 +47,15 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
         Container(
           height: ScreenUtil().setHeight(60),
           width: ScreenUtil().setWidth(130),
-          child: CupertinoButton(
+          child: Offstage(
+            offstage : token != null,
+            child : CupertinoButton(
             child: Text('去登记',style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Theme.of(context).hintColor)),
             padding: EdgeInsets.zero,
             color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(30))),
             onPressed: widget.didClickLoginCallBack,
+          )
           ),
         )
       ],
@@ -62,8 +70,8 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children : <Widget>[
-            _getUserInfoWidget(0xe6b3, '2313123213'),
-            Padding(padding: EdgeInsets.only(top : ScreenUtil().setHeight(4),),child: _getUserInfoWidget(0xe605, '231231231231221'),),
+            _getUserInfoWidget(0xe6b3, widget.userInfoModel != null ? widget.userInfoModel.userName : '暂未登记'),
+            Padding(padding: EdgeInsets.only(top : ScreenUtil().setHeight(4),),child: _getUserInfoWidget(0xe605, widget.userInfoModel != null ? widget.userInfoModel.tel : '暂未登记'),),
           ]
         )
       ],
@@ -85,7 +93,7 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
     return Padding(
       padding: EdgeInsets.only(top:ScreenUtil().setHeight(20)),
       child: RichText(text: TextSpan(
-        text : '328932.32',
+        text : widget.userInfoModel != null ? widget.userInfoModel.acptTotalScore : '0.0',
         style : TextStyle(
           fontSize:ScreenUtil().setSp(72),
           fontWeight : FontWeight.bold,

@@ -1,9 +1,15 @@
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Login/Model/tld_acceptance_login_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_login_page.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance-sign_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_body_view.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_header_view.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Page/tld_acceptance_detail_bill_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 class TLDAcceptanceSignPage extends StatefulWidget {
   TLDAcceptanceSignPage({Key key}) : super(key: key);
@@ -13,6 +19,53 @@ class TLDAcceptanceSignPage extends StatefulWidget {
 }
 
 class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with AutomaticKeepAliveClientMixin {
+  TLDAcceptanceSignModelManager _modelManager;
+
+  bool _isLoading = false;
+
+  TLDAcceptanceUserInfoModel _userInfoModel;
+  @override
+  void initState() { 
+    super.initState();
+    
+    _modelManager = TLDAcceptanceSignModelManager();
+    _getUserInfo();
+  }
+
+  void _getUserInfo(){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.getUserInfo((TLDAcceptanceUserInfoModel userInfoModel){
+      setState(() {
+      _isLoading = false;
+      _userInfoModel = userInfoModel;
+    });
+    }, (TLDError error){
+      setState(() {
+      _isLoading = false;
+    });
+    Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+  void _sign(){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.sign((){
+       setState(() {
+      _isLoading = false;
+    });
+    _getUserInfo();
+    }, (TLDError error){
+       setState(() {
+      _isLoading = false;
+    });
+    Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -26,7 +79,7 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
         backgroundColor: Theme.of(context).primaryColor,
         actionsForegroundColor: Colors.white,
       ),
-      body: _getBody(),
+      body: LoadingOverlay(isLoading: _isLoading, child: _getBody(),),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -34,10 +87,12 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
   Widget _getBodyWidget(){
     return Column(
       children: <Widget>[
-        TLDAcceptanceSignHeaderView(didClickLoginCallBack: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) =>TLDAcceptanceDetailBillPage()));
+        TLDAcceptanceSignHeaderView(userInfoModel: _userInfoModel,didClickLoginCallBack: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>TLDAcceptanceLoginPage()));
         },),
-        TLDAcceptanceSignBodyView()
+        TLDAcceptanceSignBodyView(userInfoModel: _userInfoModel,didClickSignButton: (){
+          _sign();
+        },)
       ],
     );
   }

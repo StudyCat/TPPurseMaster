@@ -111,7 +111,8 @@ flutter:
      - assetss/images/icon_choose_rank.png
      - assetss/images/icon_find.png
      - assetss/images/icon_find_unsel.png
-
+     - assetss/images/rank_back.png
+    
 
   # To add assets to your application, add an assets section, like this:
   # assets:

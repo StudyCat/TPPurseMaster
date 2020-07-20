@@ -1,10 +1,18 @@
+import 'dart:ffi';
+
+import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Bill/Page/tld_acceptance_detail_bill_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_buy_action_sheet.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_list_lock_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_list_open_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_list_unopen_cell.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Login/Model/tld_acceptance_login_model_manager.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TLDAcceptanceBillListPage extends StatefulWidget {
   TLDAcceptanceBillListPage({Key key}) : super(key: key);
@@ -15,7 +23,29 @@ class TLDAcceptanceBillListPage extends StatefulWidget {
 
 class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
 
+  TLDAcceptanceLoginModelManager _modelManager;
+
   bool _isOpen = false;
+
+  TLDBillBuyPramaterModel _pramaterModel;
+
+  RefreshController _refreshController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _refreshController = RefreshController(initialRefresh:true);
+
+    _pramaterModel = TLDBillBuyPramaterModel();
+
+    _modelManager = TLDAcceptanceLoginModelManager();
+  }
+
+  void _getListInfo(){
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +60,16 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
         backgroundColor: Theme.of(context).primaryColor,
         actionsForegroundColor: Colors.white,
       ),
-      body: _getBody(),
+      body: SmartRefresher(
+        controller: _refreshController,
+        child: _getBody(),
+        header: WaterDropHeader(
+          complete: Text('刷新完成'),
+        ),
+        onRefresh: (){
+          
+        },
+      ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -42,7 +81,21 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
       if(index == 0){
         return TLDAcceptanceBillListOpenCell(didClickBuyButtonCallBack: (){
           showCupertinoModalPopup(context: context, builder: (context){
-            return TLDAcceptanceBillBuyActionSheet();
+            return TLDAcceptanceBillBuyActionSheet(
+              walletName: _pramaterModel.walletName,
+              didChooseCountCallBack: (int count){
+                _pramaterModel.count = count;
+              },
+              didClickChooseWallet: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDEchangeChooseWalletPage(
+                  didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
+                    _pramaterModel.walletAddress = infoModel.walletAddress;
+                    _pramaterModel.walletName = infoModel.wallet.name;
+                  },
+                )));
+                
+              },
+            );
           });
         },);
       }else if(index == 1){
@@ -64,6 +117,8 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
             },
             child: TLDAcceptanceBillListOpenCell(didClickBuyButtonCallBack: (){
 
+            },didClickCheckButtonCallBack: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceDetailBillPage()));
             },)
           );
         }

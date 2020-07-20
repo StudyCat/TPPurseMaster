@@ -32,7 +32,7 @@ class _TLDAcceptanceDetailBillViewState
                     color: Color.fromARGB(255, 51, 51, 51))),),
             Padding(
               padding: EdgeInsets.only(top: ScreenUtil().setHeight(20),left: ScreenUtil().setWidth(20),right: ScreenUtil().setWidth(20)),
-              child: Text('已支付38TLD',
+              child: Text('收益中',
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(48),
                       color: Theme.of(context).hintColor)),
@@ -78,10 +78,21 @@ class _TLDAcceptanceDetailBillViewState
                     color: Color.fromARGB(255, 102, 102, 102),
                     fontSize: ScreenUtil().setSp(28)))
           ])),
-          Text('单价19TLD',
+          Column(
+            children : <Widget>[
+              Text('单价19TLD',
+              style: TextStyle(
+                  color: Color.fromARGB(255, 102, 102, 102),
+                  fontSize: ScreenUtil().setSp(28))),
+              Padding(
+                padding : EdgeInsets.only(top: ScreenUtil().setHeight(14)),
+                child : Text('总价19TLD',
               style: TextStyle(
                   color: Color.fromARGB(255, 102, 102, 102),
                   fontSize: ScreenUtil().setSp(28)))
+              )
+            ]
+          )
         ],
       ),
     );
@@ -106,7 +117,7 @@ class _TLDAcceptanceDetailBillViewState
                       ScreenUtil().setWidth(60) -
                       ScreenUtil().setHeight(40)) /
                   2,
-              child: Text(title,
+              child: Text(content,
                   textAlign: TextAlign.end,
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(28),
