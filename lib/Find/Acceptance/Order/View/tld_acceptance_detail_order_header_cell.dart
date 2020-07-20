@@ -1,9 +1,13 @@
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Order/Model/tld_acceptance_detail_order_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceDetailOrderHeaderCell extends StatefulWidget {
-  TLDAcceptanceDetailOrderHeaderCell({Key key}) : super(key: key);
+  TLDAcceptanceDetailOrderHeaderCell({Key key,this.detailOrderInfoModel}) : super(key: key);
+
+  final TLDAcceptanceDetailOrderInfoModel detailOrderInfoModel;
 
   @override
   _TLDAcceptanceDetailOrderHeaderCellState createState() => _TLDAcceptanceDetailOrderHeaderCellState();
@@ -39,17 +43,18 @@ class _TLDAcceptanceDetailOrderHeaderCellState extends State<TLDAcceptanceDetail
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Text('票据有效期60天',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Theme.of(context).hintColor),),
+        Text(widget.detailOrderInfoModel != null ?'票据有效期${widget.detailOrderInfoModel.billExpireDayCount}天' : '',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Theme.of(context).hintColor),),
       ],
     );
   }
 
   Widget _getStatusRowView(BuildContext context){
+    TLDOrderStatusInfoModel orderStatusInfoModel = widget.detailOrderInfoModel != null ? TLDDataManager.accptanceOrderListStatusMap[widget.detailOrderInfoModel.acptOrderStatus] : null;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Text('收益中',style :TextStyle(fontSize : ScreenUtil().setSp(44),color: Theme.of(context).hintColor)),
+        Text(orderStatusInfoModel != null ? orderStatusInfoModel.orderStatusName : '',style :TextStyle(fontSize : ScreenUtil().setSp(44),color: Theme.of(context).hintColor)),
       ],
     );
   }

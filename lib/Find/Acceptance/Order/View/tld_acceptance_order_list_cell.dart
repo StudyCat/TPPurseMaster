@@ -1,10 +1,14 @@
+import 'package:date_format/date_format.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Order/View/tld_acceptance_order_list_cell_header_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDAcceptanceOrderListCell extends StatefulWidget {
-  TLDAcceptanceOrderListCell({Key key,this.didClickItemCallBack}) : super(key: key);
+  TLDAcceptanceOrderListCell({Key key,this.didClickItemCallBack,this.orderListModel}) : super(key: key);
+
+  final TLDApptanceOrderListModel orderListModel;
 
   final Function didClickItemCallBack;
 
@@ -27,11 +31,11 @@ class _TLDAcceptanceOrderListCellState extends State<TLDAcceptanceOrderListCell>
         color : Colors.white
       ),
       child: Column(children: <Widget>[
-          TLDAcceptanceOrderListCellHeaderView(),
-          _leftRightItem( '票据有效期', '60天'),
-          _leftRightItem( '预计承兑收益', '50TLD'),
-          _leftRightItem( '票据承兑收益开始时间', '2020.07.17 18:23:45'),
-          _leftRightItem('支付钱包', 'huow00238289dh79gd73')
+          TLDAcceptanceOrderListCellHeaderView(orderListModel: widget.orderListModel,),
+          _leftRightItem( '票据有效期', '${widget.orderListModel.billExpireDayCount}天'),
+          _leftRightItem( '预计承兑收益', '${widget.orderListModel.expectProfit}TLD'),
+          _leftRightItem( '票据承兑收益开始时间', formatDate(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.orderListModel.createTime)), [yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss])),
+          _leftRightItem('支付钱包', widget.orderListModel.walletAddress)
         ]),
       ),
     ),

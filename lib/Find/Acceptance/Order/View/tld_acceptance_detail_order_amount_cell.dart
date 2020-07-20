@@ -1,9 +1,12 @@
+import 'package:dragon_sword_purse/Find/Acceptance/Order/Model/tld_acceptance_detail_order_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceDetailOrderAmountCell extends StatefulWidget {
-  TLDAcceptanceDetailOrderAmountCell({Key key}) : super(key: key);
+  TLDAcceptanceDetailOrderAmountCell({Key key,this.orderInfoModel}) : super(key: key);
+
+  final TLDAcceptanceDetailOrderInfoModel orderInfoModel;
 
   @override
   _TLDAcceptanceDetailOrderAmountCellState createState() => _TLDAcceptanceDetailOrderAmountCellState();
@@ -40,7 +43,7 @@ class _TLDAcceptanceDetailOrderAmountCellState extends State<TLDAcceptanceDetail
               text: TextSpan(text: '总价',style: TextStyle(color:Color.fromARGB(255, 153, 153, 153),fontSize: ScreenUtil().setSp(28)),
                 children: <InlineSpan>[
             TextSpan(
-                text: '36TLD',
+                text: '${widget.orderInfoModel.totalPrice}TLD',
                 style: TextStyle(
                     color: Theme.of(context).hintColor,
                     fontSize: ScreenUtil().setSp(36)))
@@ -57,14 +60,15 @@ class _TLDAcceptanceDetailOrderAmountCellState extends State<TLDAcceptanceDetail
                 child: Icon(
               IconData(0xe670, fontFamily: 'appIconFonts'),
               size: ScreenUtil().setWidth(40),
+              color: Theme.of(context).hintColor,
             )),
             TextSpan(
-                text: '  1级票据  X2',
+                text: '  ${widget.orderInfoModel.billLevel}级票据  X${widget.orderInfoModel.billCount}',
                 style: TextStyle(
                     color: Color.fromARGB(255, 102, 102, 102),
                     fontSize: ScreenUtil().setSp(28)))
           ])),
-          Text('单价19TLD',
+          Text('单价${widget.orderInfoModel.billPrice}TLD',
               style: TextStyle(
                   color: Color.fromARGB(255, 102, 102, 102),
                   fontSize: ScreenUtil().setSp(28)))

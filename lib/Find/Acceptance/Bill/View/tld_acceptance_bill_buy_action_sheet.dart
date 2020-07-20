@@ -1,15 +1,22 @@
+import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TLDAcceptanceBillBuyActionSheet extends StatefulWidget {
-  TLDAcceptanceBillBuyActionSheet({Key key,this.didClickChooseWallet,this.didChooseCountCallBack,this.walletName}) : super(key: key);
+  TLDAcceptanceBillBuyActionSheet({Key key,this.infoListModel,this.didClickChooseWallet,this.didChooseCountCallBack,this.didClickBuyButtonCallBack}) : super(key: key);
 
-  final Function didClickChooseWallet;
+  final TLDBillInfoListModel infoListModel;
+
+  final Function(String) didClickChooseWallet;
+
+  final Function didClickBuyButtonCallBack;
 
   final Function(int) didChooseCountCallBack;
 
-  final String walletName;
 
   @override
   _TLDAcceptanceBillBuyActionSheetState createState() =>
@@ -19,6 +26,8 @@ class TLDAcceptanceBillBuyActionSheet extends StatefulWidget {
 class _TLDAcceptanceBillBuyActionSheetState
     extends State<TLDAcceptanceBillBuyActionSheet> {
   int _vote = 0;
+
+  TLDWalletInfoModel _infoModel;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +76,18 @@ class _TLDAcceptanceBillBuyActionSheetState
                       '提交订单',
                       style: TextStyle(fontSize: ScreenUtil().setSp(28)),
                     ),
-                    onPressed: () {},
+                    onPressed: (){
+                      if (_vote == 0){
+                        Fluttertoast.showToast(msg: '请先选择份数');
+                        return;
+                      }
+                      if (_infoModel == null){
+                        Fluttertoast.showToast(msg: '请先选择钱包');
+                        return;
+                      }
+                      widget.didClickBuyButtonCallBack();
+                      Navigator.of(context).pop();
+                    },
                     color: Theme.of(context).primaryColor,
                     padding: EdgeInsets.all(0),
                   ),
@@ -93,13 +113,13 @@ class _TLDAcceptanceBillBuyActionSheetState
                 color: Theme.of(context).hintColor,
               )),
               TextSpan(
-                  text: '  1级票据',
+                  text: '  ${widget.infoListModel.billLevel}级票据',
                   style: TextStyle(
                       color: Color.fromARGB(255, 102, 102, 102),
                       fontSize: ScreenUtil().setSp(28)))
             ])),
             Text(
-              '单价：200TLD',
+              '单价：${widget.infoListModel.billPrice}TLD',
               style: TextStyle(
                   color: Color.fromARGB(255, 153, 153, 153),
                   fontSize: ScreenUtil().setSp(28),
@@ -114,13 +134,22 @@ class _TLDAcceptanceBillBuyActionSheetState
         color: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            _getSingleChoiceWidget(1),
-            _getSingleChoiceWidget(2),
-            _getSingleChoiceWidget(3),
-            _getSingleChoiceWidget(4),
-          ],
+          children: _getChoiceList(),
         ));
+  }
+
+  List<Widget> _getChoiceList(){
+    int count = widget.infoListModel.totalBuyCount - widget.infoListModel.alreadyBuyCount;
+    int realCount = count;
+    if (count > 4){
+      realCount = 4;
+    }
+
+    List<Widget> result = [];
+    for(int i = 1 ; i < realCount + 1; i++){
+      result.add(_getSingleChoiceWidget(i));
+    }
+    return result;
   }
 
   Widget _getSingleChoiceWidget(int type) {
@@ -157,6 +186,7 @@ class _TLDAcceptanceBillBuyActionSheetState
   }
 
   Widget _getRealAmount() {
+    double realAmount = _vote * double.parse(widget.infoListModel.billPrice);
     return RichText(
         text: TextSpan(
             text: '实付：',
@@ -166,7 +196,7 @@ class _TLDAcceptanceBillBuyActionSheetState
             ),
             children: <InlineSpan>[
           TextSpan(
-            text: '400TLD',
+            text: '${realAmount}TLD',
             style: TextStyle(
               color: Theme.of(context).hintColor,
               fontSize: ScreenUtil().setSp(48),
@@ -177,11 +207,20 @@ class _TLDAcceptanceBillBuyActionSheetState
 
   Widget _getChooseWalletRowWidget(){
     return GestureDetector(
-      onTap: widget.didClickChooseWallet,
+      onTap: (){
+        Navigator.push(context,MaterialPageRoute(builder: (context) =>TLDEchangeChooseWalletPage(
+                                      didChooseWalletCallBack:(TLDWalletInfoModel infoModel) {
+                                        setState(() {
+                                          _infoModel = infoModel;
+                                        });
+                                        widget.didClickChooseWallet(infoModel.walletAddress);
+                                      },
+                                    )));
+      },
       child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text(widget.walletName != null ? widget.walletName : '选择支付钱包',
+        Text(_infoModel != null ? _infoModel.wallet.name : '选择支付钱包',
               style: TextStyle(
                   color: Color.fromARGB(255, 51, 51, 51),
                   fontSize: ScreenUtil().setSp(28),

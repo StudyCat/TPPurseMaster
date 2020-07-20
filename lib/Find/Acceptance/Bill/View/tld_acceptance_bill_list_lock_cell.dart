@@ -1,9 +1,12 @@
+import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDAcceptanceBillListLockCell extends StatefulWidget {
-  TLDAcceptanceBillListLockCell({Key key}) : super(key: key);
+  TLDAcceptanceBillListLockCell({Key key,this.infoListModel}) : super(key: key);
+
+  final TLDBillInfoListModel infoListModel;
 
   @override
   _TLDAcceptanceBillListLockCellState createState() => _TLDAcceptanceBillListLockCellState();
@@ -26,7 +29,7 @@ class _TLDAcceptanceBillListLockCellState extends State<TLDAcceptanceBillListLoc
             Padding(
             child:  Container(
               width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(80),
-              child: Text('3级TLD票据：100每份（1/4）',style : TextStyle(color : Color.fromARGB(255, 153, 153, 153),fontSize : ScreenUtil().setSp(28),),textAlign: TextAlign.center,),
+              child: Text('${widget.infoListModel.billLevel}级TLD票据：${widget.infoListModel.billPrice}每份（${widget.infoListModel.alreadyBuyCount}/${widget.infoListModel.totalBuyCount}）',style : TextStyle(color : Color.fromARGB(255, 153, 153, 153),fontSize : ScreenUtil().setSp(28),),textAlign: TextAlign.center,),
             ),
             padding: EdgeInsets.symmetric(horizontal: 20)
           ),

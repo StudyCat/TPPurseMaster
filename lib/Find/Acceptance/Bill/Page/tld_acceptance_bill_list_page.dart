@@ -1,5 +1,7 @@
 import 'dart:ffi';
 
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Buy/FirstPage/Model/tld_buy_model_manager.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Page/tld_acceptance_detail_bill_page.dart';
@@ -12,18 +14,20 @@ import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.d
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TLDAcceptanceBillListPage extends StatefulWidget {
   TLDAcceptanceBillListPage({Key key}) : super(key: key);
 
   @override
-  _TLDAcceptanceBillListPageState createState() => _TLDAcceptanceBillListPageState();
+  _TLDAcceptanceBillListPageState createState() =>
+      _TLDAcceptanceBillListPageState();
 }
 
 class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
-
-  TLDAcceptanceLoginModelManager _modelManager;
+  TLDAcceptanceBillListModelManager _modelManager;
 
   bool _isOpen = false;
 
@@ -31,105 +35,142 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
 
   RefreshController _refreshController;
 
+  List _dataSource;
+
+  bool _isLoading = false;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    _refreshController = RefreshController(initialRefresh:true);
+    _dataSource = [];
 
-    _pramaterModel = TLDBillBuyPramaterModel();
+    _refreshController = RefreshController(initialRefresh: true);
 
-    _modelManager = TLDAcceptanceLoginModelManager();
+    _modelManager = TLDAcceptanceBillListModelManager();
+
+    _getListInfo();
   }
 
-  void _getListInfo(){
+  void _getListInfo() {
+    _modelManager.getBillList((List billList) {
+      _refreshController.refreshCompleted();
+      _dataSource = [];
+      if (mounted) {
+        setState(() {
+          _dataSource.addAll(billList);
+        });
+      }
+    }, (TLDError error) {
+      _refreshController.refreshCompleted();
+      Fluttertoast.showToast(msg: error.msg);
+    });
+  }
 
+  void _buyBill(TLDBillBuyPramaterModel pramaterModel){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.buyBill(pramaterModel, (){
+      setState(() {
+      _isLoading = false;
+    });
+    _refreshController.requestRefresh();
+    _getListInfo();
+    }, (TLDError error){
+      setState(() {
+      _isLoading = false;
+    });
+    Fluttertoast.showToast(msg: error.msg);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
       appBar: CupertinoNavigationBar(
         border: Border.all(
           color: Color.fromARGB(0, 0, 0, 0),
         ),
         heroTag: 'acceptance_bill_list_page',
         transitionBetweenRoutes: false,
-        middle: Text('承兑票据',style: TextStyle(color:Colors.white),),
+        middle: Text(
+          '承兑票据',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Theme.of(context).primaryColor,
         actionsForegroundColor: Colors.white,
       ),
-      body: SmartRefresher(
-        controller: _refreshController,
-        child: _getBody(),
-        header: WaterDropHeader(
-          complete: Text('刷新完成'),
-        ),
-        onRefresh: (){
-          
-        },
-      ),
+      body: LoadingOverlay(isLoading: _isLoading,child: _getBody(),),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
 
-  Widget _getBodyWidget(){
+  Widget _getBodyWidget() {
     return ListView.builder(
-      itemCount: 3,
+      itemCount: _dataSource.length,
       itemBuilder: (BuildContext context, int index) {
-      if(index == 0){
-        return TLDAcceptanceBillListOpenCell(didClickBuyButtonCallBack: (){
-          showCupertinoModalPopup(context: context, builder: (context){
-            return TLDAcceptanceBillBuyActionSheet(
-              walletName: _pramaterModel.walletName,
-              didChooseCountCallBack: (int count){
-                _pramaterModel.count = count;
-              },
-              didClickChooseWallet: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDEchangeChooseWalletPage(
-                  didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
-                    _pramaterModel.walletAddress = infoModel.walletAddress;
-                    _pramaterModel.walletName = infoModel.wallet.name;
-                  },
-                )));
-                
-              },
-            );
-          });
-        },);
-      }else if(index == 1){
-        if (_isOpen == false){
-          return GestureDetector(
-            onTap:(){
-              setState(() {
-                _isOpen = !_isOpen;
-              });
-            },
-            child: TLDAcceptanceBillListUnOpenCell()
-          );
+        TLDBillInfoListModel listModel = _dataSource[index];
+        if (listModel.lock == true){
+          return TLDAcceptanceBillListLockCell(infoListModel: listModel,);
         }else{
-          return GestureDetector(
-            onTap:(){
-              setState(() {
-                _isOpen = !_isOpen;
-              });
-            },
-            child: TLDAcceptanceBillListOpenCell(didClickBuyButtonCallBack: (){
-
-            },didClickCheckButtonCallBack: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceDetailBillPage()));
-            },)
-          );
+          if (listModel.isOpen){
+             return _getOpenCell(listModel);
+          }else{
+            return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    listModel.isOpen = !listModel.isOpen;
+                  });
+                },
+                child: TLDAcceptanceBillListUnOpenCell(infoListModel: listModel,));
+          }
         }
-      }else{
-        return TLDAcceptanceBillListLockCell();
-      }
-     },
+      },
     );
   }
 
-  Widget _getBody(){
+  Widget _getOpenCell(TLDBillInfoListModel billModel){
+    return TLDAcceptanceBillListOpenCell(
+      infoListModel: billModel,
+            didClickOpenItemCallBack: (){
+              setState(() {
+                billModel.isOpen = !billModel.isOpen;
+              });
+            },
+            didClickCheckButtonCallBack: (int index){
+              TLDApptanceOrderListModel orderListModel = billModel.orderList[index];
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceDetailBillPage(orderNo: orderListModel.acptOrderNo,)));
+            },
+            didClickBuyButtonCallBack: () {
+              if (billModel.totalBuyCount == billModel.alreadyBuyCount){
+                Fluttertoast.showToast(msg: '无法再购买了,请购买下一级票据');
+                return;
+              }
+              _pramaterModel = TLDBillBuyPramaterModel();
+              _pramaterModel.billId = billModel.billId;
+              showCupertinoModalPopup(
+                  context: context,
+                  builder: (context) {
+                    return TLDAcceptanceBillBuyActionSheet(
+                      infoListModel: billModel,
+                      didChooseCountCallBack: (int count) {
+                        _pramaterModel.count = count;
+                      },
+                      didClickBuyButtonCallBack: (){
+                        _buyBill(_pramaterModel);
+                      },
+                      didClickChooseWallet: (String walletAddress) {
+                        _pramaterModel.walletAddress = walletAddress;
+                      },
+                    );
+                  });
+            },
+    );
+  }
+
+  Widget _getBody() {
     return Stack(
       children: <Widget>[
         Container(
@@ -137,7 +178,16 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
           height: ScreenUtil().setHeight(60),
           color: Theme.of(context).primaryColor,
         ),
-        _getBodyWidget()
+        SmartRefresher(
+        controller: _refreshController,
+        child: _getBodyWidget(),
+        header: WaterDropHeader(
+          complete: Text('刷新完成'),
+        ),
+        onRefresh: () {
+          _getListInfo();
+        },
+      )
       ],
     );
   }

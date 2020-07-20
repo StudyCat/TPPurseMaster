@@ -1,17 +1,64 @@
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_detail_bill_view.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Order/Model/tld_acceptance_detail_order_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 
 class TLDAcceptanceDetailBillPage extends StatefulWidget {
-  TLDAcceptanceDetailBillPage({Key key}) : super(key: key);
+  TLDAcceptanceDetailBillPage({Key key,this.orderNo}) : super(key: key);
+
+  final String orderNo;
 
   @override
   _TLDAcceptanceDetailBillPageState createState() => _TLDAcceptanceDetailBillPageState();
 }
 
 class _TLDAcceptanceDetailBillPageState extends State<TLDAcceptanceDetailBillPage> {
+  TLDAcceptanceDetailOrderModelManager _modelManager;
+
+  bool _isLoading = true;
+
+  TLDAcceptanceDetailOrderInfoModel _detailOrderInfoModel;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    
+    _modelManager = TLDAcceptanceDetailOrderModelManager();
+    
+    _getDetailInfo();
+
+  }
+
+  void _getDetailInfo(){
+    if(mounted){
+      setState(() {
+      _isLoading = true;
+    });
+    }
+    _modelManager.getDetailOrderInfo(widget.orderNo, (TLDAcceptanceDetailOrderInfoModel infoModel){
+      if(mounted){
+      setState(() {
+      _isLoading = false;
+      _detailOrderInfoModel = infoModel;
+    });
+    }
+    }, (TLDError error){
+      if(mounted){
+      setState(() {
+      _isLoading = false;
+    });
+    Fluttertoast.showToast(msg: error.msg);
+    }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -25,13 +72,17 @@ class _TLDAcceptanceDetailBillPageState extends State<TLDAcceptanceDetailBillPag
         backgroundColor: Theme.of(context).primaryColor,
         actionsForegroundColor: Colors.white,
       ),
-      body: _getBody(),
+      body: LoadingOverlay(isLoading: _isLoading,child: _getBody(),),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
 
   Widget _getBodyWidget(){
-    return TLDAcceptanceDetailBillView();
+    if (_detailOrderInfoModel == null){
+      return Container();
+    }else{
+      return TLDAcceptanceDetailBillView(detailOrderInfoModel: _detailOrderInfoModel,);
+    }
   }
 
   Widget _getBody(){

@@ -109,4 +109,12 @@ class TLDDataManager{
       };
   }
 
+    static Map get accptanceOrderListStatusMap{
+    return {
+        -1 : TLDOrderStatusInfoModel(orderStatusName:'收益已暂停',orderStatusColor: Color.fromARGB(255, 245, 166, 35),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        0 : TLDOrderStatusInfoModel(orderStatusName:'收益中',orderStatusColor: Color.fromARGB(255, 65, 117, 5),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        1 : TLDOrderStatusInfoModel(orderStatusName:'已到期',orderStatusColor: Color.fromARGB(255, 153, 153, 153),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+      };
+  }
+
 }
