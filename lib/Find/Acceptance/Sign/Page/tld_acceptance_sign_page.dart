@@ -5,6 +5,8 @@ import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance-sig
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_body_view.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_header_view.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Page/tld_acceptance_detail_bill_page.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_withdraw_page.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_withdraw_tab_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -78,6 +80,12 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
         middle: Text('承兑账户',style: TextStyle(color:Colors.white),),
         backgroundColor: Theme.of(context).primaryColor,
         actionsForegroundColor: Colors.white,
+        trailing: GestureDetector(
+          onTap :(){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceWithdrawTabPage()));
+          },
+          child : Text('提现记录',style: TextStyle(color:Colors.white,))
+        ),
       ),
       body: LoadingOverlay(isLoading: _isLoading, child: _getBody(),),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
@@ -89,7 +97,11 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
       children: <Widget>[
         TLDAcceptanceSignHeaderView(userInfoModel: _userInfoModel,didClickLoginCallBack: (){
           Navigator.push(context, MaterialPageRoute(builder: (context) =>TLDAcceptanceLoginPage()));
-        },),
+        },
+        didClickWithdrawButtonCallBack: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>TLDAcceptanceWithdrawPage(walletAddress: _userInfoModel.walletAddress,)));
+        },
+        ),
         TLDAcceptanceSignBodyView(userInfoModel: _userInfoModel,didClickSignButton: (){
           _sign();
         },)

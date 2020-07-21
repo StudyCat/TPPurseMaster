@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceInvitationEarningsSearchCell extends StatefulWidget {
-  TLDAcceptanceInvitationEarningsSearchCell({Key key}) : super(key: key);
+  TLDAcceptanceInvitationEarningsSearchCell({Key key,this.didClickSearchCallBack}) : super(key: key);
+
+  final Function(String) didClickSearchCallBack;
 
   @override
   _TLDAcceptanceInvitationEarningsSearchCellState createState() => _TLDAcceptanceInvitationEarningsSearchCellState();
@@ -29,7 +31,10 @@ class _TLDAcceptanceInvitationEarningsSearchCellState extends State<TLDAcceptanc
            placeholderStyle: TextStyle(fontSize:ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153)),
            style: TextStyle(fontSize:ScreenUtil().setSp(24),color: Color.fromARGB(255, 51, 51, 51)),
            textInputAction: TextInputAction.search,
-           prefix : Icon(Icons.search), 
+           prefix : Icon(Icons.search),
+           onSubmitted: (String text){
+             widget.didClickSearchCallBack(text);
+           }, 
         )
       ),
     );

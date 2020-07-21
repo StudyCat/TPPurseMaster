@@ -1,11 +1,16 @@
+import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Model/tld_acceptance_earnings_model_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceInvitationOpenCell extends StatefulWidget {
-  TLDAcceptanceInvitationOpenCell({Key key,this.didClickItemCallBack}) : super(key: key);
+  TLDAcceptanceInvitationOpenCell({Key key,this.didClickItemCallBack,this.didClickOpenItem,this.inviteTeamModel}) : super(key: key);
 
-  final Function(int) didClickItemCallBack;
+  final Function(String) didClickItemCallBack;
+
+  final Function didClickOpenItem;
+
+  final TLDInviteTeamModel inviteTeamModel;
 
   @override
   _TLDAcceptanceInvitationOpenCellState createState() =>
@@ -48,13 +53,16 @@ class _TLDAcceptanceInvitationOpenCellState
                   right: ScreenUtil().setWidth(20),
                   top: ScreenUtil().setHeight(20)),
                   child: _getGridView(),),
-            Padding(
+           GestureDetector(
+             onTap:widget.didClickOpenItem,
+             child : Padding(
               padding: EdgeInsets.only(top: ScreenUtil().setHeight(10)),
               child: Icon(
-                Icons.keyboard_arrow_down,
+                Icons.keyboard_arrow_up,
                 color: Colors.black,
               ),
             )
+           )
           ],
         ),
       ),
@@ -70,23 +78,25 @@ class _TLDAcceptanceInvitationOpenCellState
             childAspectRatio: 2,
             crossAxisSpacing: ScreenUtil().setWidth(10),
             mainAxisSpacing: ScreenUtil().setHeight(10)),
-        itemCount: 12,
+        itemCount: widget.inviteTeamModel.userList.length,
         itemBuilder: (context, index) {
+          String userName = widget.inviteTeamModel.userList[index];
           return GestureDetector(
-            onTap :() => widget.didClickItemCallBack(index),
-            child :_getGridItem()
+            onTap :() => widget.didClickItemCallBack(userName),
+            child :_getGridItem(index)
           );
         });
   }
 
-  Widget _getGridItem(){
+  Widget _getGridItem(int index){
+    String userName = widget.inviteTeamModel.userList[index];
     return Container(
       height : ScreenUtil().setHeight(72),
        decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(4)),
             color: Theme.of(context).hintColor),
         child: Center(
-          child: Text('ndeuwi12',style: TextStyle(
+          child: Text(userName,style: TextStyle(
               fontSize: ScreenUtil().setSp(24),
               color: Color.fromARGB(255, 143, 110, 68)),
         ),
@@ -99,7 +109,7 @@ class _TLDAcceptanceInvitationOpenCellState
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          '二级推广团队(10人)',
+          '${widget.inviteTeamModel.level}级推广团队(${widget.inviteTeamModel.totalUserCount}人)',
           style: TextStyle(
               fontSize: ScreenUtil().setSp(28),
               color: Color.fromARGB(255, 51, 51, 51)),
@@ -107,7 +117,7 @@ class _TLDAcceptanceInvitationOpenCellState
         Column(
           children: <Widget>[
             Text(
-              '3234TLD',
+              '${widget.inviteTeamModel.totalProfit}TLD',
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(36),
                   color: Color.fromARGB(255, 51, 51, 51),

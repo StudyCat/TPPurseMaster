@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceScanCell extends StatefulWidget {
-  TLDAcceptanceScanCell({Key key,this.title,this.placeholder}) : super(key: key);
+  TLDAcceptanceScanCell({Key key,this.title,this.placeholder,this.didClickScanButtonCallBack,this.inviteController}) : super(key: key);
 
   final String title;
 
   final String placeholder;
+
+  final Function didClickScanButtonCallBack;
+
+  final TextEditingController inviteController;
 
   @override
   _TLDAcceptanceScanCellState createState() => _TLDAcceptanceScanCellState();
@@ -15,14 +19,12 @@ class TLDAcceptanceScanCell extends StatefulWidget {
 
 class _TLDAcceptanceScanCellState extends State<TLDAcceptanceScanCell> {
 
-    TextEditingController _controller;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    _controller = TextEditingController();
   }
 
   @override
@@ -48,8 +50,9 @@ class _TLDAcceptanceScanCellState extends State<TLDAcceptanceScanCell> {
                 padding: EdgeInsets.only(
                     top: ScreenUtil().setHeight(20),
                     bottom: ScreenUtil().setHeight(20)),
-                controller: _controller,
+                controller: widget.inviteController,
                 placeholder: widget.placeholder,
+                enabled: false,
                 textAlign: TextAlign.right,
                 placeholderStyle: TextStyle(
                     color: Color.fromARGB(255, 153, 153, 153),
@@ -69,7 +72,7 @@ class _TLDAcceptanceScanCellState extends State<TLDAcceptanceScanCell> {
                  child: CupertinoButton(
                    padding: EdgeInsets.all(0),
                    child: Icon(IconData(0xe606,fontFamily : 'appIconFonts'),color: Theme.of(context).primaryColor,),
-                   onPressed: (){}),
+                   onPressed: widget.didClickScanButtonCallBack),
                ),
                 )
             ]),

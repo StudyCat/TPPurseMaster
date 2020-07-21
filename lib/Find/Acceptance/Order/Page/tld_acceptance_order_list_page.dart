@@ -16,7 +16,7 @@ class TLDAcceptanceOrderListPage extends StatefulWidget {
   _TLDAcceptanceOrderListPageState createState() => _TLDAcceptanceOrderListPageState();
 }
 
-class _TLDAcceptanceOrderListPageState extends State<TLDAcceptanceOrderListPage> {
+class _TLDAcceptanceOrderListPageState extends State<TLDAcceptanceOrderListPage> with AutomaticKeepAliveClientMixin{
 
   RefreshController _refreshController;
 
@@ -96,5 +96,7 @@ class _TLDAcceptanceOrderListPageState extends State<TLDAcceptanceOrderListPage>
     );
   }
 
-
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

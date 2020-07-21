@@ -1,9 +1,12 @@
+import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Model/tld_acceptance_invitation_detail_earning_model_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDAcceptanceInvitationDetailEarningCell extends StatefulWidget {
-  TLDAcceptanceInvitationDetailEarningCell({Key key}) : super(key: key);
+  TLDAcceptanceInvitationDetailEarningCell({Key key,this.earningBillModel}) : super(key: key);
+
+  final TLDEarningBillModel earningBillModel;
 
   @override
   _TLDAcceptanceInvitationDetailEarningCellState createState() => _TLDAcceptanceInvitationDetailEarningCellState();
@@ -23,10 +26,10 @@ class _TLDAcceptanceInvitationDetailEarningCellState extends State<TLDAcceptance
         padding: EdgeInsets.fromLTRB(0, ScreenUtil().setHeight(20), 0, ScreenUtil().setHeight(20)),
         child: Column(
           children: <Widget>[
-            _getRowView('1级票据(1份)', '200TLD',TextStyle(fontSize: ScreenUtil().setSp(32),
+            _getRowView('${widget.earningBillModel.billLevel}级票据(${widget.earningBillModel.billCount}份)', '${widget.earningBillModel.totalPrice}TLD',TextStyle(fontSize: ScreenUtil().setSp(32),
               color: Color.fromARGB(255, 51, 51, 51))),
             _getDoubleCircle(),
-            _getRowView('推广收益  100TLD', '总额',TextStyle(fontSize: ScreenUtil().setSp(24),
+            _getRowView('推广收益  ${widget.earningBillModel.extensionProfit}TLD', '总额',TextStyle(fontSize: ScreenUtil().setSp(24),
               color: Color.fromARGB(255, 153, 153, 153)))
           ],
         ),

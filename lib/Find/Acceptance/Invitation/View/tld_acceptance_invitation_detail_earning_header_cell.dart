@@ -1,9 +1,12 @@
+import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Model/tld_acceptance_invitation_detail_earning_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceInvitationDetailHeaderCell extends StatefulWidget {
-  TLDAcceptanceInvitationDetailHeaderCell({Key key}) : super(key: key);
+  TLDAcceptanceInvitationDetailHeaderCell({Key key,this.detailEarningModel}) : super(key: key);
+
+  final TLDInviteDetailEarningModel detailEarningModel;
 
   @override
   _TLDAcceptanceInvitationDetailHeaderCellState createState() => _TLDAcceptanceInvitationDetailHeaderCellState();
@@ -23,9 +26,9 @@ class _TLDAcceptanceInvitationDetailHeaderCellState extends State<TLDAcceptanceI
         padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(20), ScreenUtil().setHeight(20), ScreenUtil().setWidth(20), ScreenUtil().setHeight(20)),
         child: Column(
           children: <Widget>[
-            _getRowView('用户ID', 'duqohu012e'),
+            _getRowView('用户ID', widget.detailEarningModel.userName),
             Padding(padding:  EdgeInsets.only(top : ScreenUtil().setHeight(10)),
-            child: _getRowView('用户手机号', '188 **** 3242'),
+            child: _getRowView('用户手机号', widget.detailEarningModel.tel),
             )
           ],
         ),

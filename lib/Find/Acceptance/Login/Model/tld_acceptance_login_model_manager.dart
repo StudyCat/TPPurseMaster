@@ -18,7 +18,6 @@ class TLDAcceptanceLoginModelManager{
   }
 
   void loginWithPramater(TLDAcceptanceLoginPramater pramater,Function(String) suceess,Function(TLDError) failure){
-    pramater.inviteCode = '12345678';
      TLDBaseRequest request = TLDBaseRequest({'tel':pramater.tel,'inviteCode':pramater.inviteCode,'telCode':pramater.telCode,'walletAddress':pramater.walletAddress}, 'acpt/user/registerAcptUser');
     request.postNetRequest((value) async {
       String token = value['jwtToken'];
@@ -27,6 +26,22 @@ class TLDAcceptanceLoginModelManager{
       preferences.setString('acceptanceToken', token); 
       suceess(token);
     }, (error) => failure(error));
+  }
+
+  void getInvationCodeFromQrCode(String qrCode,Function(String) success,Function(TLDError) failure){
+     if(qrCode.contains('http://www.tlddollar.com')){
+        if (qrCode.contains('inviteCode')){
+          Uri uri = Uri.parse(qrCode);
+          String walletAddress = uri.queryParameters['inviteCode'];
+          success(walletAddress);
+        }else{
+          TLDError error = TLDError(1000,'未知的二维码');
+          failure(error);
+        }
+      }else{
+        TLDError error = TLDError(1000,'未知的二维码');
+        failure(error);
+      }
   }
 
 }

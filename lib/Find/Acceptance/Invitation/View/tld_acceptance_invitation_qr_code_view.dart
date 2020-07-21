@@ -4,7 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class TLDAcceptanceInvitationQRCodeView extends StatefulWidget {
-  TLDAcceptanceInvitationQRCodeView({Key key}) : super(key: key);
+  TLDAcceptanceInvitationQRCodeView({Key key,this.qrCode,this.userName}) : super(key: key);
+
+  final String qrCode;
+
+  final String userName;
 
   @override
   _TLDAcceptanceInvitationQRCodeViewState createState() => _TLDAcceptanceInvitationQRCodeViewState();
@@ -27,11 +31,11 @@ class _TLDAcceptanceInvitationQRCodeViewState extends State<TLDAcceptanceInvitat
              ),
              Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
-                child: QrImage(data: 'fewfwefewfw',size : ScreenUtil().setWidth(408),backgroundColor: Colors.white,),
+                child: widget.qrCode.length > 0 ? QrImage(data: widget.qrCode,size : ScreenUtil().setWidth(408),backgroundColor: Colors.white,) : Container(width : ScreenUtil().setWidth(408),height: ScreenUtil().setWidth(408),),
             ),
               Padding(
                padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-               child: Text('用户ID hsuqohwu29-2e',style: TextStyle(color:Colors.white,fontSize: ScreenUtil().setSp(24)),),
+               child: Text('用户ID ${widget.userName}',style: TextStyle(color:Colors.white,fontSize: ScreenUtil().setSp(24)),),
              ),
               Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(48)),

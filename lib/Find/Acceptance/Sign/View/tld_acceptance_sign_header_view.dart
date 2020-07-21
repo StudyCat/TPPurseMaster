@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceSignHeaderView extends StatefulWidget {
-  TLDAcceptanceSignHeaderView({Key key,this.didClickLoginCallBack,this.userInfoModel}) : super(key: key);
+  TLDAcceptanceSignHeaderView({Key key,this.didClickLoginCallBack,this.userInfoModel,this.didClickWithdrawButtonCallBack}) : super(key: key);
 
   final Function didClickLoginCallBack;
 
   final TLDAcceptanceUserInfoModel userInfoModel;
+
+  final Function didClickWithdrawButtonCallBack;
 
   @override
   _TLDAcceptanceSignHeaderViewState createState() => _TLDAcceptanceSignHeaderViewState();
@@ -21,7 +23,7 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
     return Padding(
       padding: EdgeInsets.only(left:ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),
        child: Container(
-         padding: EdgeInsets.only(left:ScreenUtil().setWidth(20),right : ScreenUtil().setWidth(20)),
+         padding: EdgeInsets.only(left:ScreenUtil().setWidth(20),right : ScreenUtil().setWidth(20),bottom: ScreenUtil().setHeight(20)),
          decoration: BoxDecoration(
            borderRadius : BorderRadius.all(Radius.circular(4)),
            color : Colors.white
@@ -31,7 +33,21 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
            children:<Widget>[
              Padding(padding: EdgeInsets.only(top:ScreenUtil().setWidth(20)),
              child: _getTopRowWidget(),),
-             _getAmountWidget()
+             _getAmountWidget(),
+             Padding(
+               padding: EdgeInsets.only(top:ScreenUtil().setHeight(20)),
+               child: Container(
+              height : ScreenUtil().setHeight(60),
+              width : ScreenUtil().setWidth(140),
+              child: CupertinoButton(
+                onPressed: widget.didClickWithdrawButtonCallBack,
+                padding: EdgeInsets.zero,
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                child: Text('提现',style: TextStyle(color : Theme.of(context).hintColor,fontSize:ScreenUtil().setSp(28)),),
+              ),
+            ),
+             )
            ]
          ),
        ),

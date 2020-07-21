@@ -1,9 +1,12 @@
+import 'package:dragon_sword_purse/Find/Rank/Model/tld_normal_rank_model_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDRankNormalCell extends StatefulWidget {
-  TLDRankNormalCell({Key key,this.rank}) : super(key: key);
+  TLDRankNormalCell({Key key,this.rank,this.rankModel}) : super(key: key);
+
+  final TLDNormalRankModel rankModel;
 
   final int rank;
 
@@ -28,11 +31,11 @@ class _TLDRankNormalCellState extends State<TLDRankNormalCell> {
          ),
             Container(
             width : (MediaQuery.of(context).size.width - ScreenUtil().setWidth(60)) / 3,
-            child:  Text('hxud2837dd',style: textStyle,textAlign: TextAlign.center,), 
+            child:  Text(widget.rankModel.walletAddress,style: textStyle,textAlign: TextAlign.center,), 
          ),
          Container(
             width : (MediaQuery.of(context).size.width - ScreenUtil().setWidth(60)) / 3,
-            child:   Text('7322TLD',style: textStyle,textAlign: TextAlign.center,),
+            child:   Text('${widget.rankModel.totalTxCount}TLD',style: textStyle,textAlign: TextAlign.center,),
          ),
         ],
       ),
