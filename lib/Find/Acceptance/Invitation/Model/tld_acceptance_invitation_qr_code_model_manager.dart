@@ -8,7 +8,7 @@ class TLDAcceptanceInvitationQRCodeModelManager {
       String inviteCode = data['inviteCode'];
       String userName = data['userName'];
       String qrCode = 'http://www.tlddollar.com?inviteCode=' + inviteCode;
-      success(qrCode,userName);
+      success(qrCode,inviteCode);
     }, (error) => failure(error));
   }
 }

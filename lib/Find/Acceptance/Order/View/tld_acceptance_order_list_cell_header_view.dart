@@ -34,7 +34,7 @@ class _TLDAcceptanceOrderListCellHeaderViewState extends State<TLDAcceptanceOrde
                    children: <Widget>[
                      _getInfoLabel('票据级别','${widget.orderListModel.billLevel}级',null),
                      _getInfoLabel('单价', '${widget.orderListModel.billPrice}TLD',null),
-                     _getInfoLabel('分数', '${widget.orderListModel.billCount}份',null),
+                     _getInfoLabel('份数', '${widget.orderListModel.billCount}份',null),
                      _getInfoLabel('总价', '${widget.orderListModel.totalPrice}TLD',null),
                      _getInfoLabel('订单收益', orderStatusInfoModel.orderStatusName, orderStatusInfoModel.orderStatusColor)
                    ],

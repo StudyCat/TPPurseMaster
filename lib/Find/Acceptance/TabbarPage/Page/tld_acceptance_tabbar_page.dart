@@ -51,7 +51,7 @@ class _TLDAcceptanceTabbarPageState extends State<TLDAcceptanceTabbarPage> {
     ),
   ];
 
-  List pages = [TLDAcceptanceBillListPage(), TLDAcceptanceOrderListPage(), TLDAcceptanceInvitationTabPage(),TLDAcceptanceSignPage()];
+  List pages;
 
   
   int currentIndex;
@@ -66,6 +66,8 @@ class _TLDAcceptanceTabbarPageState extends State<TLDAcceptanceTabbarPage> {
     currentIndex = 0;
 
     _pageController = PageController();
+
+    pages =  [TLDAcceptanceBillListPage(), TLDAcceptanceOrderListPage(), TLDAcceptanceInvitationTabPage(),TLDAcceptanceSignPage()];
   }
 
   @override

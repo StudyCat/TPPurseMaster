@@ -1,12 +1,12 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
-import 'package:dragon_sword_purse/Find/Acceptance/Login/Model/tld_acceptance_login_model_manager.dart';
+import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_login_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance-sign_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_body_view.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_header_view.dart';
-import 'package:dragon_sword_purse/Find/Acceptance/Bill/Page/tld_acceptance_detail_bill_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_withdraw_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_withdraw_tab_page.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +15,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 
 class TLDAcceptanceSignPage extends StatefulWidget {
   TLDAcceptanceSignPage({Key key}) : super(key: key);
+
 
   @override
   _TLDAcceptanceSignPageState createState() => _TLDAcceptanceSignPageState();
@@ -39,15 +40,41 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
       _isLoading = true;
     });
     _modelManager.getUserInfo((TLDAcceptanceUserInfoModel userInfoModel){
-      setState(() {
+      if(mounted){
+              setState(() {
       _isLoading = false;
       _userInfoModel = userInfoModel;
     });
+      }
     }, (TLDError error){
-      setState(() {
+      if(mounted){
+              setState(() {
       _isLoading = false;
     });
+      }
     Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+  void _changeWallet(TLDWalletInfoModel infoModel){
+        setState(() {
+      _isLoading = true;
+    });
+    _modelManager.changeWallet(infoModel.walletAddress, (){
+      if(mounted){
+        setState(() {
+          _isLoading = false;
+          _userInfoModel.walletAddress = infoModel.walletAddress;
+          _userInfoModel.wallet = infoModel.wallet;
+        });
+      }
+    }, (TLDError error){
+      if(mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Fluttertoast.showToast(msg: error.msg);
     });
   }
 
@@ -56,14 +83,18 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
       _isLoading = true;
     });
     _modelManager.sign((){
-       setState(() {
+      if(mounted){
+               setState(() {
       _isLoading = false;
     });
+      }
     _getUserInfo();
     }, (TLDError error){
-       setState(() {
+      if(mounted){
+               setState(() {
       _isLoading = false;
     });
+      }
     Fluttertoast.showToast(msg: error.msg);
     });
   }
@@ -104,6 +135,13 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
         ),
         TLDAcceptanceSignBodyView(userInfoModel: _userInfoModel,didClickSignButton: (){
           _sign();
+        },
+        didClickWalletButton: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDEchangeChooseWalletPage(
+            didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
+              _changeWallet(infoModel);
+            },
+          )));
         },)
       ],
     );

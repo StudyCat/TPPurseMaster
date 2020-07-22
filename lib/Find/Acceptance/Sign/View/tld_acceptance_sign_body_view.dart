@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceSignBodyView extends StatefulWidget {
-  TLDAcceptanceSignBodyView({Key key,this.userInfoModel,this.didClickSignButton}) : super(key: key);
+  TLDAcceptanceSignBodyView({Key key,this.userInfoModel,this.didClickSignButton,this.didClickWalletButton}) : super(key: key);
   
   final TLDAcceptanceUserInfoModel userInfoModel;
 
   final Function didClickSignButton;
+
+  final Function didClickWalletButton;
 
   @override
   _TLDAcceptanceSignBodyViewState createState() => _TLDAcceptanceSignBodyViewState();
@@ -64,13 +66,16 @@ class _TLDAcceptanceSignBodyViewState extends State<TLDAcceptanceSignBodyView> {
     String walletAddress = widget.userInfoModel != null ? widget.userInfoModel.wallet.name : '暂未登记';
     return Padding(
       padding: EdgeInsets.only(top : ScreenUtil().setHeight(20),right : ScreenUtil().setWidth(20)),
-      child: Row(
+      child: GestureDetector(
+        onTap : widget.didClickWalletButton,
+        child :  Row(
         mainAxisAlignment: MainAxisAlignment.end,
                 children : <Widget>[
                    Icon(IconData(0xe644,fontFamily: 'appIconFonts'),size: ScreenUtil().setHeight(28),color: Color.fromARGB(255, 51, 51, 51),),
                   Text('   ' + walletAddress,style:TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(28)))
                 ]
-            ),
+            )
+      ),
     );
   }
 

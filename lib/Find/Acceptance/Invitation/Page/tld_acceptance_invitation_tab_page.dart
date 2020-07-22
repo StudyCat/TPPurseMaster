@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class TLDAcceptanceInvitationTabPage extends StatefulWidget {
   TLDAcceptanceInvitationTabPage({Key key}) : super(key: key);
 
+
   @override
   _TLDAcceptanceInvitationTabPageState createState() => _TLDAcceptanceInvitationTabPageState();
 }

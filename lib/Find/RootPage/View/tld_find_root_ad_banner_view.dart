@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dragon_sword_purse/Find/RootPage/Model/tld_find_root_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 class TLDFindRootADBannerView extends StatefulWidget {
-  TLDFindRootADBannerView({Key key}) : super(key: key);
+  TLDFindRootADBannerView({Key key,this.bannerList}) : super(key: key);
 
+  final List bannerList;
   
   @override
   _TLDFindRootADBannerViewState createState() =>
@@ -26,16 +28,18 @@ class _TLDFindRootADBannerViewState extends State<TLDFindRootADBannerView> {
       child: Container(
         height: height,
         child: Swiper(
+          key: UniqueKey(),
           pagination: null,
           autoplay: true,
           loop: true,
-          itemCount: 3,
+          itemCount: widget.bannerList.length,
           itemBuilder: (context, index) {
+            TLDBannerModel bannerModel = widget.bannerList[index];
             return ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(4)),
               child: CachedNetworkImage(
-                  imageUrl:
-                      'http://img5.mtime.cn/CMS/News/2020/07/09/082832.97620660_620X620.jpg',
+                  imageUrl: bannerModel.bannerUrl
+                      ,
                   fit: BoxFit.fill),
             );
           },

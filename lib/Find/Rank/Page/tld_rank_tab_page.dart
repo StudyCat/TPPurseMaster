@@ -55,8 +55,8 @@ class _TLDRankTabPageState extends State<TLDRankTabPage> with SingleTickerProvid
           Expanded(
               child: TabBarView(
             children: [
-              TLDRankNormalPage(type: TLDRankNormalPageType.month,),
               TLDRankNormalPage(type: TLDRankNormalPageType.week,),
+              TLDRankNormalPage(type: TLDRankNormalPageType.month,),
               TLDRankMinePage()
             ],
             controller: _tabController,

@@ -191,6 +191,7 @@ class _TLDNewMissionFirstPageState extends State<TLDNewMissionFirstPage> with Au
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
         automaticallyImplyLeading: true,
+        actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         border: Border.all(
           color: Color.fromARGB(0, 0, 0, 0),

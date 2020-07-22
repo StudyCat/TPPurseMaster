@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceInvitationEarningsSearchCell extends StatefulWidget {
-  TLDAcceptanceInvitationEarningsSearchCell({Key key,this.didClickSearchCallBack}) : super(key: key);
+  TLDAcceptanceInvitationEarningsSearchCell({Key key,this.didClickSearchCallBack,this.textDidChangeCallBack}) : super(key: key);
 
   final Function(String) didClickSearchCallBack;
+
+  final Function(String) textDidChangeCallBack;
 
   @override
   _TLDAcceptanceInvitationEarningsSearchCellState createState() => _TLDAcceptanceInvitationEarningsSearchCellState();
@@ -25,6 +27,9 @@ class _TLDAcceptanceInvitationEarningsSearchCellState extends State<TLDAcceptanc
           color: Colors.white
         ),
         child : CupertinoTextField(
+          onChanged: (String text){
+            widget.textDidChangeCallBack(text);
+          },
            decoration: BoxDecoration(
                       border: Border.all(color: Color.fromARGB(0, 0, 0, 0))),
            placeholder: '请输入用户手机号',

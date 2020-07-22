@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TLDAcceptanceInvitationEarningsPage extends StatefulWidget {
   TLDAcceptanceInvitationEarningsPage({Key key}) : super(key: key);
@@ -20,69 +21,48 @@ class TLDAcceptanceInvitationEarningsPage extends StatefulWidget {
 class _TLDAcceptanceInvitationEarningsPageState extends State<TLDAcceptanceInvitationEarningsPage> {
   TLDAcceptanceEarningsModelManager _modelManager;
 
-  bool _isLoading = true;
+  RefreshController _refreshController;
 
   List _dataSource = [];
+
+  String _tel = '';
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
+    _refreshController = RefreshController(initialRefresh: true);
+
     _modelManager = TLDAcceptanceEarningsModelManager();
-    _getInviteTeamInfo();
+    _getInviteTeamInfo(_tel);
   }
 
-  void _getInviteTeamInfo(){
-    if(mounted){
-      setState(() {
-        _isLoading = true;
-      });
-    }
-    _modelManager.getInviteTeamInfo((List result){
+  void _getInviteTeamInfo(String tel){
+    _modelManager.getInviteTeamInfo(tel,(List result){
+      _refreshController.refreshCompleted();
       _dataSource = [];
       if (mounted){
         setState(() {
-          _isLoading = false;
           _dataSource.addAll(result);
         });
       }
     }, (TLDError error){
-      if (mounted){
-        setState(() {
-          _isLoading = false;
-        });
-      }
-      Fluttertoast.showToast(msg: error.msg);
-    });
-  }
-
-  void _searchTel(String tel){
-    if(mounted){
-      setState(() {
-        _isLoading = true;
-      });
-    }
-    _modelManager.searchInviteUserInfo(tel,(List result){
-      _dataSource = [];
-      if (mounted){
-        setState(() {
-          _isLoading = false;
-          _dataSource.addAll(result);
-        });
-      }
-    }, (TLDError error){
-      if (mounted){
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      _refreshController.refreshCompleted();
       Fluttertoast.showToast(msg: error.msg);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return LoadingOverlay(isLoading: _isLoading,child: _getListView(),);
+    return SmartRefresher(
+      controller: _refreshController,
+      child: _getListView(),
+      header: WaterDropHeader(
+        complete: Text('刷新完成'),
+      ),
+      onRefresh: ()=> _getInviteTeamInfo(_tel),
+    );
   }
 
   Widget _getListView(){
@@ -92,7 +72,10 @@ class _TLDAcceptanceInvitationEarningsPageState extends State<TLDAcceptanceInvit
       if (index == 0){
         return TLDAcceptanceInvitationEarningsSearchCell(
           didClickSearchCallBack: (String tel){
-            _searchTel(tel);
+            _getInviteTeamInfo(tel);
+          },
+          textDidChangeCallBack: (String text){
+            _tel = text;
           },
         );
       }else{

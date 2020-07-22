@@ -25,7 +25,7 @@ class _TLDAcceptanceInvitationQRCodePageState extends State<TLDAcceptanceInvitat
 
   String _qrCode = '';
 
-  String _userName = '';
+  String _inviteCode = '';
 
   GlobalKey repainKey = GlobalKey();
 
@@ -39,10 +39,10 @@ class _TLDAcceptanceInvitationQRCodePageState extends State<TLDAcceptanceInvitat
   }
 
   void _getQrCodeInfo(){
-    _modelManager.getQrCodeInfo((String qrCode,String userName){
+    _modelManager.getQrCodeInfo((String qrCode,String inviteCode){
       setState(() {
         _qrCode = qrCode;
-        _userName = userName;
+        _inviteCode = inviteCode;
       });
     }, (TLDError error){
       Fluttertoast.showToast(msg: error.msg);
@@ -62,7 +62,7 @@ class _TLDAcceptanceInvitationQRCodePageState extends State<TLDAcceptanceInvitat
           children: <Widget>[
             RepaintBoundary(
                 key : repainKey,
-                child:  TLDAcceptanceInvitationQRCodeView(qrCode: _qrCode,userName: _userName,),
+                child:  TLDAcceptanceInvitationQRCodeView(qrCode: _qrCode,inviteCode: _inviteCode,),
             ),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(68)),

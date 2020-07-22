@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceScanCell extends StatefulWidget {
-  TLDAcceptanceScanCell({Key key,this.title,this.placeholder,this.didClickScanButtonCallBack,this.inviteController}) : super(key: key);
+  TLDAcceptanceScanCell({Key key,this.title,this.placeholder,this.didClickScanButtonCallBack,this.inviteController,this.textDidChangeCallBack}) : super(key: key);
 
   final String title;
 
@@ -12,6 +12,8 @@ class TLDAcceptanceScanCell extends StatefulWidget {
   final Function didClickScanButtonCallBack;
 
   final TextEditingController inviteController;
+
+  final Function(String) textDidChangeCallBack;
 
   @override
   _TLDAcceptanceScanCellState createState() => _TLDAcceptanceScanCellState();
@@ -52,8 +54,10 @@ class _TLDAcceptanceScanCellState extends State<TLDAcceptanceScanCell> {
                     bottom: ScreenUtil().setHeight(20)),
                 controller: widget.inviteController,
                 placeholder: widget.placeholder,
-                enabled: false,
                 textAlign: TextAlign.right,
+                onChanged: (String text){
+                  widget.textDidChangeCallBack(text);
+                },
                 placeholderStyle: TextStyle(
                     color: Color.fromARGB(255, 153, 153, 153),
                     fontSize: ScreenUtil().setSp(24)),

@@ -220,11 +220,14 @@ class _TLDAcceptanceBillBuyActionSheetState
       child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text(_infoModel != null ? _infoModel.wallet.name : '选择支付钱包',
+        Container(
+          width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(150),
+          child :Text(_infoModel != null ? _infoModel.wallet.name : '选择支付钱包',
               style: TextStyle(
                   color: Color.fromARGB(255, 51, 51, 51),
                   fontSize: ScreenUtil().setSp(28),
-                  decoration: TextDecoration.none),),
+                  decoration: TextDecoration.none),)
+        ),
         Icon(Icons.keyboard_arrow_right)
       ],
     ),

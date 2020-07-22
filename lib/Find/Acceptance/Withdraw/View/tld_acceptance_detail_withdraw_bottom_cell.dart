@@ -1,11 +1,16 @@
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_withdraw_list_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceDetailWithdrawBottomCell extends StatefulWidget {
-  TLDAcceptanceDetailWithdrawBottomCell({Key key,this.didClickActionBtnCallBack}) : super(key: key);
+  TLDAcceptanceDetailWithdrawBottomCell({Key key,this.didClickActionBtnCallBack,this.detailModel}) : super(key: key);
 
   final Function didClickActionBtnCallBack;
+
+  final TLDAcceptanceWithdrawOrderListModel detailModel;
 
   @override
   _TLDAcceptanceDetailWithdrawBottomCellState createState() => _TLDAcceptanceDetailWithdrawBottomCellState();
@@ -13,7 +18,19 @@ class TLDAcceptanceDetailWithdrawBottomCell extends StatefulWidget {
 
 class _TLDAcceptanceDetailWithdrawBottomCellState extends State<TLDAcceptanceDetailWithdrawBottomCell> {
 
-  List _actionBtnTitleList = ['取消订单','释放TLD'];
+  List _actionBtnTitleList = [];
+
+  @override
+  void initState() { 
+    super.initState();
+    
+    TLDOrderStatusInfoModel infoModel = TLDDataManager.acceptanceWithdrawOrderStatusMap[widget.detailModel.appealStatus];
+    if (widget.detailModel.amApply) {
+      _actionBtnTitleList.addAll(infoModel.sellerActionButtonTitle);
+    }else{
+      _actionBtnTitleList.addAll(infoModel.buyerActionButtonTitle);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +44,7 @@ class _TLDAcceptanceDetailWithdrawBottomCellState extends State<TLDAcceptanceDet
               borderRadius: BorderRadius.all(Radius.circular(4)),
               color: Colors.white
             ),
-            child:  _getMeTakeColumnView(),
+            child:  widget.detailModel.amApply ? _getMeTakeColumnView() : _getNotMeTakeView(),
           ),
           Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(100)),

@@ -1,11 +1,16 @@
+import 'package:date_format/date_format.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_withdraw_list_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceWithdrawListCell extends StatefulWidget {
-  TLDAcceptanceWithdrawListCell({Key key,this.didClickIMBtnCallBack}) : super(key: key);
+  TLDAcceptanceWithdrawListCell({Key key,this.didClickIMBtnCallBack,this.orderListModel}) : super(key: key);
 
   final Function didClickIMBtnCallBack;
+
+  final TLDAcceptanceWithdrawOrderListModel orderListModel;
 
   @override
   _TLDAcceptanceWithdrawListCellState createState() => _TLDAcceptanceWithdrawListCellState();
@@ -43,7 +48,7 @@ class _TLDAcceptanceWithdrawListCellState extends State<TLDAcceptanceWithdrawLis
       child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children:<Widget>[
-          Text('任务编号：' + '4564564564564',style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153))),
+          Text('编号：' + widget.orderListModel.cashNo,style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153))),
         GestureDetector(
           onTap: widget.didClickIMBtnCallBack,
           child: Container(
@@ -62,14 +67,15 @@ class _TLDAcceptanceWithdrawListCellState extends State<TLDAcceptanceWithdrawLis
   }
 
   Widget _getMissionInfoView(){
+    TLDOrderStatusInfoModel infoModel = TLDDataManager.accptanceOrderListStatusMap[widget.orderListModel.cashStatus];
     return Padding(
       padding: EdgeInsets.only(top : ScreenUtil().setHeight(14)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children : <Widget>[
-          _getMissionInfoColumWidget('数量', '100TLD', null),
-          _getMissionInfoColumWidget('金额',  '1839CNY', null),
-          _getMissionInfoColumWidget('状态', '待支付', Color.fromARGB(255, 208, 2, 27))
+          _getMissionInfoColumWidget('数量', '${widget.orderListModel.tldCount}TLD', null),
+          _getMissionInfoColumWidget('金额',  '${widget.orderListModel.cashPrice}CNY', null),
+          _getMissionInfoColumWidget('状态', infoModel.orderStatusName, infoModel.orderStatusColor)
         ]
       ),
     );
@@ -94,7 +100,7 @@ class _TLDAcceptanceWithdrawListCellState extends State<TLDAcceptanceWithdrawLis
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children:<Widget>[
         Offstage(
-          offstage:true,
+          offstage: !widget.orderListModel.amApply,
           child: Container(
             width : ScreenUtil().setWidth(120),
             height: ScreenUtil().setHeight(40),
@@ -110,7 +116,7 @@ class _TLDAcceptanceWithdrawListCellState extends State<TLDAcceptanceWithdrawLis
         ),
         Padding(
           padding: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
-          child : Text('2020-04-30 10:59',style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153)))
+          child : Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.orderListModel.createTime), [yyyy,'-',mm,'-',dd,' ',hh,':',nn]),style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153)))
           )
       ]
     ),

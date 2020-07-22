@@ -18,7 +18,8 @@ class TLDError{
 }
 
 class TLDBaseRequest{
-  //47.101.170.209
+  //47.101.170.209 测试环境
+  //192.168.1.120 本地环境
   static String baseUrl = 'http://47.101.170.209:8030/';
   Map pramatersMap;
   String subUrl;

@@ -7,6 +7,7 @@ import 'package:dragon_sword_purse/Exchange/FirstPage/View/tld_exchange_normalCe
 import 'package:dragon_sword_purse/Find/Acceptance/Login/Model/tld_acceptance_login_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Login/View/tld_acceptance_login_code_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Login/View/tld_acceptance_scan_cell.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/TabbarPage/Page/tld_acceptance_tabbar_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,7 +49,7 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
   List placeholders = [
     '请输入您的手机号',
     '请输入验证码',
-    '请输入您的推荐人ID',
+    '请输入您的推荐码(第二次登记时，不需要输入)',
     '您的钱包地址'
   ];
 
@@ -57,6 +58,7 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
     super.initState();
 
     _pramater = TLDAcceptanceLoginPramater();
+    _pramater.telCode = '123465';
 
     _cellPhone = ValueNotifier('');  
 
@@ -78,10 +80,6 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
       Fluttertoast.showToast(msg: '请填写手机号码');
       return;
     }
-    if (_pramater.inviteCode == null){
-      Fluttertoast.showToast(msg: '请获取推荐码');
-      return;
-    }
     if (_pramater.telCode == null){
       Fluttertoast.showToast(msg: '请填写短信验证码');
       return;
@@ -98,6 +96,7 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
         _isLoading = false;
       });
       Navigator.of(context).pop();
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceTabbarPage()));
     }, (TLDError error){
       setState(() {
         _isLoading = false;
@@ -154,7 +153,11 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
           child: TLDAcceptanceScanCell(title : titles[index],placeholder: placeholders[index],inviteController: _inviteController,
           didClickScanButtonCallBack: ()async{
             await _scanPhoto();
-          },));
+          },
+          textDidChangeCallBack: (String text){
+            _pramater.inviteCode = text;
+          },
+          ));
         }else if(index == 3){
           return TLDExchangeNormalCell(
             type: TLDExchangeNormalCellType.normalArrow,

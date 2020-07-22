@@ -1,0 +1,50 @@
+
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
+
+class TLDAceeptanceWithdrawUsefulInfoModel {
+  String acptPlatformCachRate;
+  String walletAddress;
+  String value;
+
+  TLDAceeptanceWithdrawUsefulInfoModel(
+      {this.acptPlatformCachRate, this.walletAddress, this.value});
+
+  TLDAceeptanceWithdrawUsefulInfoModel.fromJson(Map<String, dynamic> json) {
+    acptPlatformCachRate = json['acptPlatformCachRate'];
+    walletAddress = json['walletAddress'];
+    value = json['value'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['acptPlatformCachRate'] = this.acptPlatformCachRate;
+    data['walletAddress'] = this.walletAddress;
+    data['value'] = this.value;
+    return data;
+  }
+}
+
+class TLDWithdrawPramaterModel {
+  int cashType;
+  String cashCount;
+  TLDPaymentModel paymentModel;
+}
+
+class TLDAcceptanceWithdrawModelManager {
+  
+  void getUsefulInfo(Function(TLDAceeptanceWithdrawUsefulInfoModel) success,Function(TLDError) failure){
+    TLDBaseRequest request = TLDBaseRequest({},'acpt/cash/getCachCharge');
+    request.postNetRequest((value) {
+      success(TLDAceeptanceWithdrawUsefulInfoModel.fromJson(value));
+    }, (error) => failure(error));
+  }
+
+  void withdraw(TLDWithdrawPramaterModel pramaterModel,Function(String) success,Function(TLDError) failure){
+    TLDBaseRequest request = TLDBaseRequest({'cashCount':pramaterModel.cashCount,'cashType':pramaterModel.cashType,'payId':pramaterModel.paymentModel.payId},'acpt/cash/cash');
+    request.postNetRequest((value) {
+      success(value);
+    }, (error) => failure(error));
+  }
+
+}

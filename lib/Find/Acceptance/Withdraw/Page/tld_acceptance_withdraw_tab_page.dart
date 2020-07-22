@@ -73,9 +73,9 @@ class _TLDAcceptanceWithdrawTabPageState extends State<TLDAcceptanceWithdrawTabP
           Expanded(
               child: TabBarView(
             children: [
-              TLDAcceptanceWithdrawListPage(),
+              TLDAcceptanceWithdrawListPage(type: TLDAcceptanceProfitListPageType.withdrawing,),
               TLDAcceptanceProfitListPage(),
-              TLDAcceptanceWithdrawListPage()
+              TLDAcceptanceWithdrawListPage(type: TLDAcceptanceProfitListPageType.withdrawHistory,)
             ],
             controller: _tabController,
           ))

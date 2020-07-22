@@ -4,11 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class TLDAcceptanceInvitationQRCodeView extends StatefulWidget {
-  TLDAcceptanceInvitationQRCodeView({Key key,this.qrCode,this.userName}) : super(key: key);
+  TLDAcceptanceInvitationQRCodeView({Key key,this.qrCode,this.inviteCode}) : super(key: key);
 
   final String qrCode;
 
-  final String userName;
+  final String inviteCode;
 
   @override
   _TLDAcceptanceInvitationQRCodeViewState createState() => _TLDAcceptanceInvitationQRCodeViewState();
@@ -35,7 +35,7 @@ class _TLDAcceptanceInvitationQRCodeViewState extends State<TLDAcceptanceInvitat
             ),
               Padding(
                padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-               child: Text('用户ID ${widget.userName}',style: TextStyle(color:Colors.white,fontSize: ScreenUtil().setSp(24)),),
+               child: Text('推广码 ${widget.inviteCode}',style: TextStyle(color:Colors.white,fontSize: ScreenUtil().setSp(24)),),
              ),
               Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(48)),

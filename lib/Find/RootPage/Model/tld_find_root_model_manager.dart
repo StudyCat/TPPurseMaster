@@ -1,3 +1,42 @@
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+
+class TLDBannerModel {
+  int bannerId;
+  String bannerUrl;
+  String bannerHref;
+  int bannerSort;
+  int createTime;
+  bool valid;
+
+  TLDBannerModel(
+      {this.bannerId,
+      this.bannerUrl,
+      this.bannerHref,
+      this.bannerSort,
+      this.createTime,
+      this.valid});
+
+  TLDBannerModel.fromJson(Map<String, dynamic> json) {
+    bannerId = json['bannerId'];
+    bannerUrl = json['bannerUrl'];
+    bannerHref = json['bannerHref'];
+    bannerSort = json['bannerSort'];
+    createTime = json['createTime'];
+    valid = json['valid'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['bannerId'] = this.bannerId;
+    data['bannerUrl'] = this.bannerUrl;
+    data['bannerHref'] = this.bannerHref;
+    data['bannerSort'] = this.bannerSort;
+    data['createTime'] = this.createTime;
+    data['valid'] = this.valid;
+    return data;
+  }
+}
+
 class TLDFindRootCellUIModel {
   String title;
   List items;
@@ -26,5 +65,17 @@ class TLDFindRootModelManager {
             title: '排行榜', imageAssest: 'assetss/images/icon_choose_rank.png',isPlusIcon: false),
       ])
     ];
+  }
+
+  void getBannerInfo(Function success,Function(TLDError) failure){
+    TLDBaseRequest request = TLDBaseRequest({},'banner/bannerList');
+    request.postNetRequest((value) {
+      List dataList = value;
+      List result = [];
+      for (Map item in dataList) {
+        result.add(TLDBannerModel.fromJson(item));
+      }
+      success(result);
+    }, (error) => failure(error));
   }
 }

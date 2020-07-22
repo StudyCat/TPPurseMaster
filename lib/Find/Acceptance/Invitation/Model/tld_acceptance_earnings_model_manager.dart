@@ -27,8 +27,8 @@ class TLDInviteTeamModel {
 }
 
 class TLDAcceptanceEarningsModelManager {
-    void getInviteTeamInfo(Function(List) success,Function(TLDError) failure){
-      TLDBaseRequest request = TLDBaseRequest({}, 'acpt/user/inviteProfit');
+    void getInviteTeamInfo(String tel,Function(List) success,Function(TLDError) failure){
+      TLDBaseRequest request = TLDBaseRequest({'tel':tel}, 'acpt/user/inviteProfit');
       request.postNetRequest((value) {
         List data = value;
         List result = [];
@@ -38,17 +38,4 @@ class TLDAcceptanceEarningsModelManager {
         success(result);
       }, (error) => failure(error));
     }
-
-    void searchInviteUserInfo(String tel,Function(List) success,Function(TLDError) failure){
-      TLDBaseRequest request = TLDBaseRequest({'tel':tel}, 'acpt/user/searchAccount');
-      request.postNetRequest((value) {
-        List data = value;
-        List result = [];
-        for (Map item in data) {
-          result.add(TLDInviteTeamModel.fromJson(item));
-        }
-        success(result);
-      }, (error) => failure(error));
-    }
-
 }

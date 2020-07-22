@@ -18,7 +18,8 @@ class TLDAcceptanceLoginModelManager{
   }
 
   void loginWithPramater(TLDAcceptanceLoginPramater pramater,Function(String) suceess,Function(TLDError) failure){
-     TLDBaseRequest request = TLDBaseRequest({'tel':pramater.tel,'inviteCode':pramater.inviteCode,'telCode':pramater.telCode,'walletAddress':pramater.walletAddress}, 'acpt/user/registerAcptUser');
+    String imUserName = TLDDataManager.instance.username;
+     TLDBaseRequest request = TLDBaseRequest({'tel':pramater.tel,'inviteCode':pramater.inviteCode,'telCode':pramater.telCode,'walletAddress':pramater.walletAddress,'TLDUserName':imUserName}, 'acpt/user/registerAcptUser');
     request.postNetRequest((value) async {
       String token = value['jwtToken'];
       TLDDataManager.instance.acceptanceToken = token;

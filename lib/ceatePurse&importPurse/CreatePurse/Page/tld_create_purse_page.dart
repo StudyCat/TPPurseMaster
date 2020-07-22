@@ -60,8 +60,8 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: SingleChildScrollView(
-        child: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget(context)),
+      body: LoadingOverlay(isLoading: _isLoading,child: SingleChildScrollView(
+        child:  _getBodyWidget(context),),
       ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );

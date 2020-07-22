@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceWithDrawBottomCell extends StatefulWidget {
-  TLDAcceptanceWithDrawBottomCell({Key key}) : super(key: key);
+  TLDAcceptanceWithDrawBottomCell({Key key,this.didClickButtonCallBack}) : super(key: key);
 
+  final Function didClickButtonCallBack;
 
   @override
   _TLDAcceptanceWithDrawBottomCellState createState() => _TLDAcceptanceWithDrawBottomCellState();
@@ -34,7 +35,7 @@ class _TLDAcceptanceWithDrawBottomCellState extends State<TLDAcceptanceWithDrawB
               height : ScreenUtil().setHeight(80),
               width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(60),
               child: CupertinoButton(
-                onPressed: (){},
+                onPressed: widget.didClickButtonCallBack,
                 padding: EdgeInsets.zero,
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.all(Radius.circular(4)),

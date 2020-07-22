@@ -125,6 +125,13 @@ class TLDAcceptanceSignModelManager{
     }, (error) => failure(error));
   }
 
+  void changeWallet(String walletAddress,Function() success,Function(TLDError) failure){
+    TLDBaseRequest request = TLDBaseRequest({'walletAddress':walletAddress},'acpt/user/changeWallet');
+    request.postNetRequest((value) {
+      success();
+    }, (error) => failure(error));
+  }
+
  void sign(Function() success,Function(TLDError) failure){
    TLDBaseRequest request = TLDBaseRequest({},'acpt/user/acptSign');
     request.postNetRequest((value) {
