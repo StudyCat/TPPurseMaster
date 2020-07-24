@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/IMUI/Page/tld_im_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
@@ -9,6 +10,7 @@ import 'package:dragon_sword_purse/Order/View/tld_detail_bottom_cell.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_wechat_qrcode_show_view.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
+import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -133,7 +135,15 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
   }
 
   void _confirmPaid(){
-    setState(() {
+    jugeHavePassword(context, (){
+      _surePaid();
+    }, TLDCreatePursePageType.back, (){
+      _surePaid();
+    });
+  }
+
+  void _surePaid(){
+      setState(() {
       _isLoading = true;
     });
     _modelManager.confirmPaid(widget.orderNo, _detailOrderModel.buyerAddress,  (){
@@ -159,7 +169,15 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
   }
 
   void _sureSentCoin(){
-    setState(() {
+    jugeHavePassword(context, (){
+      _sentCoin();
+    }, TLDCreatePursePageType.back, (){
+      _sentCoin();
+    });
+  }
+
+  void _sentCoin(){
+     setState(() {
       _isLoading = true;
     });
     _modelManager.sureSentCoin(widget.orderNo, _detailOrderModel.sellerAddress,  (){

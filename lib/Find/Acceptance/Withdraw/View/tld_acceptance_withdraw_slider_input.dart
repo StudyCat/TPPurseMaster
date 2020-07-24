@@ -108,14 +108,15 @@ class _TLDAcceptanceWithdrawSliderInputCellState extends State<TLDAcceptanceWith
   }
 
   Widget getSliderView(){
-    bool disabled = widget.maxValue == null;
+    bool disabled = (widget.maxValue == null || double.parse(widget.maxValue) == 0.0);
+
     return Container(
       padding : EdgeInsets.only(right : ScreenUtil().setWidth(20),left : ScreenUtil().setWidth(20),top : ScreenUtil().setWidth(8)),
       child :FlutterSlider(
               values: [double.parse(_value)],
               min: 0,
               disabled: disabled,
-              max: widget.maxValue == null ? 100 : double.parse(widget.maxValue),
+              max: (widget.maxValue == null || double.parse(widget.maxValue) == 0.0)? 100 : double.parse(widget.maxValue),
               handlerHeight: ScreenUtil().setHeight(40),
               handlerWidth: ScreenUtil().setHeight(40),
               trackBar: FlutterSliderTrackBar(

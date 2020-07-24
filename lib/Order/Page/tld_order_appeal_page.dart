@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_withdraw_list_model_manager.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_order_appeal_model_manager.dart';
 import 'package:dragon_sword_purse/Order/View/tld_order_appeal_bottom_cell.dart';
@@ -19,9 +20,11 @@ import 'package:image_picker/image_picker.dart';
 import '../../CommonWidget/tld_image_show_page.dart';
 
 class TLDOrderAppealPage extends StatefulWidget {
-  TLDOrderAppealPage({Key key,this.orderModel,this.isReAppeal = false}) : super(key: key);
+  TLDOrderAppealPage({Key key,this.orderModel,this.detailWithDrawModel,this.isReAppeal = false}) : super(key: key);
 
   final TLDDetailOrderModel orderModel;
+
+  final TLDAcceptanceWithdrawOrderListModel detailWithDrawModel;
 
   final bool isReAppeal;
 
@@ -59,8 +62,14 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
     setState(() {
       _isLoading = true;
     });
+    int appealType;
+    if (widget.orderModel != null) {
+      appealType = 1;
+    }else{
+      appealType = 2;
+    }
     _manager.uploadImageToService(images, (List urlList){
-      _manager.orderAppealToService(urlList, appealDesc, widget.orderModel.orderNo, (){
+      _manager.orderAppealToService(urlList, appealDesc, widget.orderModel.orderNo,appealType, (){
         if (mounted){
                   setState(() {
         _isLoading = false;
@@ -127,7 +136,7 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
                     fontSize: ScreenUtil().setSp(28),
                     color: Color.fromARGB(255, 51, 51, 51)),
                 isOpen: isOpen,
-                paymentModel: widget.orderModel.payMethodVO,
+                paymentModel: widget.orderModel != null ? widget.orderModel.payMethodVO : widget.detailWithDrawModel.payMethodVO,
                 didClickCallBack: () {
                   setState(() {
                     isOpen = !isOpen;
@@ -215,11 +224,11 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
   Widget _getNormalCell(BuildContext context, num top, int index) {
     String content;
     if(index == 0){
-      content = widget.orderModel.orderNo;
+      content = widget.orderModel != null ? widget.orderModel.orderNo : widget.detailWithDrawModel.cashNo;
     }else if (index == 2){
-      content = widget.orderModel.sellerAddress;
+      content = widget.orderModel != null ? widget.orderModel.sellerAddress : widget.detailWithDrawModel.applyWalletAddress;
     }else if (index == 3){
-      content = widget.orderModel.buyerAddress;
+      content = widget.orderModel != null ? widget.orderModel.buyerAddress :widget.detailWithDrawModel.inviteWalletAddress;
     }
     return Padding(
       padding: EdgeInsets.only(

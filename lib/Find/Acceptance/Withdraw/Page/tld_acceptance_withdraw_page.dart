@@ -235,6 +235,14 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
         }
         return TLDAcceptanceWithDrawBottomCell(
           didClickButtonCallBack: (){
+            if (double.parse(_pramaterModel.cashCount) == 0.0) {
+              Fluttertoast.showToast(msg: '请输入兑换量');
+              return;
+            }
+            if (_pramaterModel.paymentModel == null) {
+              Fluttertoast.showToast(msg: '请选择支付方式');
+              return;
+            }
             _withdraw();
           },
         );

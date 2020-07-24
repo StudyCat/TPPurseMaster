@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_detail_withdraw_page.dart';
 import 'package:dragon_sword_purse/IMUI/Page/tld_im_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
@@ -29,7 +30,7 @@ void main(){
       appKey: 'fbc4ec1832b255c5dcb7944c',
       channel: "developer-default",
       production: false,
-      debug: true,
+      debug: false,
     );
 
      jPush.getRegistrationID().then((rid)  {
@@ -54,6 +55,9 @@ void main(){
             int type  = int.parse(dataMap['contentType']);
             if (type == 100 || type == 101 || type == 102 || type == 103 || type == 104 || type == 107){
               navigatorKey.currentState.push( MaterialPageRoute(builder: (context) => TLDDetailOrderPage(orderNo: dataMap['orderNo'],)));
+            }else if ((type > 199 && type < 205) ||type == 207 || type == 208){
+              String cashNo = dataMap['cashNo'];
+              navigatorKey.currentState.push( MaterialPageRoute(builder: (context)=>TLDAcceptanceDetailWithdrawPage(cashNo:cashNo,)));
             }else if (type == 105){
               String walletAddress = dataMap['toAddress'];
                 List purseList = TLDDataManager.instance.purseList;

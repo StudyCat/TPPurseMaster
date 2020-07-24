@@ -18,9 +18,9 @@ class TLDOrderAppealModelManager{
     }, (error) => failure(error));
   }
 
-  void orderAppealToService(List imageUrls,String appealDesc,String orderNo,Function success,Function(TLDError)failure){
+  void orderAppealToService(List imageUrls,String appealDesc,String orderNo,int appealType,Function success,Function(TLDError)failure){
       String listJson = jsonEncode(imageUrls);
-      TLDBaseRequest request = TLDBaseRequest({'desc':appealDesc,'imgList':listJson,'orderNo':orderNo},'appeal/create');
+      TLDBaseRequest request = TLDBaseRequest({'desc':appealDesc,'imgList':listJson,'orderNo':orderNo,'appealType':appealType},'appeal/create');
       request.postNetRequest((dynamic value) {
           success();
       }, (error) => failure(error));

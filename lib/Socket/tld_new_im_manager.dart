@@ -20,9 +20,9 @@ JmessageFlutter JMessage = new JmessageFlutter.private(channel, const LocalPlatf
 
 class TLDNewIMManager{
     void init() {
-     JMessage.init(isOpenMessageRoaming: true, appkey:'fbc4ec1832b255c5dcb7944c');
+     JMessage.init(isOpenMessageRoaming: true, appkey:'fbc4ec1832b255c5dcb7944c',isProduction: true);
 
-     JMessage.setDebugMode(enable: false);
+     JMessage.setDebugMode(enable: true);
 
      JMessage.applyPushAuthority(
         new JMNotificationSettingsIOS(

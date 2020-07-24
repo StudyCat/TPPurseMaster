@@ -67,7 +67,7 @@ class _TLDAcceptanceWithdrawListCellState extends State<TLDAcceptanceWithdrawLis
   }
 
   Widget _getMissionInfoView(){
-    TLDOrderStatusInfoModel infoModel = TLDDataManager.accptanceOrderListStatusMap[widget.orderListModel.cashStatus];
+    TLDOrderStatusInfoModel infoModel = TLDDataManager.acceptanceWithdrawOrderStatusMap[widget.orderListModel.cashStatus];
     return Padding(
       padding: EdgeInsets.only(top : ScreenUtil().setHeight(14)),
       child: Row(

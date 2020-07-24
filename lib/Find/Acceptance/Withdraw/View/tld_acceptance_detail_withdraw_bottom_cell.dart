@@ -24,7 +24,7 @@ class _TLDAcceptanceDetailWithdrawBottomCellState extends State<TLDAcceptanceDet
   void initState() { 
     super.initState();
     
-    TLDOrderStatusInfoModel infoModel = TLDDataManager.acceptanceWithdrawOrderStatusMap[widget.detailModel.appealStatus];
+    TLDOrderStatusInfoModel infoModel = TLDDataManager.acceptanceWithdrawOrderStatusMap[widget.detailModel.cashStatus];
     if (widget.detailModel.amApply) {
       _actionBtnTitleList.addAll(infoModel.sellerActionButtonTitle);
     }else{
@@ -96,15 +96,12 @@ class _TLDAcceptanceDetailWithdrawBottomCellState extends State<TLDAcceptanceDet
   Widget _getOnlyOneActionBtnView() {
     return Container(
         height: ScreenUtil().setHeight(80),
-        child: OutlineButton(
+        width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(60),
+        child: CupertinoButton(
           onPressed: () => widget.didClickActionBtnCallBack(_actionBtnTitleList.first),
-          shape: BeveledRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(4)),
-          ),
-          borderSide: BorderSide(
-            color: Theme.of(context).hintColor,
-            width: 1,
-          ),
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+          padding: EdgeInsets.zero,
+          color: Theme.of(context).primaryColor,
           child: Text(
             _actionBtnTitleList.first,
             style: TextStyle(

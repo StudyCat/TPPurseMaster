@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_detail_withdraw_page.dart';
 import 'package:dragon_sword_purse/Message/Model/tld_system_message_model_manager.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
@@ -122,6 +123,8 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
     return LoadingOverlay(
       isLoading: _isLoading,
       child: SmartRefresher(
+        enablePullUp: true,
+        enablePullDown: true,
       controller: _refreshController,
       header: WaterDropHeader(
       complete : Text('刷新完成')
@@ -182,6 +185,9 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
             if ((contentType > 99 && contentType < 105) ||contentType == 107 || contentType == 108){
               String orderNo = attrMap['orderNo'];
               Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDDetailOrderPage(orderNo: orderNo)));
+            }else if ((contentType > 199 && contentType < 205) ||contentType == 207 || contentType == 208){
+              String cashNo = attrMap['cashNo'];
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceDetailWithdrawPage(cashNo:cashNo,)));
             }else if(contentType == 105){
               String address = attrMap['toAddress'];
               List purseList = TLDDataManager.instance.purseList;

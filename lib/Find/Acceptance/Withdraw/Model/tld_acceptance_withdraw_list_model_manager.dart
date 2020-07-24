@@ -13,7 +13,8 @@ class TLDAcceptanceWithdrawOrderListModel {
   String cashPrice;
   int payId;
   TLDPaymentModel payMethodVO;
-  String walletAddress;
+  String applyWalletAddress;
+  String inviteWalletAddress;
   int cashStatus;
   int createTime;
   int expireTime;
@@ -21,6 +22,7 @@ class TLDAcceptanceWithdrawOrderListModel {
   String chargeRate;
   String chargeValue;
   int appealStatus;
+  int appealId;
 
   TLDAcceptanceWithdrawOrderListModel(
       {this.amApply,
@@ -34,14 +36,15 @@ class TLDAcceptanceWithdrawOrderListModel {
       this.cashPrice,
       this.payId,
       this.payMethodVO,
-      this.walletAddress,
+      this.inviteWalletAddress,
+      this.applyWalletAddress,
       this.cashStatus,
       this.createTime,
       this.expireTime,
       this.finishTime,
       this.chargeRate,
       this.chargeValue,
-      this.appealStatus});
+      this.appealStatus,this.appealId});
 
   TLDAcceptanceWithdrawOrderListModel.fromJson(Map<String, dynamic> json) {
     amApply = json['amApply'];
@@ -57,7 +60,8 @@ class TLDAcceptanceWithdrawOrderListModel {
     payMethodVO = json['payMethodVO'] != null
         ? new TLDPaymentModel.fromJson(json['payMethodVO'])
         : null;
-    walletAddress = json['walletAddress'];
+    inviteWalletAddress = json['inviteWalletAddress'];
+    applyWalletAddress = json['applyWalletAddress'];
     cashStatus = json['cashStatus'];
     createTime = json['createTime'];
     expireTime = json['expireTime'];
@@ -65,6 +69,8 @@ class TLDAcceptanceWithdrawOrderListModel {
     chargeValue = json['chargeValue'];
     chargeRate = json['chargeRate'];
     appealStatus = json['appealStatus'];
+    appealId = json['appealId'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -82,7 +88,8 @@ class TLDAcceptanceWithdrawOrderListModel {
     if (this.payMethodVO != null) {
       data['payMethodVO'] = this.payMethodVO.toJson();
     }
-    data['walletAddress'] = this.walletAddress;
+    data['inviteWalletAddress'] = this.inviteWalletAddress;
+    data['applyWalletAddress'] = this.applyWalletAddress;
     data['cashStatus'] = this.cashStatus;
     data['createTime'] = this.createTime;
     data['expireTime'] = this.expireTime;
@@ -90,6 +97,7 @@ class TLDAcceptanceWithdrawOrderListModel {
     data['chargeValue'] = this.chargeValue;
     data['chargeRate'] = this.chargeRate;
     data['appealStatus'] = this.appealStatus;
+    data['appealId'] = this.appealId;
     return data;
   }
 }

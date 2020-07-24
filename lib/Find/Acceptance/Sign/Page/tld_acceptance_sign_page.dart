@@ -118,7 +118,7 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
           child : Text('提现记录',style: TextStyle(color:Colors.white,))
         ),
       ),
-      body: LoadingOverlay(isLoading: _isLoading, child: _getBody(),),
+      body: LoadingOverlay(isLoading: _isLoading, child: SingleChildScrollView(child:_getBodyWidget()),),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }

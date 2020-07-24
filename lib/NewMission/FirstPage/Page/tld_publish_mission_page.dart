@@ -1,5 +1,6 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_choose_payment_page.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/View/tld_exchange_input_slider_cell.dart';
@@ -11,6 +12,7 @@ import 'package:dragon_sword_purse/NewMission/FirstPage/Model/tld_publish_missio
 import 'package:dragon_sword_purse/NewMission/FirstPage/Page/tld_new_mission_choose_mission_level_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
+import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +91,15 @@ class _TLDPublishMissionPageState extends State<TLDPublishMissionPage> {
           msg: '请填写任务总量', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
         return;
     }
+    jugeHavePassword(context, (){
+      _publishMission();
+    }, TLDCreatePursePageType.back, (){
+      _publishMission();
+    });
+    
+  }
 
+  void _publishMission(){
     setState(() {
       _isLoading = true;
     });

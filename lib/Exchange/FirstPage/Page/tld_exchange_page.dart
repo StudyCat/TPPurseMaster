@@ -1,11 +1,13 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_choose_payment_page.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Model/tld_exchange_model_manager.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/View/tld_exchange_payment_cell.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/View/tld_exchange_rate_slider_cell.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
@@ -231,6 +233,14 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
       Fluttertoast.showToast(msg: '最低购买额度不能大于售卖量',toastLength: Toast.LENGTH_SHORT,timeInSecForIosWeb: 1);
       return;
     }
+   jugeHavePassword(context, (){
+     _saleOrder();
+   }, TLDCreatePursePageType.back, (){
+     _saleOrder();
+   });
+  }
+
+  void _saleOrder(){
     setState(() {
       _isLoading = true;
     });

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_withdraw_list_model_manager.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,8 +34,8 @@ class _TLDAcceptanceDetailWithdrawHeaderViewState extends State<TLDAcceptanceDet
     // TODO: implement initState
     super.initState();
 
-    if (null != null){
-      _countdownTime = 60;
+    if (widget.detailModel != null){
+      _countdownTime = widget.detailModel.expireTime;
     }
   }
 
@@ -67,7 +66,7 @@ class _TLDAcceptanceDetailWithdrawHeaderViewState extends State<TLDAcceptanceDet
   void timerFunction(){
     if(_countdownTime > 0){
       int minute = _countdownTime ~/ 60;
-          int second = _countdownTime % 60;
+      int second = _countdownTime % 60;
         setState(() {
           _subStr = minute > 0 ? '请于'+minute.toString()+'分'+second.toString()+'秒内支付。' :   '请于'+second.toString()+'秒内支付。';
           if (_countdownTime < 0){
@@ -77,6 +76,9 @@ class _TLDAcceptanceDetailWithdrawHeaderViewState extends State<TLDAcceptanceDet
           }
       });
       _countdownTime --;
+    }else{
+      timer.cancel();
+      timer = null;
     }
   }
 
@@ -97,12 +99,12 @@ class _TLDAcceptanceDetailWithdrawHeaderViewState extends State<TLDAcceptanceDet
           }
           break;
         case 1 :{
-          _subStr = '等待卖家确认';
+          _subStr = '等待提现者确认';
           isNeedAppeal = true;
         }
         break;
         case -1 :{
-          _subStr = '订单已取消';
+          _subStr = '提现已取消';
         }
         break;
         default :{

@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_profit_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_withdraw_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/View/tld_acceptance_profit_list_cell.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +25,8 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
 
   RefreshController _refreshController;
 
+  TLDAcceptanceProfitModelManager _modelManager;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -31,11 +34,29 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
 
     _refreshController = RefreshController(initialRefresh : true);
 
-    _getOrderList(_page);
+    _modelManager = TLDAcceptanceProfitModelManager();
+    _getProfitList(_page);
   }
 
-  void _getOrderList(int page){
-    
+  void _getProfitList(int page){
+    _modelManager.getProfitList(page, (List profitList){
+      _refreshController.refreshCompleted();
+      _refreshController.loadComplete();
+      if(page == 1){
+        _dataSource = [];
+      }
+      if(mounted){
+        setState(() {
+          _dataSource.addAll(profitList);
+        });
+      }
+      if(profitList.length > 0){
+        _page = page + 1;
+      }
+    }, (TLDError error){
+      _refreshController.refreshCompleted();
+      _refreshController.loadComplete();
+    });
   }
 
  
@@ -43,6 +64,8 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
+      enablePullUp: true,
+      enablePullDown: true,
       controller: _refreshController,
       child: _getBodyWidget(),
       header: WaterDropHeader(
@@ -68,9 +91,9 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
         ),
       onRefresh: (){
         _page = 1;
-        _getOrderList(_page);
+        _getProfitList(_page);
       },
-      onLoading: () => _getOrderList(_page),
+      onLoading: () => _getProfitList(_page),
     );
   }
 
@@ -78,13 +101,14 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
 
   Widget _getBodyWidget(){
     return ListView.builder(
-      itemCount: 3,
+      itemCount: _dataSource.length,
       itemBuilder: (BuildContext context, int index) {
+      TLDAcceptanceProfitListModel profitListModel = _dataSource[index];
       return GestureDetector(
         onTap:(){
           
         },
-        child : TLDAcceptanceProfitListCell()
+        child : TLDAcceptanceProfitListCell(profitListModel: profitListModel,)
       );
      },
     );

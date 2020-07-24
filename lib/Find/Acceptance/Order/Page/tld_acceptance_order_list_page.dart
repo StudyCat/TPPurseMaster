@@ -42,6 +42,7 @@ class _TLDAcceptanceOrderListPageState extends State<TLDAcceptanceOrderListPage>
   void _getOrderList(int page){
     _modelManager.getOrderList(page, (List orderList){
       _refreshController.refreshCompleted();
+      _refreshController.loadComplete();
       if (page == 1){
         _dataSource = [];
       }
@@ -50,6 +51,7 @@ class _TLDAcceptanceOrderListPageState extends State<TLDAcceptanceOrderListPage>
       });
       _page = page + 1;
     }, (TLDError error){
+      _refreshController.loadComplete();
       _refreshController.refreshCompleted();
       Fluttertoast.showToast(msg: error.msg);
     });
@@ -68,7 +70,9 @@ class _TLDAcceptanceOrderListPageState extends State<TLDAcceptanceOrderListPage>
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: SmartRefresher(
+      body:  SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: true,
         controller: _refreshController,
         child: _getBodyWidget(),
         header: WaterDropHeader(
@@ -77,7 +81,26 @@ class _TLDAcceptanceOrderListPageState extends State<TLDAcceptanceOrderListPage>
         onRefresh: () {
           _page = 1;
           _getOrderList(_page);
-        }),
+        }, 
+        footer : CustomFooter(
+          builder: (BuildContext context,LoadStatus mode){
+            Widget body ;
+            if(mode==LoadStatus.idle){
+              body =  Text("上拉加载");
+            }
+            else if(mode==LoadStatus.loading){
+              body =  CupertinoActivityIndicator();
+            }
+            else if(mode == LoadStatus.canLoading){
+                body = Text("放下加载更多数据");
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child:body),
+            );
+          },
+        ),
+        onLoading: ()=> _getOrderList(_page),),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }

@@ -2,10 +2,13 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_withdraw_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_detail_withdraw_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/View/tld_acceptance_withdraw_list_cell.dart';
+import 'package:dragon_sword_purse/IMUI/Page/tld_im_page.dart';
+import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jmessage_flutter/jmessage_flutter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 enum TLDAcceptanceProfitListPageType{
@@ -41,6 +44,16 @@ class _TLDAcceptanceWithdrawListPageState extends State<TLDAcceptanceWithdrawLis
 
     _modelManager = TLDAcceptanceWithdrawListModelManager();
     _getOrderList(_page);
+
+    _addSystemMessageCallBack();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    TLDNewIMManager().removeSystemMessageReceiveCallBack();
   }
 
   void _getOrderList(int page){
@@ -63,6 +76,19 @@ class _TLDAcceptanceWithdrawListPageState extends State<TLDAcceptanceWithdrawLis
     }
   }
 
+   void _addSystemMessageCallBack(){
+    TLDNewIMManager().addSystemMessageReceiveCallBack((dynamic message){
+      JMNormalMessage normalMessage = message;
+      Map extras = normalMessage.extras;
+      int contentType = int.parse(extras['contentType']);
+      if (contentType == 200 || contentType == 201 || contentType == 203 || contentType == 204){
+        _page = 1;
+        _refreshController.requestRefresh();
+        _getOrderList(_page);
+      }
+    });
+  }
+
   void _dealOrderList(List result,int page){
     _refreshController.refreshCompleted();
     _refreshController.loadComplete();
@@ -82,6 +108,8 @@ class _TLDAcceptanceWithdrawListPageState extends State<TLDAcceptanceWithdrawLis
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
+      enablePullDown:  true,
+      enablePullUp: true,
       controller: _refreshController,
       child: _getBodyWidget(),
       header: WaterDropHeader(
@@ -122,7 +150,19 @@ class _TLDAcceptanceWithdrawListPageState extends State<TLDAcceptanceWithdrawLis
         onTap:(){
           Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceDetailWithdrawPage(cashNo: orderListModel.cashNo,)));
         },
-        child : TLDAcceptanceWithdrawListCell(orderListModel: orderListModel,)
+        child : TLDAcceptanceWithdrawListCell(orderListModel: orderListModel,didClickIMBtnCallBack:(){
+          String toUserName;
+           if (orderListModel.amApply){
+            toUserName = orderListModel.inviteUserName;
+          }else{
+            toUserName = orderListModel.applyUserName;
+          }
+          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDIMPage(toUserName: toUserName,orderNo: '',))).then((value){
+            _page = 1;
+            _refreshController.requestRefresh();
+            _getOrderList(_page);
+          });
+        })
       );
      },
     );
