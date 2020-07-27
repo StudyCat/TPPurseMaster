@@ -81,26 +81,26 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
                   fontSize: ScreenUtil().setSp(28),
                   color: Color.fromARGB(255, 51, 51, 51))),
         ),
-        Container(
-          margin: EdgeInsets.only(
-              top: ScreenUtil().setHeight(200),
-              left: ScreenUtil().setWidth(100),
-              right: ScreenUtil().setWidth(100)),
-          height: ScreenUtil().setHeight(80),
-          width: size.width - ScreenUtil().setWidth(200),
-          child: CupertinoButton(
-              child: Text(
-                '确定',
-                style: TextStyle(
-                    fontSize: ScreenUtil().setSp(28), color: Colors.white),
-              ),
-              padding: EdgeInsets.all(0),
-              color: Theme.of(context).primaryColor,
-              onPressed: () {
+        // Container(
+        //   margin: EdgeInsets.only(
+        //       top: ScreenUtil().setHeight(200),
+        //       left: ScreenUtil().setWidth(100),
+        //       right: ScreenUtil().setWidth(100)),
+        //   height: ScreenUtil().setHeight(80),
+        //   width: size.width - ScreenUtil().setWidth(200),
+        //   child: CupertinoButton(
+        //       child: Text(
+        //         '确定',
+        //         style: TextStyle(
+        //             fontSize: ScreenUtil().setSp(28), color: Colors.white),
+        //       ),
+        //       padding: EdgeInsets.all(0),
+        //       color: Theme.of(context).primaryColor,
+        //       onPressed: () {
 
-                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TLDTabbarPage()), (route) => route == null);
-              }),
-        ),
+        //          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TLDTabbarPage()), (route) => route == null);
+        //       }),
+        // ),
         Container(
           margin: EdgeInsets.only(
               top: ScreenUtil().setHeight(20),

@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_login_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/TabbarPage/Page/tld_acceptance_tabbar_page.dart';
@@ -110,12 +111,15 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
       itemCount: TLDFindRootModelManager.uiModelList.length + 1,
       itemBuilder: (context,index){
         if (index == 0){
-          return TLDFindRootADBannerView(bannerList: _bannerList,);
+          return TLDFindRootADBannerView(bannerList: _bannerList,didClickBannerViewCallBack: (TLDBannerModel bannerModel){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDWebPage(title: '',urlStr: bannerModel.bannerHref,)));
+          },);
         }else{
           TLDFindRootCellUIModel uiModel = TLDFindRootModelManager.uiModelList[index - 1];
           return TLDFindRootPageCell(uiModel: uiModel,didClickItemCallBack: (String title){
             if (title == '任务'){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDNewMissionFirstPage()));
+              Fluttertoast.showToast(msg: '任务待开发中，敬请期待');
+              // Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDNewMissionFirstPage()));
             }else if (title == '承兑'){
               String acceptanceToken = TLDDataManager.instance.acceptanceToken;
               if (acceptanceToken != null){
@@ -125,6 +129,8 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
               }
             }else if (title == '排行榜'){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRankTabPage()));
+            }else if (title.length == 0){
+              Fluttertoast.showToast(msg: '更多功能，敬请期待');
             }
           },);
         }

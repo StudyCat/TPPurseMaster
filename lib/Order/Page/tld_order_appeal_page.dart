@@ -266,11 +266,9 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
   void _takePhoto() async {
     var status = await Permission.camera.status;
     if (status == PermissionStatus.denied || status == PermissionStatus.restricted|| status == PermissionStatus.undetermined) {
-            showDialog(context: context,builder:(context){
-            return TLDAlertView(title : '温馨提示',alertString:'未开启相机的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
-              openAppSettings();
-            },);
-      });
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.camera,
+      ].request();
       return;
     }
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -285,11 +283,9 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
   void _openGallery() async {
     var status = await Permission.camera.status;
     if (status == PermissionStatus.denied || status == PermissionStatus.restricted|| status == PermissionStatus.undetermined) {
-      showDialog(context: context,builder:(context){
-            return TLDAlertView(title : '温馨提示',alertString:'未开启相机的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
-              openAppSettings();
-            },);
-      });
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.camera,
+      ].request();
       return;
     }
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);

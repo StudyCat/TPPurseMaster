@@ -40,25 +40,39 @@ class _TLDHomePageState extends State<TLDHomePage> {
 
      _searchAllPurse();
 
-    jPush = JPush();
-    if (Platform.isAndroid){
-      jPush.isNotificationEnabled().then((isOpen){
-      if (!isOpen){
-        Future.delayed(
-      Duration.zero,
-        (){
-          showDialog(context: context,builder:(context){
-            return TLDAlertView(title : '温馨提示',alertString:'未开启接收推送通知的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
-              openAppSettings();
-            },);
-          });
-        }
-    );
-      }  
-    });
-    }else{
+    _openPermmision();
+    // jPush = JPush();
+    // if (Platform.isAndroid){
+    //   jPush.isNotificationEnabled().then((isOpen){
+    //   if (!isOpen){
+    //     Future.delayed(
+    //   Duration.zero,
+    //     (){
+    //       showDialog(context: context,builder:(context){
+    //         return TLDAlertView(title : '温馨提示',alertString:'未开启接收推送通知的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
+    //           openAppSettings().then((value) => null);
+    //         },);
+    //       });
+    //     }
+    // );
+    //   }  
+    // });
+    // }else{
       
-    }
+    // }
+  }
+
+  void _openPermmision() async{
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.camera,
+      Permission.storage,
+      Permission.notification
+      ].request();
+    print(statuses[Permission.location]);
+  }
+
+  void _openSavePermmison(){
+
   }
 
   void _searchAllPurse()async{

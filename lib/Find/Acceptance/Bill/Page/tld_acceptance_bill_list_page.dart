@@ -1,15 +1,12 @@
-import 'dart:ffi';
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
-import 'package:dragon_sword_purse/Buy/FirstPage/Model/tld_buy_model_manager.dart';
-import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Page/tld_acceptance_detail_bill_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_buy_action_sheet.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_list_lock_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_list_open_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_list_unopen_cell.dart';
-import 'package:dragon_sword_purse/Find/Acceptance/Login/Model/tld_acceptance_login_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_profit_list_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -98,6 +95,12 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
         middle: Text(
           '承兑票据',
           style: TextStyle(color: Colors.white),
+        ),
+         trailing: GestureDetector(
+          onTap :(){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceProfitListPage()));
+          },
+          child : Text('收益记录',style: TextStyle(color:Colors.white,))
         ),
         backgroundColor: Theme.of(context).primaryColor,
         actionsForegroundColor: Colors.white,

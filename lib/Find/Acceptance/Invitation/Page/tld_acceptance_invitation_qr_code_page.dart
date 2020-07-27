@@ -97,13 +97,11 @@ class _TLDAcceptanceInvitationQRCodePageState extends State<TLDAcceptanceInvitat
 
   Future _saveQrCodeImage(Uint8List bytes) async{
     // Map<PermissionStatusGetters>
-    var status = await Permission.camera.status;
+    var status = await Permission.storage.status;
     if (status == PermissionStatus.denied) {
-      showDialog(context: context,builder:(context){
-            return TLDAlertView(title : '温馨提示',alertString:'未开启相册保存的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
-              openAppSettings();
-            },);
-      });;
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+      ].request();
       return;
     }
     var result = await ImageGallerySaver.saveImage(bytes);

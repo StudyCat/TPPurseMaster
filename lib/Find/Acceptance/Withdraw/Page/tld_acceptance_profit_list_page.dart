@@ -56,6 +56,7 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
     }, (TLDError error){
       _refreshController.refreshCompleted();
       _refreshController.loadComplete();
+      Fluttertoast.showToast(msg: error.msg);
     });
   }
 
@@ -63,6 +64,24 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
 
   @override
   Widget build(BuildContext context) {
+     return Scaffold(
+      body: _getRefresherWidget(),
+      backgroundColor: Color.fromARGB(255, 242, 242, 242),
+      appBar: CupertinoNavigationBar(
+        backgroundColor: Color.fromARGB(255, 242, 242, 242),
+        actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
+        border: Border.all(
+          color: Color.fromARGB(0, 0, 0, 0),
+        ),
+        heroTag: 'acceptance_profit_list_page',
+        transitionBetweenRoutes: false,
+        middle: Text('收益记录'),
+      ),
+    );
+  }
+
+
+  Widget _getRefresherWidget(){
     return SmartRefresher(
       enablePullUp: true,
       enablePullDown: true,
@@ -96,7 +115,6 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
       onLoading: () => _getProfitList(_page),
     );
   }
-
 
 
   Widget _getBodyWidget(){

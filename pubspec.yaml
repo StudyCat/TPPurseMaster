@@ -112,6 +112,14 @@ flutter:
      - assetss/images/icon_find.png
      - assetss/images/icon_find_unsel.png
      - assetss/images/rank_back.png
+     - assetss/images/icon_acceptance_bill.png
+     - assetss/images/icon_acceptance_bill_unsel.png
+     - assetss/images/icon_acceptance_invite.png
+     - assetss/images/icon_acceptance_invite_unsel.png
+     - assetss/images/icon_acceptance_mine.png
+     - assetss/images/icon_acceptance_mine_unsel.png
+     - assetss/images/icon_acceptance_order.png
+     - assetss/images/icon_acceptance_order_unsel.png
     
 
   # To add assets to your application, add an assets section, like this:

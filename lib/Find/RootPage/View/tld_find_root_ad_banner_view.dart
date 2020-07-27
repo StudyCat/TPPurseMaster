@@ -6,9 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 class TLDFindRootADBannerView extends StatefulWidget {
-  TLDFindRootADBannerView({Key key,this.bannerList}) : super(key: key);
+  TLDFindRootADBannerView({Key key,this.bannerList,this.didClickBannerViewCallBack}) : super(key: key);
 
   final List bannerList;
+
+  final Function(TLDBannerModel) didClickBannerViewCallBack;
   
   @override
   _TLDFindRootADBannerViewState createState() =>
@@ -35,12 +37,15 @@ class _TLDFindRootADBannerViewState extends State<TLDFindRootADBannerView> {
           itemCount: widget.bannerList.length,
           itemBuilder: (context, index) {
             TLDBannerModel bannerModel = widget.bannerList[index];
-            return ClipRRect(
+            return GestureDetector(
+              onTap :() => widget.didClickBannerViewCallBack(bannerModel),
+              child : ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(4)),
               child: CachedNetworkImage(
                   imageUrl: bannerModel.bannerUrl
                       ,
                   fit: BoxFit.fill),
+            )
             );
           },
         ),

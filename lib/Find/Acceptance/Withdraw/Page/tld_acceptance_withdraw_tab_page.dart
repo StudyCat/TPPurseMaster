@@ -16,7 +16,6 @@ class _TLDAcceptanceWithdrawTabPageState extends State<TLDAcceptanceWithdrawTabP
 
   List<String> _tabTitles = [
     "提现",
-    "收益记录",
     '提现记录'
   ];
 
@@ -25,7 +24,7 @@ class _TLDAcceptanceWithdrawTabPageState extends State<TLDAcceptanceWithdrawTabP
     // TODO: implement initState
     super.initState();
 
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
 
   }
 
@@ -36,9 +35,9 @@ class _TLDAcceptanceWithdrawTabPageState extends State<TLDAcceptanceWithdrawTabP
         border: Border.all(
           color: Color.fromARGB(0, 0, 0, 0),
         ),
-        heroTag: 'message_page',
+        heroTag: 'acceptance_withdraw_tab_page',
         transitionBetweenRoutes: false,
-        middle: Text('承兑账户'),
+        middle: Text('提现记录'),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -74,7 +73,6 @@ class _TLDAcceptanceWithdrawTabPageState extends State<TLDAcceptanceWithdrawTabP
               child: TabBarView(
             children: [
               TLDAcceptanceWithdrawListPage(type: TLDAcceptanceProfitListPageType.withdrawing,),
-              TLDAcceptanceProfitListPage(),
               TLDAcceptanceWithdrawListPage(type: TLDAcceptanceProfitListPageType.withdrawHistory,)
             ],
             controller: _tabController,

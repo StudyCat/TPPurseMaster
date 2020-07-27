@@ -37,9 +37,9 @@ class _TLDRankTabPageState extends State<TLDRankTabPage> with SingleTickerProvid
         border: Border.all(
           color: Color.fromARGB(0, 0, 0, 0),
         ),
-        heroTag: 'invitation_page',
+        heroTag: 'rank_tab_page',
         transitionBetweenRoutes: false,
-        middle: Text('推广邀请码'),
+        middle: Text('排行榜'),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
