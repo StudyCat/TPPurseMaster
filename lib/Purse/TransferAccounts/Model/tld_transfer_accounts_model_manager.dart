@@ -13,7 +13,7 @@ class TLDTranferAmountPramaterModel{
 class TLDTransferAccountsModelManager{
 
     void getAddressFromQrCode(String qrCode,Function(String) success,Function(TLDError) failure){
-      if(qrCode.contains('http://www.tlddollar.com')){
+      if(qrCode.contains('http://www.tldollar.com')){
         if (qrCode.contains('walletAddress')){
           Uri uri = Uri.parse(qrCode);
           String walletAddress = uri.queryParameters['walletAddress'];

@@ -69,6 +69,9 @@ class _TLDAcceptanceDetailBillPageState extends State<TLDAcceptanceDetailBillPag
         heroTag: 'acceptance_detail_bill_page',
         transitionBetweenRoutes: false,
         middle: Text('承兑票据订单详情',style: TextStyle(color:Colors.white),),
+        trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
+          
+        }),
         backgroundColor: Theme.of(context).primaryColor,
         actionsForegroundColor: Colors.white,
       ),

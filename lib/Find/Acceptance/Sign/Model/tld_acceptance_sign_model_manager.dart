@@ -48,6 +48,11 @@ class TLDAcceptanceUserInfoModel {
   String curTime;
   String jwtToken;
   TLDWallet wallet;
+  String totalWithdraw; //可提现额
+  String withdrawLimit; //已提现总额
+  String overflowProfit;//收益池
+  String inviteProfit; //推广收益
+  String todayProfit; //每日收益
 
   TLDAcceptanceUserInfoModel(
       {this.userName,
@@ -62,7 +67,12 @@ class TLDAcceptanceUserInfoModel {
       this.yearMonth,
       this.signList,
       this.jwtToken,
-      this.curTime
+      this.curTime,
+      this.withdrawLimit,
+      this.totalWithdraw,
+      this.overflowProfit,
+      this.inviteProfit,
+      this.todayProfit
       });
 
   TLDAcceptanceUserInfoModel.fromJson(Map<String, dynamic> json) {
@@ -79,6 +89,11 @@ class TLDAcceptanceUserInfoModel {
     signList = _getSignList(json['signList']);
     jwtToken = json['jwtToken'];
     curTime = json['curTime'];
+    totalWithdraw = json['totalWithdraw'];
+    withdrawLimit = json['withdrawLimit'];
+    overflowProfit = json['overflowProfit'];
+    inviteProfit = json['inviteProfit'];
+    todayProfit = json['todayProfit'];
   }
 
    List _getSignList(List jsonList){
@@ -103,6 +118,11 @@ class TLDAcceptanceUserInfoModel {
     data['signList'] = this.signList;
     data['jwtToken'] = this.jwtToken;
     data['curTime'] = this.curTime;
+    data['totalWithdraw'] = this.totalWithdraw;
+    data['withdrawLimit'] = this.withdrawLimit;
+    data['overflowProfit'] = this.overflowProfit;
+    data['inviteProfit'] = this.inviteProfit;
+    data['todayProfit'] = this.todayProfit;
     return data;
   }
 }

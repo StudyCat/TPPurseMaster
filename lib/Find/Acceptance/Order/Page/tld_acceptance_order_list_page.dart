@@ -67,6 +67,9 @@ class _TLDAcceptanceOrderListPageState extends State<TLDAcceptanceOrderListPage>
         heroTag: 'invitation_order_list_page',
         transitionBetweenRoutes: false,
         middle: Text('承兑票据'),
+        trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
+          
+        }),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),

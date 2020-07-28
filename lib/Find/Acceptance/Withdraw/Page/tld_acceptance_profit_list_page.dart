@@ -73,6 +73,9 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
         border: Border.all(
           color: Color.fromARGB(0, 0, 0, 0),
         ),
+        trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
+          
+        }),
         heroTag: 'acceptance_profit_list_page',
         transitionBetweenRoutes: false,
         middle: Text('收益记录'),

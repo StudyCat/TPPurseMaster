@@ -1,17 +1,19 @@
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
-import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance-sign_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_sign_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceSignHeaderView extends StatefulWidget {
-  TLDAcceptanceSignHeaderView({Key key,this.didClickLoginCallBack,this.userInfoModel,this.didClickWithdrawButtonCallBack}) : super(key: key);
+  TLDAcceptanceSignHeaderView({Key key,this.didClickLoginCallBack,this.userInfoModel,this.didClickWithdrawButtonCallBack,this.didClickProfitCallBack}) : super(key: key);
 
   final Function didClickLoginCallBack;
 
   final TLDAcceptanceUserInfoModel userInfoModel;
 
   final Function didClickWithdrawButtonCallBack;
+
+  final Function(String) didClickProfitCallBack;
 
   @override
   _TLDAcceptanceSignHeaderViewState createState() => _TLDAcceptanceSignHeaderViewState();
@@ -35,19 +37,14 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
              child: _getTopRowWidget(),),
              _getAmountWidget(),
              Padding(
-               padding: EdgeInsets.only(top:ScreenUtil().setHeight(20)),
-               child: Container(
-              height : ScreenUtil().setHeight(60),
-              width : ScreenUtil().setWidth(140),
-              child: CupertinoButton(
-                onPressed: widget.didClickWithdrawButtonCallBack,
-                padding: EdgeInsets.zero,
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-                child: Text('提现',style: TextStyle(color : Theme.of(context).hintColor,fontSize:ScreenUtil().setSp(28)),),
-              ),
-            ),
-             )
+               padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
+               child: Divider(
+                 height : ScreenUtil().setHeight(2),
+                 color : Color.fromARGB(255, 219, 218, 216)
+               ),
+             ),
+             _getInfoRowWedget(),
+             _getProfitWidget()
            ]
          ),
        ),
@@ -108,23 +105,126 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
   Widget _getAmountWidget(){
     return Padding(
       padding: EdgeInsets.only(top:ScreenUtil().setHeight(20)),
-      child: RichText(text: TextSpan(
-        text : widget.userInfoModel != null ? widget.userInfoModel.acptTotalScore : '0.0',
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        RichText(text: TextSpan(
+        text : widget.userInfoModel != null ? widget.userInfoModel.totalWithdraw + 'TLD' : '0.0TLD',
         style : TextStyle(
-          fontSize:ScreenUtil().setSp(72),
+          fontSize:ScreenUtil().setSp(40),
           fontWeight : FontWeight.bold,
           color : Color.fromARGB(255, 51, 51, 51)
         ),
         children: <InlineSpan>[
           TextSpan(
-        text : '   积分',
+        text : '   可提现额度',
         style : TextStyle(
           fontSize:ScreenUtil().setSp(24),
           color : Color.fromARGB(255, 153, 153, 153)
         ),)
         ]
+        ),
+        ), 
+        Container(
+              height : ScreenUtil().setHeight(60),
+              width : ScreenUtil().setWidth(140),
+              child: CupertinoButton(
+                onPressed: widget.didClickWithdrawButtonCallBack,
+                padding: EdgeInsets.zero,
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                child: Text('提现',style: TextStyle(color : Theme.of(context).hintColor,fontSize:ScreenUtil().setSp(28)),),
+              ),
+          )
+      ],
+    )
+    );
+  }
+
+  Widget _getInfoRowWedget(){
+    return Padding(
+      padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          _getInfoLabel('签到TLD', widget.userInfoModel != null ? '${widget.userInfoModel.acptSignTld}TLD' : '0.0TLD', null),
+          _getInfoLabel('每日收益', widget.userInfoModel != null ? '${widget.userInfoModel.todayProfit}TLD' : '0.0TLD', null),
+          _getInfoLabel('已提现总额', widget.userInfoModel != null ? '${widget.userInfoModel.withdrawLimit}TLD' : '0.0TLD', null),
+        ]
       ),
+      );
+  }
+
+    Widget _getInfoLabel(String title,String content,Color contentColor){
+    return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      Text(title,style: TextStyle(
+        fontSize : ScreenUtil().setSp(28),
+        color: Color.fromARGB(255, 51, 51, 51)
+      ),),
+      Container(
+        padding: EdgeInsets.only(top : ScreenUtil().setHeight(12)),
+        child: Text(content,style : TextStyle(
+          fontSize : ScreenUtil().setSp(28),
+          color: contentColor != null ? contentColor : Color.fromARGB(255, 102, 102, 102),
+          fontWeight: FontWeight.bold
+        ),),
       ),
+    ],
+  );
+  }
+
+  Widget _getProfitWidget(){
+    return Padding(
+      padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
+      child: Container(
+        height: ScreenUtil().setHeight(96),
+        width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(100),
+        decoration : BoxDecoration(
+          color : Theme.of(context).hintColor,
+          borderRadius : BorderRadius.all(Radius.circular(ScreenUtil().setHeight(48))),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            _getSingleProfitWidget('收益溢出池', widget.userInfoModel != null ? '${widget.userInfoModel.overflowProfit}TLD' : '0.0TLD'),
+            Padding(padding: EdgeInsets.only(left :ScreenUtil().setWidth(40)),
+            child: VerticalDivider(
+              width: ScreenUtil().setWidth(2),
+              color: Colors.white,
+            ),),
+            _getSingleProfitWidget('有效推广收益', widget.userInfoModel != null ? '${widget.userInfoModel.inviteProfit}TLD' : '0.0TLD')
+          ]
+        ),
+      ),
+      );
+  }
+
+  Widget _getSingleProfitWidget(String title,String content){
+    double width = ((MediaQuery.of(context).size.width - ScreenUtil().setWidth(100)) / 2) - ScreenUtil().setWidth(2)
+     - ScreenUtil().setWidth(80);
+    return GestureDetector(
+      onTap : ()=> widget.didClickProfitCallBack(title),
+      child : Padding(
+      padding: EdgeInsets.only(left :ScreenUtil().setWidth(40)),
+      child: Container(
+        width: width,
+        child : Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              width: width - ScreenUtil().setWidth(50),
+              child: Text(title + '\n' + content,style: TextStyle(
+              fontSize : ScreenUtil().setSp(24),
+               color: Color.fromARGB(255, 57 , 57, 57),
+             ),textAlign: TextAlign.start,),
+            ), 
+            Icon(IconData(0xe610,fontFamily: 'appIconFonts'),color: Color.fromARGB(255, 57, 57, 57),size: ScreenUtil().setHeight(36))
+          ],
+        )
+      ), 
+    )
     );
   }
 

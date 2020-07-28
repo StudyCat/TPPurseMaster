@@ -25,7 +25,7 @@ class _TLDQRCodePageState extends State<TLDQRCodePage> {
     // TODO: implement initState
     super.initState();
 
-    qrCode = 'http://www.tlddollar.com?walletAddress=' + widget.infoModel.walletAddress;
+    qrCode = 'http://www.tldollar.com?walletAddress=' + widget.infoModel.walletAddress;
 
   }
 

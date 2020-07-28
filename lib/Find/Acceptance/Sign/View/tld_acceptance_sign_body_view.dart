@@ -1,4 +1,4 @@
-import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance-sign_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_sign_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,23 +44,23 @@ class _TLDAcceptanceSignBodyViewState extends State<TLDAcceptanceSignBodyView> {
              TLDAcceptanceSignView(userInfoModel: widget.userInfoModel,didClickItemToSignCallBack: (){
                widget.didClickSignButton();
              },),
-              Container(
-               width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(80),
-               child: Text('签到累计获得：' + _getTotalAmount() + '积分'+ '  '+_getTLDAmount() + 'TLD',style:TextStyle(fontSize:ScreenUtil().setSp(20),color: Color.fromARGB(255, 51, 51, 51)),textAlign: TextAlign.start,),
-             )
+            //   Container(
+            //    width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(80),
+            //    child: Text('签到累计获得：' + _getTotalAmount() + '积分'+ '  '+_getTLDAmount() + 'TLD',style:TextStyle(fontSize:ScreenUtil().setSp(20),color: Color.fromARGB(255, 51, 51, 51)),textAlign: TextAlign.start,),
+            //  )
            ],
          ),
       )
     );
   }
 
-  String _getTotalAmount(){
-    return widget.userInfoModel != null ? widget.userInfoModel.acptSignScore : '0.0';
-  }
+  // String _getTotalAmount(){
+  //   return widget.userInfoModel != null ? widget.userInfoModel.acptSignScore : '0.0';
+  // }
 
-  String _getTLDAmount(){
-    return widget.userInfoModel != null ? widget.userInfoModel.acptSignTld : '0.0';
-  }
+  // String _getTLDAmount(){
+  //   return widget.userInfoModel != null ? widget.userInfoModel.acptSignTld : '0.0';
+  // }
 
   Widget _getChooseWalletWidget(){
     String walletAddress = widget.userInfoModel != null ? widget.userInfoModel.wallet.name : '暂未登记';

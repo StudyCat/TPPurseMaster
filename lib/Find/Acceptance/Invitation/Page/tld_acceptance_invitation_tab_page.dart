@@ -41,6 +41,9 @@ class _TLDAcceptanceInvitationTabPageState extends State<TLDAcceptanceInvitation
         heroTag: 'invitation_page',
         transitionBetweenRoutes: false,
         middle: Text('推广邀请码'),
+        trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
+          
+        }),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),

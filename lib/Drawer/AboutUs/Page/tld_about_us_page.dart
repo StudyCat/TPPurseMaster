@@ -17,7 +17,7 @@ class _TLDAboutUsPageState extends State<TLDAboutUsPage> {
     '版本更新',
   ];
 
-  List contents = ['http://www.tlddollar.com', '当前是最新版本'];
+  List contents = ['http://www.tldollar.com\nhttp://www.tldwallet.com', '当前是最新版本'];
 
   @override
   Widget build(BuildContext context) {

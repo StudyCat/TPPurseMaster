@@ -1,9 +1,11 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_login_page.dart';
-import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance-sign_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_sign_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_profit_spill_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_body_view.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_header_view.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_profit_list_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_withdraw_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_withdraw_tab_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
@@ -131,6 +133,13 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
         },
         didClickWithdrawButtonCallBack: (){
           Navigator.push(context, MaterialPageRoute(builder: (context) =>TLDAcceptanceWithdrawPage(walletAddress: _userInfoModel.walletAddress,)));
+        },
+        didClickProfitCallBack: (String title){
+          if (title == '收益溢出池') {
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>TLDAcceptanceProfitSpillPage(walletAddress: _userInfoModel.walletAddress,)));
+          }else {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceProfitListPage()));
+          }
         },
         ),
         TLDAcceptanceSignBodyView(userInfoModel: _userInfoModel,didClickSignButton: (){

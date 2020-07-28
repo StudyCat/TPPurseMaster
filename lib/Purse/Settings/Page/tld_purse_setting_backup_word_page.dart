@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'dart:ui';
-
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../View/tld_purse_setting_backup_word_gridview.dart';
 import 'tld_verify_word_page.dart';
-import 'dart:convert';
 
 enum TLDBackWordType{
   normal,
