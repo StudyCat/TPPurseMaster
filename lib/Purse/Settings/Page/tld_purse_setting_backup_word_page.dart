@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/tld_tabbar_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -13,7 +14,8 @@ import 'tld_verify_word_page.dart';
 
 enum TLDBackWordType{
   normal,
-  delete
+  delete,
+  create
 }
 
 class TLDPurseSeetingBackWordPage extends StatefulWidget {
@@ -51,11 +53,14 @@ class _TLDPurseSeetingBackWordPageState extends State<TLDPurseSeetingBackWordPag
         ),
         heroTag: 'purse_setting_backup_word_page',
         transitionBetweenRoutes: false,
+        automaticallyImplyLeading: widget.type != TLDBackWordType.create,
         middle: Text('钱包设置'),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getBodyWidget(context),
+      body: SingleChildScrollView(
+          child : _getBodyWidget(context)
+        ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -72,27 +77,39 @@ class _TLDPurseSeetingBackWordPageState extends State<TLDPurseSeetingBackWordPag
           ),
           RepaintBoundary(
             key: repainKey,
-            child: Container(
-            height : ScreenUtil().setHeight(280),
-            child : STDPurseSettingBackupWordGridView(words: _words,),
+            child: Column(
+              children : <Widget>[
+                Container(
+                  height : ScreenUtil().setHeight(280),
+                  child : STDPurseSettingBackupWordGridView(words: _words,),
+                ),
+                Padding(
+                padding: EdgeInsets.only(top: ScreenUtil().setHeight(40)),
+                child: Image.asset('assetss/images/tld_icon.png',width: ScreenUtil().setWidth(236),height: ScreenUtil().setHeight(54),alignment: Alignment.center,),
+                ),
+                Padding(
+                padding: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
+                child: Text('钱包地址：${widget.wallet.address}',style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 57, 57, 57)),),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: ScreenUtil().setHeight(40)),
+                  child: Text('*请妥善保管，不要泄露给他人。',style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 208, 2, 27)),),
+                )
+              ]
+            )   
           ),
-          ),
-           Container(
-            width: size.width - ScreenUtil().setWidth(200),
-            margin: EdgeInsets.only(top : ScreenUtil().setHeight(80)),
-            height: ScreenUtil().setHeight(80),
-            child: CupertinoButton(child: Text('保存至相册',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: () async {
-               Uint8List bytes = await _capturePng();
-              await _saveQrCodeImage(bytes);
-            }),
-           ),
           Container(
             width: size.width - ScreenUtil().setWidth(200),
             margin: EdgeInsets.only(top : ScreenUtil().setHeight(30)),
             height: ScreenUtil().setHeight(80),
-            child: CupertinoButton(child: Text('下一步',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){
-              print(_words);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDVerifyWordPage(words: _words,type: widget.type,verifySuccessCallBack: widget.verifySuccessCallBack,)));
+            child: CupertinoButton(child: Text(widget.type == TLDBackWordType.create ? '完成':'下一步',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: () async {
+              if (widget.type == TLDBackWordType.create) {
+                Uint8List data = await _capturePng();
+                await _saveQrCodeImage(data);
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TLDTabbarPage()), (route) => route == null);
+              }else{
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TLDVerifyWordPage(words: _words,type: widget.type,verifySuccessCallBack: widget.verifySuccessCallBack,)));
+              }
             }), 
           ),
         ],

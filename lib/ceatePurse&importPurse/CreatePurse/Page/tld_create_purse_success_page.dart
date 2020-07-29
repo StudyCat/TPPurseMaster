@@ -36,28 +36,14 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
         heroTag: 'create_purse_success_page',
         transitionBetweenRoutes: false,
         middle: Text('创建钱包'),
-        leading: Container(
-        height: ScreenUtil().setHeight(34),
-        width: ScreenUtil().setHeight(34),
-        child: CupertinoButton(
-          child: Icon(
-            IconData(
-              0xe600,
-              fontFamily: 'appIconFonts',
-            ),
-           color: Color.fromARGB(255, 51, 51, 51),
-          ),
-          padding: EdgeInsets.all(0),
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TLDTabbarPage()), (route) => route == null);
-          },
-        ),
-      ),
+        automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
       body: SingleChildScrollView(
-        child: _getBodyWidget(context),
+        child: SingleChildScrollView(
+          child : _getBodyWidget(context)
+        ),
       ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
@@ -103,7 +89,7 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
         // ),
         Container(
           margin: EdgeInsets.only(
-              top: ScreenUtil().setHeight(20),
+              top: ScreenUtil().setHeight(100),
               left: ScreenUtil().setWidth(100),
               right: ScreenUtil().setWidth(100)),
           height: ScreenUtil().setHeight(80),
@@ -117,7 +103,7 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
               padding: EdgeInsets.all(0),
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPurseSeetingBackWordPage(wallet: widget.wallet,)));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPurseSeetingBackWordPage(wallet: widget.wallet,type: TLDBackWordType.create,)));
               }),
         )
       ],

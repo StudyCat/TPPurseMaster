@@ -117,7 +117,7 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
         ),
         children: <InlineSpan>[
           TextSpan(
-        text : '   可提现额度',
+        text : '\n可提现额度',
         style : TextStyle(
           fontSize:ScreenUtil().setSp(24),
           color : Color.fromARGB(255, 153, 153, 153)
