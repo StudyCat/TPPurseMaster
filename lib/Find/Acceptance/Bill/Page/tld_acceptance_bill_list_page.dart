@@ -1,5 +1,6 @@
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Page/tld_acceptance_detail_bill_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_buy_action_sheet.dart';
@@ -7,7 +8,6 @@ import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_list_open_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_list_unopen_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_profit_list_page.dart';
-import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -116,7 +116,19 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
       itemBuilder: (BuildContext context, int index) {
         TLDBillInfoListModel listModel = _dataSource[index];
         if (listModel.lock == true){
-          return TLDAcceptanceBillListLockCell(infoListModel: listModel,);
+          return GestureDetector(
+            onTap:(){
+              showDialog(context: context,builder:(context){
+                return TLDAlertView(
+                  title: '提示',
+                  type: TLDAlertViewType.normal,
+                  alertString: listModel.tip,
+                  didClickSureBtn: (){},
+                );
+              }); 
+            },
+            child : TLDAcceptanceBillListLockCell(infoListModel: listModel,)
+          );
         }else{
           if (listModel.isOpen){
              return _getOpenCell(listModel);

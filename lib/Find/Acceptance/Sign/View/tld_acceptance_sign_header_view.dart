@@ -194,7 +194,7 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
               width: ScreenUtil().setWidth(2),
               color: Colors.white,
             ),),
-            _getSingleProfitWidget('有效推广收益', widget.userInfoModel != null ? '${widget.userInfoModel.inviteProfit}TLD' : '0.0TLD')
+            _getSingleProfitWidget('累计收益', widget.userInfoModel != null ? '${widget.userInfoModel.inviteProfit}TLD' : '0.0TLD')
           ]
         ),
       ),

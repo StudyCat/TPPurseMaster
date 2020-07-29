@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TLDAcceptanceSignPage extends StatefulWidget {
   TLDAcceptanceSignPage({Key key}) : super(key: key);
@@ -28,33 +29,30 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
 
   bool _isLoading = false;
 
+  RefreshController _refreshController;
+
   TLDAcceptanceUserInfoModel _userInfoModel;
   @override
   void initState() { 
     super.initState();
-    
+
+    _refreshController = RefreshController(initialRefresh: true);
+
     _modelManager = TLDAcceptanceSignModelManager();
     _getUserInfo();
   }
 
   void _getUserInfo(){
-    setState(() {
-      _isLoading = true;
-    });
     _modelManager.getUserInfo((TLDAcceptanceUserInfoModel userInfoModel){
+      _refreshController.refreshCompleted();
       if(mounted){
-              setState(() {
-      _isLoading = false;
-      _userInfoModel = userInfoModel;
-    });
+      setState(() {
+       _userInfoModel = userInfoModel;
+      });
       }
     }, (TLDError error){
-      if(mounted){
-              setState(() {
-      _isLoading = false;
-    });
-      }
-    Fluttertoast.showToast(msg: error.msg);
+      _refreshController.refreshCompleted();
+      Fluttertoast.showToast(msg: error.msg);
     });
   }
 
@@ -90,6 +88,7 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
       _isLoading = false;
     });
       }
+    _refreshController.requestRefresh();
     _getUserInfo();
     }, (TLDError error){
       if(mounted){
@@ -120,7 +119,12 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
           child : Text('提现记录',style: TextStyle(color:Colors.white,))
         ),
       ),
-      body: LoadingOverlay(isLoading: _isLoading, child: SingleChildScrollView(child:_getBodyWidget()),),
+      body: SmartRefresher(
+        controller: _refreshController,
+        header: WaterDropHeader(complete: Text('刷新完成'),),
+        onRefresh: () => _getUserInfo(),
+        child: LoadingOverlay(isLoading: _isLoading, child: SingleChildScrollView(child:_getBodyWidget()),), 
+        ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }

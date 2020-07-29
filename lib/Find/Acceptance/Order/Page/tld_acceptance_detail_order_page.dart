@@ -106,7 +106,7 @@ class _TLDAcceptanceDetailOrderPageState extends State<TLDAcceptanceDetailOrderP
 
   Widget _getBodyWidget(BuildContext context) {
     return ListView.builder(
-        itemCount: _detailOrderInfoModel != null ? 5 : 0,
+        itemCount: _detailOrderInfoModel != null ? 3 : 0,
         itemBuilder: (BuildContext context, int index) {
           if (index == 1){
             return TLDAcceptanceDetailOrderAmountCell(orderInfoModel: _detailOrderInfoModel,);
@@ -131,13 +131,14 @@ class _TLDAcceptanceDetailOrderPageState extends State<TLDAcceptanceDetailOrderP
     }else if(index == 2){
       title = '每天静态收益';
       content = '${_detailOrderInfoModel.staticProfit}TLD';
-    }else if(index == 3){
-      title = '收益倍率';
-      content = _detailOrderInfoModel.billProfitRate;
-    }else{
-      title = '预计承兑累积收益';
-      content = '${_detailOrderInfoModel.expectProfit}TLD';
     }
+    // else if(index == 3){
+    //   title = '收益倍率';
+    //   content = _detailOrderInfoModel.billProfitRate;
+    // }else{
+    //   title = '预计承兑累积收益';
+    //   content = '${_detailOrderInfoModel.expectProfit}TLD';
+    // }
     return Padding(
       padding: EdgeInsets.only(
           top: top,

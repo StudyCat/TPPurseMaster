@@ -17,6 +17,7 @@ class TLDBillInfoListModel {
   bool lock;
   bool isOpen = false;
   List orderList;
+  String tip;
 
   TLDBillInfoListModel(
       {this.billId,
@@ -26,7 +27,7 @@ class TLDBillInfoListModel {
       this.alreadyBuyCount,
       this.totalBuyCount,
       this.lock,
-      this.orderList});
+      this.orderList,this.tip});
 
   TLDBillInfoListModel.fromJson(Map<String, dynamic> json) {
     billId = json['billId'];
@@ -35,6 +36,7 @@ class TLDBillInfoListModel {
     profitRate = json['profitRate'];
     alreadyBuyCount = json['alreadyBuyCount'];
     totalBuyCount = json['totalBuyCount'];
+    tip = json['tip'];
     lock = json['lock'];
     if (json['orderList'] != null) {
       orderList = new List();
@@ -52,6 +54,7 @@ class TLDBillInfoListModel {
     data['profitRate'] = this.profitRate;
     data['alreadyBuyCount'] = this.alreadyBuyCount;
     data['totalBuyCount'] = this.totalBuyCount;
+    data['tip'] = this.tip;
     data['lock'] = this.lock;
     if (this.orderList != null) {
       data['orderList'] = this.orderList.map((v) => v.toJson()).toList();
@@ -75,6 +78,7 @@ class TLDApptanceOrderListModel {
   String billProfitRate;
   int billLevel;
   String totalPrice;
+
 
   TLDApptanceOrderListModel(
       {this.acptOrderId,
