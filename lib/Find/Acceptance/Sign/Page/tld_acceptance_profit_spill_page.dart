@@ -1,12 +1,11 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_profit_spill_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_profit_spill_cell.dart';
-import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_profit_spill_unopen_cell.dart';
-import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_withdraw_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 
@@ -24,6 +23,8 @@ class _TLDAcceptanceProfitSpillPageState extends State<TLDAcceptanceProfitSpillP
   RefreshController _refreshController;
 
   TLDAcceptanceProfitSpillModelManager _modelManager;
+
+  bool _isLoading = false;
 
   List _dataSource = [];
 
@@ -53,12 +54,25 @@ class _TLDAcceptanceProfitSpillPageState extends State<TLDAcceptanceProfitSpillP
     });
   }
 
-  void _getProfit(String acptOrderNo){
-    _modelManager.getProfit(acptOrderNo, (){
+  void _getProfit(int overflowId){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.getProfit(overflowId, (){
       _refreshController.requestRefresh();
       Fluttertoast.showToast(msg: '领取成功');
+      if (mounted) {
+        setState(() {
+      _isLoading = false;
+    });
+      }
       _getSpillListInfo();
     },(TLDError error){
+      if (mounted) {
+        setState(() {
+      _isLoading = false;
+    });
+      }
       _refreshController.refreshCompleted();
       Fluttertoast.showToast(msg: error.msg);
     });
@@ -75,7 +89,7 @@ class _TLDAcceptanceProfitSpillPageState extends State<TLDAcceptanceProfitSpillP
         transitionBetweenRoutes: false,
         middle: Text('收益溢出池',),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
-          
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(urlStr: 'http://128.199.126.189:8080/desc/overflow_profit_desc.html',title: '收益溢出池说明',)));
         }),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51)
@@ -90,7 +104,7 @@ class _TLDAcceptanceProfitSpillPageState extends State<TLDAcceptanceProfitSpillP
       // enablePullUp: true,
       enablePullDown: true,
       controller: _refreshController,
-      child: _getBodyWidget(),
+      child: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget()),
       header: WaterDropHeader(
         complete : Text('刷新完成'),
       ),
@@ -100,6 +114,7 @@ class _TLDAcceptanceProfitSpillPageState extends State<TLDAcceptanceProfitSpillP
     );
   }
 
+
   Widget _getBodyWidget(){
     return ListView.builder(
       itemCount: _dataSource.length,
@@ -108,7 +123,7 @@ class _TLDAcceptanceProfitSpillPageState extends State<TLDAcceptanceProfitSpillP
         return TLDAcceptanceProfitSpillOpenCell(
           listModel: model,
           didClickwithdrawButtonCallBack: (){
-            _getProfit(model.acptOrderNo);
+            _getProfit(model.overflowId);
           },
         );
      },

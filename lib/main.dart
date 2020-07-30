@@ -1,15 +1,11 @@
 import 'dart:convert';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_detail_withdraw_page.dart';
-import 'package:dragon_sword_purse/IMUI/Page/tld_im_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Purse/MyPurse/Page/tld_my_purse_page.dart';
-import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
-import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -18,7 +14,6 @@ import 'dart:async';
 import 'CommonWidget/tld_data_manager.dart';
 import 'tld_home_page.dart';
 import 'dart:io';
-import 'package:jmessage_flutter/jmessage_flutter.dart';
 
 void main(){
   final JPush jPush = JPush();
@@ -27,7 +22,7 @@ void main(){
     TLDNewIMManager().init();
 
     jPush.setup(
-      appKey: 'fbc4ec1832b255c5dcb7944c',
+      appKey: '6676dc14cae09d6f15abe751',
       channel: "developer-default",
       production: false,
       debug: false,
@@ -187,7 +182,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title : '屠龙刀',
+      title : 'TLD',
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       navigatorObservers: [BotToastNavigatorObserver()],

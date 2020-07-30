@@ -26,8 +26,6 @@ class TLDAcceptanceBillListPage extends StatefulWidget {
 class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
   TLDAcceptanceBillListModelManager _modelManager;
 
-  bool _isOpen = false;
-
   TLDBillBuyPramaterModel _pramaterModel;
 
   RefreshController _refreshController;

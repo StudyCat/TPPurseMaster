@@ -11,6 +11,7 @@ class TLDSaleFormModel{
   String saleAmount;
   String tmpWalletAddress;
   String rate;
+  // String maxAmount; //可挂售最大额度
 }
 
 class TLDExchangeModelManager{
@@ -25,7 +26,7 @@ class TLDExchangeModelManager{
   }
 
   void _submitSignSaleForm(TLDSaleFormModel formModel,Function success,Function(TLDError) failure){
-     TLDBaseRequest request = TLDBaseRequest({'walletAddress':formModel.infoModel.walletAddress,'tmpWalletAddress':formModel.tmpWalletAddress,'sign':'formModel.maxBuyAmount','count':formModel.saleAmount},'sell/signCreate');
+     TLDBaseRequest request = TLDBaseRequest({'walletAddress':formModel.infoModel.walletAddress,'tmpWalletAddress':formModel.tmpWalletAddress,'count':formModel.saleAmount},'sell/signCreate');
      request.postNetRequest((value) {
        success();
      }, (error) => failure(error));

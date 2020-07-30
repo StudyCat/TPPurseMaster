@@ -20,7 +20,7 @@ JmessageFlutter JMessage = new JmessageFlutter.private(channel, const LocalPlatf
 
 class TLDNewIMManager{
     void init() {
-     JMessage.init(isOpenMessageRoaming: true, appkey:'fbc4ec1832b255c5dcb7944c',isProduction: true);
+     JMessage.init(isOpenMessageRoaming: true, appkey:'6676dc14cae09d6f15abe751',isProduction: true);
 
      JMessage.setDebugMode(enable: true);
 
@@ -66,7 +66,7 @@ class TLDNewIMManager{
     }
 
     void removeRecieveMessageCallBack(String userName)async {
-      JMSingle single = JMSingle.fromJson({'username':userName,'appKey':'fbc4ec1832b255c5dcb7944c'});
+      JMSingle single = JMSingle.fromJson({'username':userName,'appKey':'6676dc14cae09d6f15abe751'});
       await JMessage.exitConversation(target: single);
       JMessage.removeReceiveMessageListener((message) {
         
@@ -74,7 +74,7 @@ class TLDNewIMManager{
     }
 
     void getHistoryMessage(String userName,int pageFrom,Function(List) success)async {
-      JMSingle single = JMSingle.fromJson({'username':userName,'appKey':'fbc4ec1832b255c5dcb7944c'});
+      JMSingle single = JMSingle.fromJson({'username':userName,'appKey':'6676dc14cae09d6f15abe751'});
       List result = await JMessage.getHistoryMessages(type: single, from: pageFrom, limit: 10,isDescend: false);
       success(result);
     }
@@ -82,7 +82,7 @@ class TLDNewIMManager{
     Future<dynamic> sendMessage(TLDNewMessageModel messageModel) async{
       JMMessageType messageType;
       var message;
-      JMSingle single = JMSingle.fromJson({'username':messageModel.toUserName,'appKey':'fbc4ec1832b255c5dcb7944c'});
+      JMSingle single = JMSingle.fromJson({'username':messageModel.toUserName,'appKey':'6676dc14cae09d6f15abe751'});
       if (messageModel.contentType == 1){
         messageType = JMMessageType.text;
         message = await JMessage.createMessage(type: messageType, targetType: single,text: messageModel.text);
@@ -100,7 +100,7 @@ class TLDNewIMManager{
 
     Future getConversation(String userName) async{
       eventBus.fire(TLDInIMPageEvent());
-       JMSingle single = JMSingle.fromJson({'username': userName,'appKey':'fbc4ec1832b255c5dcb7944c'});
+       JMSingle single = JMSingle.fromJson({'username': userName,'appKey':'6676dc14cae09d6f15abe751'});
       List dataList = await JMessage.getConversations();
       for (JMConversationInfo item in dataList) {
         JMUserInfo userInfo = item.target; 
@@ -126,7 +126,7 @@ class TLDNewIMManager{
     }
 
     Future<String> downloadImage(String messageId,String userName) async{
-       JMSingle single = JMSingle.fromJson({'username': userName,'appKey':'fbc4ec1832b255c5dcb7944c'});
+       JMSingle single = JMSingle.fromJson({'username': userName,'appKey':'6676dc14cae09d6f15abe751'});
       Map map = await JMessage.downloadThumbImage(target: single, messageId: messageId);
       return map['filePath'];
     }
@@ -137,13 +137,13 @@ class TLDNewIMManager{
     }
 
     void getSystemMessageList(int pageFrom,Function(List) success) async{
-      JMSingle single = JMSingle.fromJson({'username':'TLDSystem','appKey':'fbc4ec1832b255c5dcb7944c'});
+      JMSingle single = JMSingle.fromJson({'username':'TLDSystem','appKey':'6676dc14cae09d6f15abe751'});
       List result = await JMessage.getHistoryMessages(type: single, from: pageFrom, limit: 10,isDescend: true);
       success(result);
     }
 
     Future deleteSystemMessage(String messageId) async{
-      JMSingle single = JMSingle.fromJson({'username':'TLDSystem','appKey':'fbc4ec1832b255c5dcb7944c'});
+      JMSingle single = JMSingle.fromJson({'username':'TLDSystem','appKey':'6676dc14cae09d6f15abe751'});
       await JMessage.deleteMessageById(type: single, messageId: messageId);
     }
 
@@ -157,7 +157,7 @@ class TLDNewIMManager{
     }
 
     void exitSystemConversation() async{
-        JMSingle single = JMSingle.fromJson({'username':'TLDSystem','appKey':'fbc4ec1832b255c5dcb7944c'});
+        JMSingle single = JMSingle.fromJson({'username':'TLDSystem','appKey':'6676dc14cae09d6f15abe751'});
         await JMessage.exitConversation(target: single);
     }
 

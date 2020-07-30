@@ -31,6 +31,7 @@ class _TLDWebPageState extends State<TLDWebPage> {
       ),
       body: WebView(
         initialUrl : widget.urlStr,
+        javascriptMode: JavascriptMode.unrestricted,
       ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );

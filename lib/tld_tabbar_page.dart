@@ -116,7 +116,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
     }
   }
   
-  //处理外部应用调起屠龙刀
+  //处理外部应用调起TLD
    _initPlatformStateForStringUniLinks() async {
     // Get the latest link
     String initialLink;
@@ -148,7 +148,6 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
           });
         }
       }
-
     } on PlatformException {
       initialLink = 'Failed to get initial link.';
     } on FormatException {

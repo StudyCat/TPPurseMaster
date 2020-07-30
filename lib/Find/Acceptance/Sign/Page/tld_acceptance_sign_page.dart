@@ -119,12 +119,7 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
           child : Text('提现记录',style: TextStyle(color:Colors.white,))
         ),
       ),
-      body: SmartRefresher(
-        controller: _refreshController,
-        header: WaterDropHeader(complete: Text('刷新完成'),),
-        onRefresh: () => _getUserInfo(),
-        child: LoadingOverlay(isLoading: _isLoading, child: SingleChildScrollView(child:_getBodyWidget()),), 
-        ),
+      body: _getBody(),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -168,7 +163,12 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
           height: ScreenUtil().setHeight(60),
           color: Theme.of(context).primaryColor,
         ),
-        _getBodyWidget()
+        SmartRefresher(
+        controller: _refreshController,
+        header: WaterDropHeader(complete: Text('刷新完成'),),
+        onRefresh: () => _getUserInfo(),
+        child: LoadingOverlay(isLoading: _isLoading, child: SingleChildScrollView(child:_getBodyWidget()),), 
+        )
       ],
     );
   }

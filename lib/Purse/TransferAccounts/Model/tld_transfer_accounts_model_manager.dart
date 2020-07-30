@@ -29,8 +29,10 @@ class TLDTransferAccountsModelManager{
     }
 
     void transferAmount(TLDTranferAmountPramaterModel pramaterModel,Function success,Function(TLDError) failure){
-      Map pramaterMap = {'chargeValue':pramaterModel.chargeValue,'chargeWalletAddress':pramaterModel.chargeWalletAddress,'fromWalletAddress':pramaterModel.fromWalletAddress,'toWalletAddress':pramaterModel.toWalletAddress,'value':pramaterModel.value,'sign':'221321321412'};
+      Map pramaterMap = {'chargeValue':pramaterModel.chargeValue,'chargeWalletAddress':pramaterModel.chargeWalletAddress,'fromWalletAddress':pramaterModel.fromWalletAddress,'toWalletAddress':pramaterModel.toWalletAddress,'value':pramaterModel.value,};
       TLDBaseRequest request = TLDBaseRequest(pramaterMap,'wallet/transfer');
+      request.isNeedSign = true;
+      request.walletAddress = pramaterModel.fromWalletAddress;
       request.postNetRequest((dynamic value) {
         success();
       }, (error) => failure(error));

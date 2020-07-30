@@ -95,7 +95,7 @@ class TLDCreatePurseModelManager {
     String walletJson = wallet.toJson();
     Map walletMap = jsonDecode(walletJson);
     String walletId = walletMap['id'];
-    String walletName = '屠龙刀钱包' + walletId.split('-').first;
+    String walletName = 'TLD钱包' + walletId.split('-').first;
     TLDWallet tldWallet = TLDWallet(null, walletJson, mnemonic,privateKey,addressHex,walletName);
     return tldWallet;
   }

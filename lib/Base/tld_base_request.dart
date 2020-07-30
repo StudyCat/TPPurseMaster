@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
+import 'package:pointycastle/api.dart';
 import 'package:uuid_enhanced/uuid.dart';
+import 'package:web3dart/crypto.dart';
 
 class TLDError{
   int code;
@@ -20,10 +24,12 @@ class TLDError{
 class TLDBaseRequest{
   //47.101.170.209 测试环境
   //192.168.1.120 本地环境
-  static String baseUrl = 'http://192.168.1.120:8030/';
+  static String baseUrl = 'http://47.101.170.209:8030/';
   Map pramatersMap;
   String subUrl;
   CancelToken cancelToken;
+  bool isNeedSign;
+  String walletAddress;
 
   TLDBaseRequest(Map pramatersMap,String subUrl){
     this.pramatersMap = pramatersMap;
@@ -96,6 +102,9 @@ class TLDBaseRequest{
       if (acceptanceToken != null){
         options.headers.addEntries({'jwtToken':acceptanceToken}.entries);
       }
+      if (this.isNeedSign == true) {
+        _sign();
+      }
       Dio dio = Dio(options);
      String url = baseUrl + this.subUrl;
      Response response = await dio.post(url,queryParameters: Map<String, dynamic>.from(this.pramatersMap),cancelToken: cancelToken);
@@ -112,6 +121,24 @@ class TLDBaseRequest{
       TLDError error = TLDError(400,'网络接口出错');
        failure(error);
     }
+  }
+
+
+  void _sign(){
+    TLDWallet wallet;
+    List purseList = TLDDataManager.instance.purseList;
+    for (TLDWallet item in purseList) {
+      if (item.address == this.walletAddress) {
+        wallet = item;
+      }
+    }
+    String pramaterStr = jsonEncode(this.pramatersMap);
+    Uint8List privateKey = hexToBytes(wallet.privateKey);
+    Uint8List messageHash = keccakUtf8(pramaterStr);
+    MsgSignature signature = sign(messageHash, privateKey);
+    Map signMap = {'r':signature.r.toString(),'v' : signature.v.toString(),'s':signature.s.toString()};
+    String signStr = jsonEncode(signMap);
+    this.pramatersMap.addEntries({'sign':signStr,'jsonStr':pramaterStr}.entries);
   } 
 
 

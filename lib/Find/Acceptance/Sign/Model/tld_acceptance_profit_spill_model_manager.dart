@@ -8,7 +8,7 @@ class TLDAcceptanceProfitSpillListModel {
   int billLevel;
   String billIcon;
   String overflowCount;
-  String acptOrderNo;
+  int overflowId;
 
   TLDAcceptanceProfitSpillListModel(
       {this.billId, this.billLevel, this.billIcon, this.overflowCount});
@@ -18,7 +18,7 @@ class TLDAcceptanceProfitSpillListModel {
     billLevel = json['billLevel'];
     billIcon = json['billIcon'];
     overflowCount = json['overflowCount'];
-    acptOrderNo = json['acptOrderNo'];
+    overflowId = json['overflowId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -27,7 +27,7 @@ class TLDAcceptanceProfitSpillListModel {
     data['billLevel'] = this.billLevel;
     data['billIcon'] = this.billIcon;
     data['overflowCount'] = this.overflowCount;
-    data['acptOrderNo'] = this.acptOrderNo;
+    data['overflowId'] = this.overflowId;
     return data;
   }
 }
@@ -45,8 +45,8 @@ class TLDAcceptanceProfitSpillModelManager {
     }, (error) => failure(error));
   }
 
-  void getProfit(String acptOrderNo,Function success,Function(TLDError) failure){
-    TLDBaseRequest request = TLDBaseRequest({'acptOrderNo':acptOrderNo},'acpt/user/acptOrderNo');
+  void getProfit(int overflowId,Function success,Function(TLDError) failure){
+    TLDBaseRequest request = TLDBaseRequest({'overflowId':overflowId},'acpt/user/receiveProfit');
     request.postNetRequest((value) {
       success();
     }, (error) => failure(error));

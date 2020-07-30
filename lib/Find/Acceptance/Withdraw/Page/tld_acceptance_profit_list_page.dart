@@ -1,10 +1,9 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_profit_model_manager.dart';
-import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_withdraw_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/View/tld_acceptance_profit_list_cell.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -74,7 +73,7 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
           color: Color.fromARGB(0, 0, 0, 0),
         ),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
-          
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(urlStr: 'http://128.199.126.189:8080/desc/profit_desc.html',title: '收益记录说明',)));
         }),
         heroTag: 'acceptance_profit_list_page',
         transitionBetweenRoutes: false,
@@ -127,7 +126,6 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
       TLDAcceptanceProfitListModel profitListModel = _dataSource[index];
       return GestureDetector(
         onTap:(){
-          
         },
         child : TLDAcceptanceProfitListCell(profitListModel: profitListModel,)
       );

@@ -24,7 +24,7 @@ class _TLDUserAgreementPageState extends State<TLDUserAgreementPage> {
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
       body: WebView(
-        initialUrl : 'http://platform.ushengame.com/tld-wallet-agreement.html'
+        initialUrl : 'http://128.199.126.189:8080/tld-wallet-agreement.html'
       ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );

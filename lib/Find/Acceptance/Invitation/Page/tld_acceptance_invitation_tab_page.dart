@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Page/tld_acceptance_invitation_earnings_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Page/tld_acceptance_invitation_qr_code_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,7 +43,7 @@ class _TLDAcceptanceInvitationTabPageState extends State<TLDAcceptanceInvitation
         transitionBetweenRoutes: false,
         middle: Text('推广邀请码'),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
-          
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(urlStr: 'http://128.199.126.189:8080/desc/invite_profit_desc.html',title: '推广收益说明',)));
         }),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),

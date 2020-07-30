@@ -117,7 +117,7 @@ class TLDDetailOrderModelManager {
 //walletAdress 买家地址
   void confirmPaid(String orderNo,String walletAdress, Function success, Function failure){
     TLDBaseRequest request =
-        TLDBaseRequest({'orderNo': orderNo,'walletAddress':walletAdress,'sign':'dwqdqwdqwdqw'}, 'order/confirmPaid');
+        TLDBaseRequest({'orderNo': orderNo,'walletAddress':walletAdress,}, 'order/confirmPaid');
     request.postNetRequest((dynamic value) {
       success();
     }, (error) => failure(error));
@@ -126,7 +126,7 @@ class TLDDetailOrderModelManager {
   //walletAdress 卖家地址
   void sureSentCoin(String orderNo,String walletAdress, Function success, Function failure){
     TLDBaseRequest request =
-        TLDBaseRequest({'orderNo': orderNo,'walletAddress':walletAdress,'sign':'dwqdqwdqwdqw'}, 'order/confirmReceived');
+        TLDBaseRequest({'orderNo': orderNo,'walletAddress':walletAdress,}, 'order/confirmReceived');
     request.postNetRequest((dynamic value) {
       success();
     }, (error) => failure(error));

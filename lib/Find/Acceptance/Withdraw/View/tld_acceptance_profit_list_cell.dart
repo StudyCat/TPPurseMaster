@@ -25,49 +25,64 @@ class _TLDAcceptanceProfitListCellState extends State<TLDAcceptanceProfitListCel
               borderRadius: BorderRadius.all(Radius.circular(4)),
               color: Colors.white
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('票据ID：${widget.profitListModel.billId}',style:TextStyle(fontSize : ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153))),
-                _getProfitRowWidget(),
-                Padding(
-                  padding:  EdgeInsets.only(top : ScreenUtil().setHeight(20)),
-                  child: _getDateWidget(),
-                  )
+                _getLeftColumnWidget(), _getDateWidget(),
               ],
             ),
           ),
     );
   }
 
-  Widget _getProfitRowWidget(){
-    return Padding(
-      padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          RichText(
-            text: TextSpan(
-              children : <InlineSpan>[
-                WidgetSpan(
-                  child : widget.profitListModel.billIcon != null ? CachedNetworkImage(imageUrl:widget.profitListModel.billIcon,width: ScreenUtil().setWidth(32),height: ScreenUtil().setWidth(32),) : Container(width: ScreenUtil().setWidth(32),height: ScreenUtil().setWidth(32)),
+  Widget _getLeftColumnWidget(){
+    return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                RichText(
+                  text: TextSpan(
+                    text: '+${widget.profitListModel.profitTldCount}',
+                    style: TextStyle(fontSize : ScreenUtil().setSp(48),color:Color.fromARGB(255, 65, 117, 5)),
+                    children: <InlineSpan>[
+                     TextSpan(
+                    text: 'TLD',
+                    style: TextStyle(fontSize : ScreenUtil().setSp(28),color:Color.fromARGB(255, 153, 153, 153)),
+                       )
+                    ]
+                  )
                 ),
-                TextSpan(
-                  text : '  今日收益：${widget.profitListModel.profitTldCount}TLD',
-                  style : TextStyle(fontSize : ScreenUtil().setSp(28),color:Color.fromARGB(255, 102, 102, 102))
-                )
-              ]
-            ),
-          ),
-          Text('${widget.profitListModel.billCount}份',style:TextStyle(fontSize : ScreenUtil().setSp(28),color:Color.fromARGB(255, 57, 57, 57))),
-        ],
-      ),
-      );
+                Text('收益',style:TextStyle(fontSize : ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153))),
+              ],
+            );
   }
+
+  // Widget _getProfitRowWidget(){
+  //   return Padding(
+  //     padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: <Widget>[
+  //         RichText(
+  //           text: TextSpan(
+  //             children : <InlineSpan>[
+  //               WidgetSpan(
+  //                 child : widget.profitListModel.billIcon != null ? CachedNetworkImage(imageUrl:widget.profitListModel.billIcon,width: ScreenUtil().setWidth(32),height: ScreenUtil().setWidth(32),) : Container(width: ScreenUtil().setWidth(32),height: ScreenUtil().setWidth(32)),
+  //               ),
+  //               TextSpan(
+  //                 text : '  今日收益：${widget.profitListModel.profitTldCount}TLD',
+  //                 style : TextStyle(fontSize : ScreenUtil().setSp(28),color:Color.fromARGB(255, 102, 102, 102))
+  //               )
+  //             ]
+  //           ),
+  //         ),
+  //         Text('${widget.profitListModel.billCount}份',style:TextStyle(fontSize : ScreenUtil().setSp(28),color:Color.fromARGB(255, 57, 57, 57))),
+  //       ],
+  //     ),
+  //     );
+  // }
 
   Widget _getDateWidget(){
     return Container(
-      width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(100),
       child: Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.profitListModel.createTime), [yyyy,'-',hh,'-',mm,' ',hh,':',nn]),style:TextStyle(fontSize : ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153)),textAlign: TextAlign.end,),
     );
   }

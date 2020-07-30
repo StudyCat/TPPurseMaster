@@ -121,6 +121,9 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
         border: Border.all(
           color: Color.fromARGB(0, 0, 0, 0),
         ),
+        trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
+          
+        }),
         heroTag: 'exchange_page',
         transitionBetweenRoutes: false,
         middle: Text('承兑收益提现'),

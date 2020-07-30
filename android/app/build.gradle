@@ -62,7 +62,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
         JPUSH_PKGNAME : "com.example.dragon_sword_purse",
-        JPUSH_APPKEY : "fbc4ec1832b255c5dcb7944c", // NOTE: JPush 上注册的包名对应的 Appkey.
+        JPUSH_APPKEY : "6676dc14cae09d6f15abe751", // NOTE: JPush 上注册的包名对应的 Appkey.
         JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
     ]
     }

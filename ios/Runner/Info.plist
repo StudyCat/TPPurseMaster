@@ -33,9 +33,9 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-    <string>屠龙刀需要调用您的相机，以便获取相关信息</string>
+    <string>TLD需要调用您的相机，以便获取相关信息</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>屠龙刀需要调用您的相册，以便获取相关信息</string>
+	<string>TLD需要调用您的相册，以便获取相关信息</string>
 	<key>NSAppTransportSecurity</key>
     <dict>
         <key>NSAllowsArbitraryLoads</key>

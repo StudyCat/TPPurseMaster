@@ -94,7 +94,7 @@ class TLDBuyModelManager{
   }
 
   void buyTLDCoin(TLDBuyPramaterModel pramaterModel,Function(String) success,Function(TLDError) failure){
-    TLDBaseRequest request = TLDBaseRequest({'buyCount':pramaterModel.buyCount,'buyerAddress':pramaterModel.buyerAddress,'sellNo':pramaterModel.sellNo,'sign':'sadasdasd'}, 'order/create');
+    TLDBaseRequest request = TLDBaseRequest({'buyCount':pramaterModel.buyCount,'buyerAddress':pramaterModel.buyerAddress,'sellNo':pramaterModel.sellNo}, 'order/create');
     request.postNetRequest((dynamic value) {
       Map data = value;
       String orderNo = data['orderNo'];     

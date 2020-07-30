@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';
+import 'package:package_info/package_info.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dataBase/tld_database_manager.dart';
 import 'tld_not_purse_page.dart';
 import 'tld_tabbar_page.dart';
@@ -60,6 +63,8 @@ class _TLDHomePageState extends State<TLDHomePage> {
     // }else{
       
     // }
+
+    _checkVersion();
   }
 
   void _openPermmision() async{
@@ -71,9 +76,30 @@ class _TLDHomePageState extends State<TLDHomePage> {
     print(statuses[Permission.location]);
   }
 
-  void _openSavePermmison(){
+  void _checkVersion(){
+    TLDBaseRequest request = TLDBaseRequest({},'common/tldVersionUpdate');
+    request.postNetRequest((value) async{
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String version = packageInfo.version;
+      if (version != value['tldVersion']) {
+        showDialog(context: context,builder: (context){
+        return TLDAlertView(title: '版本更新',alertString: value['updateDesc'],sureTitle:  '更新',didClickSureBtn: (){
+          _downloadNewApk(value['apkUrl']);
+        },);
+      });
+      }
+    }, (TLDError error){
 
+    });
   }
+
+  _downloadNewApk(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
   void _searchAllPurse()async{
     await _manager.openDataBase();

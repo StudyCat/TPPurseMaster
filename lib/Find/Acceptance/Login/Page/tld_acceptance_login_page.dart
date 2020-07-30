@@ -5,6 +5,7 @@ import 'package:dragon_sword_purse/Exchange/FirstPage/Model/tld_exchange_choose_
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/View/tld_exchange_normalCell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Login/Model/tld_acceptance_login_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_invite_login_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Login/View/tld_acceptance_login_code_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Login/View/tld_acceptance_scan_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/TabbarPage/Page/tld_acceptance_tabbar_page.dart';
@@ -42,14 +43,12 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
   List titles = [
     '手机号',
     '验证码',
-    '推荐人ID',
     '钱包地址'
   ];
 
   List placeholders = [
     '请输入您的手机号',
     '请输入验证码',
-    '请输入您的推荐码(第二次登记时，不需要输入)',
     '您的钱包地址'
   ];
 
@@ -58,7 +57,7 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
     super.initState();
 
     _pramater = TLDAcceptanceLoginPramater();
-    _pramater.telCode = '123465';
+    // _pramater.telCode = '123465';
 
     _cellPhone = ValueNotifier('');  
 
@@ -101,7 +100,11 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
       setState(() {
         _isLoading = false;
       });
-      Fluttertoast.showToast(msg: error.msg);
+      if (error.code == -3) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDAcceptanceInviteLoginPage(pramater: _pramater,)));
+      }else {
+        Fluttertoast.showToast(msg: error.msg);
+      }
     });
   }
 
@@ -147,18 +150,7 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
           },telCodeDidChangeCallBack: (String telCode){
             _pramater.telCode = telCode;
           },),);
-        }else if (index == 2){
-           return Padding(
-          padding: EdgeInsets.only(top:ScreenUtil().setHeight(2),left: ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),
-          child: TLDAcceptanceScanCell(title : titles[index],placeholder: placeholders[index],inviteController: _inviteController,
-          didClickScanButtonCallBack: ()async{
-            await _scanPhoto();
-          },
-          textDidChangeCallBack: (String text){
-            _pramater.inviteCode = text;
-          },
-          ));
-        }else if(index == 3){
+        }else if(index == 2){
           return TLDExchangeNormalCell(
             type: TLDExchangeNormalCellType.normalArrow,
             title: titles[index],
@@ -189,34 +181,34 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
     );
   }
 
-   Future _scanPhoto() async {
-    var status = await Permission.camera.status;
-    if (status == PermissionStatus.denied ||
-        status == PermissionStatus.restricted ||
-        status == PermissionStatus.undetermined) {
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.camera,
-      ].request();
-      return;
-    }
+  //  Future _scanPhoto() async {
+  //   var status = await Permission.camera.status;
+  //   if (status == PermissionStatus.denied ||
+  //       status == PermissionStatus.restricted ||
+  //       status == PermissionStatus.undetermined) {
+  //   Map<Permission, PermissionStatus> statuses = await [
+  //     Permission.camera,
+  //     ].request();
+  //     return;
+  //   }
 
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => TLDScanQrCodePage(
-                  scanCallBack: (String result) {
-                    _manager.getInvationCodeFromQrCode(result,
-                        (String inviteCode) {
-                      _inviteController.text = inviteCode;
-                      _pramater.inviteCode = inviteCode;
-                    }, (TLDError error) {
-                      Fluttertoast.showToast(
-                          msg: error.msg,
-                          toastLength: Toast.LENGTH_SHORT,
-                          timeInSecForIosWeb: 1);
-                    });
-                  },
-                )));
-  }
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => TLDScanQrCodePage(
+  //                 scanCallBack: (String result) {
+  //                   _manager.getInvationCodeFromQrCode(result,
+  //                       (String inviteCode) {
+  //                     _inviteController.text = inviteCode;
+  //                     _pramater.inviteCode = inviteCode;
+  //                   }, (TLDError error) {
+  //                     Fluttertoast.showToast(
+  //                         msg: error.msg,
+  //                         toastLength: Toast.LENGTH_SHORT,
+  //                         timeInSecForIosWeb: 1);
+  //                   });
+  //                 },
+  //               )));
+  // }
 
 }

@@ -52,6 +52,9 @@ dependencies:
   uni_links: ^0.4.0
   jmessage_flutter: ^0.6.3
   flutter_swiper: ^1.1.6
+  package_info: ^0.4.1
+  url_launcher: ^5.5.0
+  pointycastle: ^1.0.2
   flutter_custom_calendar:
     git:
       url: https://github.com/LXD312569496/flutter_custom_calendar.git

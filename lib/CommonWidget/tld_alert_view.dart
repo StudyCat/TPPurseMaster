@@ -9,7 +9,7 @@ enum TLDAlertViewType{
 
 
 class TLDAlertView extends StatefulWidget {
-  TLDAlertView({Key key,this.title,this.type,this.alertString,this.didClickSureBtn,this.textEditingCallBack,this.isNeedSecretShow = false,this.placeHolder = '限20字以内'}) : super(key: key);
+  TLDAlertView({Key key,this.title,this.type,this.alertString,this.didClickSureBtn,this.textEditingCallBack,this.isNeedSecretShow = false,this.placeHolder = '限20字以内',this.sureTitle = '确定'}) : super(key: key);
   final String alertString;
   final String title;
   final TLDAlertViewType type;
@@ -17,6 +17,7 @@ class TLDAlertView extends StatefulWidget {
   final ValueChanged<String> textEditingCallBack;
   final bool isNeedSecretShow;
   final String placeHolder;
+  final String sureTitle;
   @override
   _TLDAlertViewState createState() => _TLDAlertViewState();
 }
@@ -45,7 +46,7 @@ class _TLDAlertViewState extends State<TLDAlertView> {
         CupertinoDialogAction(child: Text('取消',style : TextStyle(fontSize : ScreenUtil().setSp(28),color: Color.fromARGB(255, 102, 102, 102))), onPressed: (){
           Navigator.of(context).pop();
         }),
-        CupertinoDialogAction(child: Text('确定',style : TextStyle(fontSize : ScreenUtil().setSp(28),color: Theme.of(context).primaryColor)), onPressed: (){
+        CupertinoDialogAction(child: Text(widget.sureTitle,style : TextStyle(fontSize : ScreenUtil().setSp(28),color: Theme.of(context).primaryColor)), onPressed: (){
           Navigator.of(context).pop();
           widget.didClickSureBtn();
         }),

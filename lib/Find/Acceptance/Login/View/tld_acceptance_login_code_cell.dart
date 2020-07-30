@@ -46,7 +46,7 @@ class _TLDAcceptanceLoginCodeCellState
     // TODO: implement initState
     super.initState();
 
-    _controller = TextEditingController(text: '123456');
+    _controller = TextEditingController();
 
     widget.cellPhone.addListener(() {
       _cellPhoneNum = widget.cellPhone.value;
@@ -79,7 +79,6 @@ class _TLDAcceptanceLoginCodeCellState
                   controller: _controller,
                   placeholder: widget.placeholder,
                   textAlign: TextAlign.right,
-                  enabled: false,
                   onChanged: (String text) {
                     widget.telCodeDidChangeCallBack(text);
                   },
@@ -111,22 +110,22 @@ class _TLDAcceptanceLoginCodeCellState
                         padding: EdgeInsets.zero,
                         borderRadius: BorderRadius.all(Radius.circular(4)),
                         onPressed: () {
-                          // if (_enabel) {
-                          //   if (_cellPhoneNum.length == 11 &&
-                          //       _isCellPhoneNum()) {
-                          //     _enabel = false;
-                          //     _countdownTime = 60;
-                          //     widget.didClickSendCodeBtnCallBack();
-                          //     if (_timer == null && _countdownTime > 0) {
-                          //       _timer = Timer.periodic(Duration(seconds: 1),
-                          //           (timer) {
-                          //         timerFunction();
-                          //       });
-                          //     }
-                          //   } else {
-                          //     Fluttertoast.showToast(msg: '不是手机号码');
-                          //   }
-                          // }
+                          if (_enabel) {
+                            if (_cellPhoneNum.length == 11 &&
+                                _isCellPhoneNum()) {
+                              _enabel = false;
+                              _countdownTime = 60;
+                              widget.didClickSendCodeBtnCallBack();
+                              if (_timer == null && _countdownTime > 0) {
+                                _timer = Timer.periodic(Duration(seconds: 1),
+                                    (timer) {
+                                  timerFunction();
+                                });
+                              }
+                            } else {
+                              Fluttertoast.showToast(msg: '不是手机号码');
+                            }
+                          }
                         })),
               )
             ]),
