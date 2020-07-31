@@ -26,12 +26,14 @@ class _TLDChoosePaymentPageState extends State<TLDChoosePaymentPage> {
     '银行卡',
     '微信',
     '支付宝',
+    '自定义收款方式'
     ];
     
     List icons = [
       0xe679,
       0xe61d,
-      0xe630
+      0xe630,
+      0xe65e,
     ];
 
   @override
@@ -63,8 +65,10 @@ class _TLDChoosePaymentPageState extends State<TLDChoosePaymentPage> {
               type = TLDPaymentType.bank;
             }else if (index == 1) {
                 type = TLDPaymentType.wechat;
-             }else{
+             }else if (index == 2){
                 type = TLDPaymentType.alipay;
+            }else{
+              type = TLDPaymentType.diy;
             }
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPaymentManagerPage(type: type,walletAddress: widget.walletAddress,isChoosePayment: widget.isChoosePayment,didChoosePaymentCallBack: widget.didChoosePaymentCallBack,)));
           },

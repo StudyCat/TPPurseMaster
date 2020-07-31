@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_login_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_sign_model_manager.dart';
@@ -89,7 +90,12 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
     });
       }
     _refreshController.requestRefresh();
-    _getUserInfo();
+    showDialog(
+      context: context,
+      builder: (context) => TLDAlertView(alertString: '签到成功',title: '温馨提示',didClickSureBtn: (){
+        _getUserInfo();
+      },),
+      );
     }, (TLDError error){
       if(mounted){
                setState(() {

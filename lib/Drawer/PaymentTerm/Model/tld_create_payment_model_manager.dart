@@ -12,15 +12,18 @@ class TLDCreatePaymentPramaterModel{
   int type;
   String walletAddress = '';
   String payId = "";
+  String myPayName = '';
 }
 
 class TLDCreatePaymentModelManager{
    void createPayment(TLDCreatePaymentPramaterModel pramaterModel,Function success,Function(TLDError) failure){
      Map pramaterMap;
-     if (pramaterModel.type != 1){
-       pramaterMap = {'account':pramaterModel.account,'quota':pramaterModel.quota,'realName':pramaterModel.realName,'type':pramaterModel.type,'walletAddress':pramaterModel.walletAddress,'imageUrl':pramaterModel.imageUrl};
-     }else{
+     if (pramaterModel.type == 1){
        pramaterMap = {'account':pramaterModel.account,'quota':pramaterModel.quota,'realName':pramaterModel.realName,'type':pramaterModel.type,'walletAddress':pramaterModel.walletAddress,'subBranch':pramaterModel.subBranch};
+     }else if(pramaterModel.type == 4){
+        pramaterMap = {'account':pramaterModel.account,'myPayName':pramaterModel.myPayName,'realName':pramaterModel.realName,'type':pramaterModel.type,'walletAddress':pramaterModel.walletAddress,'imageUrl':pramaterModel.imageUrl};
+     }else{
+        pramaterMap = {'account':pramaterModel.account,'quota':pramaterModel.quota,'realName':pramaterModel.realName,'type':pramaterModel.type,'walletAddress':pramaterModel.walletAddress,'imageUrl':pramaterModel.imageUrl};
      }
      TLDBaseRequest request = TLDBaseRequest(pramaterMap, 'pay/addPay');
      request.postNetRequest((dynamic value) {
@@ -30,10 +33,12 @@ class TLDCreatePaymentModelManager{
 
    void updatePayment(TLDCreatePaymentPramaterModel pramaterModel,Function success,Function(TLDError) failure){
      Map pramaterMap;
-     if (pramaterModel.type != 1){
-       pramaterMap = {'payId':pramaterModel.payId,'account':pramaterModel.account,'quota':pramaterModel.quota,'realName':pramaterModel.realName,'type':pramaterModel.type,'walletAddress':pramaterModel.walletAddress,'imageUrl':pramaterModel.imageUrl};
-     }else{
+     if (pramaterModel.type == 1){
        pramaterMap = {'payId':pramaterModel.payId,'account':pramaterModel.account,'quota':pramaterModel.quota,'realName':pramaterModel.realName,'type':pramaterModel.type,'walletAddress':pramaterModel.walletAddress,'subBranch':pramaterModel.subBranch};
+     }else if(pramaterModel.type == 4){
+        pramaterMap = {'payId':pramaterModel.payId,'account':pramaterModel.account,'myPayName':pramaterModel.myPayName,'realName':pramaterModel.realName,'type':pramaterModel.type,'walletAddress':pramaterModel.walletAddress,'imageUrl':pramaterModel.imageUrl};
+     }else{
+       pramaterMap = {'payId':pramaterModel.payId,'account':pramaterModel.account,'quota':pramaterModel.quota,'realName':pramaterModel.realName,'type':pramaterModel.type,'walletAddress':pramaterModel.walletAddress,'imageUrl':pramaterModel.imageUrl};
      }
      TLDBaseRequest request = TLDBaseRequest(pramaterMap, 'pay/resetPay');
      request.postNetRequest((dynamic value) {

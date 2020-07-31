@@ -53,6 +53,8 @@ class TLDAcceptanceUserInfoModel {
   String overflowProfit;//收益池
   String inviteProfit; //推广收益
   String todayProfit; //每日收益
+  String staticProfit; // 静态收益
+  String totalBillProfit;  //累计收益
 
   TLDAcceptanceUserInfoModel(
       {this.userName,
@@ -72,7 +74,9 @@ class TLDAcceptanceUserInfoModel {
       this.totalWithdraw,
       this.overflowProfit,
       this.inviteProfit,
-      this.todayProfit
+      this.todayProfit,
+      this.staticProfit,
+      this.totalBillProfit
       });
 
   TLDAcceptanceUserInfoModel.fromJson(Map<String, dynamic> json) {
@@ -94,6 +98,8 @@ class TLDAcceptanceUserInfoModel {
     overflowProfit = json['overflowProfit'];
     inviteProfit = json['inviteProfit'];
     todayProfit = json['todayProfit'];
+    staticProfit = json['staticProfit'];
+    totalBillProfit = json['totalBillProfit'];
   }
 
    List _getSignList(List jsonList){
@@ -123,6 +129,8 @@ class TLDAcceptanceUserInfoModel {
     data['overflowProfit'] = this.overflowProfit;
     data['inviteProfit'] = this.inviteProfit;
     data['todayProfit'] = this.todayProfit;
+    data['staticProfit'] = this.staticProfit;
+    data['totalBillProfit'] = this.totalBillProfit;
     return data;
   }
 }

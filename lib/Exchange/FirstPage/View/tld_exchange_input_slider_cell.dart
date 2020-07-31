@@ -51,20 +51,21 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Container(
-      padding: EdgeInsets.only(left: 15, top: 1, right: 15),
+    return Padding(padding:EdgeInsets.only(left: 15, top: 1, right: 15),
+    child:Container(
       width: screenSize.width - 30,
-      child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(4)),
-          child: Container(
-            color: Colors.white,
-            child: Column(
+      decoration: BoxDecoration(
+        color : Colors.white,
+        borderRadius : BorderRadius.all(Radius.circular(4))
+      ),
+      padding: EdgeInsets.only(left: 10, top: 1, right: 10),
+      child: Column(
               children: <Widget>[
                 getCellTopView(),
                 getSliderView()
               ],
             ),
-          )),
+          ),
     );
   }
 
@@ -90,15 +91,25 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
   }
 
   Widget getTextField(){
-    return Stack(
-      alignment : FractionalOffset(0.8,0.6),
-      children: <Widget>[
-        Container(
-      width: ScreenUtil().setWidth(200),
+    return Container(
+      width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(300),
+      decoration: BoxDecoration(
+        border : Border.all(color : Color.fromARGB(255, 153, 153, 153),width : ScreenUtil().setWidth(2)),
+        borderRadius : BorderRadius.all(Radius.circular(8)),
+        color: Colors.white,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children : <Widget>[
+          Container(
+      width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(400),
       height: ScreenUtil().setWidth(48),
-      padding: EdgeInsets.only(right : ScreenUtil().setWidth(20)),
+      padding: EdgeInsets.only(left : ScreenUtil().setWidth(15)),
       child: CupertinoTextField(
       enabled: widget.infoModel == null ? false : true,
+      decoration: BoxDecoration(
+        border : Border.all(width : 1,color: Color.fromARGB(0, 255, 255, 255)),
+      ),
       style: TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24),textBaseline: TextBaseline.alphabetic),
       controller: _controller,
       focusNode: widget.focusNode,
@@ -106,9 +117,11 @@ class _TLDExchangeInputSliderCellState extends State<TLDExchangeInputSliderCell>
         TLDAmountTextInputFormatter()
       ],
     )),
-    Text('TLD',style:TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24)))
+    Padding(padding: EdgeInsets.only(right : ScreenUtil().setWidth(10),)
+    ,child: Text('TLD',style:TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24))),),
       ],
-    );
+    )
+      );
   }
 
   Widget getSliderView(){

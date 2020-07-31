@@ -59,6 +59,10 @@ class _TLDExchangePaymentCellState extends State<TLDExchangePaymentCell> {
         return Icon(IconData(0xe679,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(32),);
       }else if(widget.paymentModel.type == 2){
         return Icon(IconData(0xe61d,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(32),);
+      }else if(widget.paymentModel.type == 3){
+        return Icon(IconData(0xe630,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(32),);
+      }else{
+        return Icon(IconData(0xe65e,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(32),);
       }
     }
     return Icon(IconData(0xe630,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(32),);

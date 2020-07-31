@@ -147,32 +147,51 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          _getInfoLabel('签到TLD', widget.userInfoModel != null ? '${widget.userInfoModel.acptSignTld}TLD' : '0.0TLD', null),
-          _getInfoLabel('每日收益', widget.userInfoModel != null ? '${widget.userInfoModel.todayProfit}TLD' : '0.0TLD', null),
-          _getInfoLabel('已提现总额', widget.userInfoModel != null ? '${widget.userInfoModel.withdrawLimit}TLD' : '0.0TLD', null),
+          _getDayProfitLabel(),
+          _getStaticProfitLabel(),
+          _getInviteProfitLabel(),
         ]
       ),
       );
   }
 
-    Widget _getInfoLabel(String title,String content,Color contentColor){
-    return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-      Text(title,style: TextStyle(
-        fontSize : ScreenUtil().setSp(28),
-        color: Color.fromARGB(255, 51, 51, 51)
-      ),),
-      Container(
-        padding: EdgeInsets.only(top : ScreenUtil().setHeight(12)),
-        child: Text(content,style : TextStyle(
-          fontSize : ScreenUtil().setSp(28),
-          color: contentColor != null ? contentColor : Color.fromARGB(255, 102, 102, 102),
-          fontWeight: FontWeight.bold
-        ),),
-      ),
-    ],
-  );
+    Widget _getDayProfitLabel(){
+    return  RichText(
+        text : TextSpan(
+          text: '每日收益',
+          style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),
+          children: <InlineSpan>[
+            TextSpan(text :'TLD',style: TextStyle(color : Color.fromARGB(255, 153, 153, 153),fontSize : ScreenUtil().setSp(20),),),
+            TextSpan(text :'  =  ',style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),),
+            TextSpan(text :'\n' + (widget.userInfoModel != null ? widget.userInfoModel.todayProfit : '0'),style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),),
+          ]
+        )
+      );
+  }
+
+  Widget _getStaticProfitLabel(){
+   return  RichText(
+        text : TextSpan(
+          text: '静态收益',
+          style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),
+          children: <InlineSpan>[
+            TextSpan(text :'  +  ',style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),),
+            TextSpan(text :'\n' + (widget.userInfoModel != null ? widget.userInfoModel.staticProfit : '0'),style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),),
+          ]
+        )
+      );
+  }
+
+  Widget _getInviteProfitLabel(){
+     return  RichText(
+        text : TextSpan(
+          text: '推广收益',
+          style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),
+          children: <InlineSpan>[
+            TextSpan(text :'\n'+ (widget.userInfoModel != null ? widget.userInfoModel.inviteProfit : '0'),style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),),
+          ]
+        )
+      );
   }
 
   Widget _getProfitWidget(){
@@ -194,7 +213,7 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
               width: ScreenUtil().setWidth(2),
               color: Colors.white,
             ),),
-            _getSingleProfitWidget('累计收益', widget.userInfoModel != null ? '${widget.userInfoModel.inviteProfit}TLD' : '0.0TLD')
+            _getSingleProfitWidget('累计收益', widget.userInfoModel != null ? '${widget.userInfoModel.totalBillProfit}TLD' : '0.0TLD')
           ]
         ),
       ),

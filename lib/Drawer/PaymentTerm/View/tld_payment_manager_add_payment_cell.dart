@@ -45,8 +45,10 @@ class _TLDPaymentManagerAddPaymentCellState extends State<TLDPaymentManagerAddPa
       return '添加微信号';
     }else if(widget.type == TLDPaymentType.alipay){
       return '添加支付宝';
-    }else{
+    }else if(widget.type == TLDPaymentType.bank){
       return '添加银行卡';
+    }else{
+      return '添加自定义支付方式';
     }
   }
 }

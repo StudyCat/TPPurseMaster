@@ -82,7 +82,7 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
             child: GestureDetector(
               onTap:(){
                 _focusNode.unfocus();
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TLDEchangeChooseWalletPage(isNeedFliter: false,didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TLDEchangeChooseWalletPage(didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
                   setState(() {
                     _pramaterModel.buyerAddress = infoModel.walletAddress;
                   });

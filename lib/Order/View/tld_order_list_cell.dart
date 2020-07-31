@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDOrderListCell extends StatefulWidget {
-  TLDOrderListCell({Key key,this.didClickDetailBtnCallBack,this.didClickIMBtnCallBack,this.didClickItemCallBack,this.orderListModel}) : super(key: key);
+  TLDOrderListCell({Key key,this.didClickDetailBtnCallBack,this.didClickIMBtnCallBack,this.didClickItemCallBack,this.orderListModel,this.actionBtnTitle = '详情'}) : super(key: key);
 
   final TLDOrderListModel orderListModel;
 
@@ -16,6 +16,8 @@ class TLDOrderListCell extends StatefulWidget {
   final Function didClickDetailBtnCallBack;
 
   final Function didClickItemCallBack;
+
+  final String actionBtnTitle;
 
   @override
   _TLDOrderListCellState createState() => _TLDOrderListCellState();
@@ -125,7 +127,7 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
         children: <Widget>[
           Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.orderListModel.createTime),[yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss]),style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),),
            Container(
-              width: ScreenUtil().setWidth(122),
+              width: ScreenUtil().setWidth(200),
               height: ScreenUtil().setHeight(48),
               child: OutlineButton(
                 onPressed: () {
@@ -139,7 +141,7 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
                     width: 1,
                   ),
                 child: Text(
-                  '详情',
+                  widget.actionBtnTitle,
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(24),
                       color: Theme.of(context).primaryColor),

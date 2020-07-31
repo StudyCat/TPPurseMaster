@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dragon_sword_purse/Order/Page/tld_order_list_page.dart';
+import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_sale_order_wait_pass_tld_page.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_sale_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
@@ -21,12 +22,11 @@ class TLDTabSalePage extends StatefulWidget {
 class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProviderStateMixin ,AutomaticKeepAliveClientMixin{
   List<String> _tabTitles = [
     "挂售中",
-    "已完成",
-    '已取消'
+    "待释放",
   ];
 
   List<Widget> _pages = [
-    TLDSalePage(type: 0,), TLDSalePage(type: 1,),TLDSalePage(type: -1,)
+    TLDSalePage(type: 0,),TLDSaleOrderWaitTLDPage()
   ];
 
   TabController _tabController;
@@ -40,7 +40,7 @@ class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProvid
     // TODO: implement initState
     super.initState();
 
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
 
     // _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
 

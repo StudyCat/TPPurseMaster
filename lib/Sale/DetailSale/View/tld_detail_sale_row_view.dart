@@ -34,8 +34,10 @@ class _TLDDetailSaleRowViewState extends State<TLDDetailSaleRowView> {
       return 0xe679;
   }else if(widget.payStatus == 2){
       return 0xe61d;
-  }else{
+  }else if (widget.payStatus == 3){
       return 0xe630;
+  }else {
+    return 0xe65e;
   }
   }
 

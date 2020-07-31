@@ -47,8 +47,10 @@ class _TLDMissionHallCellState extends State<TLDMissionHallCell> {
     iconInt = 0xe679;
   }else if(widget.model.payMethodVO.type == 2){
     iconInt = 0xe61d;
-  }else{
+  }else if (widget.model.payMethodVO.type == 3){
     iconInt = 0xe630;
+  }else{
+    iconInt = 0xe65e;
   }
   return Container(
     padding: EdgeInsets.only(top : ScreenUtil().setHeight(18),bottom: ScreenUtil().setHeight(30)),

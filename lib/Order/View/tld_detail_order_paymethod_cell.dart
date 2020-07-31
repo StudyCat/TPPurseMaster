@@ -64,8 +64,10 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
       iconInt = 0xe679;
   }else if(widget.paymentModel.type == 2){
       iconInt = 0xe61d;
-  }else{
+  }else if(widget.paymentModel.type == 3){
       iconInt = 0xe630;
+  }else{
+    iconInt = 0xe65e;
   }
     return GestureDetector(
       onTap: widget.didClickCallBack,
@@ -101,11 +103,32 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
             _getNormalPayInfoView('真实姓名', widget.paymentModel == null ? '':widget.paymentModel.realName),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-              child: _getBankCodeInfoView(widget.paymentModel == null ? '':widget.paymentModel.account)
+              child: _getBankCodeInfoView('银行卡号',widget.paymentModel == null ? '':widget.paymentModel.account)
             ),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
               child: _getNormalPayInfoView('开户行', widget.paymentModel == null ? '':widget.paymentModel.subBranch),
+            )
+          ],
+        ),
+      );
+    }else if (widget.paymentModel.type == 4){
+      return Padding(
+        padding: EdgeInsets.only(left : ScreenUtil().setWidth(40),right : ScreenUtil().setWidth(40),top: ScreenUtil().setHeight(30),bottom: ScreenUtil().setHeight(36)),
+        child: Column(
+          children: <Widget>[
+            _getNormalPayInfoView('支付方式', widget.paymentModel == null ? '':widget.paymentModel.myPayName),
+            Padding(
+              padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
+              child: _getBankCodeInfoView('支付账号',widget.paymentModel == null ? '':widget.paymentModel.account)
+            ),
+            Padding(
+              padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
+              child: _getNormalPayInfoView('真实姓名', widget.paymentModel == null ? '':widget.paymentModel.realName),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
+              child: _getQrCodePayInfoView(),
             )
           ],
         ),
@@ -159,7 +182,7 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
   }
 
   //获取银行卡号信息
-  Widget _getBankCodeInfoView(String bankAcount){
+  Widget _getBankCodeInfoView(String title,String bankAcount){
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap:(){
@@ -170,7 +193,7 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
       child : Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('银行卡号',style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102))),
+        Text(title,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102))),
          Container(
            width:  size.width - ScreenUtil().setWidth(250),
               child: Row(

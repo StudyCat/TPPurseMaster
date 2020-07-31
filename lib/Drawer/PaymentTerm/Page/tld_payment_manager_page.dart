@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_diy_info_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +15,8 @@ import 'tld_wecha_alipay_info_page.dart';
 enum TLDPaymentType{
   wechat,
   alipay,
-  bank
+  bank,
+  diy
 }
 
 class TLDPaymentManagerPage extends StatefulWidget {
@@ -111,8 +113,10 @@ class _TLDPaymentManagerPageState extends State<TLDPaymentManagerPage> {
       return '微信号管理';
     }else if(widget.type == TLDPaymentType.alipay){
       return '支付宝管理';
-    }else{
+    }else if (widget.type == TLDPaymentType.bank){
       return '银行卡管理';
+    }else {
+      return '自定义支付方式管理';
     }
   }
 
@@ -124,6 +128,8 @@ class _TLDPaymentManagerPageState extends State<TLDPaymentManagerPage> {
           return TLDPaymentManagerAddPaymentCell(type: widget.type,didClickItemCallBack: (){
             if (widget.type == TLDPaymentType.bank){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDBankCardInfoPage(walletAddress: widget.walletAddress,))).then((value) => refreshPaymentList());
+            }else if(widget.type == TLDPaymentType.diy){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPaymentDiyInfoPage(walletAddress: widget.walletAddress,))).then((value) => refreshPaymentList());
             }else{
               TLDWechatAliPayInfoPageType pageType;
               if (widget.type == TLDPaymentType.wechat){
@@ -143,6 +149,8 @@ class _TLDPaymentManagerPageState extends State<TLDPaymentManagerPage> {
             }else{
               if (paymentModel.type == 1){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDBankCardInfoPage(walletAddress: widget.walletAddress,paymentModel: paymentModel,))).then((value) => refreshPaymentList());
+            }else if(paymentModel.type == 4){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPaymentDiyInfoPage(walletAddress: widget.walletAddress,paymentModel: paymentModel,))).then((value) => refreshPaymentList());
             }else{
               TLDWechatAliPayInfoPageType pageType;
               if (widget.type == TLDPaymentType.wechat){

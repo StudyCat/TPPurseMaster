@@ -36,20 +36,20 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
 
   TLDAcceptanceLoginPramater _pramater;
 
-  String _walletAddress = '';
+  String _walletName = '';
 
   TextEditingController _inviteController;
 
   List titles = [
     '手机号',
+    '钱包地址',
     '验证码',
-    '钱包地址'
   ];
 
   List placeholders = [
     '请输入您的手机号',
+    '您的钱包地址',
     '请输入验证码',
-    '您的钱包地址'
   ];
 
     @override
@@ -67,7 +67,7 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
   }
 
   void _getMessageCode(){
-    _manager.getMessageCode(_pramater.tel, (){
+    _manager.getMessageCode(_pramater.tel,_pramater.walletAddress, (){
 
     }, (TLDError error){
       Fluttertoast.showToast(msg: error.msg);
@@ -143,18 +143,10 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
         },),
         );
         }else if(index == 1){
-          return Padding(
-          padding: EdgeInsets.only(top:ScreenUtil().setHeight(2),left: ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),
-          child: TLDAcceptanceLoginCodeCell(cellPhone: _cellPhone,title : titles[index],placeholder: placeholders[index],didClickSendCodeBtnCallBack: (){
-            _getMessageCode();
-          },telCodeDidChangeCallBack: (String telCode){
-            _pramater.telCode = telCode;
-          },),);
-        }else if(index == 2){
           return TLDExchangeNormalCell(
             type: TLDExchangeNormalCellType.normalArrow,
             title: titles[index],
-            content:  _walletAddress.length > 0? _walletAddress: '选择钱包' ,
+            content:  _walletName.length > 0? _walletName: '选择钱包' ,
             contentStyle: TextStyle(
                 fontSize: 12, color: Color.fromARGB(255, 153, 153, 153)),
             top: ScreenUtil().setSp(2),
@@ -162,11 +154,19 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
               Navigator.push(context, MaterialPageRoute(builder:(context)=>TLDEchangeChooseWalletPage(didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
                 _pramater.walletAddress = infoModel.walletAddress;
                 setState(() {
-                  _walletAddress = infoModel.wallet.name;
+                  _walletName = infoModel.wallet.name;
                 });
               },)));
             },
           );
+        }else if(index == 2){
+          return Padding(
+          padding: EdgeInsets.only(top:ScreenUtil().setHeight(2),left: ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),
+          child: TLDAcceptanceLoginCodeCell(walletAddress: _pramater.walletAddress,cellPhone: _cellPhone,title : titles[index],placeholder: placeholders[index],didClickSendCodeBtnCallBack: (){
+            _getMessageCode();
+          },telCodeDidChangeCallBack: (String telCode){
+            _pramater.telCode = telCode;
+          },),);
         }else{
           return Container(
             margin : EdgeInsets.only(top : ScreenUtil().setHeight(400),left: ScreenUtil().setWidth(100),right: ScreenUtil().setWidth(100)),

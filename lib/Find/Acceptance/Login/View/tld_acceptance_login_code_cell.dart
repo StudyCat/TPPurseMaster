@@ -12,7 +12,8 @@ class TLDAcceptanceLoginCodeCell extends StatefulWidget {
       this.placeholder,
       this.didClickSendCodeBtnCallBack,
       this.cellPhone,
-      this.telCodeDidChangeCallBack})
+      this.telCodeDidChangeCallBack,
+      this.walletAddress})
       : super(key: key);
 
   final String title;
@@ -24,6 +25,8 @@ class TLDAcceptanceLoginCodeCell extends StatefulWidget {
   final ValueNotifier<String> cellPhone;
 
   final Function(String) telCodeDidChangeCallBack;
+
+  final String walletAddress;
 
   @override
   _TLDAcceptanceLoginCodeCellState createState() =>
@@ -111,7 +114,10 @@ class _TLDAcceptanceLoginCodeCellState
                         borderRadius: BorderRadius.all(Radius.circular(4)),
                         onPressed: () {
                           if (_enabel) {
-                            if (_cellPhoneNum.length == 11 &&
+                            if (widget.walletAddress.length == 0) {
+                              Fluttertoast.showToast(msg: '请先选择钱包');
+                            }else{
+                               if (_cellPhoneNum.length == 11 &&
                                 _isCellPhoneNum()) {
                               _enabel = false;
                               _countdownTime = 60;
@@ -124,6 +130,7 @@ class _TLDAcceptanceLoginCodeCellState
                               }
                             } else {
                               Fluttertoast.showToast(msg: '不是手机号码');
+                            }
                             }
                           }
                         })),

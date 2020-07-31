@@ -65,8 +65,10 @@ class _TLDPaymentManagerCellState extends State<TLDPaymentManagerCell> {
       return IconData(0xe679,fontFamily: 'appIconFonts');
     }else if(widget.paymentModel.type == 2){
       return IconData(0xe61d,fontFamily: 'appIconFonts');
-    }else{
+    }else if(widget.paymentModel.type == 3){
       return IconData(0xe630,fontFamily: 'appIconFonts');
+    }else{
+      return IconData(0xe65e,fontFamily: 'appIconFonts');
     }
   }
 
@@ -76,8 +78,10 @@ class _TLDPaymentManagerCellState extends State<TLDPaymentManagerCell> {
       return  widget.paymentModel.subBranch + '（' + (widget.paymentModel.account.length > 4 ? widget.paymentModel.account.substring(length - 5,length -1) : widget.paymentModel.account) + '）'; 
     }else if(widget.paymentModel.type == 2){
       return widget.paymentModel.account;
-    }else{
+    }else if(widget.paymentModel.type == 3){
       return widget.paymentModel.account;
+    }else{
+      return widget.paymentModel.myPayName;
     }
   }
 

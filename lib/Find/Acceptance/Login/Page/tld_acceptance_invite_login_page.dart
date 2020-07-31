@@ -51,7 +51,7 @@ void _loginUser(){
       setState(() {
         _isLoading = false;
       });
-      Navigator.of(context).pop();
+      Navigator.of(context)..pop()..pop();
       Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceTabbarPage()));
     }, (TLDError error){
       setState(() {

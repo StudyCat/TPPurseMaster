@@ -121,8 +121,10 @@ class _TLDMyMissionHeaderCellState extends State<TLDMyMissionHeaderCell> {
     iconInt = 0xe679;
   }else if(widget.progressModel.payMethodVO.type == 2){
     iconInt = 0xe61d;
-  }else{
+  }else if (widget.progressModel.payMethodVO.type == 3){
     iconInt = 0xe630;
+  }else{
+    iconInt = 0xe65e;
   }
   return Padding(
     padding: EdgeInsets.only(top : ScreenUtil().setHeight(14)),

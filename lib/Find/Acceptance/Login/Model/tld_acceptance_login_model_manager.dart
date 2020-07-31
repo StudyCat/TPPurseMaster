@@ -10,8 +10,10 @@ class TLDAcceptanceLoginPramater{
 }
 
 class TLDAcceptanceLoginModelManager{
-  void getMessageCode(String cellPhoneNum,Function() success ,Function(TLDError) failure){
-    TLDBaseRequest request = TLDBaseRequest({'tel':cellPhoneNum}, 'common/getRegisterTelCode');
+  void getMessageCode(String cellPhoneNum , String walletAddress,Function() success ,Function(TLDError) failure){
+    TLDBaseRequest request = TLDBaseRequest({'tel':cellPhoneNum,'walletAddress':walletAddress}, 'common/getRegisterTelCode');
+    request.isNeedSign = true;
+    request.walletAddress = walletAddress;
     request.postNetRequest((value) { 
       success();
     }, (error) => failure(error));

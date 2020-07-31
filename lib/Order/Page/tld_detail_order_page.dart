@@ -7,6 +7,7 @@ import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.da
 import 'package:dragon_sword_purse/Order/Page/tld_order_appeal_page.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_alipay_qrcode_show_view.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_bottom_cell.dart';
+import 'package:dragon_sword_purse/Order/View/tld_detail_diy_qrcode_show_view.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_wechat_qrcode_show_view.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
@@ -341,15 +342,27 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
                   });
                   if (_detailOrderModel.payMethodVO.type == 2 && isOpen == true){
                       showDialog(context: context,builder: (context) => TLDDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
-                  }else if (_detailOrderModel.payMethodVO.type == 2 && isOpen == true){
+                  }else if (_detailOrderModel.payMethodVO.type == 3 && isOpen == true){
                       showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));                    
+                  }else if (_detailOrderModel.payMethodVO.type == 4 && isOpen == true){
+                    if (_detailOrderModel.payMethodVO.imageUrl.length > 0) {
+                      showDialog(context: context,builder: (context) => TLDDetailDiyQrcodeShowView(paymentName: _detailOrderModel.payMethodVO.myPayName,qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,)); 
+                    }else{
+                      // Fluttertoast.showToast(msg: '未设置二维码');
+                    }
                   }
                 },
                 didClickQrCodeCallBack: (){
                   if (_detailOrderModel.payMethodVO.type == 2){
                       showDialog(context: context,builder: (context) => TLDDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
-                  }else{
+                  }else if (_detailOrderModel.payMethodVO.type == 3 && isOpen == true){
                       showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));                    
+                  }else if (_detailOrderModel.payMethodVO.type == 4 && isOpen == true){
+                    if (_detailOrderModel.payMethodVO.imageUrl.length > 0) {
+                      showDialog(context: context,builder: (context) => TLDDetailDiyQrcodeShowView(paymentName: _detailOrderModel.payMethodVO.myPayName,qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,)); 
+                    }else{
+                      Fluttertoast.showToast(msg: '未设置二维码');
+                    }
                   }
                 },
               ),

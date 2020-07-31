@@ -9,11 +9,12 @@ class TLDPaymentModel {
   String imageUrl;
   String quota;
   int payId;
-  int type;
+  int type; //
   String walletAddress;
   String account;
   String subBranch;
   String realName;
+  String myPayName;
 
   TLDPaymentModel(
       {this.createTime,
@@ -25,7 +26,8 @@ class TLDPaymentModel {
       this.walletAddress,
       this.account,
       this.subBranch,
-      this.realName});
+      this.realName,
+      this.myPayName});
 
   TLDPaymentModel.fromJson(Map<String, dynamic> json) {
     createTime = json['createTime'];
@@ -38,6 +40,7 @@ class TLDPaymentModel {
     account = json['account'];
     subBranch = json['subBranch'];
     realName = json['realName'];
+    myPayName = json['myPayName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -52,6 +55,7 @@ class TLDPaymentModel {
     data['account'] = this.account;
     data['subBranch'] = this.subBranch;
     data['realName'] = this.realName;
+    data['myPayName'] = this.myPayName;
     return data;
   }
 }
@@ -63,8 +67,10 @@ class TLDPaymentManagerModelManager{
       typeStr = '2';
     }else if(type == TLDPaymentType.alipay){
       typeStr = '3';
-    }else{
+    }else if (type == TLDPaymentType.bank){
       typeStr = '1';
+    }else{
+      typeStr = '4';
     }
     TLDBaseRequest request = TLDBaseRequest({'type':typeStr,'walletAddress':walletAddress},'pay/queryPay');
     request.postNetRequest((dynamic value) {

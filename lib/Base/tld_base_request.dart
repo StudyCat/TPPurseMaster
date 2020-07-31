@@ -75,6 +75,10 @@ class TLDBaseRequest{
      String dataStr = responseMap['data'];
      if(int.parse(codeStr) == 200){
        success(dataStr);
+     }else if (int.parse(codeStr) ==  -2){
+       TLDDataManager.instance.deleteAcceptanceToken();
+       TLDError error = TLDError(int.parse(codeStr),responseMap['msg']);
+       failure(error);
      }else{
        TLDError error = TLDError(int.parse(codeStr),responseMap['msg']);
        failure(error);

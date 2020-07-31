@@ -72,6 +72,7 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
       _isLoading = false;
     });
     _refreshController.requestRefresh();
+    Fluttertoast.showToast(msg: '购买成功');
     _getListInfo();
     }, (TLDError error){
       setState(() {

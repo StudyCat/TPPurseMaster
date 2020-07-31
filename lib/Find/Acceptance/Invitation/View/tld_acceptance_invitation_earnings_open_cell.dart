@@ -52,7 +52,7 @@ class _TLDAcceptanceInvitationOpenCellState
                   left: ScreenUtil().setWidth(20),
                   right: ScreenUtil().setWidth(20),
                   top: ScreenUtil().setHeight(20)),
-                  child: _getGridView(),),
+                  child: widget.inviteTeamModel.userList.length > 0 ? _getGridView() : Text('暂无数据',style : TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28)))),
            GestureDetector(
              onTap:widget.didClickOpenItem,
              child : Padding(

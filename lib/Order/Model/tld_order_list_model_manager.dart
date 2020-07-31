@@ -138,4 +138,14 @@ class TLDOrderListModelManager{
         failure(error);
     });
   }
+
+    //walletAdress 卖家地址
+  void sureSentCoin(String orderNo,String walletAdress, Function success, Function failure){
+    TLDBaseRequest request =
+        TLDBaseRequest({'orderNo': orderNo,'walletAddress':walletAdress,}, 'order/confirmReceived');
+    request.postNetRequest((dynamic value) {
+      success();
+    }, (error) => failure(error));
+  }
+
 }

@@ -61,7 +61,9 @@ int getIconInt(int paymentType){
     return 0xe679;
   }else if (paymentType == 2){
     return 0xe61d;
-  }else{
+  }else if (paymentType == 3){
     return 0xe630;
+  }else{
+    return 0xe65e;
   }
 }

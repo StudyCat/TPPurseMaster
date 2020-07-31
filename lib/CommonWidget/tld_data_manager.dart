@@ -78,6 +78,13 @@ class TLDDataManager{
     return acceptanceToken;
   }
 
+  deleteAcceptanceToken()async{
+     SharedPreferences pre = await SharedPreferences.getInstance();
+    pre.remove('acceptanceToken');
+    this.acceptanceToken = null;
+  }
+
+
 
   static TLDDataManager _getInstance() {
     if (_instance == null) {

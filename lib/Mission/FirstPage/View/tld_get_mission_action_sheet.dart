@@ -54,7 +54,7 @@ class _TLDGetMissionActionSheetState extends State<TLDGetMissionActionSheet> {
                   decoration: TextDecoration.none)),
           GestureDetector(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDEchangeChooseWalletPage(isNeedFliter: false,didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDEchangeChooseWalletPage(didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
                   setState(() {
                     _pramaterModel.walletAddress = infoModel.walletAddress;
                   });

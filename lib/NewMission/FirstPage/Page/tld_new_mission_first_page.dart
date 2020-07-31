@@ -124,7 +124,7 @@ class _TLDNewMissionFirstPageState extends State<TLDNewMissionFirstPage> with Au
 
   _chooseWallet(){
     Future.delayed(Duration.zero,(){
-       Navigator.push(context, MaterialPageRoute(builder: (context) => TLDEchangeChooseWalletPage(isNeedFliter: false,didChooseWalletCallBack: (TLDWalletInfoModel infoModel)async{
+       Navigator.push(context, MaterialPageRoute(builder: (context) => TLDEchangeChooseWalletPage(didChooseWalletCallBack: (TLDWalletInfoModel infoModel)async{
        if (mounted){
          setState(() {
            _infoModel = infoModel;
