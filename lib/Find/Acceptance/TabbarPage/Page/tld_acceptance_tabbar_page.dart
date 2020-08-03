@@ -3,6 +3,7 @@ import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Page/tld_acceptanc
 import 'package:dragon_sword_purse/Find/Acceptance/Order/Page/tld_acceptance_order_list_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Page/tld_acceptance_detail_bill_page.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -90,6 +91,7 @@ class _TLDAcceptanceTabbarPageState extends State<TLDAcceptanceTabbarPage> {
             physics: NeverScrollableScrollPhysics(),
             itemCount: items.length,
             onPageChanged: (int index) {
+              eventBus.fire(TLDAcceptanceTabbarClickEvent(index));
               setState(() {
                 currentIndex = index;
               });

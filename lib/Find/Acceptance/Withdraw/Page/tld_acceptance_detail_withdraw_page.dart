@@ -151,7 +151,7 @@ class _TLDAcceptanceDetailWithdrawPageState extends State<TLDAcceptanceDetailWit
     setState(() {
       _isLoading = true;
     });
-    _modelManager.sentWithdrawTLD(widget.cashNo, (){
+    _modelManager.reminder(widget.cashNo, (){
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -406,8 +406,7 @@ class _TLDAcceptanceDetailWithdrawPageState extends State<TLDAcceptanceDetailWit
     }else if(index == 5){
       content = _detailModel.cashType == 1 ? '推荐人' : '买家';
     }else if(index == 6){
-      double rate = double.parse(_detailModel.chargeRate) * 100;
-      content = '${rate}%';
+      content = '${_detailModel.chargeRate}%';
     }else if(index == 7){
       content = '${_detailModel.chargeValue}TLD';
     }

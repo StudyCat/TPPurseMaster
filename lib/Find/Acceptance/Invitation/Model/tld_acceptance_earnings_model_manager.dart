@@ -2,7 +2,7 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 
 class TLDInviteTeamModel {
   int totalUserCount;
-  List<String> userList;
+  List<TLDInviteUserModel> userList;
   String totalProfit;
   String level;
   bool isOpen = false;
@@ -11,7 +11,12 @@ class TLDInviteTeamModel {
 
   TLDInviteTeamModel.fromJson(Map<String, dynamic> json) {
     totalUserCount = json['totalUserCount'];
-    userList = json['userList'].cast<String>();
+    if (json['userList'] != null) {
+      userList = new List();
+      json['userList'].forEach((v) {
+        userList.add(new TLDInviteUserModel.fromJson(v));
+      });
+    }
     totalProfit = json['totalProfit'];
     level = json['level'];
   }
@@ -19,9 +24,28 @@ class TLDInviteTeamModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['totalUserCount'] = this.totalUserCount;
-    data['userList'] = this.userList;
+    // data['userList'] = this.userList;
     data['totalProfit'] = this.totalProfit;
     data['level'] = this.level;
+    return data;
+  }
+}
+
+class TLDInviteUserModel{
+  String userName;
+  String profitAmount;
+
+  TLDInviteUserModel({this.userName, this.profitAmount, });
+
+  TLDInviteUserModel.fromJson(Map<String, dynamic> json) {
+    userName = json['userName'];
+    profitAmount = json['profitAmount'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['userName'] = this.userName;
+    data['profitAmount'] = this.profitAmount;
     return data;
   }
 }

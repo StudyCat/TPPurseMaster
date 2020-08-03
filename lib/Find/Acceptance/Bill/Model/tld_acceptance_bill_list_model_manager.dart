@@ -18,6 +18,7 @@ class TLDBillInfoListModel {
   bool isOpen = false;
   List orderList;
   String tip;
+  String maxProfitDesc;
 
   TLDBillInfoListModel(
       {this.billId,
@@ -27,7 +28,7 @@ class TLDBillInfoListModel {
       this.alreadyBuyCount,
       this.totalBuyCount,
       this.lock,
-      this.orderList,this.tip});
+      this.orderList,this.tip,this.maxProfitDesc});
 
   TLDBillInfoListModel.fromJson(Map<String, dynamic> json) {
     billId = json['billId'];
@@ -38,6 +39,7 @@ class TLDBillInfoListModel {
     totalBuyCount = json['totalBuyCount'];
     tip = json['tip'];
     lock = json['lock'];
+    maxProfitDesc = json['maxProfitDesc'];
     if (json['orderList'] != null) {
       orderList = new List();
       json['orderList'].forEach((v) {
@@ -56,6 +58,7 @@ class TLDBillInfoListModel {
     data['totalBuyCount'] = this.totalBuyCount;
     data['tip'] = this.tip;
     data['lock'] = this.lock;
+    data['maxProfitDesc'] = this.maxProfitDesc;
     if (this.orderList != null) {
       data['orderList'] = this.orderList.map((v) => v.toJson()).toList();
     }
@@ -142,10 +145,10 @@ class TLDAcceptanceBillListModelManager {
     }, (error) => failure(error));
   }
 
-  void buyBill(TLDBillBuyPramaterModel pramaterModel,Function success,Function(TLDError) failure){
+  void buyBill(TLDBillBuyPramaterModel pramaterModel,Function(String) success,Function(TLDError) failure){
     TLDBaseRequest request = TLDBaseRequest({'billCount':pramaterModel.count,'billId':pramaterModel.billId,'walletAddress':pramaterModel.walletAddress},'acpt/bill/buyBill');
     request.postNetRequest((value) {
-      success();
+      success(value);
     }, (error) => failure(error));
   }
 }

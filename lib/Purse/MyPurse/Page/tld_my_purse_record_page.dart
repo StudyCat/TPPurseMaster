@@ -99,6 +99,7 @@ class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage> with Automa
       _refreshController.loadComplete();
       if(page == 1){
         _dataSource = [];
+        _streamController.sink.add(_dataSource);
       }
       _dataSource.addAll(value);
       _streamController.sink.add(_dataSource);

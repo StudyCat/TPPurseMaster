@@ -21,6 +21,7 @@ class TLDBuyListInfoModel {
   String createTime;
   TLDPaymentModel payMethodVO;
   bool isMine = false;
+  String maxAmount;
 
   TLDBuyListInfoModel(
       {this.sellId,
@@ -32,7 +33,7 @@ class TLDBuyListInfoModel {
       this.sellerWalletAddress,
       this.createTime,
       this.isMine,
-      this.payMethodVO});
+      this.payMethodVO,this.maxAmount});
 
   TLDBuyListInfoModel.fromJson(Map<String, dynamic> json) {
     sellId = json['sellId'];
@@ -44,6 +45,7 @@ class TLDBuyListInfoModel {
     sellerWalletAddress = json['sellerWalletAddress'];
     createTime = json['createTime'];
     payMethodVO = TLDPaymentModel.fromJson(json['payMethodVO']);
+    maxAmount = json['maxAmount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -57,6 +59,7 @@ class TLDBuyListInfoModel {
     data['sellerWalletAddress'] = this.sellerWalletAddress;
     data['createTime'] = this.createTime;
     data['payMethodVO'] = this.payMethodVO.toJson();
+    data['maxAmount'] = this.maxAmount;
     return data;
   }
 }

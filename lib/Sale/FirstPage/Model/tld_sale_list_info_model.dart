@@ -16,6 +16,7 @@ class TLDSaleListInfoModel {
   String realCount;
   String tmpWalletAddress;
   TLDPaymentModel payMethodVO;
+  String maxAmount;
 
   TLDSaleListInfoModel(
       {this.sellId,
@@ -29,7 +30,7 @@ class TLDSaleListInfoModel {
       this.realCount,
       this.tmpWalletAddress,
       this.wallet,
-      this.payMethodVO});
+      this.payMethodVO,this.maxAmount});
 
   TLDSaleListInfoModel.fromJson(Map<String, dynamic> json) {
     sellId = json['sellId'];
@@ -43,6 +44,7 @@ class TLDSaleListInfoModel {
     realCount = json['realCount'];
     tmpWalletAddress = json['tmpWalletAddress'];
     payMethodVO = TLDPaymentModel.fromJson(json['payMethodVO']);
+    maxAmount = json['maxAmount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -58,6 +60,7 @@ class TLDSaleListInfoModel {
     data['realCount'] = this.realCount;
     data['tmpWalletAddress'] = this.tmpWalletAddress;
     data['payMethodVO'] = this.payMethodVO.toJson();
+    data['maxAmount'] = this.maxAmount;
     return data;
   }
 }

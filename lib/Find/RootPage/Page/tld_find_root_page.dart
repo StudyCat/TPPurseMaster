@@ -120,7 +120,7 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
             if (title == '任务'){
               Fluttertoast.showToast(msg: '任务待开发中，敬请期待');
               // Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDNewMissionFirstPage()));
-            }else if (title == '承兑'){
+            }else if (title == 'TLD票据'){
               String acceptanceToken = TLDDataManager.instance.acceptanceToken;
               if (acceptanceToken != null){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceTabbarPage()));

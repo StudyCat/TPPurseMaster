@@ -6,14 +6,16 @@ class TLDAceeptanceWithdrawUsefulInfoModel {
   String acptPlatformCachRate;
   String walletAddress;
   String value;
+  String inviteTel;
 
   TLDAceeptanceWithdrawUsefulInfoModel(
-      {this.acptPlatformCachRate, this.walletAddress, this.value});
+      {this.acptPlatformCachRate, this.walletAddress, this.value,this.inviteTel});
 
   TLDAceeptanceWithdrawUsefulInfoModel.fromJson(Map<String, dynamic> json) {
     acptPlatformCachRate = json['acptPlatformCachRate'];
     walletAddress = json['walletAddress'];
     value = json['value'];
+    inviteTel = json['inviteTel'];
   }
 
   Map<String, dynamic> toJson() {
@@ -21,6 +23,7 @@ class TLDAceeptanceWithdrawUsefulInfoModel {
     data['acptPlatformCachRate'] = this.acptPlatformCachRate;
     data['walletAddress'] = this.walletAddress;
     data['value'] = this.value;
+    data['inviteTel'] = this.inviteTel;
     return data;
   }
 }

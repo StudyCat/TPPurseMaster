@@ -43,4 +43,13 @@ class TLDBottomTabbarClickEvent{
   TLDBottomTabbarClickEvent(this.index);
 }
 
-//消息推送通知
+//承兑底部导航栏点击广播
+class TLDAcceptanceTabbarClickEvent{
+  int index;
+  TLDAcceptanceTabbarClickEvent(this.index);
+}
+
+//提现订单刷新
+class TLDAcceptaceWithDrawOrderListRefreshEvent{
+  TLDAcceptaceWithDrawOrderListRefreshEvent();
+}

@@ -129,6 +129,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     _modelManager.getBuyListData(keyword, page, (List data){
       if(page == 1){
         _dataSource = [];
+        _streamController.sink.add(_dataSource);
       }
       _dataSource.addAll(data);
       _streamController.sink.add(_dataSource);      

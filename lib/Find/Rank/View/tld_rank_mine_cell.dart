@@ -42,7 +42,7 @@ class _TLDRankMineCellState extends State<TLDRankMineCell> {
          ),
          Container(
             width : (MediaQuery.of(context).size.width - ScreenUtil().setWidth(60)) / 5,
-            child:   Text(formatDate(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.rankModel.createTime)), [yyyy,'/',dd,'/',mm]),style: textStyle,textAlign: TextAlign.center,),
+            child:   Text(formatDate(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.rankModel.createTime)), [yyyy,'/',mm,'/',dd]),style: textStyle,textAlign: TextAlign.center,),
          ),
         ],
       ),

@@ -129,7 +129,7 @@ class _TLDAcceptanceDetailOrderPageState extends State<TLDAcceptanceDetailOrderP
       title = '订单号';
       content = _detailOrderInfoModel.acptOrderNo;
     }else if(index == 2){
-      title = '每天静态收益';
+      title = '每天静态收益增加';
       content = '${_detailOrderInfoModel.staticProfit}TLD';
     }
     // else if(index == 3){

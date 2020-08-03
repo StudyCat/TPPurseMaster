@@ -24,6 +24,8 @@ Widget getSaleFirstPageCell(
         child: Column(children: <Widget>[
           TLDCommonCellHeaderView(title:'订单号',buttonTitle: buttonTitle,onPressCallBack: onPressCallBack,buttonWidth: 166,saleModel: model,isHiddenBtn: isHiddeBtn),
           _leftRightItem(context,34, 0, '收款方式', '', false,model.payMethodVO.type),
+          _leftRightItem(context,22, 0, '最低购买额度', model.max + 'TLD', true,0),
+          _leftRightItem(context,22, 0, '最高购买额度', model.maxAmount + 'TLD', true,0),
           _leftRightItem(context,22, 0, '挂售钱包', model.wallet.name, true,0),
           _leftRightItem(context, 22, 20, '创建时间', getTimeString(model.createTime), true,0),
         ]),

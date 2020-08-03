@@ -15,6 +15,7 @@ class TLDDetailSaleModel {
   int status;
   String charge;
   String recCount;
+  String maxAmount;
 
   TLDDetailSaleModel(
       {this.sellId,
@@ -30,7 +31,8 @@ class TLDDetailSaleModel {
       this.status,
       this.max,
       this.charge,
-      this.recCount});
+      this.recCount,
+      this.maxAmount});
 
   TLDDetailSaleModel.fromJson(Map<String, dynamic> json) {
     sellId = json['sellId'];
@@ -49,6 +51,7 @@ class TLDDetailSaleModel {
     status = json['status'];
     charge = json['charge'];
     recCount = json['recCount'];
+    maxAmount = json['maxAmount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -69,6 +72,7 @@ class TLDDetailSaleModel {
     data['max'] = this.max;
     data['charge'] = this.charge;
     data['recCount'] = this.recCount;
+    data['maxAmount'] = this.maxAmount;
     return data;
   }
 }

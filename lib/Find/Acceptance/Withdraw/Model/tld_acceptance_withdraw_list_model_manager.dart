@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_withdraw_list_page.dart';
 
 class TLDAcceptanceWithdrawOrderListModel {
   bool amApply;
@@ -103,8 +104,14 @@ class TLDAcceptanceWithdrawOrderListModel {
 }
 
 class TLDAcceptanceWithdrawListModelManager {
-  void getWaitPayOrderList(int page,Function(List) success,Function(TLDError) failure){
-    TLDBaseRequest request = TLDBaseRequest({'pageNo':page,'pageSize':10},'acpt/cash/cashApply');
+  void getWaitPayOrderList(int page,TLDAcceptanceProfitListPageType type,Function(List) success,Function(TLDError) failure){
+    Map pramater = {'pageNo':page,'pageSize':10};
+    if (type == TLDAcceptanceProfitListPageType.waitPay) {
+      pramater.addEntries({'cashStatus' : 0}.entries);
+    }else if (type == TLDAcceptanceProfitListPageType.waitSentTLD){
+      pramater.addEntries({'cashStatus' : 1}.entries);
+    }
+    TLDBaseRequest request = TLDBaseRequest(pramater,'acpt/cash/cashApply');
     request.postNetRequest((value) {
       List dataList = value['list'];
       List result = [];
@@ -124,6 +131,41 @@ class TLDAcceptanceWithdrawListModelManager {
         result.add(TLDAcceptanceWithdrawOrderListModel.fromJson(item));
       }
       success(result);
+    }, (error) => failure(error));
+  }
+
+   void cancelWithdraw(
+      String cashNo, Function success, Function(TLDError) failure) {
+    TLDBaseRequest request =
+        TLDBaseRequest({'cashNo': cashNo}, 'acpt/cash/cancelCash');
+    request.postNetRequest((value) {
+      success();
+    }, (error) => failure(error));
+  }
+
+  void sentWithdrawTLD(
+      String cashNo, Function success, Function(TLDError) failure) {
+    TLDBaseRequest request =
+        TLDBaseRequest({'cashNo': cashNo}, 'acpt/cash/confirmReceived');
+    request.postNetRequest((value) {
+      success();
+    }, (error) => failure(error));
+  }
+
+  void reminder(String cashNo, Function success, Function(TLDError) failure){
+    TLDBaseRequest request =
+        TLDBaseRequest({'cashNo': cashNo}, 'acpt/cash/reminder');
+    request.postNetRequest((value) {
+      success();
+    }, (error) => failure(error));
+  }
+
+  void withdrawSurePay(
+      String cashNo, Function success, Function(TLDError) failure) {
+    TLDBaseRequest request =
+        TLDBaseRequest({'cashNo': cashNo}, 'acpt/cash/confirmPay');
+    request.postNetRequest((value) {
+      success();
     }, (error) => failure(error));
   }
 }

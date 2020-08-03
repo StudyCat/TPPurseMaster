@@ -145,7 +145,7 @@ void thirdAppTransferAccount(Map queryParameter,Function success,Function(TLDErr
   }
 
   String getTimeString(int date){
-    return formatDate(DateTime.fromMillisecondsSinceEpoch(date),[yyyy,'.',mm,'.',dd]);
+    return formatDate(DateTime.fromMillisecondsSinceEpoch(date),[yyyy,'.',mm,'.',dd,' ',hh,':',nn]);
   }
 
     //图片转base64

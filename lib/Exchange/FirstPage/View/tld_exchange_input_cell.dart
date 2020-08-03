@@ -14,7 +14,9 @@ class TLDExchangeInputCell extends StatefulWidget {
 
   final FocusNode focusNode;
 
-  TLDExchangeInputCell({Key key, this.title,this.infoModel,this.inputCallBack,this.focusNode}) : super(key: key);
+  final double top;
+
+  TLDExchangeInputCell({Key key, this.title,this.infoModel,this.inputCallBack,this.focusNode,this.top = 20}) : super(key: key);
 
   @override
   _TLDExchangeInputCellState createState() => _TLDExchangeInputCellState();
@@ -55,7 +57,7 @@ class _TLDExchangeInputCellState extends State<TLDExchangeInputCell> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.only(left: 15, top: 20, right: 15),
+      padding: EdgeInsets.only(left: 15, top: widget.top, right: 15),
       width: screenSize.width - 30,
       child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(4)),

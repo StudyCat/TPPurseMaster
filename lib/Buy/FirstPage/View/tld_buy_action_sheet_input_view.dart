@@ -5,9 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 
 class TLDBuyActionSheetInputView extends StatefulWidget {
-  TLDBuyActionSheetInputView({Key key,this.max,this.inputStringCallBack,this.currentAmount,this.focusNode}) : super(key: key);
+  TLDBuyActionSheetInputView({Key key,this.max,this.inputStringCallBack,this.currentAmount,this.focusNode,this.maxAmount}) : super(key: key);
 
   final String max;
+
+  final String maxAmount;
 
   final String currentAmount;
 
@@ -37,10 +39,10 @@ class _TLDBuyActionSheetInputViewState
           if(text.length == 0){
             result = '0';
           }else{
-             if(double.parse(text) > double.parse(widget.currentAmount)){
+             if(double.parse(text) > double.parse(widget.maxAmount)){
                 widget.focusNode.unfocus();
-                _controller.text = widget.currentAmount;
-                result = widget.currentAmount;
+                _controller.text = widget.maxAmount;
+                result = widget.maxAmount;
               }else {
                 result = text;
               }
@@ -91,7 +93,12 @@ class _TLDBuyActionSheetInputViewState
               ),
               onPressed: () {
                 widget.focusNode.unfocus();
-                String allAmount =  widget.currentAmount;
+                String allAmount = '0';
+                if (double.parse(widget.currentAmount) > double.parse(widget.maxAmount)) {
+                  allAmount = widget.maxAmount;
+                }else{
+                  allAmount = widget.currentAmount;
+                }
                 _controller.text = allAmount;
                 widget.inputStringCallBack(allAmount);
               }),

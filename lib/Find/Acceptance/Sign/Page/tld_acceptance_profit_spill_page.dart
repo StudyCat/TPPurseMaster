@@ -1,7 +1,9 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_profit_spill_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_profit_spill_cell.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_profit_spill_unopen_cell.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -120,12 +122,25 @@ class _TLDAcceptanceProfitSpillPageState extends State<TLDAcceptanceProfitSpillP
       itemCount: _dataSource.length,
       itemBuilder: (BuildContext context, int index) {
         TLDAcceptanceProfitSpillListModel model = _dataSource[index];
-        return TLDAcceptanceProfitSpillOpenCell(
+        if (model.lock == false) {
+          return TLDAcceptanceProfitSpillOpenCell(
           listModel: model,
           didClickwithdrawButtonCallBack: (){
             _getProfit(model.overflowId);
           },
         );
+        }else{
+          return TLDAcceptanceProfitSpillUnopenCell(
+            listModel: model,
+            didClickItemCallBack: (){
+               showDialog(
+               context: context,
+             builder: (context) => TLDAlertView(alertString: model.tip,title: '温馨提示',didClickSureBtn: (){
+             },),
+      );
+            },
+          );
+        }
      },
     );
   }

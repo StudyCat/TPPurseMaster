@@ -80,23 +80,23 @@ class _TLDAcceptanceInvitationOpenCellState
             mainAxisSpacing: ScreenUtil().setHeight(10)),
         itemCount: widget.inviteTeamModel.userList.length,
         itemBuilder: (context, index) {
-          String userName = widget.inviteTeamModel.userList[index];
+          TLDInviteUserModel userModel = widget.inviteTeamModel.userList[index];
           return GestureDetector(
-            onTap :() => widget.didClickItemCallBack(userName),
+            onTap :() => widget.didClickItemCallBack(userModel.userName),
             child :_getGridItem(index)
           );
         });
   }
 
   Widget _getGridItem(int index){
-    String userName = widget.inviteTeamModel.userList[index];
+    TLDInviteUserModel userModel = widget.inviteTeamModel.userList[index];
     return Container(
       height : ScreenUtil().setHeight(72),
        decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(4)),
             color: Theme.of(context).hintColor),
         child: Center(
-          child: Text(userName,style: TextStyle(
+          child: Text(userModel.profitAmount,style: TextStyle(
               fontSize: ScreenUtil().setSp(24),
               color: Color.fromARGB(255, 143, 110, 68)),
         ),

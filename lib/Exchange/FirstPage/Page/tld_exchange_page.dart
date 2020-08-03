@@ -32,7 +32,7 @@ class TLDExchangePage extends StatefulWidget {
 }
 
 class _TLDExchangePageState extends State<TLDExchangePage> {
-  List titleList = ['钱包', '钱包余额', '售卖量', '最低购买额度设置', '手续费率', '手续费', '实际到账', '收款方式'];
+  List titleList = ['钱包', '钱包余额', '售卖量', '最低购买额度设置','最高购买额度设置', '手续费率', '手续费', '实际到账', '收款方式'];
 
   TLDSaleFormModel _formModel;
 
@@ -43,6 +43,8 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
   FocusNode _saleAmountFocusNode;
 
   FocusNode _minAmountFocusNode;
+
+  FocusNode _maxAmountFocusNode;
 
   @override
   void initState() {
@@ -60,6 +62,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
 
     _saleAmountFocusNode = FocusNode();
     _minAmountFocusNode = FocusNode();
+    _maxAmountFocusNode = FocusNode();
 
     _isLoading = false;
     _manager = TLDExchangeModelManager();
@@ -104,6 +107,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
             didClickCallBack: () {
               _minAmountFocusNode.unfocus();
               _saleAmountFocusNode.unfocus();
+              _maxAmountFocusNode.unfocus();
               if(widget.infoModel == null){
                  Navigator.push(
                   context,
@@ -139,10 +143,20 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
               inputCallBack: (String text) {
                 _formModel.maxBuyAmount = text;
               });
+        }else if (index == 4){
+          return TLDExchangeInputCell(
+              title: titleList[index],
+              top: 1,
+              infoModel: _formModel.infoModel,
+              focusNode: _maxAmountFocusNode,
+              inputCallBack: (String text) {
+                _formModel.maxAmount = text;
+              });
         }else if (index == titleList.length -1){
           return TLDExchangePaymentCell(paymentModel: _formModel.paymentModel,didClickItemCallBack: (){
             _minAmountFocusNode.unfocus();
             _saleAmountFocusNode.unfocus();
+            _maxAmountFocusNode.unfocus();
             if (_formModel.infoModel != null){
               Navigator.push(context, MaterialPageRoute(builder: (context) => TLDChoosePaymentPage(walletAddress:_formModel.infoModel.walletAddress,isChoosePayment: true,didChoosePaymentCallBack: (TLDPaymentModel paymentModel){
                 setState(() {
@@ -165,7 +179,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
                 ),
                 onPressed: () => submitSaleForm()),
           );
-        }else if(index == 4){
+        }else if(index == 5){
           return TLDExchangeRateSliderCell(title: titleList[index],infoModel: _formModel.infoModel,didChangeRateCallBack: (String rate){
             setState(() {
               _formModel.rate = rate;
@@ -177,7 +191,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
             content = _formModel.infoModel == null
                 ? '0.0'
                 : _formModel.infoModel.value;
-          } else if (index == 5) {
+          } else if (index == 6) {
             if (_formModel.infoModel != null){
               double amount = double.parse(_formModel.saleAmount) * double.parse(_formModel.rate);
               String amountString = (NumUtil.getNumByValueDouble(amount, 3)).toStringAsFixed(3);
@@ -185,7 +199,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
             }else{
               content = '0TLD';
             }
-          } else if (index == 6) {
+          } else if (index == 7) {
             if (_formModel.infoModel != null){
               double amount = double.parse(_formModel.saleAmount) * double.parse(_formModel.rate);
               double trueAmount = double.parse(_formModel.saleAmount) - amount;
@@ -224,9 +238,19 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
           msg: '请选择钱包', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
         return;
     }
+    if (double.parse(_formModel.maxAmount) < double.parse(_formModel.maxBuyAmount)){
+      Fluttertoast.showToast(
+          msg: '最高额度不能小于最低额度', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
+        return;
+    }
     if(_formModel.paymentModel == null){
         Fluttertoast.showToast(
           msg: '请选择支付方式', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
+        return;
+    }
+    if (double.parse(_formModel.maxAmount) == 0.0) {
+       Fluttertoast.showToast(
+          msg: '请输入最高购买额度', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
         return;
     }
     if (double.parse(_formModel.maxBuyAmount) > double.parse(_formModel.saleAmount)){

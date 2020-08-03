@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class TLDAcceptanceSignHeaderView extends StatefulWidget {
   TLDAcceptanceSignHeaderView({Key key,this.didClickLoginCallBack,this.userInfoModel,this.didClickWithdrawButtonCallBack,this.didClickProfitCallBack}) : super(key: key);
 
-  final Function didClickLoginCallBack;
+  final Function(bool) didClickLoginCallBack; //回调是否为签到true为签到，false为登记
 
   final TLDAcceptanceUserInfoModel userInfoModel;
 
@@ -60,15 +60,12 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
         Container(
           height: ScreenUtil().setHeight(60),
           width: ScreenUtil().setWidth(130),
-          child: Offstage(
-            offstage : token != null,
-            child : CupertinoButton(
-            child: Text('去登记',style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Theme.of(context).hintColor)),
+          child: CupertinoButton(
+            child: Text( token != null ?'签到' :'去登记',style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Theme.of(context).hintColor)),
             padding: EdgeInsets.zero,
             color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(30))),
-            onPressed: widget.didClickLoginCallBack,
-          )
+            onPressed:()=> widget.didClickLoginCallBack(token != null),
           ),
         )
       ],
@@ -127,7 +124,7 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
         ), 
         Container(
               height : ScreenUtil().setHeight(60),
-              width : ScreenUtil().setWidth(140),
+              width : ScreenUtil().setWidth(130),
               child: CupertinoButton(
                 onPressed: widget.didClickWithdrawButtonCallBack,
                 padding: EdgeInsets.zero,

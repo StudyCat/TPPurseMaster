@@ -101,6 +101,7 @@ class _TLDSaleOrderWaitTLDPageState extends State<TLDSaleOrderWaitTLDPage> with 
     _modelManager.getOrderList(model, (List orderList){
       if(model.page == 1){
         _dataSource = [];
+         _streamController.sink.add(_dataSource);
       }
        _dataSource.addAll(orderList);
        _streamController.sink.add(_dataSource);

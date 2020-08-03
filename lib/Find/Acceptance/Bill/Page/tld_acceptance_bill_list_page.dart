@@ -1,6 +1,7 @@
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Page/tld_acceptance_detail_bill_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_buy_action_sheet.dart';
@@ -67,13 +68,13 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
     setState(() {
       _isLoading = true;
     });
-    _modelManager.buyBill(pramaterModel, (){
+    _modelManager.buyBill(pramaterModel, (String orderNo){
       setState(() {
       _isLoading = false;
     });
     _refreshController.requestRefresh();
     Fluttertoast.showToast(msg: '购买成功');
-    _getListInfo();
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceDetailBillPage(orderNo: orderNo,))).then((value) => _getListInfo());
     }, (TLDError error){
       setState(() {
       _isLoading = false;
@@ -92,15 +93,12 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
         heroTag: 'acceptance_bill_list_page',
         transitionBetweenRoutes: false,
         middle: Text(
-          '承兑票据',
+          'TLD票据',
           style: TextStyle(color: Colors.white),
         ),
-         trailing: GestureDetector(
-          onTap :(){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceProfitListPage()));
-          },
-          child : Text('收益记录',style: TextStyle(color:Colors.white,))
-        ),
+        trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(urlStr: 'http://128.199.126.189:8080/desc/bill_desc.html',title: '票据说明',)));
+        }),
         backgroundColor: Theme.of(context).primaryColor,
         actionsForegroundColor: Colors.white,
       ),

@@ -70,7 +70,7 @@ void _loginUser(){
         ),
         heroTag: 'acceptance_invite_login_page',
         transitionBetweenRoutes: false,
-        middle: Text('承兑账户登记'),
+        middle: Text('TLD票据账户登记'),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),

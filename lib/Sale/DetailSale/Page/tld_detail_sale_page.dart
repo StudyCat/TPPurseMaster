@@ -38,6 +38,7 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
     '收款方式',
     '挂售钱包',
     '最低购买额度',
+    '最高购买额度',
     '手续费率',
     '手续费',
     '预计到账',
@@ -142,7 +143,7 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
             padding : EdgeInsets.only(left: ScreenUtil().setWidth(20),right: ScreenUtil().setWidth(20)),
             color: Colors.white,
             child :  ListView.builder(
-            itemCount: 9,
+            itemCount: 10,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 String address = _saleModel != null ? _saleModel.walletAddress : '';
@@ -164,11 +165,14 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
                 }else if(index == 4){
                   String amount = _saleModel != null ? _saleModel.max : '0';
                   content = amount + 'TLD';  
-                }else if(index == 5){
-                  content = _saleModel != null ? ((double.parse(_saleModel.rate) * 100).toString()+'%') : '0.6%'; 
+                }else if (index == 5){
+                  String amount = _saleModel != null ? _saleModel.maxAmount : '0';
+                  content = amount + 'TLD';  
                 }else if(index == 6){
-                  content = _saleModel != null ? ('¥'+ _saleModel.charge) : '¥0';
+                  content = _saleModel != null ? (_saleModel.rate + '%') : '0.6%'; 
                 }else if(index == 7){
+                  content = _saleModel != null ? ('¥'+ _saleModel.charge) : '¥0';
+                }else if(index == 8){
                   content = _saleModel != null ? ('¥'+ _saleModel.recCount) : '¥0';
                 }else{
                   content = _saleModel != null ? formatDate(DateTime.fromMillisecondsSinceEpoch(_saleModel.createTime), [yyyy,'-',mm,'-',dd]): '';

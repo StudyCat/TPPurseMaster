@@ -69,7 +69,7 @@ class _TLDAcceptanceDetailBillPageState extends State<TLDAcceptanceDetailBillPag
         ),
         heroTag: 'acceptance_detail_bill_page',
         transitionBetweenRoutes: false,
-        middle: Text('承兑票据订单详情',style: TextStyle(color:Colors.white),),
+        middle: Text('TLD票据订单详情',style: TextStyle(color:Colors.white),),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(urlStr: 'http://128.199.126.189:8080/desc/bill_desc.html',title: '票据说明',)));
         }),

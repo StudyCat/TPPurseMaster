@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceWithdrawListCell extends StatefulWidget {
-  TLDAcceptanceWithdrawListCell({Key key,this.didClickIMBtnCallBack,this.orderListModel}) : super(key: key);
+  TLDAcceptanceWithdrawListCell({Key key,this.didClickIMBtnCallBack,this.orderListModel,this.didClickActionBtn}) : super(key: key);
 
   final Function didClickIMBtnCallBack;
 
   final TLDAcceptanceWithdrawOrderListModel orderListModel;
+
+  final Function(String) didClickActionBtn;
 
   @override
   _TLDAcceptanceWithdrawListCellState createState() => _TLDAcceptanceWithdrawListCellState();
@@ -33,7 +35,7 @@ class _TLDAcceptanceWithdrawListCellState extends State<TLDAcceptanceWithdrawLis
                 _getMissionInfoView(),
                 Padding(
                   padding:  EdgeInsets.only(top : ScreenUtil().setHeight(20)),
-                  child: _getDateRowView(),
+                  child: _getBottomWidget(),
                   )
               ],
             ),
@@ -93,11 +95,24 @@ class _TLDAcceptanceWithdrawListCellState extends State<TLDAcceptanceWithdrawLis
     );
   }
 
-  Widget _getDateRowView(){
+  Widget _getBottomWidget(){
+    TLDOrderStatusInfoModel statusInfoModel = TLDDataManager.acceptanceWithdrawOrderStatusMap[widget.orderListModel.cashStatus];
     return Container(
       width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(100),
       child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children:<Widget>[
+        _getDateRowView(),
+        _getActionButton()
+      ]
+    ),
+    );
+  }
+
+  Widget _getDateRowView(){
+    return Container(
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children:<Widget>[
         Offstage(
           offstage: !widget.orderListModel.amApply,
@@ -115,11 +130,36 @@ class _TLDAcceptanceWithdrawListCellState extends State<TLDAcceptanceWithdrawLis
           )
         ),
         Padding(
-          padding: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
+          padding: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
           child : Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.orderListModel.createTime), [yyyy,'-',mm,'-',dd,' ',hh,':',nn]),style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153)))
           )
       ]
     ),
     );
+  }
+
+  Widget _getActionButton(){
+     TLDOrderStatusInfoModel statusInfoModel = TLDDataManager.acceptanceWithdrawOrderStatusMap[widget.orderListModel.cashStatus];
+     List actionBtnList = [];
+     if (widget.orderListModel.amApply) {
+       actionBtnList = statusInfoModel.sellerActionButtonTitle;
+     }else{
+       actionBtnList = statusInfoModel.buyerActionButtonTitle;
+     }
+      if (actionBtnList.length > 0) {
+         return Container(
+          height: ScreenUtil().setHeight(60),
+          width: ScreenUtil().setWidth(180),
+          child: CupertinoButton(
+            child: Text(actionBtnList.first,style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Theme.of(context).hintColor)),
+            padding: EdgeInsets.zero,
+            color: Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(30))),
+            onPressed:()=> widget.didClickActionBtn(actionBtnList.first),
+          ),
+        );
+       }else{
+         return Container();
+       }
   }
 }

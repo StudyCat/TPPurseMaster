@@ -39,6 +39,14 @@ class _TLDAcceptanceBillListOpenCellState
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(26)),
             child: _getHeaderWidget(),
           ),
+         Offstage(
+           offstage: widget.infoListModel.maxProfitDesc.length == 0,
+           child:  Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(26)),
+            child: Text(widget.infoListModel.maxProfitDesc,style:TextStyle(
+              color : Color.fromARGB(255, 153, 153, 153),
+              fontSize : ScreenUtil().setSp(20)
+            )),),
+         ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(26)),
             child: TLDBillDashLine(),

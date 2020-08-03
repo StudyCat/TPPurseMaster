@@ -66,14 +66,14 @@ class _TLDAcceptanceProfitSpillOpenCellState extends State<TLDAcceptanceProfitSp
   }
 
    Widget _getRowView(){
-    return Padding(padding: EdgeInsets.only(left : ScreenUtil().setWidth(20),right:ScreenUtil().setWidth(20)),
+    return Padding(padding: EdgeInsets.only(left : 0,right:0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('${widget.listModel.billLevel}级TLD票据：溢出${widget.listModel.overflowCount}TLD',style: TextStyle(fontSize : ScreenUtil().setSp(28),color: Color.fromARGB(255, 51, 51, 51)),),
+        _getTitleWidget(),
          Container(
               height : ScreenUtil().setHeight(60),
-              width : ScreenUtil().setWidth(140),
+              width : ScreenUtil().setWidth(100),
               child: CupertinoButton(
                 onPressed: widget.didClickwithdrawButtonCallBack,
                 padding: EdgeInsets.zero,
@@ -84,5 +84,31 @@ class _TLDAcceptanceProfitSpillOpenCellState extends State<TLDAcceptanceProfitSp
           ),
       ],
     ),);
+  }
+
+  Widget _getTitleWidget(){
+    return Container(
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children:<Widget>[
+         Container(
+            width : ScreenUtil().setWidth(60),
+            height: ScreenUtil().setHeight(40),
+            decoration: BoxDecoration(
+              border : Border.all(color: widget.listModel.overflowType == 1 ? Color.fromARGB(255, 240, 131, 30) : Color.fromARGB(255, 65, 117, 5),width:0.5),
+              borderRadius : BorderRadius.all(Radius.circular(4)),
+              color :widget.listModel.overflowType == 1 ? Color.fromARGB(255, 244, 183, 83) : Color.fromARGB(255, 126, 211, 33)
+            ),
+            child: Center(
+              child : Text(widget.listModel.overflowType == 1 ? '静态' : '推广',style:TextStyle(fontSize:ScreenUtil().setSp(24),color:widget.listModel.overflowType == 1 ? Color.fromARGB(255, 144, 76, 12) : Color.fromARGB(255, 65, 117, 5)))
+            ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
+          child :  Text('${widget.listModel.billLevel}级TLD票据：溢出${widget.listModel.overflowCount}TLD',style: TextStyle(fontSize : ScreenUtil().setSp(28),color: Color.fromARGB(255, 51, 51, 51)),),
+          )
+      ]
+    ),
+    );
   }
 }

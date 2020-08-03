@@ -166,4 +166,11 @@ class TLDNewIMManager{
         
       });
     }
+
+
+    Future<String> downloadOrignImage(String userName,String messageId) async{
+      JMSingle single = JMSingle.fromJson({'username': userName,'appKey':'6676dc14cae09d6f15abe751'});
+      Map data = await JMessage.downloadOriginalImage(target: single, messageId: messageId);
+      return data['filePath'];
+    }
 }

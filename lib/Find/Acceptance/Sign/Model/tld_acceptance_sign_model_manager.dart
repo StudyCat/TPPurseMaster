@@ -55,6 +55,8 @@ class TLDAcceptanceUserInfoModel {
   String todayProfit; //每日收益
   String staticProfit; // 静态收益
   String totalBillProfit;  //累计收益
+  bool signFlag;
+  String expireDayCountDesc = ''; // 出局描述
 
   TLDAcceptanceUserInfoModel(
       {this.userName,
@@ -76,7 +78,9 @@ class TLDAcceptanceUserInfoModel {
       this.inviteProfit,
       this.todayProfit,
       this.staticProfit,
-      this.totalBillProfit
+      this.totalBillProfit,
+      this.signFlag,
+      this.expireDayCountDesc
       });
 
   TLDAcceptanceUserInfoModel.fromJson(Map<String, dynamic> json) {
@@ -100,6 +104,8 @@ class TLDAcceptanceUserInfoModel {
     todayProfit = json['todayProfit'];
     staticProfit = json['staticProfit'];
     totalBillProfit = json['totalBillProfit'];
+    signFlag = json['signFlag'];
+    expireDayCountDesc = json['expireDayCount'];
   }
 
    List _getSignList(List jsonList){
@@ -131,6 +137,8 @@ class TLDAcceptanceUserInfoModel {
     data['todayProfit'] = this.todayProfit;
     data['staticProfit'] = this.staticProfit;
     data['totalBillProfit'] = this.totalBillProfit;
+    data['signFlag'] = this.signFlag;
+    data['expireDayCount'] = this.expireDayCountDesc;
     return data;
   }
 }
@@ -160,10 +168,10 @@ class TLDAcceptanceSignModelManager{
     }, (error) => failure(error));
   }
 
- void sign(Function() success,Function(TLDError) failure){
+ void sign(Function(String) success,Function(TLDError) failure){
    TLDBaseRequest request = TLDBaseRequest({},'acpt/user/acptSign');
     request.postNetRequest((value) {
-      success();
+      success(value);
     }, (error) => failure(error));
  }
 

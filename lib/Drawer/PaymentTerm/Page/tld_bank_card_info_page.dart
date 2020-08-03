@@ -218,7 +218,23 @@ class _TLDBankCardInfoPageState extends State<TLDBankCardInfoPage> {
         },),
         );
         }else{
-          return Container(
+          return Column(
+            children :<Widget>[
+              Padding(padding: EdgeInsets.only(top:ScreenUtil().setHeight(2),left: ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),
+              child : Container(
+                decoration: BoxDecoration(
+                  borderRadius : BorderRadius.all(Radius.circular(4)),
+                  color : Colors.white
+                ),
+                padding:  EdgeInsets.only(top:ScreenUtil().setHeight(20),left: ScreenUtil().setWidth(20),right: ScreenUtil().setWidth(20),bottom: ScreenUtil().setHeight(20)),
+                width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(60),
+                child: Text('声明：\n请认真填写您的收款方式，如填写无效的或者错误的收款方式，导致的资产损失，平台概不负责。',style: TextStyle(
+                  fontSize : ScreenUtil().setSp(24),
+                  color: Color.fromARGB(255, 51, 51, 51)
+                ),),
+              ),
+              ),
+              Container(
             margin : EdgeInsets.only(top : ScreenUtil().setHeight(400),left: ScreenUtil().setWidth(100),right: ScreenUtil().setWidth(100)),
             height: ScreenUtil().setHeight(80),
             width:size.width -  ScreenUtil().setWidth(200),
@@ -229,7 +245,9 @@ class _TLDBankCardInfoPageState extends State<TLDBankCardInfoPage> {
                 updateBankInfo();
               }
             }),
-          );
+            )
+            ]
+          ); 
         }
       }
     );

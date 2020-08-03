@@ -44,7 +44,7 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
       padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
-      height: ScreenUtil().setHeight(580),
+      height: ScreenUtil().setHeight(600),
       width: size.width,
       padding: EdgeInsets.only(
           top: ScreenUtil().setHeight(40),
@@ -63,7 +63,7 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
                   decoration: TextDecoration.none)),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(26)),
-            child: TLDBuyActionSheetInputView(focusNode: _focusNode,max: widget.model.max,currentAmount: widget.model.currentCount,inputStringCallBack: (String text){
+            child: TLDBuyActionSheetInputView(focusNode: _focusNode,maxAmount: widget.model.maxAmount, max: widget.model.max,currentAmount: widget.model.currentCount,inputStringCallBack: (String text){
               setState(() {
                 _pramaterModel.buyCount = text;
               });
@@ -72,6 +72,10 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
             child: getNormalView('最低购买额度', widget.model.max + 'TLD'),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
+            child: getNormalView('最高购买额度', widget.model.maxAmount + 'TLD'),
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),

@@ -57,7 +57,7 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
 
     _refreshController = RefreshController();
 
-    _getSystemList();
+    _getSystemList(true);
 
     registerEvent();
 
@@ -84,12 +84,14 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
   }
 
 
-  void _getSystemList(){
+  void _getSystemList(bool refresh){
     int page = _dataSource.length;
     _modelManager.getSystemMessageList(page, (List messageList){
+      if (refresh) {
+        _dataSource = [];
+      }
         if (mounted){
         setState(() {
-          _dataSource = [];
           _dataSource.addAll(messageList);
         });
         }
@@ -104,7 +106,7 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
         if(event.refreshPage == 2 || event.refreshPage == 3){
           _refreshController.requestRefresh();
           _dataSource = [];
-          _getSystemList(); 
+          _getSystemList(true); 
         }else{
           TLDNewIMManager().exitSystemConversation();
         }
@@ -149,9 +151,9 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
         ),
       onRefresh: (){
         _dataSource = [];
-        _getSystemList();
+        _getSystemList(true);
       },
-      onLoading: () => _getSystemList(),
+      onLoading: () => _getSystemList(false),
       child: ListView.builder(
       itemCount: _dataSource.length,
       itemBuilder: (BuildContext context, int index) {

@@ -15,6 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../View/tld_im_input_view.dart';
@@ -52,6 +53,8 @@ class _TLDIMPageState extends State<TLDIMPage> {
   TLDIMModelManager _modelManager;
 
   RefreshController _refreshController;
+
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -127,7 +130,7 @@ class _TLDIMPageState extends State<TLDIMPage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getBody(context),
+      body: LoadingOverlay(isLoading: _isLoading, child: _getBody(context)),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -242,7 +245,7 @@ class _TLDIMPageState extends State<TLDIMPage> {
           if (_isNeedToshowTimeLabel(index)) {
             if (imageMessage.isSend == true) {
               return GestureDetector(
-                onTap : ()=> _openImage(imageMessage.thumbPath,context),
+                onTap : ()=> _openImage(imageMessage.id),
                 child : TLDIMUserTimeImageMessageCell(
                 imageUrl: imageMessage.thumbPath,
                 createTime: imageMessage.createTime,
@@ -250,7 +253,7 @@ class _TLDIMPageState extends State<TLDIMPage> {
               );
             } else {
               return GestureDetector(
-                onTap :()=> _openImage(imageMessage.thumbPath,context),
+                onTap :()=> _openImage(imageMessage.id),
                 child : TLDIMOtherUserTimeImageMessageCell(
                 message: imageMessage,
                 createTime: imageMessage.createTime,
@@ -260,14 +263,14 @@ class _TLDIMPageState extends State<TLDIMPage> {
           } else {
             if (imageMessage.isSend == true) {
               return GestureDetector(
-                onTap:()=> _openImage(imageMessage.thumbPath,context),
+                onTap:()=> _openImage(imageMessage.id),
                 child : TLDIMUserImageMessageCell(
                 imageUrl: imageMessage.thumbPath,
               )
               );
             } else {
              return GestureDetector(
-               onTap : ()=> _openImage(imageMessage.thumbPath,context),
+               onTap : ()=> _openImage(imageMessage.id),
                child : TLDIMOtherUserImageMessageCell(
                 message: imageMessage,
               )
@@ -279,7 +282,14 @@ class _TLDIMPageState extends State<TLDIMPage> {
     );
   }
 
-  void _openImage(String filePath,BuildContext context){
+  void _openImage(String messageId) async{
+    setState(() {
+      _isLoading = true;
+    });
+    String filePath = await _manager.downloadOrignImage(widget.toUserName, messageId);
+    setState(() {
+      _isLoading = false;
+    });
     PageController pageController = PageController();
     Navigator.push(context, MaterialPageRoute(builder: (context){
       return TLDImageShowPage(images: [File(filePath)],isShowDelete: false,pageController:pageController ,index: 0,heroTag: 'IMImage',);

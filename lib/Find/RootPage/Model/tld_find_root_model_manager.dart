@@ -55,7 +55,7 @@ class TLDFindRootModelManager {
     return [
       TLDFindRootCellUIModel(title: '玩法', items: [
         TLDFindRootCellUIItemModel(
-            title: '承兑', imageAssest: 'assetss/images/icon_choose_accept.png',isPlusIcon: false),
+            title: 'TLD票据', imageAssest: 'assetss/images/icon_choose_accept.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(
             title: '任务', imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true)

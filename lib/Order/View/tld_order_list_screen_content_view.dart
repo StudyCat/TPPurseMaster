@@ -20,7 +20,6 @@ class _TLDOrderListScreenContentViewState
     '已支付',
     '已完成',
     '已取消',
-    '申诉中',
   ];
 
   int selectedIndex;

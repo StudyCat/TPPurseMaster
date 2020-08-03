@@ -1,5 +1,6 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_choose_payment_page.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/View/tld_exchange_input_slider_cell.dart';
@@ -39,7 +40,7 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
 
   List _platformTitleList = ['钱包余额', '兑换量', '预计到账', '推荐卖家', '手续费率', '手续费', '收款方式'];
   
-  List _referrerTitleList = ['钱包余额', '兑换量', '预计到账', '推荐卖家', '收款方式'];
+  List _referrerTitleList = ['钱包余额', '兑换量', '预计到账', '推荐卖家','推荐人联系方式', '收款方式'];
 
   TLDAcceptanceWithdrawPageType _type = TLDAcceptanceWithdrawPageType.referrer;
 
@@ -122,11 +123,11 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
           color: Color.fromARGB(0, 0, 0, 0),
         ),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
-          
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(urlStr: 'http://128.199.126.189:8080/desc/cash_desc.html',title: '提现说明',)));
         }),
         heroTag: 'exchange_page',
         transitionBetweenRoutes: false,
-        middle: Text('承兑收益提现'),
+        middle: Text('TLD票据收益提现'),
       ),
     );
   }
@@ -198,7 +199,7 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
           if (index == 4 || index == 5){
             String content = '';
             if (index == 4){
-              double rate = _usefulInfoModel != null ? double.parse(_usefulInfoModel.acptPlatformCachRate) * 100 : 0;
+              String rate = _usefulInfoModel != null ? _usefulInfoModel.acptPlatformCachRate : '0';
               content = '${rate}%';
             }else{
               double amount = _usefulInfoModel != null ? (double.parse(_pramaterModel.cashCount) * double.parse(_usefulInfoModel.acptPlatformCachRate)) : 0.0;
@@ -224,7 +225,7 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
             },);
           }
         }else{
-          if (index == 4){
+          if (index == 5){
             return TLDExchangePaymentCell(paymentModel:_pramaterModel.paymentModel,didClickItemCallBack: (){
             _withdrawInputNode.unfocus();
             // if (_formModel.infoModel != null){
@@ -234,6 +235,15 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
                 });
               },)));
             },);
+          }else if(index == 4){
+          return TLDExchangeNormalCell(
+            type: TLDExchangeNormalCellType.normal,
+            title: _titleList[index],
+            content: _usefulInfoModel != null ? _usefulInfoModel.inviteTel : '',
+            contentStyle: TextStyle(
+                fontSize: 12, color: Color.fromARGB(255, 153, 153, 153)),
+            top: ScreenUtil().setHeight(2),
+          );
           }
         }
         return TLDAcceptanceWithDrawBottomCell(

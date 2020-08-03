@@ -32,9 +32,9 @@ class _TLDAcceptanceOrderListCellState extends State<TLDAcceptanceOrderListCell>
       ),
       child: Column(children: <Widget>[
           TLDAcceptanceOrderListCellHeaderView(orderListModel: widget.orderListModel,),
-          _leftRightItem( '票据有效期', '${widget.orderListModel.billExpireDayCount}天'),
+          _leftRightItem( '票据剩余有效期', '${widget.orderListModel.billExpireDayCount}天'),
           // _leftRightItem( '预计承兑收益', '${widget.orderListModel.expectProfit}TLD'),
-          _leftRightItem( '票据承兑收益开始时间', formatDate(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.orderListModel.createTime)), [yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss])),
+          _leftRightItem( '票据购买时间', formatDate(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.orderListModel.createTime)), [yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss])),
           _leftRightItem('支付钱包', widget.orderListModel.walletAddress)
         ]),
       ),

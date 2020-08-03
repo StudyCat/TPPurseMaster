@@ -126,6 +126,7 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
     _modelManager.getOrderList(model, (List orderList){
       if(model.page == 1){
         _dataSource = [];
+        _streamController.sink.add(_dataSource);
       }
        _dataSource.addAll(orderList);
        _streamController.sink.add(_dataSource);

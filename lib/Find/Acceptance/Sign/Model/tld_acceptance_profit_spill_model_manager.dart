@@ -9,9 +9,12 @@ class TLDAcceptanceProfitSpillListModel {
   String billIcon;
   String overflowCount;
   int overflowId;
+  String tip;
+  bool lock;
+  int overflowType;// "溢出类型（1：静态收益，2：推广收益）")
 
   TLDAcceptanceProfitSpillListModel(
-      {this.billId, this.billLevel, this.billIcon, this.overflowCount});
+      {this.billId, this.billLevel, this.billIcon, this.overflowCount,this.tip,this.lock,this.overflowType});
 
   TLDAcceptanceProfitSpillListModel.fromJson(Map<String, dynamic> json) {
     billId = json['billId'];
@@ -19,6 +22,9 @@ class TLDAcceptanceProfitSpillListModel {
     billIcon = json['billIcon'];
     overflowCount = json['overflowCount'];
     overflowId = json['overflowId'];
+    tip = json['tip'];
+    lock = json['lock'];
+    overflowType = json['overflowType'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +34,9 @@ class TLDAcceptanceProfitSpillListModel {
     data['billIcon'] = this.billIcon;
     data['overflowCount'] = this.overflowCount;
     data['overflowId'] = this.overflowId;
+    data['tip'] = this.tip;
+    data['lock'] = this.lock;
+    data['overflowType'] = this.overflowType;
     return data;
   }
 }

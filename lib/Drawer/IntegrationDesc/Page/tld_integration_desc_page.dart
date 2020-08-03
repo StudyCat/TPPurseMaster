@@ -1,3 +1,5 @@
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Drawer/IntegrationDesc/Model/tld_integration_desc_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,10 +13,24 @@ class TLDIntegrationDescPage extends StatefulWidget {
 }
 
 class _TLDIntegrationDescPageState extends State<TLDIntegrationDescPage> {
- List titles = [
-    '兑换比例：1TLD=1CNY',
-    '手续费：0.1%',
-  ];
+
+  TLDIntergrationDescModelManager _modelManager;
+
+  String _rate = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _modelManager.getRate((String rate){
+      setState(() {
+        _rate = rate;
+      });
+    }, (TLDError error){
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +54,15 @@ class _TLDIntegrationDescPageState extends State<TLDIntegrationDescPage> {
     return ListView.builder(
       itemCount: 2,
       itemBuilder: (BuildContext context, int index){
+        String title = '';
+        if (index == 0) {
+          title = '兑换比例：1TLD=1CNY';
+        }else{
+          title = _rate;
+        }
        return Padding(
          padding: EdgeInsets.only(top : ScreenUtil().setHeight(2),left: ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),
-         child: TLDClipCommonCell(type : TLDClipCommonCellType.normal,title: titles[index],titleStyle: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51)),content: '',contentStyle: TextStyle(),),
+         child: TLDClipCommonCell(type : TLDClipCommonCellType.normal,title: title,titleStyle: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51)),content: '',contentStyle: TextStyle(),),
        ); 
       });
   }

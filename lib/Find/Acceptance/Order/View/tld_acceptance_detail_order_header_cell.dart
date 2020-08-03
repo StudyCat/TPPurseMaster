@@ -43,7 +43,7 @@ class _TLDAcceptanceDetailOrderHeaderCellState extends State<TLDAcceptanceDetail
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Text(widget.detailOrderInfoModel != null ?'票据有效期${widget.detailOrderInfoModel.billExpireDayCount}天' : '',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Theme.of(context).hintColor),),
+        Text(widget.detailOrderInfoModel != null ?'票据剩余有效期${widget.detailOrderInfoModel.billExpireDayCount}天' : '',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Theme.of(context).hintColor),),
       ],
     );
   }
