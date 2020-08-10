@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/IMUI/Page/tld_im_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
@@ -254,6 +255,12 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       centerTitle: true, //标题居中
       expandedHeight: 200.0, //展开高度200
       backgroundColor: Theme.of(context).primaryColor,
+      actions: <Widget>[
+        Padding(padding: EdgeInsets.only(right : ScreenUtil().setWidth(30)),
+        child : IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.orderDescUrl,title: '转账指引',)));
+        }))
+      ],
       leading: Container(
         height: ScreenUtil().setHeight(34),
         width: ScreenUtil().setHeight(34),

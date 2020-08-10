@@ -25,7 +25,7 @@ class TLDMyPurseRecordPage extends StatefulWidget {
   _TLDMyPurseRecordPageState createState() => _TLDMyPurseRecordPageState();
 }
 
-class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage> with AutomaticKeepAliveClientMixin {
+class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage>{
   TLDMyPurseModelManager _manager;
 
   int _page;
@@ -99,10 +99,14 @@ class _TLDMyPurseRecordPageState extends State<TLDMyPurseRecordPage> with Automa
       _refreshController.loadComplete();
       if(page == 1){
         _dataSource = [];
-        _streamController.sink.add(_dataSource);
+        if (mounted){
+          _streamController.sink.add(_dataSource);
+        }
       }
       _dataSource.addAll(value);
-      _streamController.sink.add(_dataSource);
+      if (mounted){
+          _streamController.sink.add(_dataSource);
+        }
       if (value.length > 0){
         _page = page + 1;
       }

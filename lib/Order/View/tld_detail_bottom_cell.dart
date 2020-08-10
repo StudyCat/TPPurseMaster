@@ -39,7 +39,7 @@ class _TLDDetailOrderBottomCellState extends State<TLDDetailOrderBottomCell> {
     }
     return Padding(
         padding: EdgeInsets.only(
-            top: ScreenUtil().setHeight(120),
+            top: ScreenUtil().setHeight(20),
             left: ScreenUtil().setWidth(30),
             right: ScreenUtil().setWidth(30)),
         child: _getActionBtn(context));

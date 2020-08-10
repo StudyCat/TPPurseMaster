@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
@@ -121,6 +122,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     // _unreadSubscription.cancel();
     // _systemSubscription.cancel();
     _tabbatClickSubscription.cancel();
+    _streamController.close();
 
     TLDNewIMManager().removeSystemMessageReceiveCallBack();
   }
@@ -129,10 +131,14 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     _modelManager.getBuyListData(keyword, page, (List data){
       if(page == 1){
         _dataSource = [];
-        _streamController.sink.add(_dataSource);
+        if (mounted) {
+          _streamController.sink.add(_dataSource);
+        }
       }
       _dataSource.addAll(data);
-      _streamController.sink.add(_dataSource);      
+      if (mounted) {
+          _streamController.sink.add(_dataSource);
+        }      
       if(data.length > 0){
         _page = page + 1;
       }
@@ -170,8 +176,12 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
         _isLoading = false;
       });
       }
-      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+      if (error.code == 1000){
+        showDialog(context: context,builder : (context)=> TLDAlertView(type: TLDAlertViewType.normal,alertString: error.msg,title: '温馨提示',didClickSureBtn: (){},));
+      }else{
+        Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
+      }
     });
   }
 

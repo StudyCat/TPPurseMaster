@@ -33,7 +33,7 @@ class TLDAcceptanceWithdrawListPage extends StatefulWidget {
   _TLDAcceptanceWithdrawListPageState createState() => _TLDAcceptanceWithdrawListPageState();
 }
 
-class _TLDAcceptanceWithdrawListPageState extends State<TLDAcceptanceWithdrawListPage> with AutomaticKeepAliveClientMixin{
+class _TLDAcceptanceWithdrawListPageState extends State<TLDAcceptanceWithdrawListPage>{
 
   TLDAcceptanceWithdrawListModelManager _modelManager;
 

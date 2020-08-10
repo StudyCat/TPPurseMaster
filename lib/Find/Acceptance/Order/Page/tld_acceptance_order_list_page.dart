@@ -70,7 +70,7 @@ class _TLDAcceptanceOrderListPageState extends State<TLDAcceptanceOrderListPage>
         transitionBetweenRoutes: false,
         middle: Text('TLD票据'),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(urlStr: 'http://128.199.126.189:8080/desc/bill_desc.html',title: '票据说明',)));
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.billDescUrl,title: '票据说明',)));
         }),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),

@@ -97,7 +97,7 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
           style: TextStyle(color: Colors.white),
         ),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(urlStr: 'http://128.199.126.189:8080/desc/bill_desc.html',title: '票据说明',)));
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.billDescUrl,title: '票据说明',)));
         }),
         backgroundColor: Theme.of(context).primaryColor,
         actionsForegroundColor: Colors.white,

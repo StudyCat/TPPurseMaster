@@ -133,6 +133,14 @@ class _TLDNewMissionPublishMissionPageState
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _streamController.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LoadingOverlay(isLoading: _isLoading, child: _getBody());
   }

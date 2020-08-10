@@ -23,7 +23,7 @@ class TLDRankNormalPage extends StatefulWidget {
   _TLDRankNormalPageState createState() => _TLDRankNormalPageState();
 }
 
-class _TLDRankNormalPageState extends State<TLDRankNormalPage> with AutomaticKeepAliveClientMixin {
+class _TLDRankNormalPageState extends State<TLDRankNormalPage>  {
 
   TLDNormalRankModelManager _modelManager;
 
@@ -117,7 +117,7 @@ class _TLDRankNormalPageState extends State<TLDRankNormalPage> with AutomaticKee
           },
          ),
       ), 
-      );
+    );
   }
 
   @override

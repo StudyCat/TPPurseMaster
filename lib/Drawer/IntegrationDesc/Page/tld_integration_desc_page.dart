@@ -23,6 +23,7 @@ class _TLDIntegrationDescPageState extends State<TLDIntegrationDescPage> {
     // TODO: implement initState
     super.initState();
 
+    _modelManager = TLDIntergrationDescModelManager();
     _modelManager.getRate((String rate){
       setState(() {
         _rate = rate;
@@ -58,7 +59,7 @@ class _TLDIntegrationDescPageState extends State<TLDIntegrationDescPage> {
         if (index == 0) {
           title = '兑换比例：1TLD=1CNY';
         }else{
-          title = _rate;
+          title = _rate != null ? _rate : '';
         }
        return Padding(
          padding: EdgeInsets.only(top : ScreenUtil().setHeight(2),left: ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),

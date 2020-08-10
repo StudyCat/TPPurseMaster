@@ -60,7 +60,9 @@ class _TLDMissionHallPageState extends State<TLDMissionHallPage> with AutomaticK
   void _getMissionProgress(){
     _modelManager.getMissionProgress(widget.taskWalletId, (TLDMissionProgressModel progressModel){
       _refreshController.refreshCompleted();
-      _streamController.sink.add(progressModel);
+      if(mounted){
+        _streamController.sink.add(progressModel);
+      }
     }, (TLDError error){
       _refreshController.refreshCompleted();
       Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,

@@ -202,7 +202,7 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
                 }
              Navigator.push(context,MaterialPageRoute(builder: (context) => TLDMyPursePage(wallet: wallet,changeNameSuccessCallBack: (str){},)));
             }else if (contentType == 106){
-              int appealId = attrMap['appealId'];
+              int appealId = int.parse(attrMap['appealId']);
               Navigator.push(context, MaterialPageRoute(builder: (context) => TLDJustNoticePage(appealId: appealId,)));
             }
           },

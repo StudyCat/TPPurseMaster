@@ -28,6 +28,8 @@ class TLDOrderListModel {
   String buyerUserName;
   String sellerUserName;
   bool amIBuyer;
+  int appealStatus; ////申诉状态(-1：没有申诉，0：正在申诉，1：申诉成功，2：申诉失败)
+  int appealId;
 
   TLDOrderListModel(
       {this.orderId,
@@ -45,7 +47,7 @@ class TLDOrderListModel {
       this.overtime,
       this.remarkPayNo,
       this.payMethodVO,
-      this.taskLevel,this.quote,this.profit,this.taskBuyNo,this.buyerUserName,this.sellerUserName,this.amIBuyer});
+      this.taskLevel,this.quote,this.profit,this.taskBuyNo,this.buyerUserName,this.sellerUserName,this.amIBuyer,this.appealStatus,this.appealId});
 
   TLDOrderListModel.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
@@ -70,6 +72,8 @@ class TLDOrderListModel {
     buyerUserName = json['buyerUserName'];
     sellerUserName = json['sellerUserName'];
     amIBuyer = json['amIBuyer'];
+    appealStatus = json['appealStatus'];
+    appealId = json['appealId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -96,6 +100,8 @@ class TLDOrderListModel {
     data['buyerUserName'] = this.buyerUserName;
     data['sellerUserName'] = this.sellerUserName;
     data['amIBuyer'] = this.amIBuyer;
+    data['appealStatus'] = this.appealStatus;
+    data['appealId'] = this.appealId;
     return data;
   }
 }

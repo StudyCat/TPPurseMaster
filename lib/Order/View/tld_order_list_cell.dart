@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDOrderListCell extends StatefulWidget {
-  TLDOrderListCell({Key key,this.didClickDetailBtnCallBack,this.didClickIMBtnCallBack,this.didClickItemCallBack,this.orderListModel,this.actionBtnTitle = '详情'}) : super(key: key);
+  TLDOrderListCell({Key key,this.didClickDetailBtnCallBack,this.didClickIMBtnCallBack,this.didClickItemCallBack,this.orderListModel,this.actionBtnTitle = '详情',this.didClickAppealBtn}) : super(key: key);
 
   final TLDOrderListModel orderListModel;
 
@@ -18,6 +18,8 @@ class TLDOrderListCell extends StatefulWidget {
   final Function didClickItemCallBack;
 
   final String actionBtnTitle;
+
+  final Function didClickAppealBtn;
 
   @override
   _TLDOrderListCellState createState() => _TLDOrderListCellState();
@@ -40,7 +42,8 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
             padding: EdgeInsets.only(
                 left: ScreenUtil().setWidth(20),
                 right: ScreenUtil().setWidth(20),
-                top: ScreenUtil().setHeight(36)),
+                top: ScreenUtil().setHeight(36),
+                bottom: ScreenUtil().setHeight(34)),
             child: _getContentColumn(context)),
       ),
     ),
@@ -49,10 +52,12 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
 
   Widget _getContentColumn(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         _getAdressIMBtn(context),
         _getNumAmountStatusView(context),
-        _getDateAndDetailBtn(context)
+        _getDateAndDetailBtn(context),
+        _getAppealStatusWidget()
       ],
     );
   }
@@ -120,7 +125,7 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
 
   Widget _getDateAndDetailBtn(BuildContext context){
      return Padding(
-      padding: EdgeInsets.only(top: ScreenUtil().setHeight(24),bottom: ScreenUtil().setHeight(34)),
+      padding: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
@@ -150,6 +155,38 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
         ],
       ),
     );
+  }
+
+  Widget _getAppealStatusWidget(){
+    if (widget.orderListModel.appealStatus > -1){
+      String appealStatus = '';
+      switch (widget.orderListModel.appealStatus) {
+        case 0:
+          appealStatus = '申诉中';
+          break;
+        case 1:
+          appealStatus = '申诉成功';
+          break;
+        default:
+          appealStatus = '申诉失败';
+          break;
+      }
+      return Padding(
+        padding: EdgeInsets.only(top : ScreenUtil().setHeight(20),left :ScreenUtil().setWidth(20),right :ScreenUtil().setWidth(20)),
+        child : Container(
+        width: ScreenUtil().setWidth(160),
+        height: ScreenUtil().setHeight(60),
+        child: CupertinoButton(
+          borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(30))),
+          color: Theme.of(context).primaryColor,
+          padding: EdgeInsets.zero,
+          child: Text(appealStatus,textAlign: TextAlign.end,style: TextStyle(fontSize : ScreenUtil().setSp(28),color :Colors.white),), 
+          onPressed: widget.didClickAppealBtn)
+      ) 
+        );
+    }else{
+      return Container();
+    }
   }
 
 }

@@ -47,7 +47,7 @@ class _TLDAcceptanceDetailWithdrawBottomCellState extends State<TLDAcceptanceDet
             child:  widget.detailModel.amApply ? _getMeTakeColumnView() : _getNotMeTakeView(),
           ),
           Padding(
-            padding: EdgeInsets.only(top : ScreenUtil().setHeight(100)),
+            padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
             child: _getActionBtn(context),
           )
         ],

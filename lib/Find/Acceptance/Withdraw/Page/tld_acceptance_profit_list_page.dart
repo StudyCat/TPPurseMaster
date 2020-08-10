@@ -73,7 +73,7 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
           color: Color.fromARGB(0, 0, 0, 0),
         ),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(urlStr: 'http://128.199.126.189:8080/desc/profit_desc.html',title: '收益记录说明',)));
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.profitDescUrl,title: '收益记录说明',)));
         }),
         heroTag: 'acceptance_profit_list_page',
         transitionBetweenRoutes: false,

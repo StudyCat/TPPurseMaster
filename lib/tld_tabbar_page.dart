@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_choose_wallet.dart';
 import 'package:dragon_sword_purse/Drawer/UserAgreement/Page/tld_user_agreement_page.dart';
 import 'package:dragon_sword_purse/Find/RootPage/Page/tld_find_root_page.dart';
@@ -180,8 +181,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
                 MaterialPageRoute(builder: (context) => TLDUserFeedBackPage()));
           }else {
             // TLDUserAgreementPage
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TLDUserAgreementPage()));
+            Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.tldWalletAgreement,title: '用户协议',)));
           }
         },
       ),

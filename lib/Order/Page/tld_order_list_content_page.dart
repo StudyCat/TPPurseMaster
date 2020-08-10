@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
+import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class TLDOrderListContentPage extends StatefulWidget {
   _TLDOrderListContentPageState createState() => _TLDOrderListContentPageState();
 }
 
-class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with AutomaticKeepAliveClientMixin {
+class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> {
 
   TLDOrderListModelManager _modelManager;
 
@@ -193,6 +194,12 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> with 
           _refreshController.requestRefresh();
           _getOrderListDataWithPramaterModel(_pramaterModel);
         });
+      },
+      didClickAppealBtn: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDJustNoticePage(appealId: model.appealId,type: TLDJustNoticePageType.appealWatching,))).then((value){
+            _pramaterModel.page = 1;
+            _getOrderListDataWithPramaterModel(_pramaterModel);
+         });
       },
       );
   }

@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/Find/Rank/Page/tld_rank_accptance_page.dart';
 import 'package:dragon_sword_purse/Find/Rank/Page/tld_rank_mine_page.dart';
 import 'package:dragon_sword_purse/Find/Rank/Page/tld_rank_normal_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,8 +16,7 @@ class _TLDRankTabPageState extends State<TLDRankTabPage> with SingleTickerProvid
   TabController _tabController;
 
   List<String> _tabTitles = [
-    "周排行",
-    "月排行",
+    "承兑收益",
     '我的记录'
   ];
 
@@ -25,7 +25,7 @@ class _TLDRankTabPageState extends State<TLDRankTabPage> with SingleTickerProvid
     // TODO: implement initState
     super.initState();
 
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
     });
   }
@@ -55,8 +55,7 @@ class _TLDRankTabPageState extends State<TLDRankTabPage> with SingleTickerProvid
           Expanded(
               child: TabBarView(
             children: [
-              TLDRankNormalPage(type: TLDRankNormalPageType.week,),
-              TLDRankNormalPage(type: TLDRankNormalPageType.month,),
+              TLDRankAccptancePage(),
               TLDRankMinePage()
             ],
             controller: _tabController,

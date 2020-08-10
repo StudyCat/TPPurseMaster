@@ -123,7 +123,7 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
           color: Color.fromARGB(0, 0, 0, 0),
         ),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(urlStr: 'http://128.199.126.189:8080/desc/cash_desc.html',title: '提现说明',)));
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.cashDescUrl,title: '提现说明',)));
         }),
         heroTag: 'exchange_page',
         transitionBetweenRoutes: false,
@@ -199,8 +199,9 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
           if (index == 4 || index == 5){
             String content = '';
             if (index == 4){
-              String rate = _usefulInfoModel != null ? _usefulInfoModel.acptPlatformCachRate : '0';
-              content = '${rate}%';
+              double rate = _usefulInfoModel != null ? double.parse(_usefulInfoModel.acptPlatformCachRate) * 100 : 0;
+              String rateStr = (NumUtil.getNumByValueDouble(rate, 4)).toStringAsFixed(4);
+              content = '${rateStr}%';
             }else{
               double amount = _usefulInfoModel != null ? (double.parse(_pramaterModel.cashCount) * double.parse(_usefulInfoModel.acptPlatformCachRate)) : 0.0;
               content = (NumUtil.getNumByValueDouble(amount, 3)).toStringAsFixed(3);

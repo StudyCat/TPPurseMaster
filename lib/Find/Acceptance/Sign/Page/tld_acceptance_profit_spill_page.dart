@@ -91,7 +91,7 @@ class _TLDAcceptanceProfitSpillPageState extends State<TLDAcceptanceProfitSpillP
         transitionBetweenRoutes: false,
         middle: Text('收益溢出池',),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(urlStr: 'http://128.199.126.189:8080/desc/overflow_profit_desc.html',title: '收益溢出池说明',)));
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.overflowProfitDescUrl,title: '收益溢出池说明',)));
         }),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51)

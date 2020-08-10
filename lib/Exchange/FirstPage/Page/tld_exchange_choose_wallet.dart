@@ -39,6 +39,14 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _streamController.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
      return Scaffold(
       appBar: CupertinoNavigationBar(
@@ -81,7 +89,9 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
   void getWalletList(){
     _modelManager.getWalletListData(false,(List infoList) {
         _dataSource = List.from(infoList);
-        _streamController.sink.add(_dataSource);
+        if (mounted){
+          _streamController.sink.add(_dataSource);
+        }
     }, (TLDError error){
       Fluttertoast.showToast(msg: error.msg, toastLength: Toast.LENGTH_SHORT,
                       timeInSecForIosWeb: 1);

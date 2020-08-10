@@ -1,23 +1,22 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
-import 'package:dragon_sword_purse/Find/Rank/Model/tld_rank_mine_model_manager.dart';
-import 'package:dragon_sword_purse/Find/Rank/View/tld_rank_mine_cell.dart';
-import 'package:dragon_sword_purse/Find/Rank/View/tld_rank_mine_header_cell.dart';
+import 'package:dragon_sword_purse/Find/Rank/Model/tld_rank_accptance_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Rank/View/tld_rank_acceptance_cell.dart';
+import 'package:dragon_sword_purse/Find/Rank/View/tld_rank_acceptance_header_cell.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
-class TLDRankMinePage extends StatefulWidget {
-  TLDRankMinePage({Key key}) : super(key: key);
+class TLDRankAccptancePage extends StatefulWidget {
+  TLDRankAccptancePage({Key key}) : super(key: key);
 
   @override
-  _TLDRankMinePageState createState() => _TLDRankMinePageState();
+  _TLDRankAccptancePageState createState() => _TLDRankAccptancePageState();
 }
 
-class _TLDRankMinePageState extends State<TLDRankMinePage> {
-  TLDRankMineModelManager _modelManager;
+class _TLDRankAccptancePageState extends State<TLDRankAccptancePage> {
+ TLDRankAccptanceModelManager _modelManager;
 
   List _dataSource = [];
 
@@ -28,7 +27,7 @@ class _TLDRankMinePageState extends State<TLDRankMinePage> {
     // TODO: implement initState
     super.initState();
 
-    _modelManager = TLDRankMineModelManager();
+    _modelManager = TLDRankAccptanceModelManager();
 
     _getRankList();
   }
@@ -39,7 +38,7 @@ class _TLDRankMinePageState extends State<TLDRankMinePage> {
         _isLoading = true;
       });
     }
-    _modelManager.getMineRankList((List rankList){
+    _modelManager.getAcceptanceRankList((List rankList){
       _dataSource = [];
       if(mounted){
       setState(() {
@@ -74,9 +73,9 @@ class _TLDRankMinePageState extends State<TLDRankMinePage> {
            itemCount: _dataSource.length + 1,
            itemBuilder: (BuildContext context, int index) {
            if (index == 0){
-             return TLDRankMineHeaderCell();
+             return TLDRankAcceptanceHeaderCell();
            }else{
-             return TLDRankMineCell(rankModel: _dataSource[index - 1],);
+             return TLDRankAcceptanceCell(rankModel: _dataSource[index - 1],);
            }
           },
          ),

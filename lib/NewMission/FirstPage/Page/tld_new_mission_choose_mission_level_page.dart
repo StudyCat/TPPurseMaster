@@ -82,10 +82,20 @@ class _TLDNewMissionChooseMissionLevelPageState extends State<TLDNewMissionChoos
   void _getMissionLevelList(){
     _modelManager.getMissionLevelList((List infoList) {
         _dataSource = List.from(infoList);
-        _streamController.sink.add(_dataSource);
+        if(mounted){
+          _streamController.sink.add(_dataSource);
+        }
     }, (TLDError error){
       Fluttertoast.showToast(msg: error.msg, toastLength: Toast.LENGTH_SHORT,
                       timeInSecForIosWeb: 1);
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _streamController.close();
   }
 }

@@ -44,7 +44,7 @@ class _TLDAcceptanceInvitationTabPageState extends State<TLDAcceptanceInvitation
         automaticallyImplyLeading: false,
         middle: Text('推广邀请码'),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(urlStr: 'http://128.199.126.189:8080/desc/invite_profit_desc.html',title: '推广收益说明',)));
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.inviteProfitDescUrl,title: '推广收益说明',)));
         }),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),

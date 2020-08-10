@@ -5,8 +5,10 @@ import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
 import 'package:dragon_sword_purse/IMUI/Page/tld_im_page.dart';
+import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_order_list_model_manager.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
+import 'package:dragon_sword_purse/Order/Page/tld_order_appeal_page.dart';
 import 'package:dragon_sword_purse/Order/View/tld_order_list_cell.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
@@ -25,7 +27,7 @@ class TLDSaleOrderWaitTLDPage extends StatefulWidget {
   _TLDSaleOrderWaitTLDPageState createState() => _TLDSaleOrderWaitTLDPageState();
 }
 
-class _TLDSaleOrderWaitTLDPageState extends State<TLDSaleOrderWaitTLDPage> with AutomaticKeepAliveClientMixin {
+class _TLDSaleOrderWaitTLDPageState extends State<TLDSaleOrderWaitTLDPage>  {
  
   TLDOrderListModelManager _modelManager;
 
@@ -199,6 +201,12 @@ class _TLDSaleOrderWaitTLDPageState extends State<TLDSaleOrderWaitTLDPage> with 
           _refreshController.requestRefresh();
           _getOrderListDataWithPramaterModel(_pramaterModel);
         });
+      },
+      didClickAppealBtn: (){
+         Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDJustNoticePage(appealId: model.appealId,type: TLDJustNoticePageType.appealWatching,))).then((value){
+            _pramaterModel.page = 1;
+            _getOrderListDataWithPramaterModel(_pramaterModel);
+         });
       },
       );
   }
