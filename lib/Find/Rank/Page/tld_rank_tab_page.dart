@@ -39,7 +39,7 @@ class _TLDRankTabPageState extends State<TLDRankTabPage> with SingleTickerProvid
         ),
         heroTag: 'rank_tab_page',
         transitionBetweenRoutes: false,
-        middle: Text('排行榜'),
+        middle: Text('TLD票据排行榜'),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -49,19 +49,22 @@ class _TLDRankTabPageState extends State<TLDRankTabPage> with SingleTickerProvid
   }
 
    Widget _getBodyWidget(BuildContext context) {
-    return Column(
-        children: <Widget>[
-          _getTabbar(),
-          Expanded(
-              child: TabBarView(
-            children: [
-              TLDRankAccptancePage(),
-              TLDRankMinePage()
-            ],
-            controller: _tabController,
-          ))
-        ],
-      );
+    return TLDRankAccptancePage();
+    
+    
+    // Column(
+    //     children: <Widget>[
+    //       _getTabbar(),
+    //       Expanded(
+    //           child: TabBarView(
+    //         children: [
+    //           TLDRankAccptancePage(),
+    //           TLDRankMinePage()
+    //         ],
+    //         controller: _tabController,
+    //       ))
+    //     ],
+    //   );
   }
 
   Widget _getTabbar(){
