@@ -78,10 +78,10 @@ class TLDCreatePurseModelManager {
     String seed = bip39.mnemonicToSeedHex(randomMnemonic);
     KeyData master = ED25519_HD_KEY.getMasterKeyFromSeed(seed);
     String privateKey = HEX.encode(master.key);
-    return await _getWallet(privateKey,randomMnemonic);
+    return await _getWallet(privateKey,randomMnemonic,0);
   }
 
-  Future<TLDWallet> _getWallet(String privateKey,String mnemonic) async{
+  Future<TLDWallet> _getWallet(String privateKey,String mnemonic,int type) async{
     EthPrivateKey private = EthPrivateKey.fromHex(privateKey);
     EthereumAddress address = await private.extractAddress();
     Uint8List addressList = address.addressBytes;
@@ -96,7 +96,7 @@ class TLDCreatePurseModelManager {
     Map walletMap = jsonDecode(walletJson);
     String walletId = walletMap['id'];
     String walletName = 'TLD钱包' + walletId.split('-').first;
-    TLDWallet tldWallet = TLDWallet(null, walletJson, mnemonic,privateKey,addressHex,walletName);
+    TLDWallet tldWallet = TLDWallet(null, walletJson, mnemonic,privateKey,addressHex,walletName,type);
     return tldWallet;
   }
 
@@ -104,11 +104,11 @@ class TLDCreatePurseModelManager {
     String seed = bip39.mnemonicToSeedHex(mnemonicString);
     KeyData master = ED25519_HD_KEY.getMasterKeyFromSeed(seed);
     String privateKey = HEX.encode(master.key);
-    return await _getWallet(privateKey, mnemonicString);
+    return await _getWallet(privateKey, mnemonicString,1);
   }
 
     Future<TLDWallet> _getWalletWithPrivateKey(String privateKey) async{
-    return await _getWallet(privateKey, '');
+    return await _getWallet(privateKey, '',1);
   }
 
 

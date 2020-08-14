@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
-import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../View/message_button.dart';
 import '../View/purse_first_cell.dart';
@@ -170,13 +170,33 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
     }
   }
 
-  void _createPurse(BuildContext context){
+  void _createPurse(BuildContext context) async{
+    var status = await Permission.storage.status;
+    if (status == PermissionStatus.denied) {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+      ].request();
+      return;
+    }else if(status == PermissionStatus.permanentlyDenied){
+      Fluttertoast.showToast(msg: '请开启存储权限');
+      return;
+    }
     jugeHavePassword(context, (){
        Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));
     },TLDCreatePursePageType.create,null);
   }
 
-  void _importPurse(BuildContext context){
+  void _importPurse(BuildContext context) async{
+            var status = await Permission.storage.status;
+    if (status == PermissionStatus.denied) {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+      ].request();
+      return;
+    }else if(status == PermissionStatus.permanentlyDenied){
+      Fluttertoast.showToast(msg: '请开启存储权限');
+      return;
+    }
     jugeHavePassword(context,(){
       Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDImportPursePage()));
     },TLDCreatePursePageType.import,null);
@@ -207,3 +227,4 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
   bool get wantKeepAlive => true;
   
 }
+///////

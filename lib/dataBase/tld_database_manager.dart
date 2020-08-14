@@ -20,6 +20,7 @@ final String walletMnemonic = 'walletMnemonic';
 final String walletPrivate = 'walletPrivate';
 final String walletAdress = 'walletAdress';
 final String walletName = 'walletName';
+final String walletType = 'walletType';
 
 // final String tableIM = 'imtable';
 // final String contentTypeIM = 'contentType';
@@ -40,6 +41,7 @@ class TLDWallet{
   String privateKey;
   String address;
   String name;
+  int type;
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
@@ -47,7 +49,8 @@ class TLDWallet{
       walletMnemonic: mnemonic,
       walletPrivate : privateKey,
       walletAdress : address,
-      walletName : name
+      walletName : name,
+      walletType : type
     };
     if (id != null) {
       map[walletId] = id;
@@ -55,13 +58,14 @@ class TLDWallet{
     return map;
   }
 
-  TLDWallet(int id, String json, String mnemonic,String privateKey,String address,String name) {
+  TLDWallet(int id, String json, String mnemonic,String privateKey,String address,String name,int type) {
     this.id = id;
     this.json = json;
     this.mnemonic = mnemonic;
     this.privateKey = privateKey;
     this.address = address;
     this.name = name;
+    this.type = type;
   }
 
   TLDWallet.fromMap(Map<String, dynamic> map) {
@@ -71,6 +75,7 @@ class TLDWallet{
     privateKey = map[walletPrivate];
     address = map[walletAdress];
     name = map[walletName];
+    type = map[walletType];
   }
 }
 
@@ -101,7 +106,7 @@ class TLDDataBaseManager {
 
     //根据数据库文件路径和数据库版本号创建数据库表
     if (db == null ||!db.isOpen){
-      db = await openDatabase(path, version: 1,
+      db = await openDatabase(path, version: 2,
         onCreate: (Database db, int version) async {
       await db.execute('''
           CREATE TABLE $tableWallet (
@@ -110,21 +115,16 @@ class TLDDataBaseManager {
             $walletMnemonic TEXT,
             $walletPrivate TEXT,
             $walletAdress TEXT,
-            $walletName TEXT)
+            $walletName TEXT,
+            $walletType INTEGER)
           ''');
-    //    await db.execute('''
-    //       CREATE TABLE $tableIM (
-    //         $idIM INTEGER PRIMARY KEY, 
-    //         $contentTypeIM INTEGER, 
-    //         $contentIM LONGTEXT,
-    //         $fromIM TEXT,
-    //         $toIM TEXT,
-    //         $unreadIM INTEGER,
-    //         $createTimeIM INTEGER,
-    //         $orderNoIM TEXT,
-    //         $messageTypeIM INTEGER,
-    //         $bizAttrIM TEXT)
-    //       ''');    
+    },onUpgrade: (db,oldVersion,newVersion) async{
+      if (oldVersion == 1 && newVersion == 2){
+        await db.execute('''
+          ALTER TABLE $tableWallet 
+          add column $walletType INTEGER
+          ''');
+      }
     });
     }
   }
@@ -320,7 +320,8 @@ class TLDDataBaseManager {
       walletMnemonic,
       walletPrivate,
       walletAdress,
-      walletName
+      walletName,
+      walletType
     ]);
 
      if (maps == null || maps.length == 0) {

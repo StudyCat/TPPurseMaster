@@ -9,7 +9,7 @@ class TLDFindRootPageCell extends StatefulWidget {
 
   final TLDFindRootCellUIModel uiModel;
 
-  final Function(String) didClickItemCallBack;
+  final Function(TLDFindRootCellUIItemModel) didClickItemCallBack;
 
   @override
   _TLDFindRootPageCellState createState() => _TLDFindRootPageCellState();
@@ -18,6 +18,7 @@ class TLDFindRootPageCell extends StatefulWidget {
 class _TLDFindRootPageCellState extends State<TLDFindRootPageCell> {
   @override
   Widget build(BuildContext context) {
+    int cloumnNum = widget.uiModel.items.length ~/ 4 + (widget.uiModel.items.length % 4 > 0 ? 1 : 0);
     return Padding(
       padding: EdgeInsets.only(
           top: ScreenUtil().setHeight(10),
@@ -53,7 +54,7 @@ class _TLDFindRootPageCellState extends State<TLDFindRootPageCell> {
               ),
               Container(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
-                height: ScreenUtil().setHeight(200),
+                height: ScreenUtil().setHeight(50 + 150 * cloumnNum),
                   child: GridView.builder(
                       physics: new NeverScrollableScrollPhysics(), //增加
                       shrinkWrap: true,
@@ -68,7 +69,7 @@ class _TLDFindRootPageCellState extends State<TLDFindRootPageCell> {
                             widget.uiModel.items[index];
                         return GestureDetector(
                           onTap : (){
-                            widget.didClickItemCallBack(itemModel.title);
+                            widget.didClickItemCallBack(itemModel);
                           },
                           child : TLDFindRootPageGridCell(itemUIModel: itemModel)
                         );

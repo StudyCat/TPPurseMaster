@@ -9,6 +9,8 @@ import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'Purse/FirstPage/View/message_button.dart';
 import 'IMUI/Page/tld_im_page.dart';
 import 'Message/Page/tld_message_page.dart';
@@ -206,7 +208,17 @@ class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> with WidgetsB
         onPressed: didClickCallBack);
   }
 
-  void _createPurse(BuildContext context) {
+  void _createPurse(BuildContext context) async {
+        var status = await Permission.storage.status;
+    if (status == PermissionStatus.denied) {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+      ].request();
+      return;
+    }else if(status == PermissionStatus.permanentlyDenied){
+      Fluttertoast.showToast(msg: '请开启存储权限');
+      return;
+    }
     jugeHavePassword(context, () {
       Navigator.push(
           context,
@@ -217,12 +229,24 @@ class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> with WidgetsB
     }, TLDCreatePursePageType.create, null);
   }
 
-  void _importPurse(BuildContext context) {
+  void _importPurse(BuildContext context) async {
+            var status = await Permission.storage.status;
+    if (status == PermissionStatus.denied) {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+      ].request();
+      return;
+    }else if(status == PermissionStatus.permanentlyDenied){
+      Fluttertoast.showToast(msg: '请开启存储权限');
+      return;
+    }
     jugeHavePassword(context, () {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => TLDImportPursePage()));
     }, TLDCreatePursePageType.import, null);
   }
+
+  
 
   //  @override
   // void didChangeAppLifecycleState(AppLifecycleState state) {

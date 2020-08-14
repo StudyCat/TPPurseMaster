@@ -18,13 +18,19 @@ import '../View/tld_transfer_accounts_input_row_view.dart';
 import 'dart:async';
 import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 
+enum TLDTransferAccountsPageType{
+  normal,
+  sureAmount
+}
+
+
 class TLDTransferAccountsPage extends StatefulWidget {
   TLDTransferAccountsPage(
       {Key key,
       this.walletInfoModel,
       this.transferSuccessCallBack,
       this.thirdAppFromWalletAddress,
-      this.thirdAppToWalletAddress})
+      this.thirdAppToWalletAddress,this.amount,this.type = TLDTransferAccountsPageType.normal})
       : super(key: key);
 
   final TLDWalletInfoModel walletInfoModel;
@@ -33,7 +39,11 @@ class TLDTransferAccountsPage extends StatefulWidget {
 
   final String thirdAppToWalletAddress;
 
+  final String amount;
+
   final Function(String) transferSuccessCallBack;
+
+  final TLDTransferAccountsPageType type;
 
   @override
   _TLDTransferAccountsPageState createState() =>
@@ -87,10 +97,16 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
 
         _pramaterModel.chargeWalletAddress = _infoModel.chargeWalletAddress;
         _pramaterModel.fromWalletAddress = _infoModel.walletAddress;
-        _pramaterModel.chargeValue = '0.0';
-        _pramaterModel.toWalletAddress = "";
-        _pramaterModel.value = '0.0';
         _pramaterModel.toWalletAddress = widget.thirdAppToWalletAddress;
+        if (widget.type == TLDTransferAccountsPageType.normal){
+          _pramaterModel.chargeValue = '0.0';
+          _pramaterModel.value = '0.0';
+        }else{
+          _pramaterModel.value = widget.amount;
+          _pramaterModel.chargeValue = (double.parse(widget.amount) *
+                                  double.parse(_infoModel.rate))
+                              .toStringAsFixed(2);
+        }
       });
     }, (TLDError error) {
       setState(() {
@@ -125,12 +141,18 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
           _loading = false;
         });
       }
-      Fluttertoast.showToast(
+      if (widget.type == TLDTransferAccountsPageType.sureAmount){
+        Fluttertoast.showToast(
+          msg: '充值成功', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
+        Navigator.of(context)..pop()..pop(true);
+      }else{
+        Fluttertoast.showToast(
           msg: '转账成功', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
       if (widget.transferSuccessCallBack != null) {
         widget.transferSuccessCallBack(_pramaterModel.value);
       }
       Navigator.of(context).pop();
+      }
     }, (TLDError error) {
       if (mounted) {
         setState(() {
@@ -194,6 +216,8 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
                     padding: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
                     child: TLDTransferAccountsInputRowView(
                       type: TLDTransferAccountsInputRowViewType.allTransfer,
+                      enable: widget.type == TLDTransferAccountsPageType.normal,
+                      content: _pramaterModel.value,
                       allAmount: _infoModel.value,
                       stringEditingCallBack: (String amount) {
                         _pramaterModel.value = amount;
@@ -225,6 +249,7 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
                     padding: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
                     child: TLDTransferAccountsInputRowView(
                       content: _pramaterModel.toWalletAddress,
+                      enable: widget.type == TLDTransferAccountsPageType.normal,
                       type: TLDTransferAccountsInputRowViewType.scanCode,
                       didClickScanBtnCallBack: () {
                         _scanPhoto();

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dragon_sword_purse/Find/RootPage/Model/tld_find_root_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,11 @@ class _TLDFindRootPageGridCellState extends State<TLDFindRootPageGridCell> {
 
   Widget _getImageWidget(){
     if (widget.itemUIModel.isPlusIcon == false){
-      return Image.asset(widget.itemUIModel.imageAssest,width:ScreenUtil().setHeight(96),height:ScreenUtil().setHeight(96),fit: BoxFit.fill,);
+      if (widget.itemUIModel.iconUrl.length > 0){
+        return CachedNetworkImage(imageUrl: widget.itemUIModel.iconUrl,width:ScreenUtil().setHeight(96),height:ScreenUtil().setHeight(96),fit: BoxFit.fill,);
+      }else{
+        return Image.asset(widget.itemUIModel.imageAssest,width:ScreenUtil().setHeight(96),height:ScreenUtil().setHeight(96),fit: BoxFit.fill,);
+      }
     }else{
       return Icon(IconData(0xe67e,fontFamily:'appIconFonts'),size: ScreenUtil().setHeight(96), color: Color.fromARGB(255, 153, 153, 153),);
     }

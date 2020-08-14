@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_empty_wallet_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
+import 'package:dragon_sword_purse/Purse/TransferAccounts/Page/tld_transfer_accounts_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,10 +11,21 @@ import '../../../Purse/FirstPage/View/purse_cell.dart';
 import '../../../Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import '../Model/tld_exchange_choose_wallet_model_manager.dart';
 
+enum TLDEchangeChooseWalletPageType{
+  normal,
+  transfer
+}
+
 class TLDEchangeChooseWalletPage extends StatefulWidget {
-  TLDEchangeChooseWalletPage({Key key,this.didChooseWalletCallBack}) : super(key: key);
+  TLDEchangeChooseWalletPage({Key key,this.didChooseWalletCallBack,this.type = TLDEchangeChooseWalletPageType.normal,this.transferWalletAddress,this.transferAmount}) : super(key: key);
 
   final Function(TLDWalletInfoModel) didChooseWalletCallBack;
+
+  final TLDEchangeChooseWalletPageType type;
+
+  final String transferWalletAddress;
+
+  final String transferAmount;
 
   @override
   _TLDEchangeChooseWalletPageState createState() => _TLDEchangeChooseWalletPageState();
@@ -81,8 +93,12 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
       return TLDPurseFirstPageCell(
         walletInfo: model,
         didClickCallBack: () {
-          widget.didChooseWalletCallBack(model);
-          Navigator.of(context).pop();
+          if (widget.type == TLDEchangeChooseWalletPageType.normal){
+            widget.didChooseWalletCallBack(model);
+            Navigator.of(context).pop();
+          }else {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDTransferAccountsPage(type: TLDTransferAccountsPageType.sureAmount,amount: widget.transferAmount,thirdAppFromWalletAddress: model.walletAddress,thirdAppToWalletAddress: widget.transferWalletAddress,)));
+          }
         },);
   }
 

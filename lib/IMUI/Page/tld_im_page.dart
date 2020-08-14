@@ -150,6 +150,9 @@ class _TLDIMPageState extends State<TLDIMPage> {
       Permission.storage,
       ].request();
       return;
+    }else if(status == PermissionStatus.permanentlyDenied){
+      Fluttertoast.showToast(msg: '请开启存储权限');
+      return;
     }
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     if (image != null) {
@@ -171,6 +174,9 @@ class _TLDIMPageState extends State<TLDIMPage> {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.storage,
       ].request();
+      return;
+    }else if(status == PermissionStatus.permanentlyDenied){
+      Fluttertoast.showToast(msg: '请开启存储权限');
       return;
     }
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);

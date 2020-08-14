@@ -135,6 +135,9 @@ class _TLDDetailDiyQrcodeShowViewState extends State<TLDDetailDiyQrcodeShowView>
       Permission.storage,
       ].request();
       return;
+    }else if(status == PermissionStatus.permanentlyDenied){
+      Fluttertoast.showToast(msg: '请开启存储权限');
+      return;
     }
     var result = await ImageGallerySaver.saveImage(bytes);
     if (result != null){
