@@ -25,7 +25,7 @@ class _TLDFindRootPageGridCellState extends State<TLDFindRootPageGridCell> {
           offstage: widget.itemUIModel.isPlusIcon,
           child: Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(12)),
-            child: Text(widget.itemUIModel.title,style:TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(24))), 
+            child: Text(widget.itemUIModel.title,style:TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(24))),
           ),
         )
       ]
@@ -37,7 +37,7 @@ class _TLDFindRootPageGridCellState extends State<TLDFindRootPageGridCell> {
       if (widget.itemUIModel.iconUrl.length > 0){
         return CachedNetworkImage(imageUrl: widget.itemUIModel.iconUrl,width:ScreenUtil().setHeight(96),height:ScreenUtil().setHeight(96),fit: BoxFit.fill,);
       }else{
-        return Image.asset(widget.itemUIModel.imageAssest,width:ScreenUtil().setHeight(96),height:ScreenUtil().setHeight(96),fit: BoxFit.fill,);
+      return Image.asset(widget.itemUIModel.imageAssest,width:ScreenUtil().setHeight(96),height:ScreenUtil().setHeight(96),fit: BoxFit.fill,);
       }
     }else{
       return Icon(IconData(0xe67e,fontFamily:'appIconFonts'),size: ScreenUtil().setHeight(96), color: Color.fromARGB(255, 153, 153, 153),);

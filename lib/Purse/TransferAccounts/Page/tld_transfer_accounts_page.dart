@@ -135,7 +135,7 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
     setState(() {
       _loading = true;
     });
-    _manager.transferAmount(_pramaterModel, () {
+    _manager.transferAmount(_pramaterModel, (int txId) {
       if (mounted) {
         setState(() {
           _loading = false;

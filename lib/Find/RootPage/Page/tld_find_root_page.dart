@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
@@ -20,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TLDFindRootPage extends StatefulWidget {
   TLDFindRootPage({Key key}) : super(key: key);
@@ -45,6 +48,23 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
     _iconDataSource =  TLDFindRootModelManager.uiModelList;
 
     _getBannerList();
+
+    _get3rdWebList();
+  }
+
+  void _get3rdWebList() async {
+    List webList = await TLDDataManager.instance.get3rdPartWebList();
+    TLDFindRootCellUIModel findRootCellUIModel = _iconDataSource.first;
+    List newWebList = [];
+    for (TLD3rdWebInfoModel item in webList) {
+        TLDFindRootCellUIItemModel uiItemModel = TLDFindRootCellUIItemModel(title: item.name,iconUrl: item.iconUrl,url: item.url);
+        newWebList.add(uiItemModel);
+    }
+
+    setState(() {
+      findRootCellUIModel.items.insertAll(findRootCellUIModel.items.length - 1, newWebList);
+    });
+
   }
 
   void _getBannerList(){
@@ -167,7 +187,7 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
                           bool isHaveSameUrl = false;
                           TLDFindRootCellUIModel findRootCellUIModel = _iconDataSource.first;
                           for (TLDFindRootCellUIItemModel item in findRootCellUIModel.items) {
-                            if (item.url == infoModel.iconUrl){
+                            if (item.url == infoModel.url){
                               isHaveSameUrl = true;
                               break;
                             }
@@ -180,6 +200,8 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
                             setState(() {
                               findRootCellUIModel.items.insert(findRootCellUIModel.items.length - 1,uiItemModel);
                             });
+
+                            _save3rdPartWebInfo(infoModel);
                           }
                     }, (TLDError error) {
                       Fluttertoast.showToast(
@@ -191,6 +213,16 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
                 )));
   }
 
-
+  void _save3rdPartWebInfo(TLD3rdWebInfoModel infoModel) async {
+      List webInfoList = TLDDataManager.instance.webList;
+      webInfoList.add(infoModel);
+      List result = [];
+      for (TLD3rdWebInfoModel infoModel  in webInfoList) {
+        result.add(infoModel.toJson());
+      }
+      String jsonStr = jsonEncode(result);
+      SharedPreferences pre = await SharedPreferences.getInstance();
+      pre.setString('3rdPartWeb', jsonStr);
+  }
 
 }

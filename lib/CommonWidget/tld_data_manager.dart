@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dragon_sword_purse/Find/RootPage/Model/tld_find_root_model_manager.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_order_list_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,6 +35,8 @@ class TLDDataManager{
 
   String missionWalletAddress;
 
+  List webList;
+
   TLDDataManager._internal() {
     // 初始化
    getPassword();
@@ -63,6 +68,22 @@ class TLDDataManager{
     SharedPreferences pre = await SharedPreferences.getInstance();
     username = pre.getString('username');
     return username;
+  }
+
+
+  Future<List> get3rdPartWebList()async{
+    SharedPreferences pre = await SharedPreferences.getInstance();
+    String webListStr = pre.getString('3rdPartWeb');
+    webList = [];
+    if (webListStr != null){
+      List webJsonList = jsonDecode(webListStr);
+      for (var item in webJsonList) {
+        TLD3rdWebInfoModel webInfoModel = TLD3rdWebInfoModel.fromJson(item);
+        webList.add(webInfoModel);
+      }
+      return webList;
+    }
+    return webList;
   }
 
 

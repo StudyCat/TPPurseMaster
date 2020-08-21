@@ -28,13 +28,14 @@ class TLDTransferAccountsModelManager{
       }
     }
 
-    void transferAmount(TLDTranferAmountPramaterModel pramaterModel,Function success,Function(TLDError) failure){
+    void transferAmount(TLDTranferAmountPramaterModel pramaterModel,Function(int) success,Function(TLDError) failure){
       Map pramaterMap = {'chargeValue':pramaterModel.chargeValue,'chargeWalletAddress':pramaterModel.chargeWalletAddress,'fromWalletAddress':pramaterModel.fromWalletAddress,'toWalletAddress':pramaterModel.toWalletAddress,'value':pramaterModel.value,};
       TLDBaseRequest request = TLDBaseRequest(pramaterMap,'wallet/transfer');
       request.isNeedSign = true;
       request.walletAddress = pramaterModel.fromWalletAddress;
       request.postNetRequest((dynamic value) {
-        success();
+        int txId = value['txId'];
+        success(txId);
       }, (error) => failure(error));
     }
 
