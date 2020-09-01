@@ -2,6 +2,7 @@ import 'package:dragon_sword_purse/Message/Model/tld_message_model_manager.dart'
 import 'package:dragon_sword_purse/Message/Page/tld_im_message_content_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_system_message_content_page.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,15 +17,21 @@ class TLDMessagePage extends StatefulWidget {
 class _TLDMessagePageState extends State<TLDMessagePage> with TickerProviderStateMixin{
   TabController _tabController;
 
-  List<String> _tabTitles = [
-    "通知",
-    "系统消息",
-  ];
+  List _tabTitles = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+  Future.delayed(Duration.zero,(){
+    setState(() {
+          _tabTitles = [
+      I18n.of(context).noticeTabLabel,
+      I18n.of(context).systemMessageTabLabel,
+    ];
+    });
+  });
 
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
@@ -52,7 +59,7 @@ class _TLDMessagePageState extends State<TLDMessagePage> with TickerProviderStat
   }
 
   Widget _getBodyWidget(BuildContext context) {
-    return Column(
+    return  _tabTitles.length > 0 ? Column(
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(
@@ -83,7 +90,7 @@ class _TLDMessagePageState extends State<TLDMessagePage> with TickerProviderStat
             controller: _tabController,
           ))
         ],
-      );
+      ) : Container();
   }
   
 

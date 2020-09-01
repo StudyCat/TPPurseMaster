@@ -13,6 +13,7 @@ import 'package:dragon_sword_purse/Order/Page/tld_order_appeal_page.dart';
 import 'package:dragon_sword_purse/Order/View/tld_detail_order_paymethod_cell.dart';
 import 'package:dragon_sword_purse/Order/View/tld_order_appeal_bottom_cell.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -64,9 +65,9 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
     super.initState();
 
     if (widget.type == TLDJustNoticePageType.normal) {
-      titles = ['订单号', '卖家收款方式', '卖家地址', '买家地址', '描述', '截图上传','投票'];
+      titles = [I18n.of(navigatorKey.currentContext).orderNumLabel, I18n.of(navigatorKey.currentContext).sellerCollectionMethod, I18n.of(navigatorKey.currentContext).sellerAddress, I18n.of(navigatorKey.currentContext).buyerAddress, I18n.of(navigatorKey.currentContext).description200Words, I18n.of(navigatorKey.currentContext).shareCapture,I18n.of(navigatorKey.currentContext).vote];
     }else{
-      titles = ['订单号', '卖家收款方式', '卖家地址', '买家地址', '描述', '截图上传'];
+      titles = [I18n.of(navigatorKey.currentContext).orderNumLabel, I18n.of(navigatorKey.currentContext).sellerCollectionMethod, I18n.of(navigatorKey.currentContext).sellerAddress, I18n.of(navigatorKey.currentContext).buyerAddress, I18n.of(navigatorKey.currentContext).description200Words, I18n.of(navigatorKey.currentContext).shareCapture];
     }
 
     _controller = PageController();
@@ -157,7 +158,7 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
         ),
         heroTag: 'just_notice_page',
         transitionBetweenRoutes: false,
-        middle: Text(widget.type == TLDJustNoticePageType.normal ? '公正通知' : '申诉详情'),
+        middle: Text(widget.type == TLDJustNoticePageType.normal ? I18n.of(context).justNotice : I18n.of(context).DetailAppeal),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -223,9 +224,9 @@ class _TLDJustNoticePageState extends State<TLDJustNoticePage> {
                ));
           }else if(index == 6){
             return  _getPadding(TLDJustAppealBottomCell(appealStatus : _orderAppealModel != null ? _orderAppealModel.appealStatus : 0,finishTime: _orderAppealModel != null ? _orderAppealModel.finishTime : 0,didClickItemCallBack: (String title){
-              if (title == '撤销') {
+              if (title == I18n.of(context).repeal) {
                 _cancelAppeal();
-              }else if(title == '重新申请'){
+              }else if(title == I18n.of(context).reapply){
                 TLDDetailOrderModel orderModel = TLDDetailOrderModel();
                 orderModel.orderNo = _orderAppealModel.orderNo;
                 orderModel.payMethodVO = _orderAppealModel.payMethodVO;

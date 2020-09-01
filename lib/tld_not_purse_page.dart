@@ -5,6 +5,7 @@ import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -144,7 +145,7 @@ class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> with WidgetsB
         ),
         Padding(
           padding: EdgeInsets.only(top: ScreenUtil().setHeight(60)),
-          child: Text('您还没有钱包',
+          child: Text(I18n.of(context).noWalletHint,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(28),
                   color: Color.fromARGB(255, 153, 153, 153))),
@@ -160,14 +161,14 @@ class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> with WidgetsB
               Container(
                 width: (size.width - ScreenUtil().setWidth(220)) / 2,
                 height: ScreenUtil().setHeight(80),
-                child: _getActionButton('创建钱包', () {
+                child: _getActionButton(I18n.of(context).createWalletBtnTitle, () {
                   _createPurse(context);
                 }),
               ),
               Container(
                 width: (size.width - ScreenUtil().setWidth(220)) / 2,
                 height: ScreenUtil().setHeight(80),
-                child: _getActionButton('导入钱包', () {
+                child: _getActionButton(I18n.of(context).importWalletBtnTitle, () {
                   _importPurse(context);
                 }),
               ),
@@ -185,7 +186,7 @@ class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> with WidgetsB
                   borderRadius: BorderRadius.all(Radius.circular(4)),
                   color: Colors.white),
               child: Text(
-                '温馨提示:\n    冷钱包创建在手机端本地。创建钱包会要求您输入钱包密码，钱包会生成您用来恢复钱包的助记词，签名用的私钥，加密和验签用的公钥，以及钱包地址。\n   请妥善保管好您的助记词和私钥。',
+                I18n.of(context).homePageNotice,
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(24),
                     color: Color.fromARGB(255, 153, 153, 153)),

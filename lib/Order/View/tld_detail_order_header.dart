@@ -1,6 +1,7 @@
 
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -72,7 +73,7 @@ class _TLDDetailOrderHeaderViewState extends State<TLDDetailOrderHeaderView> {
       int minute = _countdownTime ~/ 60;
           int second = _countdownTime % 60;
         setState(() {
-          _subStr = minute > 0 ? '请于'+minute.toString()+'分'+second.toString()+'秒内支付。' :   '请于'+second.toString()+'秒内支付。';
+          _subStr = minute > 0 ? I18n.of(context).pleasePayUntilLabel +minute.toString()+I18n.of(context).payOrderMinuteLabel +second.toString()+ I18n.of(context).payOrderSecondLabel :   I18n.of(context).pleasePayUntilLabel+second.toString()+I18n.of(context).payOrderSecondLabel;
           if (_countdownTime < 0){
             timer.cancel();
             timer = null;
@@ -95,17 +96,17 @@ class _TLDDetailOrderHeaderViewState extends State<TLDDetailOrderHeaderView> {
               });
             }
           }else{
-            _subStr = '等待买家付款';
+            _subStr = I18n.of(context).waitBuyerPaymentLabel;
           }
           }
           break;
         case 1 :{
-          _subStr = '等待卖家确认';
+          _subStr = I18n.of(context).waitSellerSureLabel;
           isNeedAppeal = true;
         }
         break;
         case -1 :{
-          _subStr = '订单已取消';
+          _subStr = I18n.of(context).orderHaveCanceledLabel;
         }
         break;
         default :{
@@ -135,13 +136,13 @@ class _TLDDetailOrderHeaderViewState extends State<TLDDetailOrderHeaderView> {
 
   String _getAppealStatusString(){
     if (widget.detailOrderModel.appealStatus == -1){
-      return '申诉';
+      return I18n.of(context).appealOrderLabel;
     }else if (widget.detailOrderModel.appealStatus == 0){
-      return '申诉中';
+      return I18n.of(context).appealingLabel;
     }else if (widget.detailOrderModel.appealStatus == 1){
-      return '申诉成功';
+      return I18n.of(context).appealOrderSuccessLabel;
     }else{
-      return '申诉失败';
+      return I18n.of(context).appealOrderFailureLabel;
     }
   }
 

@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:date_format/date_format.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_detail_withdraw_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Purse/MyPurse/Page/tld_my_purse_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +17,7 @@ import 'dart:async';
 import 'CommonWidget/tld_data_manager.dart';
 import 'tld_home_page.dart';
 import 'dart:io';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main(){
   final JPush jPush = JPush();
@@ -189,6 +192,12 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title : 'TLD',
       navigatorKey: navigatorKey,
+       localizationsDelegates: const [
+        I18n.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: I18n.delegate.supportedLocales,
       debugShowCheckedModeBanner: false,
       navigatorObservers: [BotToastNavigatorObserver()],
       theme: ThemeData(

@@ -1,4 +1,6 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 
 class TLDBannerModel {
   int bannerId;
@@ -80,16 +82,16 @@ class TLDFindRootCellUIItemModel {
 class TLDFindRootModelManager {
   static List get uiModelList {
     return [
-      TLDFindRootCellUIModel(title: '玩法', items: [
+      TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).playingMethodLabel, items: [
         TLDFindRootCellUIItemModel(
-            title: 'TLD票据', imageAssest: 'assetss/images/icon_choose_accept.png',isPlusIcon: false),
+            title: I18n.of(navigatorKey.currentContext).tldBillLabel, imageAssest: 'assetss/images/icon_choose_accept.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(
-            title: '任务', imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
+            title: I18n.of(navigatorKey.currentContext).missionLabel, imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true)
       ]),
-      TLDFindRootCellUIModel(title: '其他', items: [
+      TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).otherLabel, items: [
         TLDFindRootCellUIItemModel(
-            title: '排行榜', imageAssest: 'assetss/images/icon_choose_rank.png',isPlusIcon: false),
+            title: I18n.of(navigatorKey.currentContext).rankLabel, imageAssest: 'assetss/images/icon_choose_rank.png',isPlusIcon: false),
       ])
     ];
   }

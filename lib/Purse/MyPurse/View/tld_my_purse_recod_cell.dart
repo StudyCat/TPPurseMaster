@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/Purse/MyPurse/Model/tld_my_purse_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:date_format/date_format.dart';
@@ -62,8 +63,8 @@ class _TLDMyPurseRecordCellState extends State<TLDMyPurseRecordCell> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          getAdressView(context,'发送地址',widget.transferInfoModel.fromWalletAddress),
-          getAdressView(context, '接收地址', widget.transferInfoModel.toWalletAddress),
+          getAdressView(context,I18n.of(context).sendAddress,widget.transferInfoModel.fromWalletAddress),
+          getAdressView(context, I18n.of(context).recieveAddress, widget.transferInfoModel.toWalletAddress),
           getNumLabel(context),
           getOtherInfoView(context),
         ],
@@ -78,11 +79,12 @@ class _TLDMyPurseRecordCellState extends State<TLDMyPurseRecordCell> {
     }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(title,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51)),),
         Container(
           padding: EdgeInsets.only(left : ScreenUtil().setWidth(20),right: ScreenUtil().setWidth(20)),
-          width: size.width - ScreenUtil().setWidth(230),
+          width: size.width - ScreenUtil().setWidth(350),
           child: Text(content,maxLines : 2 , style : TextStyle(fontSize : ScreenUtil().setSp(24),color:isMineWallet ? Color.fromARGB(255, 241, 131, 30): Color.fromARGB(255, 153, 153, 153)),overflow: TextOverflow.ellipsis,),
         ),
       ],
@@ -109,7 +111,7 @@ class _TLDMyPurseRecordCellState extends State<TLDMyPurseRecordCell> {
        mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.transferInfoModel.createTime),[yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss]),style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51)),),
-        Text('手续费' + widget.transferInfoModel.chargeValue + ' TLD',maxLines : 1 , style : TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153)),overflow: TextOverflow.ellipsis,
+        Text(I18n.of(context).serviceChargeLabel + widget.transferInfoModel.chargeValue + ' TLD',maxLines : 1 , style : TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153)),overflow: TextOverflow.ellipsis,
         )]
     ),
      );

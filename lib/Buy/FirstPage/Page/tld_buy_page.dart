@@ -7,6 +7,7 @@ import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
@@ -198,7 +199,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
         heroTag: 'buy_page',
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         transitionBetweenRoutes: false,
-        middle: Text('TLD钱包'),
+        middle: Text(I18n.of(context).commonPageTitle),
         leading: Builder(builder: (BuildContext context) {
           return CupertinoButton(
               child: Icon(

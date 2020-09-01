@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +33,7 @@ class _TLDSaleNotDataViewState extends State<TLDSaleNotDataView> {
               )),
             Padding(
               padding: EdgeInsets.only(top: ScreenUtil().setHeight(68)),
-              child: Text('暂无订单',
+              child: Text(I18n.of(context).noOrderLabel,
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(28),
                       color: Color.fromARGB(255, 51, 51, 51))),

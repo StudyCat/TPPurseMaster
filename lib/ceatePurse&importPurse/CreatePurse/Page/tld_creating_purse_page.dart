@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/ImportPurse/Page/tld_import_purse_success_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -102,9 +103,9 @@ class _TLDCreatingPursePageState extends State<TLDCreatingPursePage> {
   Widget build(BuildContext context) {
     String title;
     if (widget.type == TLDCreatingPursePageType.create) {
-      title = '创建钱包';
+      title = I18n.of(context).createWallet;
     } else {
-      title = '导入钱包';
+      title = I18n.of(context).importWallet;
     }
     return Scaffold(
       appBar: CupertinoNavigationBar(
@@ -140,9 +141,9 @@ class _TLDCreatingPursePageState extends State<TLDCreatingPursePage> {
   Widget _getBodyWidget(BuildContext context) {
     String str;
     if (widget.type == TLDCreatingPursePageType.create) {
-      str = '钱包创建中，请您耐心等待……';
+      str = I18n.of(context).pleaseWaitWhileTheWalletIsCreated;
     } else {
-      str = '钱包导入中，请您耐心等待……';
+      str = I18n.of(context).pleaseWaitWhileTheWalletIsImported;
     }
     return Center(
         child: Column(

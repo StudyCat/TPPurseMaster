@@ -2,12 +2,14 @@ import 'package:date_format/date_format.dart';
 import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_order_list_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDOrderListCell extends StatefulWidget {
-  TLDOrderListCell({Key key,this.didClickDetailBtnCallBack,this.didClickIMBtnCallBack,this.didClickItemCallBack,this.orderListModel,this.actionBtnTitle = '详情',this.didClickAppealBtn}) : super(key: key);
+  TLDOrderListCell({Key key,this.didClickDetailBtnCallBack,this.didClickIMBtnCallBack,this.didClickItemCallBack,this.orderListModel,this.actionBtnTitle,this.didClickAppealBtn}) : super(key: key);
 
   final TLDOrderListModel orderListModel;
 
@@ -68,7 +70,7 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Text(
-          '单号：' + widget.orderListModel.orderNo,
+          I18n.of(context).orderNumLabel + ':' + widget.orderListModel.orderNo,
           style: TextStyle(
               fontSize: ScreenUtil().setSp(24),
               color: Color.fromARGB(255, 153, 153, 153)),
@@ -92,9 +94,9 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          _getInfoView('数量',  widget.orderListModel.txCount + 'TLD', null),
-          _getInfoView('金额', '¥' + widget.orderListModel.txCount, null),
-          _getInfoView('状态', infoModel.orderStatusName, infoModel.orderStatusColor),
+          _getInfoView(I18n.of(context).countLabel,  widget.orderListModel.txCount + 'TLD', null),
+          _getInfoView(I18n.of(context).orderListAmountLabel, '¥' + widget.orderListModel.txCount, null),
+          _getInfoView(I18n.of(context).statusLabel, infoModel.orderStatusName, infoModel.orderStatusColor),
         ],
       ),
     );
@@ -162,13 +164,13 @@ class _TLDOrderListCellState extends State<TLDOrderListCell> {
       String appealStatus = '';
       switch (widget.orderListModel.appealStatus) {
         case 0:
-          appealStatus = '申诉中';
+          appealStatus = I18n.of(context).appealingLabel;
           break;
         case 1:
-          appealStatus = '申诉成功';
+          appealStatus = I18n.of(context).appealOrderSuccessLabel;
           break;
         default:
-          appealStatus = '申诉失败';
+          appealStatus = I18n.of(context).appealOrderSuccessLabel;
           break;
       }
       return Padding(

@@ -8,6 +8,7 @@ import 'package:dragon_sword_purse/Sale/DetailSale/Model/tld_detail_sale_model_m
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -35,14 +36,6 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
   // StreamSubscription _systemSubscreption;
 
   List titles = [
-    '收款方式',
-    '挂售钱包',
-    '最低购买额度',
-    '最高购买额度',
-    '手续费率',
-    '手续费',
-    '预计到账',
-    '创建时间',
   ];
 
 
@@ -52,6 +45,22 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    Future.delayed(Duration.zero,(){
+      setState(() {
+        titles = [
+          I18n.of(context).paymentTermLabel,
+          I18n.of(context).saleWalletLabel,
+          I18n.of(context).minimumPurchaseAmountLabel,
+          I18n.of(context).maximumPurchaseAmountLabel,
+          I18n.of(context).serviceChargeRateLabel,
+          I18n.of(context).serviceChargeLabel,
+          I18n.of(context).anticipatedToAccount,
+          I18n.of(context).createTimeLabel
+        ];
+      });
+    });
+
     _modelManager = TLDDetailSaleModelManager();
     _isLoading = true;
 
@@ -125,11 +134,11 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
         ),
         heroTag: 'detail_sale_page',
         transitionBetweenRoutes: false,
-        middle: Text('TLD钱包'),
+        middle: Text(I18n.of(context).commonPageTitle),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget(context)),
+      body: LoadingOverlay(isLoading: _isLoading, child: titles.length > 0 ? _getBodyWidget(context) : Container()),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -149,7 +158,7 @@ class _TLDDetailSalePageState extends State<TLDDetailSalePage> {
                 String address = _saleModel != null ? _saleModel.walletAddress : '';
                 return Padding(
                   padding: EdgeInsets.only(top : ScreenUtil().setHeight(36)),
-                  child: Text('地址：' + address,style:TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153))),
+                  child: Text(I18n.of(context).addressLabel + ':' + address,style:TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153))),
                 );
               }else if (index == 1){
                 return TLDDetailSaleInfoView(saleModel: _saleModel,);

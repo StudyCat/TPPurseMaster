@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +24,7 @@ class _TLDExportKeyPageState extends State<TLDExportKeyPage> {
         ),
         heroTag: 'export_key_page',
         transitionBetweenRoutes: false,
-        middle: Text('导出私钥'),
+        middle: Text(I18n.of(context).exportPrivateKey),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -49,7 +50,10 @@ class _TLDExportKeyPageState extends State<TLDExportKeyPage> {
             top: ScreenUtil().setHeight(42),
           ),
           child: Center(
-              child: Text('请认真抄写，妥善保管，切勿泄漏私钥',style : TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 208, 2, 27))),
+              child: Container(
+                width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(60),
+                child: Text(I18n.of(context).pleaseCopyCarefullyAndKeepItProperlyDoNotDivulgeThePrivateKey,textAlign: TextAlign.center,style : TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 208, 2, 27))),
+              ),
           ),
         ),
         Container(
@@ -57,7 +61,7 @@ class _TLDExportKeyPageState extends State<TLDExportKeyPage> {
             top: ScreenUtil().setHeight(140),
             left: ScreenUtil().setWidth(30),
           ),
-          child:  Text('(我的钱包01)地址',style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51))),
+          child:  Text(I18n.of(context).WalletAddress,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51))),
         ),
         Container(
           padding: EdgeInsets.only(
@@ -74,7 +78,7 @@ class _TLDExportKeyPageState extends State<TLDExportKeyPage> {
             top: ScreenUtil().setHeight(32),
             left: ScreenUtil().setWidth(30),
           ),
-          child:  Text('(我的钱包01)私钥',style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51))),
+          child:  Text(I18n.of(context).privateKey,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51))),
         ),
         Container(
           padding: EdgeInsets.only(

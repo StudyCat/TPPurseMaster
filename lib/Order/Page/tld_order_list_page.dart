@@ -1,4 +1,6 @@
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,8 +26,8 @@ class _TLDOrderListPageState extends State<TLDOrderListPage>
   TLDOrderListContentController _contentController;
 
   List<String> _tabTitles = [
-    "买入",
-    "卖出",
+    I18n.of(navigatorKey.currentContext).buyingTabTitle,
+    I18n.of(navigatorKey.currentContext).saleTabTitle,
   ];
 
   @override
@@ -49,7 +51,7 @@ class _TLDOrderListPageState extends State<TLDOrderListPage>
         ),
         heroTag: 'order_list_page',
         transitionBetweenRoutes: false,
-        middle: Text('订单列表'),
+        middle: Text(I18n.of(context).orderListPageTitle),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
         trailing: CupertinoButton(

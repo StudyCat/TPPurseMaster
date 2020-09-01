@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -72,7 +73,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
               ),
               child: CupertinoButton(
                 padding: EdgeInsets.zero,
-                child: Text('出售',
+                child: Text(I18n.of(context).sell,
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(28), color: Colors.white)),
                 onPressed: widget.didClickChangeBtnCallBack,
@@ -153,7 +154,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
                     width: 1,
                   ),
                 child: Text(
-                  '收款码',
+                  I18n.of(context).receivingQRCode,
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(28),
                       color: Theme.of(context).hintColor),
@@ -165,7 +166,7 @@ class _TLDMyPurseHeaderViewState extends State<TLDMyPurseHeaderView> {
               child: CupertinoButton(
                 onPressed: widget.didClickTransferAccountsBtnCallBack,
                 child: Text(
-                  '转账',
+                  I18n.of(context).transferAccounts,
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(28), color: Colors.white),
                 ),

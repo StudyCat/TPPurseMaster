@@ -1,6 +1,7 @@
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_creating_purse_page.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/ImportPurse/View/tld_import_purse_input_word_textfield.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,8 +55,8 @@ class _TLDImportPurseWordPageState extends State<TLDImportPurseWordPage> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(
-              left: ScreenUtil().setWidth(30), top: ScreenUtil().setHeight(40)),
-          child: Text('按照下面的顺序抄下12个助记词',
+              left: ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30), top: ScreenUtil().setHeight(40)),
+          child: Text(I18n.of(context).WriteDownThe12Mnemonic,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(28),
                   color: Color.fromARGB(255, 51, 51, 51))),
@@ -74,7 +75,7 @@ class _TLDImportPurseWordPageState extends State<TLDImportPurseWordPage> {
           width: size.width - ScreenUtil().setWidth(200),
           child: CupertinoButton(
               child: Text(
-                '确定',
+                I18n.of(context).sureBtnTitle,
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(28), color: Colors.white),
               ),

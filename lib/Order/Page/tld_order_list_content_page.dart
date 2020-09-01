@@ -4,6 +4,7 @@ import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -150,7 +151,7 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> {
       getListViewCellCallBack:(int index){
         return _getListItem(context, index);
       } , getEmptyViewCallBack: (){
-        return TLDEmptyDataView(imageAsset: 'assetss/images/creating_purse.png', title: '暂无订单');
+        return TLDEmptyDataView(imageAsset: 'assetss/images/creating_purse.png', title: I18n.of(context).noOrderLabel);
       }, streamController: _streamController,
       refreshController: _refreshController,
       refreshCallBack: (){
@@ -175,6 +176,7 @@ class _TLDOrderListContentPageState extends State<TLDOrderListContentPage> {
           _getOrderListDataWithPramaterModel(_pramaterModel);
         });
         },
+      actionBtnTitle: I18n.of(context).detailButtonTitle,
       didClickIMBtnCallBack: (){
          String toUserName = '';
           if (model.amIBuyer){

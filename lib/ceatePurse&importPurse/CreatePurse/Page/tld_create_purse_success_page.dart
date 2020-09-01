@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
         ),
         heroTag: 'create_purse_success_page',
         transitionBetweenRoutes: false,
-        middle: Text('创建钱包'),
+        middle: Text(I18n.of(context).createWallet),
         automaticallyImplyLeading: false,
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
@@ -62,7 +63,7 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
         ),
         Padding(
           padding: EdgeInsets.only(top: ScreenUtil().setHeight(68)),
-          child: Text('创建钱包成功',
+          child: Text(I18n.of(context).createWalletSuccess,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(28),
                   color: Color.fromARGB(255, 51, 51, 51))),
@@ -96,7 +97,7 @@ class _TLDCreatePurseSuccessPageState extends State<TLDCreatePurseSuccessPage> {
           width: size.width - ScreenUtil().setWidth(200),
           child: CupertinoButton(
               child: Text(
-                '助记备份词',
+                I18n.of(context).backupWalletMnemonicWord,
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(28), color: Colors.white),
               ),

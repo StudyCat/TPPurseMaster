@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/CommonWidget/tld_amount_text_input_fprmatter.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -87,7 +88,7 @@ class _TLDBuyActionSheetInputViewState
           child: CupertinoButton(
               padding: EdgeInsets.all(0),
               child: Text(
-                '全部购买',
+                I18n.of(context).buyAllBtnTitle,
                 style: TextStyle(
                     fontSize: 14, color: Theme.of(context).primaryColor,),
               ),
@@ -116,7 +117,7 @@ class _TLDBuyActionSheetInputViewState
           BoxDecoration(border: Border.all(color: Color.fromARGB(0, 0, 0, 0))),
       padding: EdgeInsets.only(
           top: ScreenUtil().setHeight(24), left: ScreenUtil().setWidth(20)),
-      placeholder: '请输入购买的数量',
+      placeholder: I18n.of(context).inputBuyAmountFieldPlaceholder,
       focusNode:widget.focusNode,
       placeholderStyle: TextStyle(
           fontSize: ScreenUtil().setSp(24),

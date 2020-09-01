@@ -1,4 +1,5 @@
 import 'package:date_format/date_format.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +26,7 @@ class _TLDJustAppealBottomCellState extends State<TLDJustAppealBottomCell> {
       if (widget.appealStatus == 0) {
         return _getAppealIsDealingStatusWidget();
       }else if(widget.appealStatus == 1 ){
-        return _getAppealResultWidget('申诉已处理，根据公证投票，同意放币，请留意查收。');
+        return _getAppealResultWidget(I18n.of(context).theAppealHasBeenProcessedAgree);
       }else if(widget.appealStatus == 2 ){
         return _getFailureAppealStatusWidget();
       } else{
@@ -40,9 +41,9 @@ class _TLDJustAppealBottomCellState extends State<TLDJustAppealBottomCell> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(left: 0,top : ScreenUtil().setHeight(22)),
-          child: Text('等待处理',style: TextStyle(color : Color.fromARGB(255, 153, 153, 153),fontSize : ScreenUtil().setSp(24)),),
+          child: Text(I18n.of(context).waitingProcess,style: TextStyle(color : Color.fromARGB(255, 153, 153, 153),fontSize : ScreenUtil().setSp(24)),),
         ),
-        _getButtonWidget('撤销')
+        _getButtonWidget(I18n.of(context).repeal)
       ],
     );
   }
@@ -51,8 +52,8 @@ class _TLDJustAppealBottomCellState extends State<TLDJustAppealBottomCell> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-       _getAppealResultWidget('申诉已处理，根据公证投票，不同意放币。'),
-       _getButtonWidget('重新申诉')
+       _getAppealResultWidget(I18n.of(context).theAppealHasBeenProcessedDisAgree),
+       _getButtonWidget(I18n.of(context).reapply)
       ],
     );
   }

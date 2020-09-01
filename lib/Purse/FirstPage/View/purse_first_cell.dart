@@ -1,6 +1,7 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -90,13 +91,13 @@ class _TLDPurseHeaderCellState extends State<TLDPurseHeaderCell> {
     }
 
     if (isHaveImport){
-      return getButton(()=>widget.didClickCreatePurseButtonCallBack(), '创建钱包', MediaQuery.of(context).size.width * 2);
+      return getButton(()=>widget.didClickCreatePurseButtonCallBack(), I18n.of(context).createWalletBtnTitle, MediaQuery.of(context).size.width * 2);
     }else{
       return  Row(
               mainAxisAlignment : MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                getButton(()=>widget.didClickCreatePurseButtonCallBack(), '创建钱包', MediaQuery.of(context).size.width),
-                getButton(()=>widget.didClickImportPurseButtonCallBack(), '导入钱包', MediaQuery.of(context).size.width),
+                getButton(()=>widget.didClickCreatePurseButtonCallBack(), I18n.of(context).createWalletBtnTitle, MediaQuery.of(context).size.width),
+                getButton(()=>widget.didClickImportPurseButtonCallBack(), I18n.of(context).importWalletBtnTitle, MediaQuery.of(context).size.width),
               ]);
     }
   }

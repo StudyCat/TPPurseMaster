@@ -7,6 +7,7 @@ import 'package:dragon_sword_purse/Sale/FirstPage/View/tld_sale_suspend_button.d
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -148,7 +149,7 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
               itemBuilder: (BuildContext context, int index) {
                 TLDSaleListInfoModel model = _saleDatas[index];
                 return getSaleFirstPageCell(
-                    '取消挂售',
+                    I18n.of(context).cancelSaleBtnTitle,
                     () => _cancelSale(model,index),
                     context,model,()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDDetailSalePage(sellNo: model.sellNo,walletName: model.wallet.name,))),widget.type);
               },

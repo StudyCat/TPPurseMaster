@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Purse/Settings/Page/tld_purse_setting_backup_word_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../CommonWidget/dash_rect.dart';
@@ -48,7 +49,7 @@ class _TLDVerifyWordPageState extends State<TLDVerifyWordPage> {
         ),
         heroTag: 'verify_word_page',
         transitionBetweenRoutes: false,
-        middle: Text('钱包设置'),
+        middle: Text(I18n.of(context).walletSetting),
         trailing: GestureDetector(
           onTap:(){
             if (selectedWords.length > 0){
@@ -58,7 +59,7 @@ class _TLDVerifyWordPageState extends State<TLDVerifyWordPage> {
             });
             }
           },
-          child : Text('撤回',style:TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28)))
+          child : Text(I18n.of(context).revoke,style:TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28)))
         ),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
@@ -76,7 +77,7 @@ class _TLDVerifyWordPageState extends State<TLDVerifyWordPage> {
           TLDVerifyWordInputCell(words: selectedWords,),
           Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(60),left: ScreenUtil().setWidth(140),right: ScreenUtil().setWidth(140)),
-            child: Text('从下面打乱的助记词中选择助记词填到上面的格子中',style : TextStyle(fontSize: ScreenUtil().setSp(28),color: Color.fromARGB(255, 51, 51, 51)),textAlign: TextAlign.center,),
+            child: Text(I18n.of(context).ChooseTheMnemonicFromTheScrambledMnemonic,style : TextStyle(fontSize: ScreenUtil().setSp(28),color: Color.fromARGB(255, 51, 51, 51)),textAlign: TextAlign.center,),
           ),
           Container(height:180 ,child: TLDVerifyWordGridView(words: radomList,currentedIndex: currentSelectedIndex,didClickItem: (int index){
             if (selectedWords == null || selectedWords.length < 12){
@@ -93,7 +94,7 @@ class _TLDVerifyWordPageState extends State<TLDVerifyWordPage> {
             width: size.width - ScreenUtil().setWidth(200),
             margin: EdgeInsets.only(top : ScreenUtil().setHeight(80)),
             height: ScreenUtil().setHeight(80),
-            child: CupertinoButton(child: Text('下一步',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){
+            child: CupertinoButton(child: Text(I18n.of(context).next,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){
               if(selectedWords.length == 12){
                 if(widget.words.toString() == selectedWords.toString()){
                   if (widget.type == TLDBackWordType.normal){

@@ -33,7 +33,7 @@ class _TLD3rdPartWebPayPageState extends State<TLD3rdPartWebPayPage> {
     super.initState();
 
     _pramaterModel = TLDTranferAmountPramaterModel();
-    _pramaterModel.toWalletAddress = widget.walletAddress;
+    _pramaterModel.isRecharge = true;
     _pramaterModel.value = widget.amount;
   }
 

@@ -17,6 +17,7 @@ import 'package:dragon_sword_purse/Notification/tld_more_btn_click_notification.
 import 'package:dragon_sword_purse/Order/Page/tld_order_list_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
 import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -92,7 +93,7 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
         ),
         heroTag: 'find_root_page',
         transitionBetweenRoutes: false,
-        middle: Text('发现',),
+        middle: Text(I18n.of(context).findPageTitle,),
         leading: Builder(builder: (BuildContext context) {
           return CupertinoButton(
               child: Icon(
@@ -144,17 +145,17 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
         }else{
           TLDFindRootCellUIModel uiModel = _iconDataSource[index - 1];
           return TLDFindRootPageCell(uiModel: uiModel,didClickItemCallBack: (TLDFindRootCellUIItemModel itemModel){
-            if (itemModel.title == '任务' && itemModel.url.length == 0){
-              Fluttertoast.showToast(msg: '任务待开发中，敬请期待');
+            if (itemModel.title == I18n.of(context).missionLabel && itemModel.url.length == 0){
+              Fluttertoast.showToast(msg: I18n.of(context).missionNotOpenAlertDesc);
               // Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDNewMissionFirstPage()));
-            }else if (itemModel.title == 'TLD票据' && itemModel.url.length == 0){
+            }else if (itemModel.title == I18n.of(context).tldBillLabel && itemModel.url.length == 0){
               String acceptanceToken = TLDDataManager.instance.acceptanceToken;
               if (acceptanceToken != null){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceTabbarPage()));
               }else{
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceLoginPage()));
               }
-            }else if (itemModel.title == '排行榜' && itemModel.url.length == 0){
+            }else if (itemModel.title == I18n.of(context).rankLabel && itemModel.url.length == 0){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRankTabPage()));
             }else if (itemModel.title.length == 0 && itemModel.url.length == 0){
               _scanPhoto();
@@ -193,9 +194,9 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
                             }
                           }
                           if (isHaveSameUrl){
-                            Fluttertoast.showToast(msg: '已有相同应用');
+                            Fluttertoast.showToast(msg: I18n.of(context).haveSameApplicationAlertDesc);
                           }else{
-                            Fluttertoast.showToast(msg: '添加第三方应用成功');
+                            Fluttertoast.showToast(msg: I18n.of(context).jointhirdPartyApplictionAlertDesc);
                             TLDFindRootCellUIItemModel uiItemModel = TLDFindRootCellUIItemModel(title: infoModel.name,iconUrl: infoModel.iconUrl,url: infoModel.url);
                             setState(() {
                               findRootCellUIModel.items.insert(findRootCellUIModel.items.length - 1,uiItemModel);

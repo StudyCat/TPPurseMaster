@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -100,14 +101,14 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
         padding: EdgeInsets.only(left : ScreenUtil().setWidth(40),right : ScreenUtil().setWidth(40),top: ScreenUtil().setHeight(30),bottom: ScreenUtil().setHeight(36)),
         child: Column(
           children: <Widget>[
-            _getNormalPayInfoView('真实姓名', widget.paymentModel == null ? '':widget.paymentModel.realName),
+            _getNormalPayInfoView(I18n.of(context).realNameLabel, widget.paymentModel == null ? '':widget.paymentModel.realName),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-              child: _getBankCodeInfoView('银行卡号',widget.paymentModel == null ? '':widget.paymentModel.account)
+              child: _getBankCodeInfoView(I18n.of(context).bankCardNumLabel,widget.paymentModel == null ? '':widget.paymentModel.account)
             ),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-              child: _getNormalPayInfoView('开户行', widget.paymentModel == null ? '':widget.paymentModel.subBranch),
+              child: _getNormalPayInfoView(I18n.of(context).openAccountBankLabel, widget.paymentModel == null ? '':widget.paymentModel.subBranch),
             )
           ],
         ),
@@ -117,14 +118,14 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
         padding: EdgeInsets.only(left : ScreenUtil().setWidth(40),right : ScreenUtil().setWidth(40),top: ScreenUtil().setHeight(30),bottom: ScreenUtil().setHeight(36)),
         child: Column(
           children: <Widget>[
-            _getNormalPayInfoView('支付方式', widget.paymentModel == null ? '':widget.paymentModel.myPayName),
+            _getNormalPayInfoView(I18n.of(context).paymentTermLabel, widget.paymentModel == null ? '':widget.paymentModel.myPayName),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-              child: _getBankCodeInfoView('支付账号',widget.paymentModel == null ? '':widget.paymentModel.account)
+              child: _getBankCodeInfoView(I18n.of(context).paymentAccountLabel,widget.paymentModel == null ? '':widget.paymentModel.account)
             ),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-              child: _getNormalPayInfoView('真实姓名', widget.paymentModel == null ? '':widget.paymentModel.realName),
+              child: _getNormalPayInfoView(I18n.of(context).realNameLabel, widget.paymentModel == null ? '':widget.paymentModel.realName),
             ),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
@@ -138,7 +139,7 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
         padding: EdgeInsets.only(left : ScreenUtil().setWidth(40),right : ScreenUtil().setWidth(40),top: ScreenUtil().setHeight(30),bottom: ScreenUtil().setHeight(36)),
         child: Column(
           children: <Widget>[
-            _getNormalPayInfoView('收款账号', widget.paymentModel == null ? '' :widget.paymentModel.account),
+            _getNormalPayInfoView(I18n.of(context).collectionAccountLabel, widget.paymentModel == null ? '' :widget.paymentModel.account),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
               child: _getQrCodePayInfoView(),
@@ -151,16 +152,13 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
 
   // 获取只有两个文字展示的支付信息view
   Widget _getNormalPayInfoView(String title , String content){
-    Size size = MediaQuery.of(context).size;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Container(
-          width: ScreenUtil().setWidth(100),
           child :Text(title,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102)))
         ),
         Container(
-          width : size.width - ScreenUtil().setWidth(250),
           child: Text(content,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102)),maxLines: null,textAlign: TextAlign.end,),
         ),
       ],
@@ -174,7 +172,7 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
        child : Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('二维码',style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102))),
+        Text(I18n.of(context).qrCodeLabel,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102))),
         Icon(IconData(0xe640,fontFamily : 'appIconFonts'))
       ],
     )
@@ -195,14 +193,12 @@ class _TLDDetailOrderPayMethodCellState extends State<TLDDetailOrderPayMethodCel
       children: <Widget>[
         Text(title,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102))),
          Container(
-           width:  size.width - ScreenUtil().setWidth(250),
               child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(right : ScreenUtil().setWidth(20)),
                   child: Container(
-                    width : size.width - ScreenUtil().setWidth(300),
                     child :Text(bankAcount,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102)),textAlign: TextAlign.end,maxLines: null,)
                   ),
                 ),

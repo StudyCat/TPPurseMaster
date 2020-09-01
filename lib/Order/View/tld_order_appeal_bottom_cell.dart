@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class _TLDOrderAppealBottomCellState extends State<TLDOrderAppealBottomCell> {
           onPressed: () => widget.didClickSureBtnCallBack(),
           borderRadius: BorderRadius.all(Radius.circular(4)),
           child: Text(
-            '提交',
+            I18n.of(context).submit,
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(24),
                 color: Colors.white,

@@ -1,6 +1,7 @@
 import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/ltd_sale_buy_cell_header.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Model/tld_sale_list_info_model.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,12 +23,12 @@ Widget getSaleFirstPageCell(
         width: screenSize.width - 30,
         padding: EdgeInsets.only(top: 10, bottom: 17),
         child: Column(children: <Widget>[
-          TLDCommonCellHeaderView(title:'订单号',buttonTitle: buttonTitle,onPressCallBack: onPressCallBack,buttonWidth: 166,saleModel: model,isHiddenBtn: isHiddeBtn),
-          _leftRightItem(context,34, 0, '收款方式', '', false,model.payMethodVO.type),
-          _leftRightItem(context,22, 0, '最低购买额度', model.max + 'TLD', true,0),
-          _leftRightItem(context,22, 0, '最高购买额度', model.maxAmount + 'TLD', true,0),
-          _leftRightItem(context,22, 0, '挂售钱包', model.wallet.name, true,0),
-          _leftRightItem(context, 22, 20, '创建时间', getTimeString(model.createTime), true,0),
+          TLDCommonCellHeaderView(title:I18n.of(context).orderNumLabel,buttonTitle: buttonTitle,onPressCallBack: onPressCallBack,buttonWidth: 166,saleModel: model,isHiddenBtn: isHiddeBtn),
+          _leftRightItem(context,34, 0, I18n.of(context).paymentTermLabel, '', false,model.payMethodVO.type),
+          _leftRightItem(context,22, 0, I18n.of(context).minimumPurchaseAmountLabel, model.max + 'TLD', true,0),
+          _leftRightItem(context,22, 0, I18n.of(context).maximumPurchaseAmountLabel, model.maxAmount + 'TLD', true,0),
+          _leftRightItem(context,22, 0, I18n.of(context).saleWalletLabel, model.wallet.name, true,0),
+          _leftRightItem(context, 22, 20, I18n.of(context).createTimeLabel, getTimeString(model.createTime), true,0),
         ]),
       ),
     ),
@@ -49,7 +50,6 @@ Widget _leftRightItem(BuildContext context, num top , num bottom,String title , 
         ),
         Container(
           padding : EdgeInsets.only( right :ScreenUtil().setWidth(20)),
-          width:  ScreenUtil().setWidth(400),
           alignment: Alignment.centerRight,
           child: isTextType ? Text(content,style: TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 51, 51, 51)),maxLines: 1,) : Icon(IconData(getIconInt(paymentType),fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(28),)
         ),

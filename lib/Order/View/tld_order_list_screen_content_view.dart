@@ -1,3 +1,5 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +18,10 @@ class TLDOrderListScreenContentView extends StatefulWidget {
 class _TLDOrderListScreenContentViewState
     extends State<TLDOrderListScreenContentView> {
   List titles = [
-    '未支付',
-    '已支付',
-    '已完成',
-    '已取消',
+    I18n.of(navigatorKey.currentContext).waitPayLabel,
+    I18n.of(navigatorKey.currentContext).havePaidLabel,
+    I18n.of(navigatorKey.currentContext).finishedStatusLabel,
+    I18n.of(navigatorKey.currentContext).canceledStatusLabel,
   ];
 
   int selectedIndex;
@@ -38,7 +40,7 @@ class _TLDOrderListScreenContentViewState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('订单状态',
+            Text(I18n.of(context).statusLabel,
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(28),
                     color: Color.fromARGB(255, 51, 51, 51))),
@@ -132,7 +134,7 @@ class _TLDOrderListScreenContentViewState
                 width: 1,
               ),
               child: Text(
-                '重置',
+                I18n.of(context).resetBtnTitle,
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(24),
                     color: Theme.of(context).primaryColor),
@@ -144,7 +146,7 @@ class _TLDOrderListScreenContentViewState
             height: ScreenUtil().setHeight(80),
             child: CupertinoButton(
           child: Text(
-            '确认',
+            I18n.of(context).sureBtnTitle,
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(28), color: Colors.white),
           ),

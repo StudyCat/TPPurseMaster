@@ -6,6 +6,7 @@ import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Purse/Settings/Page/tld_purse_level_desc_page.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,10 +46,10 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
 
     if (widget.wallet.mnemonic.length != null && widget.wallet.mnemonic.length > 0){
       hasMnemonicWord = true;
-      titles = [ '更改钱包名称','备份钱包助记词','导出私钥','删除钱包','等级说明'];
+      titles = [ I18n.of(navigatorKey.currentContext).changeWalletName,I18n.of(navigatorKey.currentContext).backupWalletMnemonicWord,I18n.of(navigatorKey.currentContext).exportPrivateKey,I18n.of(navigatorKey.currentContext).deleteWallet,I18n.of(navigatorKey.currentContext).levelDescription];
     }else{
       hasMnemonicWord = false;
-      titles = [ '更改钱包名称','导出私钥','删除钱包','等级说明'];
+      titles = [ I18n.of(navigatorKey.currentContext).changeWalletName,I18n.of(navigatorKey.currentContext).exportPrivateKey,I18n.of(navigatorKey.currentContext).deleteWallet,I18n.of(navigatorKey.currentContext).levelDescription];
     }  
   }
 
@@ -61,7 +62,7 @@ class _TLDPurseSettingPageState extends State<TLDPurseSettingPage> {
         ),
         heroTag: 'purse_setting_page',
         transitionBetweenRoutes: false,
-        middle: Text('钱包设置'),
+        middle: Text(I18n.of(context).walletSetting),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),

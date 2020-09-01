@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class _TLDImportPurseSuccessPageState extends State<TLDImportPurseSuccessPage> {
        ),
         heroTag: 'import_purse_success_page',
         transitionBetweenRoutes: false,
-        middle: Text('导入钱包'),
+        middle: Text(I18n.of(context).importWallet),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -61,7 +62,7 @@ class _TLDImportPurseSuccessPageState extends State<TLDImportPurseSuccessPage> {
         ),
         Padding(
           padding: EdgeInsets.only(top: ScreenUtil().setHeight(68)),
-          child: Text('导入成功',
+          child: Text(I18n.of(context).importSuccess,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(28),
                   color: Color.fromARGB(255, 51, 51, 51))),
@@ -75,7 +76,7 @@ class _TLDImportPurseSuccessPageState extends State<TLDImportPurseSuccessPage> {
           width: size.width - ScreenUtil().setWidth(200),
           child: CupertinoButton(
               child: Text(
-                '确定',
+                I18n.of(context).sureBtnTitle,
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(28), color: Colors.white),
               ),

@@ -5,6 +5,7 @@ class TLDInviteDetailEarningModel {
   String tel;
   List<TLDEarningBillModel> list;
   String totalProfit;
+  String realTel;
 
   TLDInviteDetailEarningModel(
       {this.userName, this.tel, this.list, this.totalProfit});
@@ -12,6 +13,7 @@ class TLDInviteDetailEarningModel {
   TLDInviteDetailEarningModel.fromJson(Map<String, dynamic> json) {
     userName = json['userName'];
     tel = json['tel'];
+    realTel = json['realTel'];
     if (json['list'] != null) {
       list = new List<TLDEarningBillModel>();
       json['list'].forEach((v) {
@@ -25,6 +27,7 @@ class TLDInviteDetailEarningModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['userName'] = this.userName;
     data['tel'] = this.tel;
+    data['realTel'] = this.realTel;
     if (this.list != null) {
       data['list'] = this.list.map((v) => v.toJson()).toList();
     }

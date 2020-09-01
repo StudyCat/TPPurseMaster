@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/ceatePurse&importPurse/ImportPurse/Model/tld_import_purse_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,7 +45,7 @@ class _TLDImportPurseKeyPageState extends State<TLDImportPurseKeyPage> {
         Padding(
           padding: EdgeInsets.only(
               left: ScreenUtil().setWidth(30), top: ScreenUtil().setHeight(40)),
-          child: Text('请在下面输入您的私钥：',
+          child: Text(I18n.of(context).pleaseEnterYourPrivateKey,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(28),
                   color: Color.fromARGB(255, 51, 51, 51))),
@@ -80,7 +81,7 @@ class _TLDImportPurseKeyPageState extends State<TLDImportPurseKeyPage> {
           width: size.width - ScreenUtil().setWidth(200),
           child: CupertinoButton(
               child: Text(
-                '确定',
+                I18n.of(context).sureBtnTitle,
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(28), color: Colors.white),
               ),

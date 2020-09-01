@@ -6,6 +6,8 @@ import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance
 import 'package:dragon_sword_purse/Order/Model/tld_detail_order_model_manager.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_order_appeal_model_manager.dart';
 import 'package:dragon_sword_purse/Order/View/tld_order_appeal_bottom_cell.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,7 +35,7 @@ class TLDOrderAppealPage extends StatefulWidget {
 }
 
 class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
-  List titles = ['订单号', '卖家收款方式', '卖家地址', '买家地址', '描述（200字以内）', '截图上传'];
+  List titles = [I18n.of(navigatorKey.currentContext).orderNumLabel, I18n.of(navigatorKey.currentContext).sellerCollectionMethod, I18n.of(navigatorKey.currentContext).sellerAddress, I18n.of(navigatorKey.currentContext).buyerAddress, I18n.of(navigatorKey.currentContext).description200Words, I18n.of(navigatorKey.currentContext).shareCapture];
 
   bool isOpen;
 
@@ -111,7 +113,7 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
         ),
         heroTag: 'order_appeal_page',
         transitionBetweenRoutes: false,
-        middle: Text('订单申诉'),
+        middle: Text(I18n.of(context).appealOrderLabel),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -147,7 +149,7 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
           } else if (index == 4) {
             return _getPadding(TLDUserFeedbackQuestionDescCell(
               title: titles[index],
-              placeholder: '请描述您的申诉问题',
+              placeholder: I18n.of(context).pleaseDescription,
               stringDidChangeCallBack: (String text){
                 appealDesc = text;
               },
@@ -155,7 +157,7 @@ class _TLDOrderAppealPageState extends State<TLDOrderAppealPage> {
           } else if (index == 5) {
             return _getPadding(TLDUserFeedbackPickPicCell(
                 title: titles[index],
-                subTitle: '（单个图片2M以内，最多三张图片）',
+                subTitle: I18n.of(context).singlePicture2M,
                 images: images,
                 didClickCallBack: () {
                   showCupertinoModalPopup(

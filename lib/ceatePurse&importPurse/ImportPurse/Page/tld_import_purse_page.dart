@@ -1,3 +1,5 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,15 +19,15 @@ class _TLDImportPursePageState extends State<TLDImportPursePage> with SingleTick
   TabController _tabController;
 
     List<String> _tabTitles = [
-    "助记词",
-    "私钥",
+    I18n.of(navigatorKey.currentContext).mnemonicWord,
+    I18n.of(navigatorKey.currentContext).privateKey,
   ];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    
     _tabController = TabController(length: 2, vsync: this);
   }
 

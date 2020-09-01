@@ -3,11 +3,13 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 
 class TLDTranferAmountPramaterModel{
+
   String chargeValue;
   String chargeWalletAddress;
   String fromWalletAddress;
   String toWalletAddress;
   String value; 
+  bool isRecharge;
 }
 
 class TLDTransferAccountsModelManager{
@@ -30,6 +32,9 @@ class TLDTransferAccountsModelManager{
 
     void transferAmount(TLDTranferAmountPramaterModel pramaterModel,Function(int) success,Function(TLDError) failure){
       Map pramaterMap = {'chargeValue':pramaterModel.chargeValue,'chargeWalletAddress':pramaterModel.chargeWalletAddress,'fromWalletAddress':pramaterModel.fromWalletAddress,'toWalletAddress':pramaterModel.toWalletAddress,'value':pramaterModel.value,};
+      if (pramaterModel.isRecharge != null){
+        pramaterMap.addEntries({'type':1}.entries);
+      }
       TLDBaseRequest request = TLDBaseRequest(pramaterMap,'wallet/transfer');
       request.isNeedSign = true;
       request.walletAddress = pramaterModel.fromWalletAddress;

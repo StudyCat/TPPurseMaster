@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dragon_sword_purse/CommonWidget/tld_amount_text_input_fprmatter.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,7 +56,7 @@ class _TLDBuySearchFieldState extends State<TLDBuySearchField> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  width: screenSize.width - ScreenUtil().setWidth(230),
+                  width: screenSize.width - ScreenUtil().setWidth(240),
                   alignment: Alignment.centerLeft,
                   child: TextField(
                     controller: _textEditingController,
@@ -65,7 +66,7 @@ class _TLDBuySearchFieldState extends State<TLDBuySearchField> {
                     onSubmitted:(str)=> widget.didClickSearchBtnCallBack(),
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: '请输入TLD数量',
+                      hintText: I18n.of(context).buySearchFieldPlaceholder,
                       hintStyle: TextStyle(
                           color: Color.fromARGB(255, 153, 153, 153),
                           fontSize: 12),
@@ -80,12 +81,12 @@ class _TLDBuySearchFieldState extends State<TLDBuySearchField> {
                         color: Color.fromARGB(255, 187, 187, 187))),
                 Container(
                   padding: EdgeInsets.only(left: 5),
-                  width: ScreenUtil().setWidth(90),
+                  width: ScreenUtil().setWidth(100),
                   height: ScreenUtil().setHeight(60),
                   child: CupertinoButton(
                       padding: EdgeInsets.all(0),
                       child: Text(
-                        '查询',
+                        I18n.of(context).searchBtnTitle,
                         style: TextStyle(
                             fontSize: 14,
                             color: Theme.of(context).primaryColor),

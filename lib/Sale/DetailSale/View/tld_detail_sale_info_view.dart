@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Sale/DetailSale/Model/tld_detail_sale_model.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,11 +21,11 @@ class _TLDDetailSaleInfoViewState extends State<TLDDetailSaleInfoView> {
     String status = '';
     if (widget.saleModel != null){
       if (widget.saleModel.status == 0){
-      status = '挂售中';
+      status = I18n.of(context).onSaleStatusLabel;
     }else if(widget.saleModel.status == 1){
-      status = '已完成';
+      status = I18n.of(context).finishedStatusLabel;
     }else{
-      status = '已取消';
+      status = I18n.of(context).cancelSaleBtnTitle;
     }
     }
     return Padding(
@@ -32,9 +33,9 @@ class _TLDDetailSaleInfoViewState extends State<TLDDetailSaleInfoView> {
       child: Row(
         mainAxisAlignment : MainAxisAlignment.spaceAround,
         children: <Widget>[
-          _getSaleInfoLabel('总量', totalAmountStr + 'TLD'),
-          _getSaleInfoLabel('剩余', currentAmountStr + 'TLD'),
-          _getSaleInfoLabel('状态', status)
+          _getSaleInfoLabel(I18n.of(context).totalAmountLabel, totalAmountStr + 'TLD'),
+          _getSaleInfoLabel(I18n.of(context).remainAmountLabel, currentAmountStr + 'TLD'),
+          _getSaleInfoLabel(I18n.of(context).statusLabel, status)
         ],
       ),
     );

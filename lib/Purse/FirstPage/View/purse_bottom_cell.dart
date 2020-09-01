@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class _TLDPurseFirstPageBottomCellState extends State<TLDPurseFirstPageBottomCel
            color: Colors.white,
            padding: EdgeInsets.only(top : 13 ,left :12 ,right :12 , bottom :20),
            width: screenSize.width - 34,
-           child: Text('温馨提示：\n      冷钱包创建在手机端本地。创建钱包会要求您输入钱包密码，钱包会生成您用来恢复钱包的助记词，签名用的私钥，加密和验签用的公钥，以及钱包地址。\n      请妥善保管好您的助记词和私钥',style :TextStyle(fontSize : 12 ,color: Color.fromARGB(255, 153, 153, 153))),
+           child: Text(I18n.of(context).homePageNotice,style :TextStyle(fontSize : 12 ,color: Color.fromARGB(255, 153, 153, 153))),
          ),
        ),
     );

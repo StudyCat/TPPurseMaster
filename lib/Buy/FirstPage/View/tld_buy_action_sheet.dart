@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Buy/FirstPage/Model/tld_buy_model_manager.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,7 +56,7 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('购买',
+          Text(I18n.of(context).buyBtnTitle,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(32),
                   fontWeight: FontWeight.w700,
@@ -71,15 +72,15 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
-            child: getNormalView('最低购买额度', widget.model.max + 'TLD'),
+            child: getNormalView(I18n.of(context).minimumPurchaseAmountLabel, widget.model.max + 'TLD'),
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
-            child: getNormalView('最高购买额度', widget.model.maxAmount + 'TLD'),
+            child: getNormalView(I18n.of(context).maximumPurchaseAmountLabel, widget.model.maxAmount + 'TLD'),
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
-            child: getNormalView('实际付款', _pramaterModel.buyCount + 'CNY'),
+            child: getNormalView(I18n.of(context).realPaymentLabel, _pramaterModel.buyCount + 'CNY'),
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
@@ -92,7 +93,7 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
                   });
                 },)));
               },
-              child : getArrowView('接收地址', _pramaterModel.buyerAddress == null ? '请选择接收钱包' : _pramaterModel.buyerAddress)
+              child : getArrowView(I18n.of(context).receiveAddressLabel, _pramaterModel.buyerAddress == null ? I18n.of(context).chooseWalletLabel: _pramaterModel.buyerAddress)
             ),
           ),
           Padding(
@@ -100,14 +101,14 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
             child: Container(
             width: size.width,
             height: ScreenUtil().setHeight(80),
-            child: CupertinoButton(child: Text('下单',style: TextStyle(fontSize : ScreenUtil().setSp(28)),), onPressed: (){
+            child: CupertinoButton(child: Text(I18n.of(context).placeOrderBtnTitle,style: TextStyle(fontSize : ScreenUtil().setSp(28)),), onPressed: (){
               if (double.parse(_pramaterModel.buyCount) == 0.0){
-                Fluttertoast.showToast(msg: '请填写购买数量',toastLength: Toast.LENGTH_SHORT,
+                Fluttertoast.showToast(msg: I18n.of(context).inputBuyAmountFieldPlaceholder,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
                 return;
               }
               if (_pramaterModel.buyerAddress == null){
-                Fluttertoast.showToast(msg: '请选择接收钱包',toastLength: Toast.LENGTH_SHORT,
+                Fluttertoast.showToast(msg: I18n.of(context).chooseWalletLabel,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
                 return;
               }
@@ -153,7 +154,9 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
   }
 
   Widget getArrowView(String title, String content) {
-    return Row(
+    return Container(
+      width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(60), 
+      child : Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
@@ -165,7 +168,9 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
               color: Color.fromARGB(255, 51, 51, 51)),
         ),
         Row(children: <Widget>[
-          Container(width : ScreenUtil().setWidth(400),child : Text(
+          Container(
+            width : ScreenUtil().setWidth(280),
+            child : Text(
             content,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -179,6 +184,7 @@ class _TLDBuyActionSheetState extends State<TLDBuyActionSheet> {
           Icon(Icons.keyboard_arrow_right)
         ])
       ],
+    )
     );
   }
 }

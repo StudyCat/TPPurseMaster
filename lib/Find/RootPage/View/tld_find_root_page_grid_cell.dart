@@ -25,7 +25,7 @@ class _TLDFindRootPageGridCellState extends State<TLDFindRootPageGridCell> {
           offstage: widget.itemUIModel.isPlusIcon,
           child: Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(12)),
-            child: Text(widget.itemUIModel.title,style:TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(24))),
+            child: Text(widget.itemUIModel.title,style:TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(24)),textAlign: TextAlign.center,maxLines: 2,),
           ),
         )
       ]
@@ -35,7 +35,10 @@ class _TLDFindRootPageGridCellState extends State<TLDFindRootPageGridCell> {
   Widget _getImageWidget(){
     if (widget.itemUIModel.isPlusIcon == false){
       if (widget.itemUIModel.iconUrl.length > 0){
-        return CachedNetworkImage(imageUrl: widget.itemUIModel.iconUrl,width:ScreenUtil().setHeight(96),height:ScreenUtil().setHeight(96),fit: BoxFit.fill,);
+        return ClipRRect(
+          child: CachedNetworkImage(imageUrl: widget.itemUIModel.iconUrl,width:ScreenUtil().setHeight(96),height:ScreenUtil().setHeight(96),fit: BoxFit.fill,),
+          borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(48))),
+        );
       }else{
       return Image.asset(widget.itemUIModel.imageAssest,width:ScreenUtil().setHeight(96),height:ScreenUtil().setHeight(96),fit: BoxFit.fill,);
       }

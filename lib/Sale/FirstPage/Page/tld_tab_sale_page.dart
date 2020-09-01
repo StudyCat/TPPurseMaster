@@ -5,6 +5,7 @@ import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_sale_order_wait_pass_
 import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_sale_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,10 +21,7 @@ class TLDTabSalePage extends StatefulWidget {
 }
 
 class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProviderStateMixin ,AutomaticKeepAliveClientMixin{
-  List<String> _tabTitles = [
-    "挂售中",
-    "待释放",
-  ];
+  List<String> _tabTitles = [];
 
   List<Widget> _pages = [
     TLDSalePage(type: 0,),TLDSaleOrderWaitTLDPage()
@@ -39,6 +37,15 @@ class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProvid
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    Future.delayed(Duration.zero,(){
+      setState(() {
+        _tabTitles = [
+          I18n.of(context).onSaleTabTitle,
+          I18n.of(context).waitReleaseTabTitle
+        ];
+      });
+    });
 
     _tabController = TabController(length: 2, vsync: this);
 
@@ -68,7 +75,7 @@ class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProvid
         ),
         heroTag: 'sale_page',
         transitionBetweenRoutes: false,
-        middle: Text('TLD钱包'),
+        middle: Text(I18n.of(context).commonPageTitle),
         leading: Builder(builder: (BuildContext context) {
           return CupertinoButton(
               child: Icon(
@@ -113,7 +120,7 @@ class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProvid
   }
 
   Widget _getBodyWidget(){
-    return Column(
+    return _tabTitles.length > 0 ? Column(
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(
@@ -141,7 +148,7 @@ class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProvid
           )
           )
       ],
-    );
+    ) : Container();
   }
 
     @override

@@ -1,3 +1,5 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,9 +17,9 @@ class TLDMyPurseContentView extends StatefulWidget  {
 class _TLDMyPurseContentViewState extends State<TLDMyPurseContentView>
     with SingleTickerProviderStateMixin {
   List<String> _tabTitles = [
-    "全部记录",
-    "收款记录",
-    "转账记录",
+    I18n.of(navigatorKey.currentContext).allRecord,
+    I18n.of(navigatorKey.currentContext).receiveRecorder,
+    I18n.of(navigatorKey.currentContext).transferRecorder,
   ];
 
   TabController _tabController;

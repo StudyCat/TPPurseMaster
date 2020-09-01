@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
+import 'package:dragon_sword_purse/Find/3rdPartWeb/Model/tld_3rdpart_web_model_manager.dart';
 import 'package:dragon_sword_purse/Find/3rdPartWeb/Page/tld_3rdpart_web_pay_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/Purse/TransferAccounts/Model/tld_transfer_accounts_model_manager.dart';
@@ -31,49 +32,57 @@ class _TLD3rdPartWebPageState extends State<TLD3rdPartWebPage> {
 
   bool _loading = false;
 
-  TLDTransferAccountsModelManager _manager;
+  TLD3rdPartWebModelManager _manager;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    _manager = TLDTransferAccountsModelManager();
+    _manager = TLD3rdPartWebModelManager();
+  }
+
+
+  void _signPramater(Map pramaterMap,String walletAddress){
+    _manager.getRequestSign(pramaterMap, walletAddress, (Map data){
+      String status = _getPayStatus(200, '验签成功', data);
+      _payCallBackToWeb(status);
+    });
   }
 
    void _tranferAmount(TLDTranferAmountPramaterModel pramaterModel) {
-      if (pramaterModel.fromWalletAddress == null){
-        Fluttertoast.showToast(msg: '请先选择支付钱包');
-        return;
-      }
-      setState(() {
-        _loading = true;
-      });
-    _manager.transferAmount(pramaterModel, (int txId) {
-      if (mounted) {
-        setState(() {
-          _loading = false;
-        });
-      }
+    //   if (pramaterModel.fromWalletAddress == null){
+    //     Fluttertoast.showToast(msg: '请先选择支付钱包');
+    //     return;
+    //   }
+    //   setState(() {
+    //     _loading = true;
+    //   });
+    // _manager.transferAmount(pramaterModel, (int txId) {
+    //   if (mounted) {
+    //     setState(() {
+    //       _loading = false;
+    //     });
+    //   }
 
 
-      Fluttertoast.showToast(
-      msg: '充值成功', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
-      String status = _getPayStatus(200, '充值成功', '$txId');
-      _payCallBackToWeb(status);
-    }, (TLDError error) {
-      if (mounted) {
-        setState(() {
-          _loading = false;
-        });
-      }
-      Fluttertoast.showToast(
-          msg: error.msg,
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 1);
-      String status = _getPayStatus(error.code, error.msg, '');
-      _payCallBackToWeb(status);
-    });
+    //   Fluttertoast.showToast(
+    //   msg: '充值成功', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
+    //   String status = _getPayStatus(200, '充值成功', '$txId');
+    //   _payCallBackToWeb(status);
+    // }, (TLDError error) {
+    //   if (mounted) {
+    //     setState(() {
+    //       _loading = false;
+    //     });
+    //   }
+    //   Fluttertoast.showToast(
+    //       msg: error.msg,
+    //       toastLength: Toast.LENGTH_SHORT,
+    //       timeInSecForIosWeb: 1);
+    //   String status = _getPayStatus(error.code, error.msg, '');
+    //   _payCallBackToWeb(status);
+    // });
   }
 
   void _payCallBackToWeb(String status){
@@ -83,7 +92,7 @@ class _TLD3rdPartWebPageState extends State<TLD3rdPartWebPage> {
     });
   }
 
-  String _getPayStatus(int code,String mesg,String data){
+  String _getPayStatus(int code,String mesg,Map data){
     Map callBackMap = {'code':code,'msg':mesg,'data':data};
     String callBackMapStr = jsonEncode(callBackMap);
     return callBackMapStr;
@@ -117,8 +126,12 @@ class _TLD3rdPartWebPageState extends State<TLD3rdPartWebPage> {
         javascriptMode: JavascriptMode.unrestricted,
         onPageFinished: (url) {
         _controller.evaluateJavascript('document.title').then((result){
+          String title = result;
+          if (result.contains('\"')){
+            title = title.replaceAll(RegExp(r'"'), '');
+          }
           setState(() {
-            _title = result;
+            _title = title;
           });
         }
       );
@@ -134,24 +147,18 @@ class _TLD3rdPartWebPageState extends State<TLD3rdPartWebPage> {
                 onMessageReceived: (JavascriptMessage message) {
                   String mapStr = message.message;
                   Map pramater = jsonDecode(mapStr);
-                  String walletAddress = pramater['walletAddress'];
-                  String amount = pramater['amount'];
-                  String orderInfo = pramater['orderInfo'];
+                  String amount = pramater['amount'].toString();
+                  String orderInfo = pramater['orderInfo'].toString();
                   showModalBottomSheet(context: context, isDismissible: false , builder: (context){
                     return TLD3rdPartWebPayPage(
                       amount: amount,
-                      walletAddress: walletAddress,
                       orderInfo: orderInfo,
                       didClickCancelBtn: (){
-                        String status = _getPayStatus(501, '用户取消支付', '');
+                        String status = _getPayStatus(501, '用户取消支付', {});
                         _payCallBackToWeb(status);
                       },
                       didClickPayBtnCallBack: (TLDTranferAmountPramaterModel pramaterModel){
-                        jugeHavePassword(context, (){
-                          _tranferAmount(pramaterModel);
-                        }, TLDCreatePursePageType.back, (){
-                          _tranferAmount(pramaterModel);
-                        });
+                        _signPramater(pramater, pramaterModel.fromWalletAddress);
                       },
                     );
                   });

@@ -12,6 +12,7 @@ import 'package:dragon_sword_purse/Order/Page/tld_order_appeal_page.dart';
 import 'package:dragon_sword_purse/Order/View/tld_order_list_cell.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -141,7 +142,7 @@ class _TLDSaleOrderWaitTLDPageState extends State<TLDSaleOrderWaitTLDPage>  {
       _pramaterModel.page = 1;
       _refreshController.requestRefresh();
       _getOrderListDataWithPramaterModel(_pramaterModel);
-      Fluttertoast.showToast(msg: '确认释放TLD成功',toastLength: Toast.LENGTH_SHORT,
+      Fluttertoast.showToast(msg: I18n.of(context).sureReleaseTLDSuccessMessage,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TLDError error){
       if (mounted){
@@ -160,7 +161,7 @@ class _TLDSaleOrderWaitTLDPageState extends State<TLDSaleOrderWaitTLDPage>  {
       getListViewCellCallBack:(int index){
         return _getListItem(context, index);
       } , getEmptyViewCallBack: (){
-        return TLDEmptyDataView(imageAsset: 'assetss/images/creating_purse.png', title: '暂无订单');
+        return TLDEmptyDataView(imageAsset: 'assetss/images/creating_purse.png', title: I18n.of(context).noOrderLabel);
       }, streamController: _streamController,
       refreshController: _refreshController,
       refreshCallBack: (){
@@ -178,7 +179,7 @@ class _TLDSaleOrderWaitTLDPageState extends State<TLDSaleOrderWaitTLDPage>  {
     //  String otherAddress = isBuyer == false ? model.buyerAddress : model.sellerAddress;
     return TLDOrderListCell(
       orderListModel: model,
-      actionBtnTitle: '释放TLD',
+      actionBtnTitle: I18n.of(context).releaseTLDBtnTitle,
       didClickDetailBtnCallBack: (){
         _sureSentCoin(model.orderNo, model.sellerAddress);
         },

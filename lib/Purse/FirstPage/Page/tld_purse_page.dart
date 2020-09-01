@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -108,7 +109,7 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
         ),
         heroTag: 'purse_page',
         transitionBetweenRoutes: false,
-        middle: Text('TLD钱包',style: TextStyle(color : Colors.white),),
+        middle: Text(I18n.of(context).commonPageTitle,style: TextStyle(color : Colors.white),),
         leading: Builder(builder: (BuildContext context) {
           return CupertinoButton(
               child: Icon(

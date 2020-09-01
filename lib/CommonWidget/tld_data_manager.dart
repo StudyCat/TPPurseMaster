@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:dragon_sword_purse/Find/RootPage/Model/tld_find_root_model_manager.dart';
 import 'package:dragon_sword_purse/Order/Model/tld_order_list_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -117,23 +119,23 @@ class TLDDataManager{
   // 获取订单每个状态的展示，key为订单状态
   static Map get orderListStatusMap{
       return {
-        -1 : TLDOrderStatusInfoModel(orderStatusName:'已取消',orderStatusColor: Color.fromARGB(255, 153, 153, 153),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
-        0 : TLDOrderStatusInfoModel(orderStatusName:'待支付',orderStatusColor: Color.fromARGB(255, 68, 149, 34),buyerActionButtonTitle: ['取消订单','我已付款'],sellerActionButtonTitle: []),
-        1 : TLDOrderStatusInfoModel(orderStatusName:'已支付',orderStatusColor: Color.fromARGB(255, 22, 128, 205),buyerActionButtonTitle: ['催单'],sellerActionButtonTitle: ['确认释放TLD']),
-        2 : TLDOrderStatusInfoModel(orderStatusName:'已完成',orderStatusColor: Color.fromARGB(255, 68, 149, 34),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
-        3 : TLDOrderStatusInfoModel(orderStatusName:'已超时',orderStatusColor: Color.fromARGB(255, 208, 2, 27),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
-        4 : TLDOrderStatusInfoModel(orderStatusName:'申诉中',orderStatusColor: Color.fromARGB(255, 239, 130, 31),buyerActionButtonTitle: [],sellerActionButtonTitle: [])
+        -1 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).canceledStatusLabel,orderStatusColor: Color.fromARGB(255, 153, 153, 153),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        0 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).waitPayLabel,orderStatusColor: Color.fromARGB(255, 68, 149, 34),buyerActionButtonTitle: [I18n.of(navigatorKey.currentContext).cancelOrderBtnTitle,I18n.of(navigatorKey.currentContext).surePaymentBtnTitle],sellerActionButtonTitle: []),
+        1 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).havePaidLabel,orderStatusColor: Color.fromARGB(255, 22, 128, 205),buyerActionButtonTitle: [I18n.of(navigatorKey.currentContext).reminderBtnTitle],sellerActionButtonTitle: [I18n.of(navigatorKey.currentContext).sureReleaseTLDBtnTitle]),
+        2 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).finishedStatusLabel,orderStatusColor: Color.fromARGB(255, 68, 149, 34),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        3 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).overtimeLabel,orderStatusColor: Color.fromARGB(255, 208, 2, 27),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        4 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).appealingLabel,orderStatusColor: Color.fromARGB(255, 239, 130, 31),buyerActionButtonTitle: [],sellerActionButtonTitle: [])
       };
   }
 
   static Map get iMOrderListStatusMap{
     return {
-        -1 : TLDOrderStatusInfoModel(orderStatusName:'已取消',orderStatusColor: Color.fromARGB(255, 153, 153, 153),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
-        0 : TLDOrderStatusInfoModel(orderStatusName:'待支付',orderStatusColor: Color.fromARGB(255, 68, 149, 34),buyerActionButtonTitle: ['我已付款'],sellerActionButtonTitle: []),
-        1 : TLDOrderStatusInfoModel(orderStatusName:'已支付',orderStatusColor: Color.fromARGB(255, 22, 128, 205),buyerActionButtonTitle: ['催单'],sellerActionButtonTitle: ['确认释放TLD']),
-        2 : TLDOrderStatusInfoModel(orderStatusName:'已完成',orderStatusColor: Color.fromARGB(255, 68, 149, 34),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
-        3 : TLDOrderStatusInfoModel(orderStatusName:'已超时',orderStatusColor: Color.fromARGB(255, 208, 2, 27),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
-        4 : TLDOrderStatusInfoModel(orderStatusName:'申诉中',orderStatusColor: Color.fromARGB(255, 239, 130, 31),buyerActionButtonTitle: [],sellerActionButtonTitle: [])
+        -1 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).canceledStatusLabel,orderStatusColor: Color.fromARGB(255, 153, 153, 153),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        0 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).waitPayLabel,orderStatusColor: Color.fromARGB(255, 68, 149, 34),buyerActionButtonTitle: [I18n.of(navigatorKey.currentContext).surePaymentBtnTitle],sellerActionButtonTitle: []),
+        1 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).havePaidLabel,orderStatusColor: Color.fromARGB(255, 22, 128, 205),buyerActionButtonTitle: [I18n.of(navigatorKey.currentContext).reminderBtnTitle],sellerActionButtonTitle: [I18n.of(navigatorKey.currentContext).sureReleaseTLDBtnTitle]),
+        2 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).finishedStatusLabel,orderStatusColor: Color.fromARGB(255, 68, 149, 34),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        3 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).overtimeLabel,orderStatusColor: Color.fromARGB(255, 208, 2, 27),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        4 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).appealingLabel,orderStatusColor: Color.fromARGB(255, 239, 130, 31),buyerActionButtonTitle: [],sellerActionButtonTitle: [])
       };
   }
 

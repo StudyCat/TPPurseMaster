@@ -14,6 +14,8 @@ import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,7 +36,7 @@ class TLDDetailOrderPage extends StatefulWidget {
 }
 
 class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
-  List titles = ['订单号', '数量', '应付款', '收款方式', '接收地址'];
+  List titles = [I18n.of(navigatorKey.currentContext).orderNumLabel, I18n.of(navigatorKey.currentContext).countLabel, I18n.of(navigatorKey.currentContext).shouldPayAmountLabel, I18n.of(navigatorKey.currentContext).paymentTermLabel, I18n.of(navigatorKey.currentContext).receiveAddressLabel];
   bool isOpen = false;
   TLDDetailOrderModelManager _modelManager;
   TLDDetailOrderModel _detailOrderModel;
@@ -280,7 +282,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       ),
       floating: true, //不随着滑动隐藏标题
       pinned: true, //不固定在顶部
-      title: Text('订单详情'),
+      title: Text(I18n.of(context).detailOrderPageTitle),
       flexibleSpace: FlexibleSpaceBar(
         background: TLDDetailOrderHeaderView(detailOrderModel: _detailOrderModel,isBuyer: _detailOrderModel.amIBuyer,
         didClickChatBtnCallBack: (){
@@ -378,25 +380,25 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
             return _getIMCell();
           }else if(index == 6){
             return isNeedAppeal ? _getAppealCell(appealTitle) : TLDDetailOrderBottomCell(detailOrderModel:_detailOrderModel,isBuyer: _detailOrderModel.amIBuyer,didClickActionBtnCallBack: (String buttonTitle){
-              if (buttonTitle == '取消订单'){
+              if (buttonTitle == I18n.of(context).cancelOrderBtnTitle){
                 _cancelOrder();
-              }else if(buttonTitle == '我已付款'){
+              }else if(buttonTitle == I18n.of(context).surePaymentBtnTitle){
                 _confirmPaid();
-              }else if(buttonTitle == '确认释放TLD'){
+              }else if(buttonTitle == I18n.of(context).sureReleaseTLDBtnTitle){
                 _sureSentCoin();
-              }else if (buttonTitle == '催单'){
+              }else if (buttonTitle == I18n.of(context).reminderBtnTitle){
                 _remindOrder();
               }
             },);
           }else if(index == 7){
             return TLDDetailOrderBottomCell(detailOrderModel:_detailOrderModel,isBuyer: _detailOrderModel.amIBuyer,didClickActionBtnCallBack: (String buttonTitle){
-              if (buttonTitle == '取消订单'){
+              if (buttonTitle == I18n.of(context).cancelOrderBtnTitle){
                 _cancelOrder();
-              }else if(buttonTitle == '我已付款'){
+              }else if(buttonTitle == I18n.of(context).surePaymentBtnTitle){
                 _confirmPaid();
-              }else if(buttonTitle == '确认释放TLD'){
+              }else if(buttonTitle == I18n.of(context).sureReleaseTLDBtnTitle){
                 _sureSentCoin();
-              }else if (buttonTitle == '催单'){
+              }else if (buttonTitle == I18n.of(context).reminderBtnTitle){
                 _remindOrder();
               }
             },);
@@ -413,7 +415,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       switch (_detailOrderModel.status) {
         case 1 :{
           isNeedAppeal = true;
-          appealTitle = '订单申诉';
+          appealTitle = I18n.of(context).appealOrderLabel;
         }
         break;
         default :{         
@@ -424,13 +426,13 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
     if (_detailOrderModel.appealStatus > -1){
       isNeedAppeal = true;
       if (_detailOrderModel.appealStatus == 0) {
-        appealTitle = '订单申诉中';
+        appealTitle = I18n.of(context).orderIsAppealingLabel;
       }else if(_detailOrderModel.appealStatus == 1){
-        appealTitle = '订单申诉成功';
+        appealTitle = I18n.of(context).appealOrderSuccessLabel;
       }else if(_detailOrderModel.appealStatus == 2){
-        appealTitle = '订单申诉失败';
+        appealTitle = I18n.of(context).appealOrderFailureLabel;
       }else {
-        appealTitle = '订单申诉';
+        appealTitle = I18n.of(context).appealOrderLabel;
       }
     }
     callBack(isNeedAppeal,appealTitle);
@@ -470,7 +472,7 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
   }
 
   Widget _getIMCell(){
-    String title = _detailOrderModel.amIBuyer == true ? '联系卖家' : '联系买家';
+    String title = _detailOrderModel.amIBuyer == true ? I18n.of(context).contactSellerLabel : I18n.of(context).contactBuyerLabel;
     return GestureDetector(
       onTap: () { 
         String toUserName = '';

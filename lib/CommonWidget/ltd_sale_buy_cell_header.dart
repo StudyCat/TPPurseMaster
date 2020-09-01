@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Buy/FirstPage/Model/tld_buy_model_manager.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Model/tld_sale_list_info_model.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import '../Buy/FirstPage/View/tld_buy_button.dart';
@@ -49,8 +50,8 @@ class _TLDCommonCellHeaderViewState extends State<TLDCommonCellHeaderView> {
                  child: Row(
                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                    children: <Widget>[
-                     getBuyInfoLabel('总量', widget.saleModel != null ?  widget.saleModel.totalCount + 'TLD' :widget.buyModel.totalCount + 'TLD'),
-                     getBuyInfoLabel('剩余', widget.saleModel != null ?  widget.saleModel.currentCount + 'TLD' :widget.buyModel.currentCount + 'TLD'),
+                     getBuyInfoLabel(I18n.of(context).totalAmountLabel, widget.saleModel != null ?  widget.saleModel.totalCount + 'TLD' :widget.buyModel.totalCount + 'TLD'),
+                     getBuyInfoLabel(I18n.of(context).remainAmountLabel, widget.saleModel != null ?  widget.saleModel.currentCount + 'TLD' :widget.buyModel.currentCount + 'TLD'),
                    ],
                  ),)]
              );
