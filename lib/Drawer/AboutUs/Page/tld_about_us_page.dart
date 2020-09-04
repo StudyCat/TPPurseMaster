@@ -1,3 +1,5 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,11 +15,11 @@ class TLDAboutUsPage extends StatefulWidget {
 
 class _TLDAboutUsPageState extends State<TLDAboutUsPage> {
   List titles = [
-    '官网',
-    '版本更新',
+    I18n.of(navigatorKey.currentContext).officialWebsite,
+    I18n.of(navigatorKey.currentContext).VersionUpdating,
   ];
 
-  List contents = ['http://www.tldollar.com\nhttp://www.tldwallet.com', '当前是最新版本'];
+  List contents = ['http://www.tldollar.com\nhttp://www.tldwallet.com', I18n.of(navigatorKey.currentContext).TheCurrentVersionIsTheLatest];
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class _TLDAboutUsPageState extends State<TLDAboutUsPage> {
         ),
         heroTag: 'about_us_page',
         transitionBetweenRoutes: false,
-        middle: Text('关于我们'),
+        middle: Text(I18n.of(context).aboutUS),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),

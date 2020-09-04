@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -105,7 +107,7 @@ class _TLDDetailAlipayQrCodeShowViewState extends State<TLDDetailAlipayQrCodeSho
       ].request();
       return;
     }else if(status == PermissionStatus.permanentlyDenied){
-      Fluttertoast.showToast(msg: '请开启存储权限');
+      Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).PleaseTurnOnTheStoragePermissions);
       return;
     }
     var result = await ImageGallerySaver.saveImage(bytes);

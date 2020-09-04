@@ -3,6 +3,8 @@ import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/Drawer/UserFeedback/Model/tld_user_feedback_model_manager.dart';
 import 'package:dragon_sword_purse/Drawer/UserFeedback/Model/tld_user_feedback_question_type_model_manager.dart';
 import 'package:dragon_sword_purse/Drawer/UserFeedback/Page/tld_user_feedback_question_type_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,20 +26,20 @@ class TLDUserFeedBackPage extends StatefulWidget {
 
 class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
   List titles = [
-    '称呼',
-    '手机号码',
-    '邮箱',
-    '问题类型',
-    '问题具体描述',
-    '截图上传',
+    I18n.of(navigatorKey.currentContext).salutation,
+    I18n.of(navigatorKey.currentContext).cellPhoneNumber,
+    I18n.of(navigatorKey.currentContext).email,
+    I18n.of(navigatorKey.currentContext).questionType,
+    I18n.of(navigatorKey.currentContext).questionSpecificDescription,
+    I18n.of(navigatorKey.currentContext).captureUpload,
   ];
 
   List placeholders = [
-    '请输入您的称呼',
-    '请输入您的手机号',
-    '请输入您的邮箱号码',
-    '请选择问题类型',
-    '请描述您的具体问题'
+    I18n.of(navigatorKey.currentContext).pleaseEnterYourSalutation,
+    I18n.of(navigatorKey.currentContext).pleaseEnterYourCellPhoneNumber,
+    I18n.of(navigatorKey.currentContext).PleaseEnterYourEmail,
+    I18n.of(navigatorKey.currentContext).pleaseChooseQuestionType,
+    I18n.of(navigatorKey.currentContext).pleaseDescribeSpecificQuestion
   ];
 
   PageController _pageController;
@@ -121,7 +123,7 @@ class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
         ),
         heroTag: 'user_feedback_page',
         transitionBetweenRoutes: false,
-        middle: Text('用户反馈'),
+        middle: Text(I18n.of(context).feedBack),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -151,7 +153,7 @@ class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
               },
             ));
           } else if (index == 3){
-            String content = _pramatersModel.questionType == null ? '请选择问题类型' : _pramatersModel.questionType.typeName;
+            String content = _pramatersModel.questionType == null ? I18n.of(context).pleaseChooseQuestionType : _pramatersModel.questionType.typeName;
             return GestureDetector(
               onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => TLDUserFeedbackQuestionTypePage(didChooseQuestionTypeCallBack: (TLDUserFeedbackQuestionTypeModel questionTypeModel){
                 setState(() {
@@ -202,7 +204,7 @@ class _TLDUserFeedBackPageState extends State<TLDUserFeedBackPage> {
               width: size.width - ScreenUtil().setWidth(200),
               child: CupertinoButton(
                   child: Text(
-                    '提交反馈',
+                    I18n.of(context).submitFeedback,
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(28), color: Colors.white),
                   ),

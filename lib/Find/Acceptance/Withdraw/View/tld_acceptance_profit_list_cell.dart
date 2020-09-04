@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_format/date_format.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_profit_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,7 +52,7 @@ class _TLDAcceptanceProfitListCellState extends State<TLDAcceptanceProfitListCel
                     ]
                   )
                 ),
-                Text('收益',style:TextStyle(fontSize : ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153))),
+                Text(widget.profitListModel.profitDesc,style:TextStyle(fontSize : ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153))),
               ],
             );
   }

@@ -10,6 +10,7 @@ import 'package:dragon_sword_purse/Mission/WalletMission/Model/tld_mission_progr
 import 'package:dragon_sword_purse/Mission/WalletMission/View/tld_my_mission_body_cell.dart';
 import 'package:dragon_sword_purse/Mission/WalletMission/View/tld_my_mission_header_cell.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +119,7 @@ class _TLDMissionHallPageState extends State<TLDMissionHallPage> with AutomaticK
 
    Widget _refreshHeaderBuild(){
     return WaterDropHeader(
-      complete : Text('刷新完成')
+      complete : Text(I18n.of(navigatorKey.currentContext).refreshComplete)
     );
   }
 

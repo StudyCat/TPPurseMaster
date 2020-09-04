@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_bill_dash_line.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +89,7 @@ class _TLDAcceptanceBillListOpenCellState
            Padding(
             child:  Container(
               width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(80),
-              child: Text('${widget.infoListModel.billLevel}级TLD票据：${widget.infoListModel.billPrice}每份（${widget.infoListModel.alreadyBuyCount}/${widget.infoListModel.totalBuyCount}）',style : TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(32),),textAlign: TextAlign.center),
+              child: Text('${widget.infoListModel.billLevel}'+ I18n.of(context).levelTLDBill +'：${widget.infoListModel.billPrice}' + I18n.of(context).eachPart +'（${widget.infoListModel.alreadyBuyCount}/${widget.infoListModel.totalBuyCount}）',style : TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(32),),textAlign: TextAlign.center),
             ),
             padding: EdgeInsets.symmetric(horizontal: 20)
           ),
@@ -108,7 +109,11 @@ class _TLDAcceptanceBillListOpenCellState
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children : <Widget>[
-            RichText(
+          Container(
+            width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(260),
+            child : RichText(
+              maxLines: 1,
+              overflow: TextOverflow.clip,
               text: TextSpan(children: <InlineSpan>[
             WidgetSpan(
                 child: Icon(
@@ -117,19 +122,20 @@ class _TLDAcceptanceBillListOpenCellState
               color: Theme.of(context).hintColor,
             )),
             TextSpan(
-                text: '  订单号：${orderListModel.acptOrderNo}',
+                text: " " + I18n.of(context).orderNumLabel + ':${orderListModel.acptOrderNo}',
                 style: TextStyle(
                     color: Color.fromARGB(255, 102, 102, 102),
-                    fontSize: ScreenUtil().setSp(28)))
+                    fontSize: ScreenUtil().setSp(24)))
           ])),
+          ),
           GestureDetector(
             onTap:(){
               widget.didClickCheckButtonCallBack(index);
             },
             child : RichText(
-              text: TextSpan(text: '${orderListModel.billCount}份',style: TextStyle(fontSize:ScreenUtil().setSp(28),color:Color.fromARGB(255, 51, 51, 51)),children: <InlineSpan>[
+              text: TextSpan(text: '${orderListModel.billCount}' + I18n.of(context).part,style: TextStyle(fontSize:ScreenUtil().setSp(28),color:Color.fromARGB(255, 51, 51, 51)),children: <InlineSpan>[
             TextSpan(
-                text: '  查看',
+                text: '  ' + I18n.of(context).check,
                 style: TextStyle(
                     color: Theme.of(context).hintColor,
                     fontSize: ScreenUtil().setSp(28)))
@@ -150,7 +156,7 @@ class _TLDAcceptanceBillListOpenCellState
             onPressed: widget.didClickBuyButtonCallBack,
             borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(36))),
             padding: EdgeInsets.zero,
-            child: Text('购买',style:TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(28))),
+            child: Text(I18n.of(context).buyBtnTitle,style:TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(28))),
             color: Theme.of(context).hintColor,
           ),
     );

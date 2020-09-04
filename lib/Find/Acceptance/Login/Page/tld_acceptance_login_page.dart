@@ -11,6 +11,8 @@ import 'package:dragon_sword_purse/Find/Acceptance/Login/View/tld_acceptance_sca
 import 'package:dragon_sword_purse/Find/Acceptance/TabbarPage/Page/tld_acceptance_tabbar_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,15 +43,15 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
   TextEditingController _inviteController;
 
   List titles = [
-    '手机号',
-    '钱包地址',
-    '验证码',
+    I18n.of(navigatorKey.currentContext).cellPhoneNumber,
+    I18n.of(navigatorKey.currentContext).WalletAddress,
+    I18n.of(navigatorKey.currentContext).verifyCode,
   ];
 
   List placeholders = [
-    '请输入您的手机号',
-    '您的钱包地址',
-    '请输入验证码',
+    I18n.of(navigatorKey.currentContext).pleaseEnterYourCellPhoneNumber,
+    I18n.of(navigatorKey.currentContext).chooseWallet,
+    I18n.of(navigatorKey.currentContext).pleaseEnterVerifyCode,
   ];
 
     @override
@@ -117,7 +119,7 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
         ),
         heroTag: 'acceptance_login_page',
         transitionBetweenRoutes: false,
-        middle: Text('TLD票据账户登记'),
+        middle: Text(I18n.of(context).tldBillAccountLogin),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -146,7 +148,7 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
           return TLDExchangeNormalCell(
             type: TLDExchangeNormalCellType.normalArrow,
             title: titles[index],
-            content:  _walletName.length > 0? _walletName: '选择钱包' ,
+            content:  _walletName.length > 0? _walletName: I18n.of(context).chooseWallet,
             contentStyle: TextStyle(
                 fontSize: 12, color: Color.fromARGB(255, 153, 153, 153)),
             top: ScreenUtil().setSp(2),
@@ -172,7 +174,7 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
             margin : EdgeInsets.only(top : ScreenUtil().setHeight(400),left: ScreenUtil().setWidth(100),right: ScreenUtil().setWidth(100)),
             height: ScreenUtil().setHeight(80),
             width:size.width -  ScreenUtil().setWidth(200),
-            child: CupertinoButton(child: Text('登记',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){ 
+            child: CupertinoButton(child: Text(I18n.of(context).login,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){ 
               _loginUser();
             }),
           );

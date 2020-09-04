@@ -1,6 +1,7 @@
 import 'package:date_format/date_format.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_withdraw_list_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -50,7 +51,7 @@ class _TLDAcceptanceWithdrawListCellState extends State<TLDAcceptanceWithdrawLis
       child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children:<Widget>[
-          Text('编号：' + widget.orderListModel.cashNo,style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153))),
+          Text( I18n.of(context).number + '：' + widget.orderListModel.cashNo,style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153))),
         GestureDetector(
           onTap: widget.didClickIMBtnCallBack,
           child: Container(
@@ -75,9 +76,9 @@ class _TLDAcceptanceWithdrawListCellState extends State<TLDAcceptanceWithdrawLis
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children : <Widget>[
-          _getMissionInfoColumWidget('数量', '${widget.orderListModel.tldCount}TLD', null),
-          _getMissionInfoColumWidget('金额',  '${widget.orderListModel.cashPrice}CNY', null),
-          _getMissionInfoColumWidget('状态', infoModel.orderStatusName, infoModel.orderStatusColor)
+          _getMissionInfoColumWidget(I18n.of(context).countLabel, '${widget.orderListModel.tldCount}TLD', null),
+          _getMissionInfoColumWidget(I18n.of(context).amount,  '${widget.orderListModel.cashPrice}CNY', null),
+          _getMissionInfoColumWidget(I18n.of(context).statusLabel, infoModel.orderStatusName, infoModel.orderStatusColor)
         ]
       ),
     );
@@ -125,7 +126,7 @@ class _TLDAcceptanceWithdrawListCellState extends State<TLDAcceptanceWithdrawLis
               color :Theme.of(context).hintColor
             ),
             child: Center(
-              child : Text('我发起的',style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 121, 87, 43)))
+              child : Text(I18n.of(context).iStarted,style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 121, 87, 43)))
             ),
           )
         ),

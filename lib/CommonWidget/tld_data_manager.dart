@@ -21,7 +21,9 @@ class TLDDataManager{
   static TLDDataManager get instance => _getInstance();
   static TLDDataManager _instance;
 
-  String password;  
+  String password;
+
+  Locale currentLocal;  
 
   List purseList;
 
@@ -141,20 +143,20 @@ class TLDDataManager{
 
     static Map get acceptanceWithdrawOrderStatusMap{
     return {
-        -1 : TLDOrderStatusInfoModel(orderStatusName:'已取消',orderStatusColor: Color.fromARGB(255, 153, 153, 153),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
-        0 : TLDOrderStatusInfoModel(orderStatusName:'待支付',orderStatusColor: Color.fromARGB(255, 68, 149, 34),buyerActionButtonTitle: ['我已付款'],sellerActionButtonTitle: ['取消提现']),
-        1 : TLDOrderStatusInfoModel(orderStatusName:'已支付',orderStatusColor: Color.fromARGB(255, 22, 128, 205),buyerActionButtonTitle: ['催单'],sellerActionButtonTitle: ['确认释放TLD']),
-        2 : TLDOrderStatusInfoModel(orderStatusName:'已完成',orderStatusColor: Color.fromARGB(255, 68, 149, 34),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
-        3 : TLDOrderStatusInfoModel(orderStatusName:'已超时',orderStatusColor: Color.fromARGB(255, 208, 2, 27),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
-        4 : TLDOrderStatusInfoModel(orderStatusName:'申诉中',orderStatusColor: Color.fromARGB(255, 239, 130, 31),buyerActionButtonTitle: [],sellerActionButtonTitle: [])
+        -1 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).canceledStatusLabel,orderStatusColor: Color.fromARGB(255, 153, 153, 153),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        0 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).waitPayLabel,orderStatusColor: Color.fromARGB(255, 68, 149, 34),buyerActionButtonTitle: [I18n.of(navigatorKey.currentContext).iHavePaid],sellerActionButtonTitle: [I18n.of(navigatorKey.currentContext).cancelWithdraw]),
+        1 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).havePaidLabel,orderStatusColor: Color.fromARGB(255, 22, 128, 205),buyerActionButtonTitle: [I18n.of(navigatorKey.currentContext).reminderBtnTitle],sellerActionButtonTitle: [I18n.of(navigatorKey.currentContext).sureReleaseTLDBtnTitle]),
+        2 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).finishedStatusLabel,orderStatusColor: Color.fromARGB(255, 68, 149, 34),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        3 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).overtimeLabel,orderStatusColor: Color.fromARGB(255, 208, 2, 27),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        4 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).appealingLabel,orderStatusColor: Color.fromARGB(255, 239, 130, 31),buyerActionButtonTitle: [],sellerActionButtonTitle: [])
       };
   }
 
     static Map get accptanceOrderListStatusMap{
     return {
-        -1 : TLDOrderStatusInfoModel(orderStatusName:'收益已暂停',orderStatusColor: Color.fromARGB(255, 245, 166, 35),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
-        0 : TLDOrderStatusInfoModel(orderStatusName:'收益中',orderStatusColor: Color.fromARGB(255, 65, 117, 5),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
-        1 : TLDOrderStatusInfoModel(orderStatusName:'已到期',orderStatusColor: Color.fromARGB(255, 153, 153, 153),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        -1 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).profitPause,orderStatusColor: Color.fromARGB(255, 245, 166, 35),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        0 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).havingProfit,orderStatusColor: Color.fromARGB(255, 65, 117, 5),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
+        1 : TLDOrderStatusInfoModel(orderStatusName:I18n.of(navigatorKey.currentContext).haveExpired,orderStatusColor: Color.fromARGB(255, 153, 153, 153),buyerActionButtonTitle: [],sellerActionButtonTitle: []),
       };
   }
 

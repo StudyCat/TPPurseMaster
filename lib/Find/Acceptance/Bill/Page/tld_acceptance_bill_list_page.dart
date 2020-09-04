@@ -9,6 +9,8 @@ import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_list_open_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_bill_list_unopen_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_profit_list_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,7 +75,7 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
       _isLoading = false;
     });
     _refreshController.requestRefresh();
-    Fluttertoast.showToast(msg: '购买成功');
+    Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).buySuccess);
     Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceDetailBillPage(orderNo: orderNo,))).then((value) => _getListInfo());
     }, (TLDError error){
       setState(() {
@@ -93,7 +95,7 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
         heroTag: 'acceptance_bill_list_page',
         transitionBetweenRoutes: false,
         middle: Text(
-          'TLD票据',
+          I18n.of(context).tldBill,
           style: TextStyle(color: Colors.white),
         ),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
@@ -194,7 +196,7 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
         controller: _refreshController,
         child: _getBodyWidget(),
         header: WaterDropHeader(
-          complete: Text('刷新完成'),
+          complete: Text(I18n.of(navigatorKey.currentContext).refreshComplete),
         ),
         onRefresh: () {
           _getListInfo();

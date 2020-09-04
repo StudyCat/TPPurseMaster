@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_withdraw_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +28,7 @@ class _TLDAcceptanceWithDrawBottomCellState extends State<TLDAcceptanceWithDrawB
               borderRadius: BorderRadius.all(Radius.circular(4)),
               color: Colors.white
             ),
-            child: Text('注意：\n   如果选择买家为您的推荐人，请提前联系您的推荐人。以完成您的提现操作',style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(24)),),
+            child: Text(I18n.of(context).IfYouChooseTheBuyerAsYourReferrer,style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(24)),),
           ),
           Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(100)),
@@ -39,7 +40,7 @@ class _TLDAcceptanceWithDrawBottomCellState extends State<TLDAcceptanceWithDrawB
                 padding: EdgeInsets.zero,
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.all(Radius.circular(4)),
-                child: Text('兑换',style: TextStyle(color : Colors.white,fontSize:ScreenUtil().setSp(28)),),
+                child: Text(I18n.of(context).exchange,style: TextStyle(color : Colors.white,fontSize:ScreenUtil().setSp(28)),),
               ),
             ),
           )

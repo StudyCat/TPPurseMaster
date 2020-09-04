@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/3rdPartWeb/Page/tld_3rdpart_web_page.dart';
@@ -162,7 +163,27 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
             }else if (itemModel.url.length > 0){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLD3rdPartWebPage(urlStr: itemModel.url,)));
             }
-          },);
+          },
+          didLongClickItemCallBack: (TLDFindRootCellUIItemModel itemModel){
+            if (itemModel.url != null){
+              showDialog(context: context,builder : (context){
+                return TLDAlertView(
+                  title: I18n.of(context).warning,
+                  alertString: I18n.of(context).areYouSureToDelete + '${itemModel.title}?',
+                  didClickSureBtn: (){
+                    setState(() {
+                      uiModel.items.remove(itemModel);
+                    });
+                    _delete3rdPartWebInfo(itemModel);
+                  },
+                );
+              });
+            }
+          },
+          didClickQuestionItem: (){
+            Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.playDescUrl,title: '玩法说明',)));
+          },
+          );
         }
       });
   }
@@ -224,6 +245,35 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
       String jsonStr = jsonEncode(result);
       SharedPreferences pre = await SharedPreferences.getInstance();
       pre.setString('3rdPartWeb', jsonStr);
+
+      _save3rdPartWebInService(infoModel);
+  }
+
+  void _delete3rdPartWebInfo(TLDFindRootCellUIItemModel infoModel) async {
+     List webInfoList = TLDDataManager.instance.webList;
+     TLD3rdWebInfoModel deleteModel;
+     for (TLD3rdWebInfoModel item  in webInfoList) {
+       if (item.url == infoModel.url){
+         deleteModel = item;
+         break;
+       }
+     }
+     List result = [];
+     webInfoList.remove(deleteModel);
+      for (TLD3rdWebInfoModel infoModel  in webInfoList) {
+        result.add(infoModel.toJson());
+      }
+      String jsonStr = jsonEncode(result);
+      SharedPreferences pre = await SharedPreferences.getInstance();
+      pre.setString('3rdPartWeb', jsonStr);
+  }
+
+  void _save3rdPartWebInService(TLD3rdWebInfoModel infoModel){
+    _modelManager.save3rdPartWeb(infoModel, (){
+
+    }, (error) {
+
+    });
   }
 
 }

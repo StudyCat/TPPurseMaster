@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +28,7 @@ class _TLDAcceptanceInvitationQRCodeViewState extends State<TLDAcceptanceInvitat
            children : <Widget>[
              Padding(
                padding: EdgeInsets.only(top : ScreenUtil().setHeight(40)),
-               child: Text('我的推广邀请码',style: TextStyle(color:Theme.of(context).hintColor,fontSize: ScreenUtil().setSp(40)),),
+               child: Text(I18n.of(context).myInvitationCode,style: TextStyle(color:Theme.of(context).hintColor,fontSize: ScreenUtil().setSp(40)),),
              ),
              Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
@@ -35,7 +36,7 @@ class _TLDAcceptanceInvitationQRCodeViewState extends State<TLDAcceptanceInvitat
             ),
               Padding(
                padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-               child: Text('推广码 ${widget.inviteCode}',style: TextStyle(color:Colors.white,fontSize: ScreenUtil().setSp(24)),),
+               child: Text( I18n.of(context).promotionCode +' ${widget.inviteCode}',style: TextStyle(color:Colors.white,fontSize: ScreenUtil().setSp(24)),),
              ),
               Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(48)),

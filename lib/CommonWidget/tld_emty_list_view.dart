@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -149,7 +151,7 @@ class _TLDEmptyListViewState extends State<TLDEmptyListView> {
 
   Widget _refreshHeaderBuild(){
     return WaterDropHeader(
-      complete : Text('刷新完成')
+      complete : Text(I18n.of(navigatorKey.currentContext).refreshComplete)
     );
   }
 
@@ -158,13 +160,13 @@ class _TLDEmptyListViewState extends State<TLDEmptyListView> {
           builder: (BuildContext context,LoadStatus mode){
             Widget body ;
             if(mode==LoadStatus.idle){
-              body =  Text("上拉加载");
+              body =  Text(I18n.of(context).pullUpToLoad);
             }
             else if(mode==LoadStatus.loading){
               body =  CupertinoActivityIndicator();
             }
             else if(mode == LoadStatus.canLoading){
-                body = Text("放下加载更多数据");
+                body = Text(I18n.of(context).dropDownToLoadMoreData);
             }
             return Container(
               height: 55.0,

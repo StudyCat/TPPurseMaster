@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_sign_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_view.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,7 +64,7 @@ class _TLDAcceptanceSignBodyViewState extends State<TLDAcceptanceSignBodyView> {
   // }
 
   Widget _getChooseWalletWidget(){
-    String walletAddress = widget.userInfoModel != null ? widget.userInfoModel.wallet.name : '暂未登记';
+    String walletAddress = widget.userInfoModel != null ? widget.userInfoModel.wallet.name : I18n.of(context).notLogin;
     return Padding(
       padding: EdgeInsets.only(top : ScreenUtil().setHeight(20),right : ScreenUtil().setWidth(20)),
       child: GestureDetector(

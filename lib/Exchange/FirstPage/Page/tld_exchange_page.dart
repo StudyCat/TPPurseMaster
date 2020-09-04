@@ -8,6 +8,8 @@ import 'package:dragon_sword_purse/Exchange/FirstPage/View/tld_exchange_payment_
 import 'package:dragon_sword_purse/Exchange/FirstPage/View/tld_exchange_rate_slider_cell.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
@@ -32,7 +34,7 @@ class TLDExchangePage extends StatefulWidget {
 }
 
 class _TLDExchangePageState extends State<TLDExchangePage> {
-  List titleList = ['钱包', '钱包余额', '售卖量', '最低购买额度设置','最高购买额度设置', '手续费率', '手续费', '实际到账', '收款方式'];
+  List titleList = [I18n.of(navigatorKey.currentContext).wallet,I18n.of(navigatorKey.currentContext).walletBalance ,I18n.of(navigatorKey.currentContext).saleAmount , I18n.of(navigatorKey.currentContext).minimumPurchaseAmountLabel,I18n.of(navigatorKey.currentContext).maximumPurchaseAmountLabel, I18n.of(navigatorKey.currentContext).serviceChargeRateLabel, I18n.of(navigatorKey.currentContext).serviceChargeLabel, I18n.of(navigatorKey.currentContext).realToTheAccount, I18n.of(navigatorKey.currentContext).collectionMethod];
 
   TLDSaleFormModel _formModel;
 
@@ -81,7 +83,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
         ),
         heroTag: 'exchange_page',
         transitionBetweenRoutes: false,
-        middle: Text('出售'),
+        middle: Text(I18n.of(context).sale),
         trailing: MessageButton(
           didClickCallBack: () => Navigator.push(context,
               MaterialPageRoute(builder: (context) => TLDMessagePage())),
@@ -99,7 +101,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
             type: TLDExchangeNormalCellType.normalArrow,
             title: titleList[index],
             content: _formModel.infoModel == null
-                ? '选择钱包'
+                ? I18n.of(context).chooseWallet
                 : _formModel.infoModel.wallet.name,
             contentStyle: TextStyle(
                 fontSize: 12, color: Color.fromARGB(255, 153, 153, 153)),
@@ -173,7 +175,7 @@ class _TLDExchangePageState extends State<TLDExchangePage> {
             child: CupertinoButton(
                 color: Theme.of(context).primaryColor,
                 child: Text(
-                  '出售',
+                  I18n.of(context).sale,
                   style: TextStyle(
                       color: Colors.white, fontSize: ScreenUtil().setSp(28)),
                 ),

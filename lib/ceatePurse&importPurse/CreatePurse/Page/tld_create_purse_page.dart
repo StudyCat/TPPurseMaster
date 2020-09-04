@@ -1,6 +1,8 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/ImportPurse/Page/tld_import_purse_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -56,7 +58,7 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
         ),
         heroTag: 'create_purse_page',
         transitionBetweenRoutes: false,
-        middle: Text('设置安全密码'),
+        middle: Text(I18n.of(context).setSafePassword),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -76,7 +78,7 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
           padding: EdgeInsets.only(
               top: ScreenUtil().setHeight(40), left: ScreenUtil().setWidth(30)),
           child: Text(
-            '请设置安全密码',
+            I18n.of(context).pleaseSetSefePassword,
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(28),
                 color: Color.fromARGB(255, 51, 51, 51)),
@@ -89,7 +91,7 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
               right: ScreenUtil().setWidth(30)),
           child: Center(
               child: TLDClipInputCell(
-            placeholder: '请输入您的密码',
+            placeholder: I18n.of(context).pleaseEnterPassword,
             isNeedSecretShow: true,
             textFieldEditingCallBack: (String string) {
               setState(() {
@@ -102,7 +104,7 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
           padding: EdgeInsets.only(
               top: ScreenUtil().setHeight(32), left: ScreenUtil().setWidth(30)),
           child: Text(
-            '确认密码',
+            I18n.of(context).confirmationPassword,
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(28),
                 color: Color.fromARGB(255, 51, 51, 51)),
@@ -115,7 +117,7 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
               right: ScreenUtil().setWidth(30)),
           child: Center(
               child: TLDClipInputCell(
-            placeholder: '请再次输入您的密码',
+            placeholder: I18n.of(context).pleaseEnterYourPasswordAgain,
             isNeedSecretShow: true,
             textFieldEditingCallBack: (String string) {
               _surePassword = string;
@@ -141,7 +143,7 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
           width: size.width - ScreenUtil().setWidth(200),
           child: CupertinoButton(
               child: Text(
-                '确定',
+                I18n.of(context).sureBtnTitle,
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(28), color: Colors.white),
               ),
@@ -156,13 +158,13 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
                     _registerUser();
                   } else {
                     Fluttertoast.showToast(
-                        msg: "确认密码与密码不符合",
+                        msg: I18n.of(navigatorKey.currentContext).TheSurePasswordIsNot,
                         toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
                   }
                 } else {
                   Fluttertoast.showToast(
-                      msg: "不符合密码强度",
+                      msg: I18n.of(navigatorKey.currentContext).doesNotMeetPasswordStrength,
                       toastLength: Toast.LENGTH_SHORT,
                       timeInSecForIosWeb: 1);
                 }

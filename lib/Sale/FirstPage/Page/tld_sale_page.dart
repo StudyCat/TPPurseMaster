@@ -8,6 +8,7 @@ import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -133,7 +134,7 @@ class _TLDSalePageState extends State<TLDSalePage> with AutomaticKeepAliveClient
   Widget _getRsfreshWidget(Widget widget){
     return SmartRefresher(
       controller:_refreshController,
-      header: WaterDropHeader(complete: Text('刷新完成')),
+      header: WaterDropHeader(complete: Text(I18n.of(navigatorKey.currentContext).refreshComplete)),
       onRefresh: ()=> getSaleListInfo(),
       child: widget, 
       );

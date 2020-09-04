@@ -2,6 +2,7 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Model/tld_acceptance_invitation_detail_earning_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/View/tld_acceptance_invitation_detail_earning_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/View/tld_acceptance_invitation_detail_earning_header_cell.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,7 @@ class _TLDAcceptanceInvitationDetailEarningPageState extends State<TLDAcceptance
         }),
         heroTag: 'detail_earning_page',
         transitionBetweenRoutes: false,
-        middle: Text('收益详情'),
+        middle: Text(I18n.of(context).detailProfit),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -110,7 +111,7 @@ class _TLDAcceptanceInvitationDetailEarningPageState extends State<TLDAcceptance
         padding: EdgeInsets.fromLTRB(0, ScreenUtil().setHeight(20), 0, ScreenUtil().setHeight(20)),
         child: Row(
           children: <Widget>[
-            Text('推广收益总计',style: TextStyle(
+            Text(I18n.of(context).TotalPromotionRevenue,style: TextStyle(
               fontSize: ScreenUtil().setSp(28),
               color: Color.fromARGB(255, 51, 51, 51)),),
         Text('${_detailEarningModel.totalProfit}TLD',style: TextStyle(

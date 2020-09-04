@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Find/Acceptance/Order/Model/tld_acceptance_detail_order_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,7 +41,7 @@ class _TLDAcceptanceDetailOrderAmountCellState extends State<TLDAcceptanceDetail
 
   Widget _getTotalAmountView(){
     return  RichText(
-              text: TextSpan(text: '总价',style: TextStyle(color:Color.fromARGB(255, 153, 153, 153),fontSize: ScreenUtil().setSp(28)),
+              text: TextSpan(text: I18n.of(context).totalPrices,style: TextStyle(color:Color.fromARGB(255, 153, 153, 153),fontSize: ScreenUtil().setSp(28)),
                 children: <InlineSpan>[
             TextSpan(
                 text: '${widget.orderInfoModel.totalPrice}TLD',
@@ -63,12 +64,12 @@ class _TLDAcceptanceDetailOrderAmountCellState extends State<TLDAcceptanceDetail
               color: Theme.of(context).hintColor,
             )),
             TextSpan(
-                text: '  ${widget.orderInfoModel.billLevel}级票据  X${widget.orderInfoModel.billCount}',
+                text: '  ${widget.orderInfoModel.billLevel}'+ I18n.of(context).levelBill + ' X${widget.orderInfoModel.billCount}',
                 style: TextStyle(
                     color: Color.fromARGB(255, 102, 102, 102),
                     fontSize: ScreenUtil().setSp(28)))
           ])),
-          Text('单价${widget.orderInfoModel.billPrice}TLD',
+          Text(I18n.of(context).univalence  +'${widget.orderInfoModel.billPrice}TLD',
               style: TextStyle(
                   color: Color.fromARGB(255, 102, 102, 102),
                   fontSize: ScreenUtil().setSp(28)))

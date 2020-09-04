@@ -1,5 +1,7 @@
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_profit_list_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_withdraw_list_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,8 +17,8 @@ class _TLDAcceptanceWithdrawTabPageState extends State<TLDAcceptanceWithdrawTabP
  TabController _tabController;
 
   List<String> _tabTitles = [
-    "提现",
-    '提现记录'
+    I18n.of(navigatorKey.currentContext).withdraw,
+    I18n.of(navigatorKey.currentContext).withdrawRecord
   ];
 
   @override
@@ -37,7 +39,7 @@ class _TLDAcceptanceWithdrawTabPageState extends State<TLDAcceptanceWithdrawTabP
         ),
         heroTag: 'acceptance_withdraw_tab_page',
         transitionBetweenRoutes: false,
-        middle: Text('提现记录'),
+        middle: Text(I18n.of(context).withdrawRecord),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),

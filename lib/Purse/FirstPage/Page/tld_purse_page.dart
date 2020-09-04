@@ -3,6 +3,7 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -98,7 +99,7 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
       body: SmartRefresher(
         controller: _controller,
         child: _getBodyWidget(context),
-        header: WaterDropHeader(complete: Text('刷新完成'),),
+        header: WaterDropHeader(complete: Text(I18n.of(navigatorKey.currentContext).refreshComplete),),
         onRefresh:()=>_getPurseInfoList(context),
         ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
@@ -179,7 +180,7 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
       ].request();
       return;
     }else if(status == PermissionStatus.permanentlyDenied){
-      Fluttertoast.showToast(msg: '请开启存储权限');
+      Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).PleaseTurnOnTheStoragePermissions);
       return;
     }
     jugeHavePassword(context, (){
@@ -195,7 +196,7 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
       ].request();
       return;
     }else if(status == PermissionStatus.permanentlyDenied){
-      Fluttertoast.showToast(msg: '请开启存储权限');
+      Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).PleaseTurnOnTheStoragePermissions);
       return;
     }
     jugeHavePassword(context,(){

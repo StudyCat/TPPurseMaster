@@ -67,7 +67,8 @@ class TLD3rdWebInfoModel{
 class TLDFindRootCellUIModel {
   String title;
   List items;
-  TLDFindRootCellUIModel({this.title, this.items});
+  bool isHaveNotice;
+  TLDFindRootCellUIModel({this.title, this.items,this.isHaveNotice});
 }
 
 class TLDFindRootCellUIItemModel {
@@ -82,14 +83,14 @@ class TLDFindRootCellUIItemModel {
 class TLDFindRootModelManager {
   static List get uiModelList {
     return [
-      TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).playingMethodLabel, items: [
+      TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).playingMethodLabel, isHaveNotice: true, items: [
         TLDFindRootCellUIItemModel(
             title: I18n.of(navigatorKey.currentContext).tldBillLabel, imageAssest: 'assetss/images/icon_choose_accept.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(
             title: I18n.of(navigatorKey.currentContext).missionLabel, imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true)
       ]),
-      TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).otherLabel, items: [
+      TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).otherLabel, isHaveNotice: false,items: [
         TLDFindRootCellUIItemModel(
             title: I18n.of(navigatorKey.currentContext).rankLabel, imageAssest: 'assetss/images/icon_choose_rank.png',isPlusIcon: false),
       ])
@@ -114,6 +115,11 @@ class TLDFindRootModelManager {
         Uri uri = Uri.parse(qrCodeStr);
        String path = uri.path;
        String origin = uri.origin;
+       if (uri.queryParameters.length == 0){
+          TLDError error = TLDError(400,'无效的二维码');
+          failure(error);
+          return;
+       }
        String iconUrl = uri.queryParameters['iconUrl'];
        String name = uri.queryParameters['name'];
        TLD3rdWebInfoModel infoModel = TLD3rdWebInfoModel();
@@ -130,4 +136,15 @@ class TLDFindRootModelManager {
        failure(error);
      }
   }
+  
+
+  void save3rdPartWeb(TLD3rdWebInfoModel infoModel ,Function success,Function(TLDError) failure){
+    TLDBaseRequest request = TLDBaseRequest({'appUrl':infoModel.url,'iconUrl':infoModel.iconUrl,"appName":infoModel.name},"play/saveApp");
+    request.postNetRequest((value) {
+      success();
+    }, (error){
+      failure(error);
+    } );
+  }
+
 }

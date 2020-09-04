@@ -3,6 +3,7 @@ import 'package:dragon_sword_purse/CommonWidget/tld_clip_common_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Order/Model/tld_acceptance_detail_order_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Order/View/tld_acceptance_detail_order_amount_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Order/View/tld_acceptance_detail_order_header_cell.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -97,7 +98,7 @@ class _TLDAcceptanceDetailOrderPageState extends State<TLDAcceptanceDetailOrderP
       ),
       floating: true, //不随着滑动隐藏标题
       pinned: true, //不固定在顶部
-      title: Text('订单详情'),
+      title: Text(I18n.of(context).detailOrderPageTitle),
       flexibleSpace: FlexibleSpaceBar(
         background: TLDAcceptanceDetailOrderHeaderCell(detailOrderInfoModel: _detailOrderInfoModel,),
       ),
@@ -126,10 +127,10 @@ class _TLDAcceptanceDetailOrderPageState extends State<TLDAcceptanceDetailOrderP
     String content = '';
     String title = '';
     if(index == 0){
-      title = '订单号';
+      title = I18n.of(context).orderNumLabel;
       content = _detailOrderInfoModel.acptOrderNo;
     }else if(index == 2){
-      title = '每天静态收益增加';
+      title = I18n.of(context).dailyStaticProfitAdd;
       content = '${_detailOrderInfoModel.staticProfit}TLD';
     }
     // else if(index == 3){

@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_sign_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -61,7 +62,7 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
           height: ScreenUtil().setHeight(60),
           width: ScreenUtil().setWidth(130),
           child: CupertinoButton(
-            child: Text( token != null ?'签到' :'去登记',style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Theme.of(context).hintColor)),
+            child: Text( token != null ?I18n.of(context).signIn :I18n.of(context).login,style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Theme.of(context).hintColor)),
             padding: EdgeInsets.zero,
             color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(30))),
@@ -80,8 +81,8 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children : <Widget>[
-            _getUserInfoWidget(0xe6b3, widget.userInfoModel != null ? widget.userInfoModel.userName : '暂未登记'),
-            Padding(padding: EdgeInsets.only(top : ScreenUtil().setHeight(4),),child: _getUserInfoWidget(0xe605, widget.userInfoModel != null ? widget.userInfoModel.tel : '暂未登记'),),
+            _getUserInfoWidget(0xe6b3, widget.userInfoModel != null ? widget.userInfoModel.userName : I18n.of(context).notLogin),
+            Padding(padding: EdgeInsets.only(top : ScreenUtil().setHeight(4),),child: _getUserInfoWidget(0xe605, widget.userInfoModel != null ? widget.userInfoModel.tel : I18n.of(context).notLogin),),
           ]
         )
       ],
@@ -114,7 +115,7 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
         ),
         children: <InlineSpan>[
           TextSpan(
-        text : '\n可提现额度',
+        text : '\n'+ I18n.of(context).withdrawLimit,
         style : TextStyle(
           fontSize:ScreenUtil().setSp(24),
           color : Color.fromARGB(255, 153, 153, 153)
@@ -130,7 +131,7 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
                 padding: EdgeInsets.zero,
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.all(Radius.circular(30)),
-                child: Text('提现',style: TextStyle(color : Theme.of(context).hintColor,fontSize:ScreenUtil().setSp(28)),),
+                child: Text(I18n.of(context).withdraw,style: TextStyle(color : Theme.of(context).hintColor,fontSize:ScreenUtil().setSp(24)),),
               ),
           )
       ],
@@ -155,8 +156,8 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
     Widget _getDayProfitLabel(){
     return  RichText(
         text : TextSpan(
-          text: '每日收益',
-          style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),
+          text: I18n.of(context).everydayProfit,
+          style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(24),),
           children: <InlineSpan>[
             TextSpan(text :'TLD',style: TextStyle(color : Color.fromARGB(255, 153, 153, 153),fontSize : ScreenUtil().setSp(20),),),
             TextSpan(text :'  =  ',style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),),
@@ -169,8 +170,8 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
   Widget _getStaticProfitLabel(){
    return  RichText(
         text : TextSpan(
-          text: '静态收益',
-          style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),
+          text: I18n.of(context).staticProfit,
+          style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(24),),
           children: <InlineSpan>[
             TextSpan(text :'  +  ',style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),),
             TextSpan(text :'\n' + (widget.userInfoModel != null ? widget.userInfoModel.staticProfit : '0'),style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),),
@@ -182,8 +183,8 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
   Widget _getInviteProfitLabel(){
      return  RichText(
         text : TextSpan(
-          text: '推广收益',
-          style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),
+          text: I18n.of(context).promotionProfit,
+          style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(24),),
           children: <InlineSpan>[
             TextSpan(text :'\n'+ (widget.userInfoModel != null ? widget.userInfoModel.inviteProfit : '0'),style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),),),
           ]
@@ -204,13 +205,13 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            _getSingleProfitWidget('收益溢出池', widget.userInfoModel != null ? '${widget.userInfoModel.overflowProfit}TLD' : '0.0TLD'),
+            _getSingleProfitWidget(I18n.of(context).profitOverflowPool, widget.userInfoModel != null ? '${widget.userInfoModel.overflowProfit}TLD' : '0.0TLD'),
             Padding(padding: EdgeInsets.only(left :ScreenUtil().setWidth(40)),
             child: VerticalDivider(
               width: ScreenUtil().setWidth(2),
               color: Colors.white,
             ),),
-            _getSingleProfitWidget('累计收益', widget.userInfoModel != null ? '${widget.userInfoModel.totalBillProfit}TLD' : '0.0TLD')
+            _getSingleProfitWidget(I18n.of(context).accumulativeProfit, widget.userInfoModel != null ? '${widget.userInfoModel.totalBillProfit}TLD' : '0.0TLD')
           ]
         ),
       ),

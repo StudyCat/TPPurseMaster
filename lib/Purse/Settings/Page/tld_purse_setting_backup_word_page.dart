@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:dragon_sword_purse/tld_tabbar_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -140,7 +141,7 @@ class _TLDPurseSeetingBackWordPageState extends State<TLDPurseSeetingBackWordPag
       ].request();
       return;
     }else if(status == PermissionStatus.permanentlyDenied){
-      Fluttertoast.showToast(msg: '请开启存储权限');
+      Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).PleaseTurnOnTheStoragePermissions);
       return;
     }
     var result = await ImageGallerySaver.saveImage(bytes);

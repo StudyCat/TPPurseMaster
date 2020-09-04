@@ -4,6 +4,7 @@ import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_w
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_sign_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_body_view.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -105,7 +106,7 @@ class _TLDAcceptanceSignSonPageState extends State<TLDAcceptanceSignSonPage> {
         ),
         heroTag: 'sign_son_page',
         transitionBetweenRoutes: false,
-        middle: Text('签到'),
+        middle: Text(I18n.of(context).signIn),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),

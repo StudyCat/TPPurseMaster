@@ -3,6 +3,7 @@ import 'package:dragon_sword_purse/Find/Acceptance/Login/Model/tld_acceptance_lo
 import 'package:dragon_sword_purse/Find/Acceptance/Login/View/tld_acceptance_scan_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/TabbarPage/Page/tld_acceptance_tabbar_page.dart';
 import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -70,7 +71,7 @@ void _loginUser(){
         ),
         heroTag: 'acceptance_invite_login_page',
         transitionBetweenRoutes: false,
-        middle: Text('TLD票据账户登记'),
+        middle: Text(I18n.of(context).tldBillAccountLogin),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -89,7 +90,7 @@ void _loginUser(){
         if (index == 0){
            return Padding(
           padding: EdgeInsets.only(top:ScreenUtil().setHeight(2),left: ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),
-          child: TLDAcceptanceScanCell(title : '推荐码',placeholder: '请输入您的推荐码',inviteController: _inviteController,
+          child: TLDAcceptanceScanCell(title : I18n.of(context).referralCode,placeholder:I18n.of(context).pleaseEnterYourReferralCode,inviteController: _inviteController,
           didClickScanButtonCallBack: ()async{
             await _scanPhoto();
           },
@@ -102,7 +103,7 @@ void _loginUser(){
             margin : EdgeInsets.only(top : ScreenUtil().setHeight(400),left: ScreenUtil().setWidth(100),right: ScreenUtil().setWidth(100)),
             height: ScreenUtil().setHeight(80),
             width:size.width -  ScreenUtil().setWidth(200),
-            child: CupertinoButton(child: Text('登记',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){ 
+            child: CupertinoButton(child: Text(I18n.of(context).login,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){ 
               _loginUser();
             }),
           );

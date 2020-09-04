@@ -17,6 +17,8 @@ import 'package:dragon_sword_purse/Order/View/tld_detail_order_paymethod_cell.da
 import 'package:dragon_sword_purse/Order/View/tld_detail_wechat_qrcode_show_view.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,8 +36,8 @@ class TLDAcceptanceDetailWithdrawPage extends StatefulWidget {
 }
 
 class _TLDAcceptanceDetailWithdrawPageState extends State<TLDAcceptanceDetailWithdrawPage> {
-  List referrerTitles = ['订单号', '数量', '应付款', '收款方式', '接收地址','买家',''];
-  List platformTitles = ['订单号', '数量', '应付款', '收款方式', '接收地址','买家','手续费率','手续费',''];
+  List referrerTitles = [I18n.of(navigatorKey.currentContext).orderNumLabel,I18n.of(navigatorKey.currentContext).countLabel ,I18n.of(navigatorKey.currentContext).accountPayable , I18n.of(navigatorKey.currentContext).collectionMethod, I18n.of(navigatorKey.currentContext).recieveAddress,I18n.of(navigatorKey.currentContext).buyer,''];
+  List platformTitles = [I18n.of(navigatorKey.currentContext).orderNumLabel,I18n.of(navigatorKey.currentContext).countLabel ,I18n.of(navigatorKey.currentContext).accountPayable , I18n.of(navigatorKey.currentContext).collectionMethod, I18n.of(navigatorKey.currentContext).recieveAddress,I18n.of(navigatorKey.currentContext).buyer,I18n.of(navigatorKey.currentContext).serviceChargeRateLabel,I18n.of(navigatorKey.currentContext).serviceChargeLabel,''];
   bool isOpen = false;
   StreamController _controller;
   bool _isLoading = false;
@@ -234,7 +236,7 @@ class _TLDAcceptanceDetailWithdrawPageState extends State<TLDAcceptanceDetailWit
       ),
       floating: true, //不随着滑动隐藏标题
       pinned: true, //不固定在顶部
-      title: Text('订单详情'),
+      title: Text(I18n.of(context).detailOrderPageTitle),
       flexibleSpace: FlexibleSpaceBar(
         background: TLDAcceptanceDetailWithdrawHeaderView(
           detailModel: _detailModel,
@@ -335,13 +337,13 @@ class _TLDAcceptanceDetailWithdrawPageState extends State<TLDAcceptanceDetailWit
             return TLDAcceptanceDetailWithdrawBottomCell(
               detailModel: _detailModel,
               didClickActionBtnCallBack: (String title){
-                if (title == '我已付款') {
+                if (title == I18n.of(context).iHavePaid) {
                   alertPassWord(_surePay);
-                }else if(title == '取消提现'){
+                }else if(title == I18n.of(context).cancelWithdraw){
                   alertPassWord(_cancelWithdraw);
-                }else if(title == '确认释放TLD'){
+                }else if(title == I18n.of(context).sureReleaseTLDBtnTitle){
                   alertPassWord(_sureSentTLD);
-                }else if (title == '催单'){
+                }else if (title == I18n.of(context).reminderBtnTitle){
                   _reminder();
                 }
               },
@@ -370,7 +372,7 @@ class _TLDAcceptanceDetailWithdrawPageState extends State<TLDAcceptanceDetailWit
       switch (_detailModel.cashStatus) {
         case 1 :{
           isNeedAppeal = true;
-          appealTitle = '订单申诉';
+          appealTitle = I18n.of(context).appealOrderLabel;
         }
         break;
         default :{         
@@ -381,13 +383,13 @@ class _TLDAcceptanceDetailWithdrawPageState extends State<TLDAcceptanceDetailWit
     if (_detailModel.appealStatus > -1){
       isNeedAppeal = true;
       if (_detailModel.appealStatus == 0) {
-        appealTitle = '订单申诉中';
+        appealTitle = I18n.of(context).orderIsAppealingLabel;
       }else if(_detailModel.appealStatus == 1){
-        appealTitle = '订单申诉成功';
+        appealTitle = I18n.of(context).appealOrderSuccessLabel;
       }else if(_detailModel.appealStatus == 2){
-        appealTitle = '订单申诉失败';
+        appealTitle = I18n.of(context).appealOrderFailureLabel;
       }else {
-        appealTitle = '订单申诉';
+        appealTitle = I18n.of(context).appealOrderLabel;
       }
     }
     callBack(isNeedAppeal,appealTitle);
@@ -404,7 +406,7 @@ class _TLDAcceptanceDetailWithdrawPageState extends State<TLDAcceptanceDetailWit
     }else if(index == 4){
       content = _detailModel.inviteWalletAddress;
     }else if(index == 5){
-      content = _detailModel.cashType == 1 ? '推荐人' : '买家';
+      content = _detailModel.cashType == 1 ? I18n.of(context).referrer : I18n.of(context).buyer;
     }else if(index == 6){
       content = '${_detailModel.chargeRate}%';
     }else if(index == 7){
@@ -436,9 +438,9 @@ class _TLDAcceptanceDetailWithdrawPageState extends State<TLDAcceptanceDetailWit
   Widget _getIMCell(){
     String title;
     if (_detailModel.cashType == 1) {
-      title = _detailModel.amApply == true ? '联系推荐人' : '联系提现人';
+      title = _detailModel.amApply == true ? I18n.of(context).contactReferrer : I18n.of(context).contactWithdrawer;
     }else{
-      title = _detailModel.amApply == true ? '联系平台客服' : '联系提现人';
+      title = _detailModel.amApply == true ? I18n.of(context).contactPlatformService : I18n.of(context).contactWithdrawer;
     }
     return GestureDetector(
       onTap: () { 

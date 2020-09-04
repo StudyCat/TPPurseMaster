@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Drawer/IntegrationDesc/Model/tld_integration_desc_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,7 +43,7 @@ class _TLDIntegrationDescPageState extends State<TLDIntegrationDescPage> {
         ),
         heroTag: 'integration_desc_page',
         transitionBetweenRoutes: false,
-        middle: Text('TLD兑换说明'),
+        middle: Text(I18n.of(context).tldExchangeDescription),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -57,7 +58,7 @@ class _TLDIntegrationDescPageState extends State<TLDIntegrationDescPage> {
       itemBuilder: (BuildContext context, int index){
         String title = '';
         if (index == 0) {
-          title = '兑换比例：1TLD=1CNY';
+          title = I18n.of(context).SubscriptionRatio + '：1TLD=1CNY';
         }else{
           title = _rate != null ? _rate : '';
         }

@@ -1,6 +1,8 @@
 import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Page/tld_acceptance_invitation_earnings_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Page/tld_acceptance_invitation_qr_code_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,8 +20,8 @@ class _TLDAcceptanceInvitationTabPageState extends State<TLDAcceptanceInvitation
   TabController _tabController;
 
   List<String> _tabTitles = [
-    "邀请码",
-    "推广收益",
+    I18n.of(navigatorKey.currentContext).invitationCode,
+    I18n.of(navigatorKey.currentContext).promotionProfit,
   ];
 
   @override
@@ -42,7 +44,7 @@ class _TLDAcceptanceInvitationTabPageState extends State<TLDAcceptanceInvitation
         heroTag: 'invitation_page',
         transitionBetweenRoutes: false,
         automaticallyImplyLeading: false,
-        middle: Text('推广邀请码'),
+        middle: Text(I18n.of(context).promotionInvitationCode),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.inviteProfitDescUrl,title: '推广收益说明',)));
         }),

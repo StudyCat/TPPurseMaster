@@ -15,6 +15,8 @@ import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_withdraw_tab_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,8 +46,8 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
   TabController _tabController;
 
   List<String> _tabTitles = [
-    "提现待支付",
-    '提现待释放'
+    I18n.of(navigatorKey.currentContext).withdrawWaitPay,
+    I18n.of(navigatorKey.currentContext).withdrawWaitRelease
   ];
 
 
@@ -105,14 +107,14 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
         heroTag: 'acceptance_sign_page',
         transitionBetweenRoutes: false,
         automaticallyImplyLeading: false,
-        middle: Text('TLD票据账户',style: TextStyle(color:Colors.white),),
+        middle: Text(I18n.of(context).tldBillAccount,style: TextStyle(color:Colors.white),),
         backgroundColor: Theme.of(context).primaryColor,
         actionsForegroundColor: Colors.white,
         trailing: GestureDetector(
           onTap :(){
             Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceWithdrawTabPage()));
           },
-          child : Text('提现记录',style: TextStyle(color:Colors.white,))
+          child : Text(I18n.of(context).withdrawRecord,style: TextStyle(color:Colors.white,))
         ),
       ),
       body: _getBody(),
@@ -142,7 +144,7 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
           });
         },
         didClickProfitCallBack: (String title){
-          if (title == '收益溢出池') {
+          if (title == I18n.of(context).profitOverflowPool) {
             Navigator.push(context, MaterialPageRoute(builder: (context) =>TLDAcceptanceProfitSpillPage(walletAddress: _userInfoModel.walletAddress,)));
           }else {
             Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceProfitListPage()));
@@ -212,7 +214,7 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
         ),
         SmartRefresher(
         controller: _refreshController,
-        header: WaterDropHeader(complete: Text('刷新完成'),),
+        header: WaterDropHeader(complete: Text(I18n.of(navigatorKey.currentContext).refreshComplete),),
         onRefresh: () => _getUserInfo(),
         child: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget(),), 
         )

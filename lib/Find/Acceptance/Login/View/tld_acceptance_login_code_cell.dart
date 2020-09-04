@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -105,7 +106,7 @@ class _TLDAcceptanceLoginCodeCellState
                     width: ScreenUtil().setWidth(176),
                     child: CupertinoButton(
                         child: Text(
-                            _countdownTime > 0 ? '${_countdownTime}秒' : "发送验证码",
+                            _countdownTime > 0 ? '${_countdownTime}s'  : I18n.of(context).sentVerifyCode,
                             style: TextStyle(
                                 fontSize: ScreenUtil().setSp(24),
                                 color: Colors.white)),

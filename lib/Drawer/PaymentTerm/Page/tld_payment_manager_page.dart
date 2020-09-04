@@ -1,5 +1,7 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_diy_info_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -101,7 +103,7 @@ class _TLDPaymentManagerPageState extends State<TLDPaymentManagerPage> {
     return SmartRefresher(
       controller:_refreshController,
       header: WaterDropHeader(
-        complete: Text('刷新完成')
+        complete: Text(I18n.of(navigatorKey.currentContext).refreshComplete)
       ),
       onRefresh:()=> _getPaymentList(),
       child: _getBodyWidget(),
@@ -110,13 +112,13 @@ class _TLDPaymentManagerPageState extends State<TLDPaymentManagerPage> {
 
   String _getPageTitle(){
     if(widget.type == TLDPaymentType.wechat){
-      return '微信号管理';
+      return I18n.of(context).manageWechat;
     }else if(widget.type == TLDPaymentType.alipay){
-      return '支付宝管理';
+      return I18n.of(context).manageAlipay;
     }else if (widget.type == TLDPaymentType.bank){
-      return '银行卡管理';
+      return I18n.of(context).manageAlipay;
     }else {
-      return '自定义支付方式管理';
+      return I18n.of(context).manageCustomMethod;
     }
   }
 

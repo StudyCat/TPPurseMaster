@@ -1,4 +1,6 @@
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,10 +25,10 @@ class TLDChoosePaymentPage extends StatefulWidget {
 class _TLDChoosePaymentPageState extends State<TLDChoosePaymentPage> {
 
     List titles = [
-    '银行卡',
-    '微信',
-    '支付宝',
-    '自定义收款方式'
+    I18n.of(navigatorKey.currentContext).bankCard,
+    I18n.of(navigatorKey.currentContext).weChat,
+    I18n.of(navigatorKey.currentContext).aliPay,
+    I18n.of(navigatorKey.currentContext).CustomizeTheCollectionMethod
     ];
     
     List icons = [
@@ -45,7 +47,7 @@ class _TLDChoosePaymentPageState extends State<TLDChoosePaymentPage> {
         ),
         heroTag: 'choose_payment_page',
         transitionBetweenRoutes: false,
-        middle: Text('收款方式'),
+        middle: Text(I18n.of(context).collectionMethod),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),

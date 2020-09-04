@@ -8,6 +8,8 @@ import 'package:dragon_sword_purse/Purse/MyPurse/Page/tld_my_purse_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jmessage_flutter/jmessage_flutter.dart';
@@ -126,13 +128,13 @@ class _TLDSystemMessageContentPageState extends State<TLDSystemMessageContentPag
         enablePullDown: true,
       controller: _refreshController,
       header: WaterDropHeader(
-      complete : Text('刷新完成')
+      complete : Text(I18n.of(navigatorKey.currentContext).refreshComplete)
     ),
       footer: CustomFooter(
           builder: (BuildContext context,LoadStatus mode){
             Widget body ;
             if(mode==LoadStatus.idle){
-              body =  Text("上拉加载");
+              body =  Text(I18n.of(context).pullUpToLoad);
             }
             else if(mode==LoadStatus.loading){
               body =  CupertinoActivityIndicator();

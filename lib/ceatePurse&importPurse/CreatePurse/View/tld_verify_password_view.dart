@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,14 +23,14 @@ class _TLDVerifyPasswordViewState extends State<TLDVerifyPasswordView> {
         child : Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children : <Widget>[
-            Text('为了您的资产安全，密码强度要求如下：',style: TextStyle(
+            Text(I18n.of(context).ForTheSecurityOfYourAssets,style: TextStyle(
               fontSize : ScreenUtil().setSp(28),
               color : Color.fromARGB(255, 51, 51, 51)
             ),),
-            getVerifyItem('至少一个大写字母', _isHaveCapital()),
-            getVerifyItem('至少一个小写字母', _isHaveLowercase()),
-            getVerifyItem('至少一个数字', _isHaveNum()),
-            getVerifyItem('总共8～32个字符', _isLengthLegal())
+            getVerifyItem(I18n.of(context).atLeastOneCapitalLetter, _isHaveCapital()),
+            getVerifyItem(I18n.of(context).atLeastOneLowercaseLetter, _isHaveLowercase()),
+            getVerifyItem(I18n.of(context).AtLeastOneNumberLetter, _isHaveNum()),
+            getVerifyItem(I18n.of(context).thereAre8CharactersTo32CharactersInTotal, _isLengthLegal())
           ],
         )
       ),
@@ -40,7 +41,7 @@ class _TLDVerifyPasswordViewState extends State<TLDVerifyPasswordView> {
     return Row(
       children : <Widget>[
         Container(
-          width: ScreenUtil().setWidth(300),
+          width: ScreenUtil().setWidth(380),
           child: Text('·'+ content, style: TextStyle(color : isPass ? Color.fromARGB(255, 68, 149, 34) : Color.fromARGB(255, 208, 2, 27),fontSize: ScreenUtil().setSp(28)),),
         ),
         Container(

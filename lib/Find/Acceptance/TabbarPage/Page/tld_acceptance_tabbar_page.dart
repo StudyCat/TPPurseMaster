@@ -4,6 +4,8 @@ import 'package:dragon_sword_purse/Find/Acceptance/Order/Page/tld_acceptance_ord
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Page/tld_acceptance_detail_bill_page.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,14 +24,14 @@ class _TLDAcceptanceTabbarPageState extends State<TLDAcceptanceTabbarPage> {
       activeIcon: Image.asset('assetss/images/icon_acceptance_bill.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_acceptance_bill_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       title: Text(
-        '票据',
+        I18n.of(navigatorKey.currentContext).bill,
         style: TextStyle(fontSize: 10),
       ),
     ),
     BottomNavigationBarItem(
       activeIcon: Image.asset('assetss/images/icon_acceptance_order.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_acceptance_order_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      title: Text('订单',
+      title: Text(I18n.of(navigatorKey.currentContext).order,
           style: TextStyle(
             fontSize: 10,
           )),
@@ -37,7 +39,7 @@ class _TLDAcceptanceTabbarPageState extends State<TLDAcceptanceTabbarPage> {
     BottomNavigationBarItem(
       activeIcon: Image.asset('assetss/images/icon_acceptance_invite.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_acceptance_invite_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      title: Text('邀请',
+      title: Text(I18n.of(navigatorKey.currentContext).invite,
           style: TextStyle(
             fontSize: 10,
           )),
@@ -45,7 +47,7 @@ class _TLDAcceptanceTabbarPageState extends State<TLDAcceptanceTabbarPage> {
     BottomNavigationBarItem(
       activeIcon: Image.asset('assetss/images/icon_acceptance_mine.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_acceptance_mine_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      title: Text('我的',
+      title: Text(I18n.of(navigatorKey.currentContext).mine,
           style: TextStyle(
             fontSize: 10,
           )),

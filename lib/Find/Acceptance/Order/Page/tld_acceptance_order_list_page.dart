@@ -4,6 +4,8 @@ import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bil
 import 'package:dragon_sword_purse/Find/Acceptance/Order/Model/tld_acceptance_order_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Order/Page/tld_acceptance_detail_order_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Order/View/tld_acceptance_order_list_cell.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -68,7 +70,7 @@ class _TLDAcceptanceOrderListPageState extends State<TLDAcceptanceOrderListPage>
         heroTag: 'invitation_order_list_page',
         automaticallyImplyLeading: false,
         transitionBetweenRoutes: false,
-        middle: Text('TLD票据'),
+        middle: Text(I18n.of(context).tldBill),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.billDescUrl,title: '票据说明',)));
         }),
@@ -81,7 +83,7 @@ class _TLDAcceptanceOrderListPageState extends State<TLDAcceptanceOrderListPage>
         controller: _refreshController,
         child: _getBodyWidget(),
         header: WaterDropHeader(
-          complete: Text('刷新完成'),
+          complete: Text(I18n.of(navigatorKey.currentContext).refreshComplete),
         ),
         onRefresh: () {
           _page = 1;
@@ -91,13 +93,13 @@ class _TLDAcceptanceOrderListPageState extends State<TLDAcceptanceOrderListPage>
           builder: (BuildContext context,LoadStatus mode){
             Widget body ;
             if(mode==LoadStatus.idle){
-              body =  Text("上拉加载");
+              body =  Text(I18n.of(context).pullUpToLoad);
             }
             else if(mode==LoadStatus.loading){
               body =  CupertinoActivityIndicator();
             }
             else if(mode == LoadStatus.canLoading){
-                body = Text("放下加载更多数据");
+                body = Text(I18n.of(context).dropDownToLoadMoreData);
             }
             return Container(
               height: 55.0,

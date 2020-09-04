@@ -5,6 +5,8 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Model/tld_acceptance_invitation_qr_code_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/View/tld_acceptance_invitation_qr_code_view.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -69,7 +71,7 @@ class _TLDAcceptanceInvitationQRCodePageState extends State<TLDAcceptanceInvitat
               child: Container(
                 height : ScreenUtil().setHeight(80),
                 width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(100),
-                child : CupertinoButton(child: Text('保存图片',style:TextStyle(color:Theme.of(context).hintColor)), padding: EdgeInsets.zero,borderRadius: BorderRadius.all(Radius.circular(4)),color: Theme.of(context).primaryColor,onPressed: ()async{
+                child : CupertinoButton(child: Text(I18n.of(context).savePicture,style:TextStyle(color:Theme.of(context).hintColor)), padding: EdgeInsets.zero,borderRadius: BorderRadius.all(Radius.circular(4)),color: Theme.of(context).primaryColor,onPressed: ()async{
                     Uint8List bytes = await _capturePng();
                    await _saveQrCodeImage(bytes);
             }) 
@@ -104,7 +106,7 @@ class _TLDAcceptanceInvitationQRCodePageState extends State<TLDAcceptanceInvitat
       ].request();
       return;
     }else if(status == PermissionStatus.permanentlyDenied){
-      Fluttertoast.showToast(msg: '请开启存储权限');
+      Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).PleaseTurnOnTheStoragePermissions);
       return;
     }
     var result = await ImageGallerySaver.saveImage(bytes);

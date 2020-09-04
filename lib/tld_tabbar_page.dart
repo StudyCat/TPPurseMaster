@@ -20,6 +20,7 @@ import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_c
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_creating_purse_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,14 +50,14 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
       activeIcon: Image.asset('assetss/images/icon_purse.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_purse_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       title: Text(
-        '钱包',
+        I18n.of(navigatorKey.currentContext).wallet,
         style: TextStyle(fontSize: 10),
       ),
     ),
     BottomNavigationBarItem(
       activeIcon: Image.asset('assetss/images/icon_buy.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_buy_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      title: Text('购买',
+      title: Text(I18n.of(navigatorKey.currentContext).buyBtnTitle,
           style: TextStyle(
             fontSize: 10,
           )),
@@ -64,7 +65,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
     BottomNavigationBarItem(
       activeIcon: Image.asset('assetss/images/icon_message.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_message_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      title: Text('消息',
+      title: Text(I18n.of(navigatorKey.currentContext).message,
           style: TextStyle(
             fontSize: 10,
           )),
@@ -72,7 +73,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
     BottomNavigationBarItem(
       activeIcon: Image.asset('assetss/images/icon_sale.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_sale_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      title: Text('售卖',
+      title: Text(I18n.of(navigatorKey.currentContext).sale,
           style: TextStyle(
             fontSize: 10,
           )),
@@ -80,7 +81,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
     BottomNavigationBarItem(
       activeIcon: Image.asset('assetss/images/icon_find.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_find_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      title: Text('发现',
+      title: Text(I18n.of(navigatorKey.currentContext).findPageTitle,
           style: TextStyle(
             fontSize: 10,
           ))
@@ -100,7 +101,6 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
     super.initState();
 
     WidgetsBinding.instance.addObserver(this);
-
     currentIndex = 0;
     _pageController = PageController();
     
@@ -181,7 +181,7 @@ class _TLDTabbarPageState extends State<TLDTabbarPage> with WidgetsBindingObserv
                 MaterialPageRoute(builder: (context) => TLDUserFeedBackPage()));
           }else {
             // TLDUserAgreementPage
-            Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.tldWalletAgreement,title: '用户协议',)));
+            Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.tldWalletAgreement,title: I18n.of(context).userAgreement,)));
           }
         },
       ),

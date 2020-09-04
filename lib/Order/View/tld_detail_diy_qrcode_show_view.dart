@@ -3,6 +3,8 @@ import 'dart:ui';
 
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_bill_dash_line.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_dash_line.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
@@ -136,7 +138,7 @@ class _TLDDetailDiyQrcodeShowViewState extends State<TLDDetailDiyQrcodeShowView>
       ].request();
       return;
     }else if(status == PermissionStatus.permanentlyDenied){
-      Fluttertoast.showToast(msg: '请开启存储权限');
+      Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).PleaseTurnOnTheStoragePermissions);
       return;
     }
     var result = await ImageGallerySaver.saveImage(bytes);

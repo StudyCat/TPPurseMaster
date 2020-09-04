@@ -13,6 +13,8 @@ import 'package:dragon_sword_purse/NewMission/FirstPage/View/tld_new_mission_no_
 import 'package:dragon_sword_purse/NewMission/FirstPage/View/tld_publish_mission_button.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/View/tld_sale_not_data_view.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -148,7 +150,7 @@ class _TLDNewMissionPublishMissionPageState
   Widget _getRsfreshWidget(Widget widget) {
     return SmartRefresher(
       controller: _refreshController,
-      header: WaterDropHeader(complete: Text('刷新完成')),
+      header: WaterDropHeader(complete: Text(I18n.of(navigatorKey.currentContext).refreshComplete)),
       onRefresh: () {
         _page = 1;
         _getPublishList(_page);

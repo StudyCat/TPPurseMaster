@@ -1,5 +1,7 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_purse_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'purse_sideslip_header_cell.dart';
@@ -17,7 +19,7 @@ class TLDPurseSideslipView extends StatefulWidget {
 class _TLDPurseSideslipViewState extends State<TLDPurseSideslipView> {
 
   List iconList = [0xe641,0xe672,0xe8ac,0xe665,0xe60e];
-  List titleList = ['收款方式','TLD兑换说明','反馈','关于我们','用户协议'];
+  List titleList = [I18n.of(navigatorKey.currentContext).collectionMethod,I18n.of(navigatorKey.currentContext).tldExchangeDescription,I18n.of(navigatorKey.currentContext).feedBack,I18n.of(navigatorKey.currentContext).aboutUS,I18n.of(navigatorKey.currentContext).userAgreement];
 
   String _totalAmount;
 

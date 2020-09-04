@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
@@ -25,7 +26,7 @@ class TLDBaseRequest{
   //47.101.170.209 测试环境
   //192.168.1.120 本地环境
   //139.224.83.9:8030 生成环境
-  static String baseUrl = 'http://120.92.141.131:8030/';
+  static String baseUrl = 'http://192.168.1.120:8030/';
   Map pramatersMap;
   String subUrl;
   CancelToken cancelToken;
@@ -64,7 +65,8 @@ class TLDBaseRequest{
         int time = DateTime.now().millisecondsSinceEpoch;
         String uuid = Uuid.randomUuid().toString();
         String authorization = _authorizationEncode(userToken, time, uuid);
-        options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':'1.0.1'};
+        String language = TLDDataManager.instance.currentLocal.languageCode;
+        options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':'1.0.1',"Language" : language};
       }
       if (acceptanceToken != null){
         options.headers.addEntries({'jwtToken':acceptanceToken}.entries);
@@ -102,7 +104,8 @@ class TLDBaseRequest{
         int time = DateTime.now().millisecondsSinceEpoch;
         String uuid = Uuid.randomUuid().toString();
         String authorization = _authorizationEncode(userToken, time, uuid);
-        options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':'1.0.1'};
+        String language = TLDDataManager.instance.currentLocal.languageCode;
+        options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':'1.0.1',"Language" : language};
       }
       if (acceptanceToken != null){
         options.headers.addEntries({'jwtToken':acceptanceToken}.entries);

@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ class _TLDAcceptanceWithdrawChooseTypeCellState extends State<TLDAcceptanceWithd
         ),
         Padding(
           padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
-          child: Text('推荐人',style:TextStyle(fontSize : ScreenUtil().setSp(28),color:Color.fromARGB(255, 51, 51, 51))),
+          child: Text(I18n.of(context).referrer,style:TextStyle(fontSize : ScreenUtil().setSp(28),color:Color.fromARGB(255, 51, 51, 51))),
         ),
         Padding(
           padding: EdgeInsets.only(left : ScreenUtil().setWidth(100)),
@@ -83,7 +84,7 @@ class _TLDAcceptanceWithdrawChooseTypeCellState extends State<TLDAcceptanceWithd
         ),
         Padding(
           padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
-          child: Text('平台',style:TextStyle(fontSize : ScreenUtil().setSp(28),color:Color.fromARGB(255, 51, 51, 51))),
+          child: Text(I18n.of(context).platform,style:TextStyle(fontSize : ScreenUtil().setSp(28),color:Color.fromARGB(255, 51, 51, 51))),
         ),
       ],
     );

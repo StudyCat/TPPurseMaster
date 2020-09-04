@@ -9,6 +9,7 @@ class TLDAcceptanceProfitListModel {
   String billIcon;
   String profitTldCount;
   int createTime;
+  String profitDesc;
 
   TLDAcceptanceProfitListModel(
       {this.billId,
@@ -16,7 +17,8 @@ class TLDAcceptanceProfitListModel {
       this.billCount,
       this.billIcon,
       this.profitTldCount,
-      this.createTime});
+      this.createTime,
+      this.profitDesc});
 
   TLDAcceptanceProfitListModel.fromJson(Map<String, dynamic> json) {
     billId = json['billId'];
@@ -25,6 +27,7 @@ class TLDAcceptanceProfitListModel {
     billIcon = json['billIcon'];
     profitTldCount = json['profitTldCount'];
     createTime = json['createTime'];
+    profitDesc = json['profitDesc'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +38,7 @@ class TLDAcceptanceProfitListModel {
     data['billIcon'] = this.billIcon;
     data['profitTldCount'] = this.profitTldCount;
     data['createTime'] = this.createTime;
+    data['profitDesc'] = this.profitDesc;
     return data;
   }
 }

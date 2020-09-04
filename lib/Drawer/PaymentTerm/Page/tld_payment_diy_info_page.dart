@@ -5,6 +5,8 @@ import 'package:dragon_sword_purse/CommonWidget/tld_clip_title_input_cell.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_create_payment_model_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/View/tld_wechat_alipay_choice_qrcode_view.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_reader/flutter_qr_reader.dart';
@@ -49,9 +51,9 @@ class _TLDPaymentDiyInfoPageState extends State<TLDPaymentDiyInfoPage> {
 
     _pramaterModel = TLDCreatePaymentPramaterModel();
     _pramaterModel.walletAddress = widget.walletAddress;
-      titles = [ '自定义支付方式名称','真实姓名', '自定义支付方式账号','自定义支付收款二维码'];
-      placeholders = ['请输入您的支付方式名称','请输入您的真实姓名', '请输入您的自定义支付账号','请输入您的限制额度'];
-      title = '自定义支付账号信息';
+      titles = [ I18n.of(navigatorKey.currentContext).customMethodName,I18n.of(navigatorKey.currentContext).realNameLabel, I18n.of(navigatorKey.currentContext).customMethodAccount,I18n.of(navigatorKey.currentContext).customMethodQRCode];
+      placeholders = [I18n.of(navigatorKey.currentContext).pleaseEnterYourCustomMethodName,I18n.of(navigatorKey.currentContext).pleaseEnterYourRealName, I18n.of(navigatorKey.currentContext).pleaseEnterYourCustomMethodAccount,I18n.of(navigatorKey.currentContext).pleaseEnterYourLimitAmount];
+      title = I18n.of(navigatorKey.currentContext).customizeTheCollectionMethodInformation;
 
     _pramaterModel.type = 4;
 
@@ -217,7 +219,7 @@ class _TLDPaymentDiyInfoPageState extends State<TLDPaymentDiyInfoPage> {
                 ),
                 padding:  EdgeInsets.only(top:ScreenUtil().setHeight(20),left: ScreenUtil().setWidth(20),right: ScreenUtil().setWidth(20),bottom: ScreenUtil().setHeight(20)),
                 width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(60),
-                child: Text('声明：\n请认真填写您的收款方式，如填写无效的或者错误的收款方式，导致的资产损失，平台概不负责。',style: TextStyle(
+                child: Text(I18n.of(context).statementPleaseEnterYourPaymentMethodCarefully,style: TextStyle(
                   fontSize : ScreenUtil().setSp(24),
                   color: Color.fromARGB(255, 51, 51, 51)
                 ),),
@@ -227,7 +229,7 @@ class _TLDPaymentDiyInfoPageState extends State<TLDPaymentDiyInfoPage> {
             margin : EdgeInsets.only(top : ScreenUtil().setHeight(400),left: ScreenUtil().setWidth(100),right: ScreenUtil().setWidth(100)),
             height: ScreenUtil().setHeight(80),
             width:size.width -  ScreenUtil().setWidth(200),
-            child: CupertinoButton(child: Text('保存',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){ 
+            child: CupertinoButton(child: Text(I18n.of(context).save,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),padding: EdgeInsets.all(0), color: Theme.of(context).primaryColor,onPressed: (){ 
               if (_pramaterModel.payId.length == 0){
                       createPayment();
                     }else{

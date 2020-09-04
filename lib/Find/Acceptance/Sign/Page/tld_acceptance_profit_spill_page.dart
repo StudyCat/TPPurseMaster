@@ -4,6 +4,8 @@ import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_profit_spill_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_profit_spill_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_profit_spill_unopen_cell.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -89,7 +91,7 @@ class _TLDAcceptanceProfitSpillPageState extends State<TLDAcceptanceProfitSpillP
         ),
         heroTag: 'acceptance_sign_page',
         transitionBetweenRoutes: false,
-        middle: Text('收益溢出池',),
+        middle: Text(I18n.of(context).profitOverflowPool,),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.overflowProfitDescUrl,title: '收益溢出池说明',)));
         }),
@@ -108,7 +110,7 @@ class _TLDAcceptanceProfitSpillPageState extends State<TLDAcceptanceProfitSpillP
       controller: _refreshController,
       child: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget()),
       header: WaterDropHeader(
-        complete : Text('刷新完成'),
+        complete : Text(I18n.of(navigatorKey.currentContext).refreshComplete),
       ),
       onRefresh: (){
         _getSpillListInfo();

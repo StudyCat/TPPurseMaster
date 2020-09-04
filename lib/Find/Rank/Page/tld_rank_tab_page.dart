@@ -1,6 +1,7 @@
 import 'package:dragon_sword_purse/Find/Rank/Page/tld_rank_accptance_page.dart';
 import 'package:dragon_sword_purse/Find/Rank/Page/tld_rank_mine_page.dart';
 import 'package:dragon_sword_purse/Find/Rank/Page/tld_rank_normal_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,7 +40,7 @@ class _TLDRankTabPageState extends State<TLDRankTabPage> with SingleTickerProvid
         ),
         heroTag: 'rank_tab_page',
         transitionBetweenRoutes: false,
-        middle: Text('TLD票据排行榜'),
+        middle: Text(I18n.of(context).tldBillRank),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),

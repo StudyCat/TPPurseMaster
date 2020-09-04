@@ -1,6 +1,7 @@
 import 'package:dragon_sword_purse/CommonWidget/tld_clip_common_cell.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _TLDPaymentChooseWalletPageState extends State<TLDPaymentChooseWalletPage>
         ),
         heroTag: 'choose_payment_wallet_page',
         transitionBetweenRoutes: false,
-        middle: Text('选择钱包'),
+        middle: Text(I18n.of(context).chooseWalletLabel),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),

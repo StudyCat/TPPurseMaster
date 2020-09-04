@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,15 +23,15 @@ class _TLDRankAcceptanceHeaderCellState extends State<TLDRankAcceptanceHeaderCel
         children: <Widget>[
            Container(
             width : (MediaQuery.of(context).size.width - ScreenUtil().setWidth(60)) / 3, 
-            child: Text('排名',style: textStyle,textAlign: TextAlign.center),
+            child: Text(I18n.of(context).rank,style: textStyle,textAlign: TextAlign.center),
           ),
            Container(
             width : (MediaQuery.of(context).size.width - ScreenUtil().setWidth(60)) / 3, 
-            child: Text('用户ID',style: textStyle,textAlign: TextAlign.center),
+            child: Text(I18n.of(context).userID,style: textStyle,textAlign: TextAlign.center),
           ),
           Container(
             width : (MediaQuery.of(context).size.width - ScreenUtil().setWidth(60)) / 3, 
-            child: Text('每日收益',style: textStyle,textAlign: TextAlign.center),
+            child: Text(I18n.of(context).everydayProfit,style: textStyle,textAlign: TextAlign.center),
           )
         ],
       ),

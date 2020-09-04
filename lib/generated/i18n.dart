@@ -34,8 +34,8 @@ class I18n implements WidgetsLocalizations {
 
   /// "TLD Wallet"
   String get commonPageTitle => "TLD Wallet";
-  /// "Hint:\n      Wallet will create in app location.Create wallet needs input password,when wallet created it will create mnomic word,the private key for sign,the public key and wallet address.\n      Please save your mnomic word and private key"
-  String get homePageNotice => "Hint:\n      Wallet will create in app location.Create wallet needs input password,when wallet created it will create mnomic word,the private key for sign,the public key and wallet address.\n      Please save your mnomic word and private key";
+  /// "Notice:\n      Wallet will create in app location.Create wallet needs input password,when wallet created it will create mnomic word,the private key for sign,the public key and wallet address.\n      Please save your mnomic word and private key"
+  String get homePageNotice => "Notice:\n      Wallet will create in app location.Create wallet needs input password,when wallet created it will create mnomic word,the private key for sign,the public key and wallet address.\n      Please save your mnomic word and private key";
   /// "Create Wallet"
   String get createWalletBtnTitle => "Create Wallet";
   /// "Import Wallet"
@@ -76,8 +76,8 @@ class I18n implements WidgetsLocalizations {
   String get noOrderLabel => "You don't have order";
   /// "Cancel Sale"
   String get cancelSaleBtnTitle => "Cancel Sale";
-  /// "Order Number"
-  String get orderNumLabel => "Order Number";
+  /// "OrderNo"
+  String get orderNumLabel => "OrderNo";
   /// "Sale Wallet"
   String get saleWalletLabel => "Sale Wallet";
   /// "Create Time"
@@ -296,6 +296,366 @@ class I18n implements WidgetsLocalizations {
   String get importSuccess => "Import success";
   /// "Please copy carefully and keep it properly. Do not divulge the private key"
   String get pleaseCopyCarefullyAndKeepItProperlyDoNotDivulgeThePrivateKey => "Please copy carefully and keep it properly. Do not divulge the private key";
+  /// "TLD Exchange Description"
+  String get tldExchangeDescription => "TLD Exchange Description";
+  /// "FeedBack"
+  String get feedBack => "FeedBack";
+  /// "About Us"
+  String get aboutUS => "About Us";
+  /// "User Agreement"
+  String get userAgreement => "User Agreement";
+  /// "Collection Method"
+  String get collectionMethod => "Collection Method";
+  /// "Bank Card"
+  String get bankCard => "Bank Card";
+  /// "WeChat"
+  String get weChat => "WeChat";
+  /// "Alipay"
+  String get aliPay => "Alipay";
+  /// "Customize the collection method"
+  String get CustomizeTheCollectionMethod => "Customize the collection method";
+  /// "Manage Bank Card"
+  String get manageBankCard => "Manage Bank Card";
+  /// "Add Bank Card"
+  String get addBankCard => "Add Bank Card";
+  /// "Manage WeChat"
+  String get manageWechat => "Manage WeChat";
+  /// "Add WeChat"
+  String get addWeChat => "Add WeChat";
+  /// "Manage Alipay"
+  String get manageAlipay => "Manage Alipay";
+  /// "Add Alipay"
+  String get addAlipay => "Add Alipay";
+  /// "Manage Custom Method"
+  String get manageCustomMethod => "Manage Custom Method";
+  /// "Add Custom Method"
+  String get addCustomMethod => "Add Custom Method";
+  /// "Bank Card Information"
+  String get bankCardInformation => "Bank Card Information";
+  /// "Quota(Everyday)"
+  String get quotaEveryday => "Quota(Everyday)";
+  /// "Please enter your real name"
+  String get pleaseEnterYourRealName => "Please enter your real name";
+  /// "Please enter your bank card number"
+  String get pleaseEnterYourBankCardNumber => "Please enter your bank card number";
+  /// "Please enter your bank name"
+  String get pleaseEnterYourBankName => "Please enter your bank name";
+  /// "Please enter your limit amount"
+  String get pleaseEnterYourLimitAmount => "Please enter your limit amount";
+  /// "Statement:\nPlease Enter your payment method carefully. If you fill in invalid or wrong payment method, the platform will not be responsible for any loss of assets"
+  String get statementPleaseEnterYourPaymentMethodCarefully => "Statement:\nPlease Enter your payment method carefully. If you fill in invalid or wrong payment method, the platform will not be responsible for any loss of assets";
+  /// "WeChat Information"
+  String get weChatInformation => "WeChat Information";
+  /// "WeChat Account"
+  String get weChatAccount => "WeChat Account";
+  /// "We Chat Collection Account QR Code"
+  String get weChatCollectionAccountQRCode => "We Chat Collection Account QR Code";
+  /// "Please enter your WeChat account"
+  String get pleaseEnterYourWeChatAccount => "Please enter your WeChat account";
+  /// "Alipay Information"
+  String get alipayInformation => "Alipay Information";
+  /// "Alipay Account"
+  String get alipayAccount => "Alipay Account";
+  /// "Alipay Collection Account QR Code"
+  String get alipayCollectionAccountQRCode => "Alipay Collection Account QR Code";
+  /// "Please enter your alipay account"
+  String get pleaseEnterYourAlipayAccount => "Please enter your alipay account";
+  /// "Customize the collection method Information"
+  String get customizeTheCollectionMethodInformation => "Customize the collection method Information";
+  /// "Custom Method Name"
+  String get customMethodName => "Custom Method Name";
+  /// "Custom Method Account"
+  String get customMethodAccount => "Custom Method Account";
+  /// "Custom Method QR Code"
+  String get customMethodQRCode => "Custom Method QR Code";
+  /// "Please enter your custom method name"
+  String get pleaseEnterYourCustomMethodName => "Please enter your custom method name";
+  /// "Please enter your custom method account"
+  String get pleaseEnterYourCustomMethodAccount => "Please enter your custom method account";
+  /// "Save"
+  String get save => "Save";
+  /// "Subscription Ratio"
+  String get SubscriptionRatio => "Subscription Ratio";
+  /// "Salutation"
+  String get salutation => "Salutation";
+  /// "Please enter your salutation"
+  String get pleaseEnterYourSalutation => "Please enter your salutation";
+  /// "Cellphone Number"
+  String get cellPhoneNumber => "Cellphone Number";
+  /// "Please enter your cellphone number"
+  String get pleaseEnterYourCellPhoneNumber => "Please enter your cellphone number";
+  /// "E-mail"
+  String get email => "E-mail";
+  /// "Please enter your e-mail"
+  String get PleaseEnterYourEmail => "Please enter your e-mail";
+  /// "Question Type"
+  String get questionType => "Question Type";
+  /// "Please choose question type"
+  String get pleaseChooseQuestionType => "Please choose question type";
+  /// "Question Specific Description"
+  String get questionSpecificDescription => "Question Specific Description";
+  /// "Please describe specific question"
+  String get pleaseDescribeSpecificQuestion => "Please describe specific question";
+  /// "Capture Upload"
+  String get captureUpload => "Capture Upload";
+  /// "Submit Feedback"
+  String get submitFeedback => "Submit Feedback";
+  /// "Official Website"
+  String get officialWebsite => "Official Website";
+  /// "Version Updating"
+  String get VersionUpdating => "Version Updating";
+  /// "The current version is the latest"
+  String get TheCurrentVersionIsTheLatest => "The current version is the latest";
+  /// "Wallet"
+  String get wallet => "Wallet";
+  /// "Message"
+  String get message => "Message";
+  /// "Sale"
+  String get sale => "Sale";
+  /// "TLD Bill Rank"
+  String get tldBillRank => "TLD Bill Rank";
+  /// "Rank"
+  String get rank => "Rank";
+  /// "User ID"
+  String get userID => "User ID";
+  /// "Everyday Profit"
+  String get everydayProfit => "Everyday Profit";
+  /// "TLD Bill"
+  String get tldBill => "TLD Bill";
+  /// "part"
+  String get part => "part";
+  /// "Check"
+  String get check => "Check";
+  /// "Buy Bill"
+  String get buyBill => "Buy Bill";
+  /// "Level Bill"
+  String get levelBill => "Level Bill";
+  /// "Univalence"
+  String get univalence => "Univalence";
+  /// "Actually Paid"
+  String get actuallyPaid => "Actually Paid";
+  /// "Submit Order"
+  String get submitOrder => "Submit Order";
+  /// "level TLD bill"
+  String get levelTLDBill => "level TLD bill";
+  /// " each part"
+  String get eachPart => " each part";
+  /// "Detail TLD Bill Order"
+  String get detailTLDBillOrder => "Detail TLD Bill Order";
+  /// "Having Profit"
+  String get havingProfit => "Having Profit";
+  /// "Profit Pause"
+  String get profitPause => "Profit Pause";
+  /// "Have Expired"
+  String get haveExpired => "Have Expired";
+  /// "Total Prices"
+  String get totalPrices => "Total Prices";
+  /// "Remaining Validity Of Bill"
+  String get remainingValidityOfBill => "Remaining Validity Of Bill";
+  /// "Daily Static Profit Add"
+  String get dailyStaticProfitAdd => "Daily Static Profit Add";
+  /// "Pay Wallet"
+  String get payWallet => "Pay Wallet";
+  /// "Bought Time"
+  String get boughtTime => "Bought Time";
+  /// "Days"
+  String get days => "Days";
+  /// "Bill Level"
+  String get billLevel => "Bill Level";
+  /// "Copies"
+  String get copies => "Copies";
+  /// "Order Profit"
+  String get orderProfit => "Order Profit";
+  /// "Bill Bought Time"
+  String get billBoughtTime => "Bill Bought Time";
+  /// "Level"
+  String get level => "Level";
+  /// "Promotion Invitation Code"
+  String get promotionInvitationCode => "Promotion Invitation Code";
+  /// "Invitation Code"
+  String get invitationCode => "Invitation Code";
+  /// "Promotion Profit"
+  String get promotionProfit => "Promotion Profit";
+  /// "My Invitation Code"
+  String get myInvitationCode => "My Invitation Code";
+  /// "Promotion Code"
+  String get promotionCode => "Promotion Code";
+  /// "Save Picture"
+  String get savePicture => "Save Picture";
+  /// "Please enter user cellphone number"
+  String get pleaseEnterUserCellphoneNumber => "Please enter user cellphone number";
+  /// "Total Profit"
+  String get totalProfit => "Total Profit";
+  /// "Lv. Marketing Team"
+  String get levelMarketingTeam => "Lv. Marketing Team";
+  /// "Peoples"
+  String get peoples => "Peoples";
+  /// "Detail Profit"
+  String get detailProfit => "Detail Profit";
+  /// "User Cellphone Number"
+  String get userCellphoneNumber => "User Cellphone Number";
+  /// "Total Amount"
+  String get totalAmount => "Total Amount";
+  /// "Total Promotion Revenue"
+  String get TotalPromotionRevenue => "Total Promotion Revenue";
+  /// "TLD Bill Account"
+  String get tldBillAccount => "TLD Bill Account";
+  /// "Withdraw Record"
+  String get withdrawRecord => "Withdraw Record";
+  /// "Withdraw Limit"
+  String get withdrawLimit => "Withdraw Limit";
+  /// "Withdraw"
+  String get withdraw => "Withdraw";
+  /// "Sign In"
+  String get signIn => "Sign In";
+  /// "Static Profit"
+  String get staticProfit => "Static Profit";
+  /// "Profit Overflow Pool"
+  String get profitOverflowPool => "Profit Overflow Pool";
+  /// "Accumulative Profit"
+  String get accumulativeProfit => "Accumulative Profit";
+  /// "Withdraw Wait Pay"
+  String get withdrawWaitPay => "Withdraw Wait Pay";
+  /// "Withdraw Wait Release"
+  String get withdrawWaitRelease => "Withdraw Wait Release";
+  /// "Login"
+  String get login => "Login";
+  /// "Not Login"
+  String get notLogin => "Not Login";
+  /// "WithDraw TLD Bill Profit"
+  String get withdrawTLDBillProfit => "WithDraw TLD Bill Profit";
+  /// "Wallet Balance"
+  String get walletBalance => "Wallet Balance";
+  /// "Count"
+  String get exchangeAmount => "Count";
+  /// "Expected To Account"
+  String get expectedToAccount => "Expected To Account";
+  /// "Recommend Seller"
+  String get recommendSeller => "Recommend Seller";
+  /// "Referrer"
+  String get referrer => "Referrer";
+  /// "Platform"
+  String get platform => "Platform";
+  /// "Referrer Contact Way"
+  String get referrerContactWay => "Referrer Contact Way";
+  /// "Notice:\n  If you choose the buyer as your referrer, please contact your referrer in advance to complete your withdrawal operation"
+  String get IfYouChooseTheBuyerAsYourReferrer => "Notice:\n  If you choose the buyer as your referrer, please contact your referrer in advance to complete your withdrawal operation";
+  /// "Exchange"
+  String get exchange => "Exchange";
+  /// "Number"
+  String get number => "Number";
+  /// "I Started"
+  String get iStarted => "I Started";
+  /// "Cancel Withdraw"
+  String get cancelWithdraw => "Cancel Withdraw";
+  /// "I have Paid"
+  String get iHavePaid => "I have Paid";
+  /// "Amount"
+  String get amount => "Amount";
+  /// "Account Payable"
+  String get accountPayable => "Account Payable";
+  /// "Buyer"
+  String get buyer => "Buyer";
+  /// "Contact Referrer"
+  String get contactReferrer => "Contact Referrer";
+  /// "Contact Platform Service"
+  String get contactPlatformService => "Contact Platform Service";
+  /// "Contact Withdrawer"
+  String get contactWithdrawer => "Contact Withdrawer";
+  /// "Wait Withdrawer Sure"
+  String get waitWithdrawerSure => "Wait Withdrawer Sure";
+  /// "Withdraw Is Canceled"
+  String get withdrawIsCanceled => "Withdraw Is Canceled";
+  /// "Notice:\n  Please refer to the payment method provided by the seller in this platform. Do not accept the payment method provided by the seller offline"
+  String get pleaseReferToThePaymentMethod => "Notice:\n  Please refer to the payment method provided by the seller in this platform. Do not accept the payment method provided by the seller offline";
+  /// "Signed"
+  String get signed => "Signed";
+  /// "Year"
+  String get year => "Year";
+  /// "Month"
+  String get month => "Month";
+  /// "Choose Wallet"
+  String get chooseWallet => "Choose Wallet";
+  /// "Profit Record"
+  String get profitRecord => "Profit Record";
+  /// "Profit"
+  String get profit => "Profit";
+  /// "Sale Amount"
+  String get saleAmount => "Sale Amount";
+  /// "Real To The Account"
+  String get realToTheAccount => "Real To The Account";
+  /// "Overflow"
+  String get overflow => "Overflow";
+  /// "Promotion"
+  String get promotion => "Promotion";
+  /// "Static"
+  String get static => "Static";
+  /// "Get"
+  String get get => "Get";
+  /// "Bill"
+  String get bill => "Bill";
+  /// "Order"
+  String get order => "Order";
+  /// "Invite"
+  String get invite => "Invite";
+  /// "Mine"
+  String get mine => "Mine";
+  /// "Please enter password"
+  String get pleaseEnterPassword => "Please enter password";
+  /// "Enter Password"
+  String get enterPassword => "Enter Password";
+  /// "Cancel"
+  String get cancel => "Cancel";
+  /// "Refresh Complete"
+  String get refreshComplete => "Refresh Complete";
+  /// "Pull up to load"
+  String get pullUpToLoad => "Pull up to load";
+  /// "Drop down to load more data"
+  String get dropDownToLoadMoreData => "Drop down to load more data";
+  /// "Please turn on the storage permissions"
+  String get PleaseTurnOnTheStoragePermissions => "Please turn on the storage permissions";
+  /// "Buy Success"
+  String get buySuccess => "Buy Success";
+  /// "The confirmation password is not the same with password"
+  String get TheSurePasswordIsNot => "The confirmation password is not the same with password";
+  /// "Does not meet password strength"
+  String get doesNotMeetPasswordStrength => "Does not meet password strength";
+  /// "Set Safe Password"
+  String get setSafePassword => "Set Safe Password";
+  /// "Please Set Safe Password"
+  String get pleaseSetSefePassword => "Please Set Safe Password";
+  /// "Confirmation Password"
+  String get confirmationPassword => "Confirmation Password";
+  /// "Please enter your password again"
+  String get pleaseEnterYourPasswordAgain => "Please enter your password again";
+  /// "For the security of your assets, password strength requirements are as follows:"
+  String get ForTheSecurityOfYourAssets => "For the security of your assets, password strength requirements are as follows:";
+  /// "At least one capital letter"
+  String get atLeastOneCapitalLetter => "At least one capital letter";
+  /// "At least one lowercase letter"
+  String get atLeastOneLowercaseLetter => "At least one lowercase letter";
+  /// "At least one number letter"
+  String get AtLeastOneNumberLetter => "At least one number letter";
+  /// "There are 8 characters to 32 characters in total"
+  String get thereAre8CharactersTo32CharactersInTotal => "There are 8 characters to 32 characters in total";
+  /// "Verify Code"
+  String get verifyCode => "Verify Code";
+  /// "TLD Bill Account Login"
+  String get tldBillAccountLogin => "TLD Bill Account Login";
+  /// "Please enter verify code"
+  String get pleaseEnterVerifyCode => "Please enter verify code";
+  /// "Sent Verify Code"
+  String get sentVerifyCode => "Sent Verify Code";
+  /// "Referral Code"
+  String get referralCode => "Referral Code";
+  /// "Please enter your referral code"
+  String get pleaseEnterYourReferralCode => "Please enter your referral code";
+  /// "Warning"
+  String get warning => "Warning";
+  /// "Are you sure to delete "
+  String get areYouSureToDelete => "Are you sure to delete ";
+  /// "Change Language"
+  String get changeLanguage => "Change Language";
 }
 
 class _I18n_en_US extends I18n {
@@ -338,6 +698,12 @@ class _I18n_zh_CN extends I18n {
   /// "支付方式"
   @override
   String get paymentTermLabel => "支付方式";
+  /// "最低购买额度"
+  @override
+  String get minimumPurchaseAmountLabel => "最低购买额度";
+  /// "最低购买额度"
+  @override
+  String get maximumPurchaseAmountLabel => "最低购买额度";
   /// "请输入TLD数量"
   @override
   String get buySearchFieldPlaceholder => "请输入TLD数量";
@@ -695,6 +1061,546 @@ class _I18n_zh_CN extends I18n {
   /// "请认真抄写,妥善保管,切勿泄漏私钥"
   @override
   String get pleaseCopyCarefullyAndKeepItProperlyDoNotDivulgeThePrivateKey => "请认真抄写,妥善保管,切勿泄漏私钥";
+  /// "TLD兑换说明"
+  @override
+  String get tldExchangeDescription => "TLD兑换说明";
+  /// "反馈"
+  @override
+  String get feedBack => "反馈";
+  /// "关于我们"
+  @override
+  String get aboutUS => "关于我们";
+  /// "用户协议"
+  @override
+  String get userAgreement => "用户协议";
+  /// "收款方式"
+  @override
+  String get collectionMethod => "收款方式";
+  /// "银行卡"
+  @override
+  String get bankCard => "银行卡";
+  /// "微信"
+  @override
+  String get weChat => "微信";
+  /// "支付宝"
+  @override
+  String get aliPay => "支付宝";
+  /// "自定义收款方式"
+  @override
+  String get CustomizeTheCollectionMethod => "自定义收款方式";
+  /// "银行卡管理"
+  @override
+  String get manageBankCard => "银行卡管理";
+  /// "添加银行卡"
+  @override
+  String get addBankCard => "添加银行卡";
+  /// "微信号管理"
+  @override
+  String get manageWechat => "微信号管理";
+  /// "添加微信号"
+  @override
+  String get addWeChat => "添加微信号";
+  /// "支付宝号管理"
+  @override
+  String get manageAlipay => "支付宝号管理";
+  /// "添加支付宝号"
+  @override
+  String get addAlipay => "添加支付宝号";
+  /// "自定义支付方式管理"
+  @override
+  String get manageCustomMethod => "自定义支付方式管理";
+  /// "添加自定义支付方式"
+  @override
+  String get addCustomMethod => "添加自定义支付方式";
+  /// "银行卡账号信息"
+  @override
+  String get bankCardInformation => "银行卡账号信息";
+  /// "限额（每日）"
+  @override
+  String get quotaEveryday => "限额（每日）";
+  /// "请输入您的真实姓名"
+  @override
+  String get pleaseEnterYourRealName => "请输入您的真实姓名";
+  /// "请输入您的银行卡号"
+  @override
+  String get pleaseEnterYourBankCardNumber => "请输入您的银行卡号";
+  /// "请输入开户行"
+  @override
+  String get pleaseEnterYourBankName => "请输入开户行";
+  /// "请输入您的限制额度"
+  @override
+  String get pleaseEnterYourLimitAmount => "请输入您的限制额度";
+  /// "声明：\n请认真填写您的收款方式，如填写无效的或者错误的收款方式，导致的资产损失，平台概不负责。"
+  @override
+  String get statementPleaseEnterYourPaymentMethodCarefully => "声明：\n请认真填写您的收款方式，如填写无效的或者错误的收款方式，导致的资产损失，平台概不负责。";
+  /// "微信账号信息"
+  @override
+  String get weChatInformation => "微信账号信息";
+  /// "微信账号"
+  @override
+  String get weChatAccount => "微信账号";
+  /// "微信收款二维码"
+  @override
+  String get weChatCollectionAccountQRCode => "微信收款二维码";
+  /// "请输入您的微信账号"
+  @override
+  String get pleaseEnterYourWeChatAccount => "请输入您的微信账号";
+  /// "支付宝账号信息"
+  @override
+  String get alipayInformation => "支付宝账号信息";
+  /// "支付宝账号"
+  @override
+  String get alipayAccount => "支付宝账号";
+  /// "支付宝收款二维码"
+  @override
+  String get alipayCollectionAccountQRCode => "支付宝收款二维码";
+  /// "请输入您的支付宝账号"
+  @override
+  String get pleaseEnterYourAlipayAccount => "请输入您的支付宝账号";
+  /// "自定义支付账号信息"
+  @override
+  String get customizeTheCollectionMethodInformation => "自定义支付账号信息";
+  /// "自定义支付方式名称"
+  @override
+  String get customMethodName => "自定义支付方式名称";
+  /// "自定义支付方式账号"
+  @override
+  String get customMethodAccount => "自定义支付方式账号";
+  /// "自定义支付收款二维码"
+  @override
+  String get customMethodQRCode => "自定义支付收款二维码";
+  /// "请输入您的支付方式名称"
+  @override
+  String get pleaseEnterYourCustomMethodName => "请输入您的支付方式名称";
+  /// "请输入您的自定义账号"
+  @override
+  String get pleaseEnterYourCustomMethodAccount => "请输入您的自定义账号";
+  /// "Save"
+  @override
+  String get save => "Save";
+  /// "兑换比例"
+  @override
+  String get SubscriptionRatio => "兑换比例";
+  /// "称呼"
+  @override
+  String get salutation => "称呼";
+  /// "请输入您的称呼"
+  @override
+  String get pleaseEnterYourSalutation => "请输入您的称呼";
+  /// "手机号码"
+  @override
+  String get cellPhoneNumber => "手机号码";
+  /// "请输入您的手机号"
+  @override
+  String get pleaseEnterYourCellPhoneNumber => "请输入您的手机号";
+  /// "邮箱"
+  @override
+  String get email => "邮箱";
+  /// "请输入您的邮箱"
+  @override
+  String get PleaseEnterYourEmail => "请输入您的邮箱";
+  /// "问题类型"
+  @override
+  String get questionType => "问题类型";
+  /// "请选择问题类型"
+  @override
+  String get pleaseChooseQuestionType => "请选择问题类型";
+  /// "问题具体描述"
+  @override
+  String get questionSpecificDescription => "问题具体描述";
+  /// "请描述您的具体问题"
+  @override
+  String get pleaseDescribeSpecificQuestion => "请描述您的具体问题";
+  /// "截图上传"
+  @override
+  String get captureUpload => "截图上传";
+  /// "提交反馈"
+  @override
+  String get submitFeedback => "提交反馈";
+  /// "官网"
+  @override
+  String get officialWebsite => "官网";
+  /// "版本更新"
+  @override
+  String get VersionUpdating => "版本更新";
+  /// "当前是最新版本"
+  @override
+  String get TheCurrentVersionIsTheLatest => "当前是最新版本";
+  /// "购买"
+  @override
+  String get wallet => "购买";
+  /// "消息"
+  @override
+  String get message => "消息";
+  /// "售卖"
+  @override
+  String get sale => "售卖";
+  /// "TLD票据排行榜"
+  @override
+  String get tldBillRank => "TLD票据排行榜";
+  /// "排名"
+  @override
+  String get rank => "排名";
+  /// "用户ID"
+  @override
+  String get userID => "用户ID";
+  /// "每日收益"
+  @override
+  String get everydayProfit => "每日收益";
+  /// "TLD票据"
+  @override
+  String get tldBill => "TLD票据";
+  /// "份"
+  @override
+  String get part => "份";
+  /// "查看"
+  @override
+  String get check => "查看";
+  /// "购买票据"
+  @override
+  String get buyBill => "购买票据";
+  /// "级票据"
+  @override
+  String get levelBill => "级票据";
+  /// "单价"
+  @override
+  String get univalence => "单价";
+  /// "实付"
+  @override
+  String get actuallyPaid => "实付";
+  /// "提交订单"
+  @override
+  String get submitOrder => "提交订单";
+  /// "级TLD票据"
+  @override
+  String get levelTLDBill => "级TLD票据";
+  /// "每份"
+  @override
+  String get eachPart => "每份";
+  /// "TLD票据详情"
+  @override
+  String get detailTLDBillOrder => "TLD票据详情";
+  /// "收益中"
+  @override
+  String get havingProfit => "收益中";
+  /// "收益已暂停"
+  @override
+  String get profitPause => "收益已暂停";
+  /// "已过期"
+  @override
+  String get haveExpired => "已过期";
+  /// "总价"
+  @override
+  String get totalPrices => "总价";
+  /// "票据剩余有效期"
+  @override
+  String get remainingValidityOfBill => "票据剩余有效期";
+  /// "每天静态收益增加"
+  @override
+  String get dailyStaticProfitAdd => "每天静态收益增加";
+  /// "支付钱包"
+  @override
+  String get payWallet => "支付钱包";
+  /// "购买时间"
+  @override
+  String get boughtTime => "购买时间";
+  /// "天"
+  @override
+  String get days => "天";
+  /// "票据级别"
+  @override
+  String get billLevel => "票据级别";
+  /// "分属"
+  @override
+  String get copies => "分属";
+  /// "订单收益"
+  @override
+  String get orderProfit => "订单收益";
+  /// "票据购买时间"
+  @override
+  String get billBoughtTime => "票据购买时间";
+  /// "级"
+  @override
+  String get level => "级";
+  /// "推广邀请码"
+  @override
+  String get promotionInvitationCode => "推广邀请码";
+  /// "邀请码"
+  @override
+  String get invitationCode => "邀请码";
+  /// "推广收益"
+  @override
+  String get promotionProfit => "推广收益";
+  /// "我的推广邀请码"
+  @override
+  String get myInvitationCode => "我的推广邀请码";
+  /// "推广码"
+  @override
+  String get promotionCode => "推广码";
+  /// "保存图片"
+  @override
+  String get savePicture => "保存图片";
+  /// "请输入用户手机号"
+  @override
+  String get pleaseEnterUserCellphoneNumber => "请输入用户手机号";
+  /// "总收益"
+  @override
+  String get totalProfit => "总收益";
+  /// "级推广团队"
+  @override
+  String get levelMarketingTeam => "级推广团队";
+  /// "人"
+  @override
+  String get peoples => "人";
+  /// "收益详情"
+  @override
+  String get detailProfit => "收益详情";
+  /// "用户手机号"
+  @override
+  String get userCellphoneNumber => "用户手机号";
+  /// "总额"
+  @override
+  String get totalAmount => "总额";
+  /// "推广收益总计"
+  @override
+  String get TotalPromotionRevenue => "推广收益总计";
+  /// "TLD票据账户"
+  @override
+  String get tldBillAccount => "TLD票据账户";
+  /// "提现记录"
+  @override
+  String get withdrawRecord => "提现记录";
+  /// "可提现额度"
+  @override
+  String get withdrawLimit => "可提现额度";
+  /// "提现"
+  @override
+  String get withdraw => "提现";
+  /// "签到"
+  @override
+  String get signIn => "签到";
+  /// "静态收益"
+  @override
+  String get staticProfit => "静态收益";
+  /// "收益溢出池"
+  @override
+  String get profitOverflowPool => "收益溢出池";
+  /// "累计收益"
+  @override
+  String get accumulativeProfit => "累计收益";
+  /// "提现待支付"
+  @override
+  String get withdrawWaitPay => "提现待支付";
+  /// "提现待释放"
+  @override
+  String get withdrawWaitRelease => "提现待释放";
+  /// "登记"
+  @override
+  String get login => "登记";
+  /// "暂未登记"
+  @override
+  String get notLogin => "暂未登记";
+  /// "TLD票据收益提现"
+  @override
+  String get withdrawTLDBillProfit => "TLD票据收益提现";
+  /// "钱包余额"
+  @override
+  String get walletBalance => "钱包余额";
+  /// "兑换量"
+  @override
+  String get exchangeAmount => "兑换量";
+  /// "预计到账"
+  @override
+  String get expectedToAccount => "预计到账";
+  /// "推荐卖家"
+  @override
+  String get recommendSeller => "推荐卖家";
+  /// "推荐人"
+  @override
+  String get referrer => "推荐人";
+  /// "平台"
+  @override
+  String get platform => "平台";
+  /// "推荐人联系方式"
+  @override
+  String get referrerContactWay => "推荐人联系方式";
+  /// "注意：\n   如果选择买家为您的推荐人，请提前联系您的推荐人。以完成您的提现操作"
+  @override
+  String get IfYouChooseTheBuyerAsYourReferrer => "注意：\n   如果选择买家为您的推荐人，请提前联系您的推荐人。以完成您的提现操作";
+  /// "兑换"
+  @override
+  String get exchange => "兑换";
+  /// "编号"
+  @override
+  String get number => "编号";
+  /// "我发起的"
+  @override
+  String get iStarted => "我发起的";
+  /// "取消提现"
+  @override
+  String get cancelWithdraw => "取消提现";
+  /// "我已付款"
+  @override
+  String get iHavePaid => "我已付款";
+  /// "金额"
+  @override
+  String get amount => "金额";
+  /// "应付款"
+  @override
+  String get accountPayable => "应付款";
+  /// "买家"
+  @override
+  String get buyer => "买家";
+  /// "联系推荐人"
+  @override
+  String get contactReferrer => "联系推荐人";
+  /// "联系平台客服"
+  @override
+  String get contactPlatformService => "联系平台客服";
+  /// "联系提现人"
+  @override
+  String get contactWithdrawer => "联系提现人";
+  /// "等待提现人确认"
+  @override
+  String get waitWithdrawerSure => "等待提现人确认";
+  /// "提现已取消"
+  @override
+  String get withdrawIsCanceled => "提现已取消";
+  /// "注意：\n   收款方式请以卖家在该平台内提供的收款方式为准。不要接受卖家线下提供的收款方式。"
+  @override
+  String get pleaseReferToThePaymentMethod => "注意：\n   收款方式请以卖家在该平台内提供的收款方式为准。不要接受卖家线下提供的收款方式。";
+  /// "已签"
+  @override
+  String get signed => "已签";
+  /// "年"
+  @override
+  String get year => "年";
+  /// "月"
+  @override
+  String get month => "月";
+  /// "选择钱包"
+  @override
+  String get chooseWallet => "选择钱包";
+  /// "收益记录"
+  @override
+  String get profitRecord => "收益记录";
+  /// "收益"
+  @override
+  String get profit => "收益";
+  /// "售卖量"
+  @override
+  String get saleAmount => "售卖量";
+  /// "实际到账"
+  @override
+  String get realToTheAccount => "实际到账";
+  /// "溢出"
+  @override
+  String get overflow => "溢出";
+  /// "推广"
+  @override
+  String get promotion => "推广";
+  /// "静态"
+  @override
+  String get static => "静态";
+  /// "领取"
+  @override
+  String get get => "领取";
+  /// "票据"
+  @override
+  String get bill => "票据";
+  /// "订单"
+  @override
+  String get order => "订单";
+  /// "邀请"
+  @override
+  String get invite => "邀请";
+  /// "我的"
+  @override
+  String get mine => "我的";
+  /// "请输入安全密码"
+  @override
+  String get pleaseEnterPassword => "请输入安全密码";
+  /// "输入密码"
+  @override
+  String get enterPassword => "输入密码";
+  /// "取消"
+  @override
+  String get cancel => "取消";
+  /// "刷新完成"
+  @override
+  String get refreshComplete => "刷新完成";
+  /// "上拉加载"
+  @override
+  String get pullUpToLoad => "上拉加载";
+  /// "放下加载更多数据"
+  @override
+  String get dropDownToLoadMoreData => "放下加载更多数据";
+  /// "请开启存储权限"
+  @override
+  String get PleaseTurnOnTheStoragePermissions => "请开启存储权限";
+  /// "购买成功"
+  @override
+  String get buySuccess => "购买成功";
+  /// "确认密码与密码不符合"
+  @override
+  String get TheSurePasswordIsNot => "确认密码与密码不符合";
+  /// "不符合密码强度"
+  @override
+  String get doesNotMeetPasswordStrength => "不符合密码强度";
+  /// "设置安全密码"
+  @override
+  String get setSafePassword => "设置安全密码";
+  /// "请设置安全密码"
+  @override
+  String get pleaseSetSefePassword => "请设置安全密码";
+  /// "确认密码"
+  @override
+  String get confirmationPassword => "确认密码";
+  /// "请再次输入您的密码"
+  @override
+  String get pleaseEnterYourPasswordAgain => "请再次输入您的密码";
+  /// "为了您的资产安全，密码强度要求如下："
+  @override
+  String get ForTheSecurityOfYourAssets => "为了您的资产安全，密码强度要求如下：";
+  /// "至少一个大写字母"
+  @override
+  String get atLeastOneCapitalLetter => "至少一个大写字母";
+  /// "至少一个小写字母"
+  @override
+  String get atLeastOneLowercaseLetter => "至少一个小写字母";
+  /// "至少一个数字"
+  @override
+  String get AtLeastOneNumberLetter => "至少一个数字";
+  /// "总共8~32个字符"
+  @override
+  String get thereAre8CharactersTo32CharactersInTotal => "总共8~32个字符";
+  /// "验证码"
+  @override
+  String get verifyCode => "验证码";
+  /// "TLD票据账户登记"
+  @override
+  String get tldBillAccountLogin => "TLD票据账户登记";
+  /// "请输入验证码"
+  @override
+  String get pleaseEnterVerifyCode => "请输入验证码";
+  /// "发送验证码"
+  @override
+  String get sentVerifyCode => "发送验证码";
+  /// "推荐码"
+  @override
+  String get referralCode => "推荐码";
+  /// "请输入您的推荐码"
+  @override
+  String get pleaseEnterYourReferralCode => "请输入您的推荐码";
+  /// "警告"
+  @override
+  String get warning => "警告";
+  /// "你确定删除"
+  @override
+  String get areYouSureToDelete => "你确定删除";
+  /// "切换语言"
+  @override
+  String get changeLanguage => "切换语言";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;

@@ -1,6 +1,7 @@
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_withdraw_list_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -59,7 +60,7 @@ class _TLDAcceptanceDetailWithdrawBottomCellState extends State<TLDAcceptanceDet
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('注意：\n   收款方式请以卖家在该平台内提供的收款方式为准。不要接受卖家线下提供的收款方式。',style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(24)),),
+        Text(I18n.of(context).pleaseReferToThePaymentMethod,style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(24)),),
         Padding(
           padding: EdgeInsets.only(top : ScreenUtil().setHeight(16)),
           child: Container(
@@ -71,7 +72,7 @@ class _TLDAcceptanceDetailWithdrawBottomCellState extends State<TLDAcceptanceDet
               color :Theme.of(context).hintColor
             ),
             child: Center(
-              child : Text('我发起的',style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 121, 87, 43)))
+              child : Text(I18n.of(context).iStarted,style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 121, 87, 43)))
             ),
           ),
         )
@@ -80,7 +81,7 @@ class _TLDAcceptanceDetailWithdrawBottomCellState extends State<TLDAcceptanceDet
   }
 
   Widget _getNotMeTakeView(){
-    return  Text('注意：\n   收款方式请以卖家在该平台内提供的收款方式为准。不要接受卖家线下提供的收款方式。',style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(24)),);
+    return  Text(I18n.of(context).pleaseReferToThePaymentMethod,style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(24)),);
   }
 
    Widget _getActionBtn(BuildContext context) {

@@ -108,7 +108,7 @@ class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> with WidgetsB
         ),
         heroTag: 'purse_page',
         transitionBetweenRoutes: false,
-        middle: Text('TLD钱包'),
+        middle: Text(I18n.of(context).commonPageTitle),
         leading: Builder(builder: (BuildContext context) {
           return CupertinoButton(
               child: Icon(
@@ -217,7 +217,7 @@ class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> with WidgetsB
       ].request();
       return;
     }else if(status == PermissionStatus.permanentlyDenied){
-      Fluttertoast.showToast(msg: '请开启存储权限');
+      Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).PleaseTurnOnTheStoragePermissions);
       return;
     }
     jugeHavePassword(context, () {
@@ -238,7 +238,7 @@ class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> with WidgetsB
       ].request();
       return;
     }else if(status == PermissionStatus.permanentlyDenied){
-      Fluttertoast.showToast(msg: '请开启存储权限');
+      Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).PleaseTurnOnTheStoragePermissions);
       return;
     }
     jugeHavePassword(context, () {

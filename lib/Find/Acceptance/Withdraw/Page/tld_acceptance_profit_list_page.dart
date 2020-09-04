@@ -2,6 +2,8 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_profit_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/View/tld_acceptance_profit_list_cell.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -77,7 +79,7 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
         }),
         heroTag: 'acceptance_profit_list_page',
         transitionBetweenRoutes: false,
-        middle: Text('收益记录'),
+        middle: Text(I18n.of(context).profitRecord),
       ),
     );
   }
@@ -90,19 +92,19 @@ class _TLDAcceptanceProfitListPageState extends State<TLDAcceptanceProfitListPag
       controller: _refreshController,
       child: _getBodyWidget(),
       header: WaterDropHeader(
-        complete : Text('刷新完成'),
+        complete : Text(I18n.of(navigatorKey.currentContext).refreshComplete),
       ),
       footer: CustomFooter(
           builder: (BuildContext context,LoadStatus mode){
             Widget body ;
             if(mode==LoadStatus.idle){
-              body =  Text("上拉加载");
+              body =  Text(I18n.of(context).pullUpToLoad);
             }
             else if(mode==LoadStatus.loading){
               body =  CupertinoActivityIndicator();
             }
             else if(mode == LoadStatus.canLoading){
-                body = Text("放下加载更多数据");
+                body = Text(I18n.of(context).dropDownToLoadMoreData);
             }
             return Container(
               height: 55.0,

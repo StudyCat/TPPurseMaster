@@ -24,7 +24,7 @@ class _TLDFindRootPageGridCellState extends State<TLDFindRootPageGridCell> {
         Offstage(
           offstage: widget.itemUIModel.isPlusIcon,
           child: Padding(
-            padding: EdgeInsets.only(top : ScreenUtil().setHeight(12)),
+            padding: EdgeInsets.only(top : ScreenUtil().setHeight(5)),
             child: Text(widget.itemUIModel.title,style:TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(24)),textAlign: TextAlign.center,maxLines: 2,),
           ),
         )

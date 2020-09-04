@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,7 +32,7 @@ class _TLDAcceptanceBillListUnOpenCellState extends State<TLDAcceptanceBillListU
            Padding(
             child:  Container(
               width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(80),
-              child: Text('${widget.infoListModel.billLevel}级TLD票据：${widget.infoListModel.billPrice}每份（${widget.infoListModel.alreadyBuyCount}/${widget.infoListModel.totalBuyCount}）',style : TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(32),),textAlign: TextAlign.center),
+              child: Text('${widget.infoListModel.billLevel}'+ I18n.of(context).levelTLDBill +'：${widget.infoListModel.billPrice}' + I18n.of(context).eachPart +'（${widget.infoListModel.alreadyBuyCount}/${widget.infoListModel.totalBuyCount}）',style : TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(32),),textAlign: TextAlign.center),
             ),
             padding: EdgeInsets.symmetric(horizontal: 20)
           ),

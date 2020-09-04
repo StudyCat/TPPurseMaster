@@ -8,6 +8,7 @@ import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
@@ -163,7 +164,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
         _isLoading = false;
       });
       }
-      Fluttertoast.showToast(msg: '购买成功',toastLength: Toast.LENGTH_SHORT,
+      Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).buySuccess,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
       _focusNode.unfocus();
       Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailOrderPage(orderNo: orderNo,))).then((value){

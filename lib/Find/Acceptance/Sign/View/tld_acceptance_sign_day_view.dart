@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,7 +67,7 @@ class _TLDAcceptanceSignDayViewState extends State<TLDAcceptanceSignDayView> {
               color: Color.fromARGB(255, 236, 213, 174)
             ),
             child: Center(
-              child: Text('已签',style : TextStyle(fontSize:ScreenUtil().setSp(20),color:Color.fromARGB(255, 57, 57, 57))),
+              child: Text(I18n.of(context).signed,style : TextStyle(fontSize:ScreenUtil().setSp(20),color:Color.fromARGB(255, 57, 57, 57))),
             ),
           ),
           )
@@ -93,7 +94,7 @@ class _TLDAcceptanceSignDayViewState extends State<TLDAcceptanceSignDayView> {
               color: Color.fromARGB(255, 57, 57, 57)
             ),
             child: Center(
-              child: Text('签到',style : TextStyle(fontSize:ScreenUtil().setSp(20),color:Theme.of(context).hintColor)),
+              child: Text(I18n.of(context).signIn,style : TextStyle(fontSize:ScreenUtil().setSp(20),color:Theme.of(context).hintColor)),
             ),
           ),
           )

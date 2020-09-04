@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_profit_spill_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -79,7 +80,7 @@ class _TLDAcceptanceProfitSpillOpenCellState extends State<TLDAcceptanceProfitSp
                 padding: EdgeInsets.zero,
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.all(Radius.circular(30)),
-                child: Text('领取',style: TextStyle(color : Theme.of(context).hintColor,fontSize:ScreenUtil().setSp(28)),),
+                child: Text(I18n.of(context).get,style: TextStyle(color : Theme.of(context).hintColor,fontSize:ScreenUtil().setSp(28)),),
               ),
           ),
       ],
@@ -100,12 +101,13 @@ class _TLDAcceptanceProfitSpillOpenCellState extends State<TLDAcceptanceProfitSp
               color :widget.listModel.overflowType == 1 ? Color.fromARGB(255, 244, 183, 83) : Color.fromARGB(255, 126, 211, 33)
             ),
             child: Center(
-              child : Text(widget.listModel.overflowType == 1 ? '静态' : '推广',style:TextStyle(fontSize:ScreenUtil().setSp(24),color:widget.listModel.overflowType == 1 ? Color.fromARGB(255, 144, 76, 12) : Color.fromARGB(255, 65, 117, 5)))
+              child : Text(widget.listModel.overflowType == 1 ? I18n.of(context).static : I18n.of(context).promotion,maxLines: 1,overflow: TextOverflow.clip,style:TextStyle(fontSize:ScreenUtil().setSp(24),
+              color:widget.listModel.overflowType == 1 ? Color.fromARGB(255, 144, 76, 12) : Color.fromARGB(255, 65, 117, 5)))
             ),
         ),
         Padding(
           padding: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
-          child :  Text('${widget.listModel.billLevel}级TLD票据：溢出${widget.listModel.overflowCount}TLD',style: TextStyle(fontSize : ScreenUtil().setSp(28),color: Color.fromARGB(255, 51, 51, 51)),),
+          child :  Text('${widget.listModel.billLevel}'+ I18n.of(context).levelTLDBill +'：' + I18n.of(context).overflow + '${widget.listModel.overflowCount}TLD',style: TextStyle(fontSize : ScreenUtil().setSp(28),color: Color.fromARGB(255, 51, 51, 51)),),
           )
       ]
     ),

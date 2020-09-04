@@ -4,6 +4,7 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_empty_wallet_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
 import 'package:dragon_sword_purse/Purse/TransferAccounts/Page/tld_transfer_accounts_page.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -67,7 +68,7 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
         ),
         heroTag: 'exchange_choose_purse_page',
         transitionBetweenRoutes: false,
-        middle: Text('选择钱包'),
+        middle: Text(I18n.of(context).chooseWallet),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),

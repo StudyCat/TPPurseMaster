@@ -1,6 +1,7 @@
 import 'package:date_format/date_format.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Order/View/tld_acceptance_order_list_cell_header_view.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +33,10 @@ class _TLDAcceptanceOrderListCellState extends State<TLDAcceptanceOrderListCell>
       ),
       child: Column(children: <Widget>[
           TLDAcceptanceOrderListCellHeaderView(orderListModel: widget.orderListModel,),
-          _leftRightItem( '票据剩余有效期', '${widget.orderListModel.billExpireDayCount}天'),
+          _leftRightItem( I18n.of(context).remainingValidityOfBill, '${widget.orderListModel.billExpireDayCount}' + I18n.of(context).days),
           // _leftRightItem( '预计承兑收益', '${widget.orderListModel.expectProfit}TLD'),
-          _leftRightItem( '票据购买时间', formatDate(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.orderListModel.createTime)), [yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss])),
-          _leftRightItem('支付钱包', widget.orderListModel.walletAddress)
+          _leftRightItem( I18n.of(context).billBoughtTime, formatDate(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.orderListModel.createTime)), [yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss])),
+          _leftRightItem(I18n.of(context).payWallet, widget.orderListModel.walletAddress)
         ]),
       ),
     ),

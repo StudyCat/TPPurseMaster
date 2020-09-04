@@ -4,6 +4,8 @@ import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Page/tld_acceptanc
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/View/tld_acceptance_invitation_earnings_open_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/View/tld_acceptance_invitation_earnings_search_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/View/tld_acceptance_invitation_earnings_unopen_cell.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -59,7 +61,7 @@ class _TLDAcceptanceInvitationEarningsPageState extends State<TLDAcceptanceInvit
       controller: _refreshController,
       child: _getListView(),
       header: WaterDropHeader(
-        complete: Text('刷新完成'),
+        complete: Text(I18n.of(navigatorKey.currentContext).refreshComplete),
       ),
       onRefresh: ()=> _getInviteTeamInfo(_tel),
     );

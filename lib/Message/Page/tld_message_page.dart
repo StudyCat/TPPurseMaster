@@ -49,7 +49,7 @@ class _TLDMessagePageState extends State<TLDMessagePage> with TickerProviderStat
         ),
         heroTag: 'message_page',
         transitionBetweenRoutes: false,
-        middle: Text('消息'),
+        middle: Text(I18n.of(context).message),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),

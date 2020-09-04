@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Find/Acceptance/Invitation/Model/tld_acceptance_invitation_detail_earning_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,7 +38,7 @@ class _TLDAcceptanceInvitationDetailHeaderCellState
             ScreenUtil().setHeight(20)),
         child: Column(
           children: <Widget>[
-            _getRowView('用户ID', widget.detailEarningModel.userName),
+            _getRowView(I18n.of(context).userID, widget.detailEarningModel.userName),
             Padding(
               padding: EdgeInsets.only(top: ScreenUtil().setHeight(10)),
               child: GestureDetector(
@@ -45,7 +46,7 @@ class _TLDAcceptanceInvitationDetailHeaderCellState
                   _tapCountFunction();
                 },
                 child: _getRowView(
-                    '用户手机号',
+                    I18n.of(context).userCellphoneNumber,
                     _isShowRealTel
                         ? widget.detailEarningModel.realTel
                         : widget.detailEarningModel.tel),

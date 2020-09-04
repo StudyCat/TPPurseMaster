@@ -1,3 +1,5 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +11,7 @@ enum TLDAlertViewType{
 
 
 class TLDAlertView extends StatefulWidget {
-  TLDAlertView({Key key,this.title,this.type,this.alertString,this.didClickSureBtn,this.textEditingCallBack,this.isNeedSecretShow = false,this.placeHolder = '限20字以内',this.sureTitle = '确定'}) : super(key: key);
+  TLDAlertView({Key key,this.title,this.type,this.alertString,this.didClickSureBtn,this.textEditingCallBack,this.isNeedSecretShow = false,this.placeHolder = '限20字以内',this.sureTitle}) : super(key: key);
   final String alertString;
   final String title;
   final TLDAlertViewType type;
@@ -26,10 +28,18 @@ class _TLDAlertViewState extends State<TLDAlertView> {
 
   TextEditingController _controller;
 
+  String _sureTitle = "";
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    if (widget.sureTitle == null){
+      _sureTitle = I18n.of(navigatorKey.currentContext).sureBtnTitle;
+    }else{
+      _sureTitle = widget.sureTitle;
+    }
 
     _controller = TextEditingController();
     _controller.addListener((){
@@ -43,10 +53,10 @@ class _TLDAlertViewState extends State<TLDAlertView> {
       title: Text(widget.title,style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(28))),
       content: getContetnView(context),
       actions: <Widget>[
-        CupertinoDialogAction(child: Text('取消',style : TextStyle(fontSize : ScreenUtil().setSp(28),color: Color.fromARGB(255, 102, 102, 102))), onPressed: (){
+        CupertinoDialogAction(child: Text(I18n.of(context).cancel,style : TextStyle(fontSize : ScreenUtil().setSp(28),color: Color.fromARGB(255, 102, 102, 102))), onPressed: (){
           Navigator.of(context).pop();
         }),
-        CupertinoDialogAction(child: Text(widget.sureTitle,style : TextStyle(fontSize : ScreenUtil().setSp(28),color: Theme.of(context).primaryColor)), onPressed: (){
+        CupertinoDialogAction(child: Text(_sureTitle,style : TextStyle(fontSize : ScreenUtil().setSp(28),color: Theme.of(context).primaryColor)), onPressed: (){
           Navigator.of(context).pop();
           widget.didClickSureBtn();
         }),

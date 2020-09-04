@@ -88,7 +88,7 @@ class _TLDAcceptanceWithdrawSliderInputCellState extends State<TLDAcceptanceWith
 
   Widget getTextField(){
     return Container(
-      width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(300),
+      width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(200),
       decoration: BoxDecoration(
         border : Border.all(color : Color.fromARGB(255, 153, 153, 153),width : ScreenUtil().setWidth(2)),
         borderRadius : BorderRadius.all(Radius.circular(8)),

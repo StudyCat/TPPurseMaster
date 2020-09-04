@@ -2,6 +2,7 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_acceptance_detail_bill_view.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Order/Model/tld_acceptance_detail_order_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -69,7 +70,7 @@ class _TLDAcceptanceDetailBillPageState extends State<TLDAcceptanceDetailBillPag
         ),
         heroTag: 'acceptance_detail_bill_page',
         transitionBetweenRoutes: false,
-        middle: Text('TLD票据订单详情',style: TextStyle(color:Colors.white),),
+        middle: Text(I18n.of(context).detailTLDBillOrder,style: TextStyle(color:Colors.white),),
         trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.billDescUrl,title: '票据说明',)));
         }),

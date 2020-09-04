@@ -9,6 +9,8 @@ import 'package:dragon_sword_purse/IMUI/Page/tld_im_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -230,19 +232,19 @@ class _TLDAcceptanceWithdrawListPageState extends State<TLDAcceptanceWithdrawLis
       controller: _refreshController,
       child: _getBodyWidget(),
       header: WaterDropHeader(
-        complete : Text('刷新完成'),
+        complete : Text(I18n.of(navigatorKey.currentContext).refreshComplete),
       ),
       footer: CustomFooter(
           builder: (BuildContext context,LoadStatus mode){
             Widget body ;
             if(mode==LoadStatus.idle){
-              body =  Text("上拉加载");
+              body =  Text(I18n.of(context).pullUpToLoad);
             }
             else if(mode==LoadStatus.loading){
               body =  CupertinoActivityIndicator();
             }
             else if(mode == LoadStatus.canLoading){
-                body = Text("放下加载更多数据");
+                body = Text(I18n.of(context).dropDownToLoadMoreData);
             }
             return Container(
               height: 55.0,
@@ -281,13 +283,13 @@ class _TLDAcceptanceWithdrawListPageState extends State<TLDAcceptanceWithdrawLis
           });
         },
         didClickActionBtn: (String title){
-           if (title == '我已付款') {
+           if (title == I18n.of(context).iHavePaid) {
                   alertPassWord(()=> _surePay(orderListModel.cashNo));
-                }else if(title == '取消提现'){
+                }else if(title == I18n.of(context).cancelWithdraw){
                   alertPassWord(()=> _cancelWithdraw(orderListModel.cashNo));
-                }else if(title == '确认释放TLD'){
+                }else if(title == I18n.of(context).sureReleaseTLDBtnTitle){
                   alertPassWord(()=> _sureSentTLD(orderListModel.cashNo));
-                }else if (title == '催单'){
+                }else if (title == I18n.of(context).reminderBtnTitle){
                   _reminder(orderListModel.cashNo);
                 }
         },

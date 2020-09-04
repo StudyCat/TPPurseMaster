@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:date_format/date_format.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_detail_withdraw_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
@@ -195,10 +194,19 @@ class _MyAppState extends State<MyApp> {
        localizationsDelegates: const [
         I18n.delegate,
         GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
       ],
       supportedLocales: I18n.delegate.supportedLocales,
       debugShowCheckedModeBanner: false,
+      localeResolutionCallback: (deviceLocale, supportedLocales){
+        TLDDataManager.instance.currentLocal = deviceLocale;
+        if (deviceLocale.languageCode == "zh"){
+          return Locale("zh", "CN");
+        }else{
+          return Locale("en", "UN");
+        }
+      },
       navigatorObservers: [BotToastNavigatorObserver()],
       theme: ThemeData(
         primaryColor : Color.fromARGB(255, 57, 57, 57),
@@ -209,6 +217,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
 
 
 

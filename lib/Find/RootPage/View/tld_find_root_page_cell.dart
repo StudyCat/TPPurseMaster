@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDFindRootPageCell extends StatefulWidget {
-  TLDFindRootPageCell({Key key, this.uiModel,this.didClickItemCallBack}) : super(key: key);
+  TLDFindRootPageCell({Key key, this.uiModel,this.didClickItemCallBack,this.didLongClickItemCallBack,this.didClickQuestionItem}) : super(key: key);
 
   final TLDFindRootCellUIModel uiModel;
 
   final Function(TLDFindRootCellUIItemModel) didClickItemCallBack;
+
+  final Function(TLDFindRootCellUIItemModel) didLongClickItemCallBack;
+
+  final Function() didClickQuestionItem;
 
   @override
   _TLDFindRootPageCellState createState() => _TLDFindRootPageCellState();
@@ -35,7 +39,10 @@ class _TLDFindRootPageCellState extends State<TLDFindRootPageCell> {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              RichText(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children :<Widget>[
+                  RichText(
                 text: TextSpan(children: <InlineSpan>[
                   WidgetSpan(
                     child: Container(
@@ -51,6 +58,14 @@ class _TLDFindRootPageCellState extends State<TLDFindRootPageCell> {
                           fontWeight: FontWeight.bold,
                           color: Color.fromARGB(255, 51, 51, 51)))
                 ]),
+              ),
+              Offstage(
+                offstage : !widget.uiModel.isHaveNotice,
+                child : IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
+                  widget.didClickQuestionItem();
+              })
+              )
+                ]
               ),
               Container(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
@@ -70,6 +85,9 @@ class _TLDFindRootPageCellState extends State<TLDFindRootPageCell> {
                         return GestureDetector(
                           onTap : (){
                             widget.didClickItemCallBack(itemModel);
+                          },
+                          onLongPress: (){
+                            widget.didLongClickItemCallBack(itemModel);
                           },
                           child : TLDFindRootPageGridCell(itemUIModel: itemModel)
                         );

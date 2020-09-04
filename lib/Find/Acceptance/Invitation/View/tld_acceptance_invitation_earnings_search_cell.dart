@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +33,7 @@ class _TLDAcceptanceInvitationEarningsSearchCellState extends State<TLDAcceptanc
           },
            decoration: BoxDecoration(
                       border: Border.all(color: Color.fromARGB(0, 0, 0, 0))),
-           placeholder: '请输入用户手机号',
+           placeholder: I18n.of(context).pleaseEnterUserCellphoneNumber,
            placeholderStyle: TextStyle(fontSize:ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153)),
            style: TextStyle(fontSize:ScreenUtil().setSp(24),color: Color.fromARGB(255, 51, 51, 51)),
            textInputAction: TextInputAction.search,

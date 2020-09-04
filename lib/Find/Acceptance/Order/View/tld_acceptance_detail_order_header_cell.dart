@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Order/Model/tld_acceptance_detail_order_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,7 +44,7 @@ class _TLDAcceptanceDetailOrderHeaderCellState extends State<TLDAcceptanceDetail
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Text(widget.detailOrderInfoModel != null ?'票据剩余有效期${widget.detailOrderInfoModel.billExpireDayCount}天' : '',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Theme.of(context).hintColor),),
+        Text(widget.detailOrderInfoModel != null ? I18n.of(context).remainingValidityOfBill + '${widget.detailOrderInfoModel.billExpireDayCount}' + I18n.of(context).days : '',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Theme.of(context).hintColor),),
       ],
     );
   }

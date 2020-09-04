@@ -12,6 +12,8 @@ import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/View/tld_acceptance_
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/View/tld_acceptance_withdraw_choose_type_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/View/tld_acceptance_withdraw_slider_input.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,9 +40,9 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
 
   bool _isLoading = false;
 
-  List _platformTitleList = ['钱包余额', '兑换量', '预计到账', '推荐卖家', '手续费率', '手续费', '收款方式'];
+  List _platformTitleList = [I18n.of(navigatorKey.currentContext).walletBalance, I18n.of(navigatorKey.currentContext).exchangeAmount, I18n.of(navigatorKey.currentContext).expectedToAccount, I18n.of(navigatorKey.currentContext).recommendSeller, I18n.of(navigatorKey.currentContext).serviceChargeRateLabel, I18n.of(navigatorKey.currentContext).serviceChargeLabel, I18n.of(navigatorKey.currentContext).collectionMethod];
   
-  List _referrerTitleList = ['钱包余额', '兑换量', '预计到账', '推荐卖家','推荐人联系方式', '收款方式'];
+  List _referrerTitleList = [I18n.of(navigatorKey.currentContext).walletBalance, I18n.of(navigatorKey.currentContext).exchangeAmount, I18n.of(navigatorKey.currentContext).expectedToAccount, I18n.of(navigatorKey.currentContext).recommendSeller,I18n.of(navigatorKey.currentContext).referrerContactWay, I18n.of(navigatorKey.currentContext).collectionMethod];
 
   TLDAcceptanceWithdrawPageType _type = TLDAcceptanceWithdrawPageType.referrer;
 
@@ -127,7 +129,7 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
         }),
         heroTag: 'exchange_page',
         transitionBetweenRoutes: false,
-        middle: Text('TLD票据收益提现'),
+        middle: Text(I18n.of(context).withdrawTLDBillProfit),
       ),
     );
   }

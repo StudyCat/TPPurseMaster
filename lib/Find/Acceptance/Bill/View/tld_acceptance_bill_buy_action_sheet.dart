@@ -1,6 +1,7 @@
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,7 +47,7 @@ class _TLDAcceptanceBillBuyActionSheetState
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('购买票据',
+            Text(I18n.of(context).buyBill,
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(32),
                     fontWeight: FontWeight.w700,
@@ -73,7 +74,7 @@ class _TLDAcceptanceBillBuyActionSheetState
                   height: ScreenUtil().setHeight(80),
                   child: CupertinoButton(
                     child: Text(
-                      '提交订单',
+                      I18n.of(context).submitOrder,
                       style: TextStyle(fontSize: ScreenUtil().setSp(28)),
                     ),
                     onPressed: (){
@@ -113,13 +114,13 @@ class _TLDAcceptanceBillBuyActionSheetState
                 color: Theme.of(context).hintColor,
               )),
               TextSpan(
-                  text: '  ${widget.infoListModel.billLevel}级票据',
+                  text: '  ${widget.infoListModel.billLevel}' + I18n.of(context).levelBill,
                   style: TextStyle(
                       color: Color.fromARGB(255, 102, 102, 102),
                       fontSize: ScreenUtil().setSp(28)))
             ])),
             Text(
-              '单价：${widget.infoListModel.billPrice}TLD',
+              I18n.of(context).univalence  +'：${widget.infoListModel.billPrice}TLD',
               style: TextStyle(
                   color: Color.fromARGB(255, 153, 153, 153),
                   fontSize: ScreenUtil().setSp(28),
@@ -155,13 +156,13 @@ class _TLDAcceptanceBillBuyActionSheetState
   Widget _getSingleChoiceWidget(int type) {
     String text;
     if (type == 1) {
-      text = '1份';
+      text = '1' + I18n.of(context).part;
     } else if (type == 2) {
-      text = '2份';
+      text = '2'+ I18n.of(context).part;
     } else if (type == 3) {
-      text = '3份';
+      text = '3' + I18n.of(context).part;
     } else {
-      text = '4份';
+      text = '4' + I18n.of(context).part;
     }
     return Row(children: <Widget>[
       Radio(
@@ -175,7 +176,7 @@ class _TLDAcceptanceBillBuyActionSheetState
         },
       ),
       Padding(
-          padding: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
+          padding: EdgeInsets.only(left: ScreenUtil().setWidth(0)),
           child: Text(
             text,
             style: TextStyle(
@@ -189,7 +190,7 @@ class _TLDAcceptanceBillBuyActionSheetState
     double realAmount = _vote * double.parse(widget.infoListModel.billPrice);
     return RichText(
         text: TextSpan(
-            text: '实付：',
+            text: I18n.of(context).actuallyPaid + '：',
             style: TextStyle(
               color: Color.fromARGB(255, 153, 153, 153),
               fontSize: ScreenUtil().setSp(28),
@@ -222,7 +223,7 @@ class _TLDAcceptanceBillBuyActionSheetState
       children: <Widget>[
         Container(
           width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(150),
-          child :Text(_infoModel != null ? _infoModel.wallet.name : '选择支付钱包',
+          child :Text(_infoModel != null ? _infoModel.wallet.name : I18n.of(context).chooseWalletLabel,
               style: TextStyle(
                   color: Color.fromARGB(255, 51, 51, 51),
                   fontSize: ScreenUtil().setSp(28),

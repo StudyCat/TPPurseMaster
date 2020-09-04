@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,13 +43,13 @@ class _TLDPaymentManagerAddPaymentCellState extends State<TLDPaymentManagerAddPa
 
   String getTitleString(){
      if(widget.type == TLDPaymentType.wechat){
-      return '添加微信号';
+      return I18n.of(context).addWeChat;
     }else if(widget.type == TLDPaymentType.alipay){
-      return '添加支付宝';
+      return I18n.of(context).addAlipay;
     }else if(widget.type == TLDPaymentType.bank){
-      return '添加银行卡';
+      return I18n.of(context).addBankCard;
     }else{
-      return '添加自定义支付方式';
+      return I18n.of(context).addCustomMethod;
     }
   }
 }
