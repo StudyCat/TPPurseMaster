@@ -9,6 +9,9 @@ import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_log
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/TabbarPage/Page/tld_acceptance_tabbar_page.dart';
 import 'package:dragon_sword_purse/Find/Rank/Page/tld_rank_tab_page.dart';
+import 'package:dragon_sword_purse/Find/RedEnvelope/Page/tld_red_envelope_page.dart';
+import 'package:dragon_sword_purse/Find/RedEnvelope/Page/tld_send_red_envelope_page.dart';
+import 'package:dragon_sword_purse/Find/RedEnvelope/View/tld_red_envelop_cell.dart';
 import 'package:dragon_sword_purse/Find/RootPage/Model/tld_find_root_model_manager.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_ad_banner_view.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_page_cell.dart';
@@ -52,21 +55,28 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
     _getBannerList();
 
     _get3rdWebList();
+
+    _getPlatformWeb();
   }
 
   void _get3rdWebList() async {
     List webList = await TLDDataManager.instance.get3rdPartWebList();
+
+    _addWebAppInPage(webList);
+  }
+
+
+  void _addWebAppInPage(List webList){
     TLDFindRootCellUIModel findRootCellUIModel = _iconDataSource.first;
     List newWebList = [];
     for (TLD3rdWebInfoModel item in webList) {
-        TLDFindRootCellUIItemModel uiItemModel = TLDFindRootCellUIItemModel(title: item.name,iconUrl: item.iconUrl,url: item.url);
+        TLDFindRootCellUIItemModel uiItemModel = TLDFindRootCellUIItemModel(title: item.name,iconUrl: item.iconUrl,url: item.url,isNeedHideNavigation: item.isNeedHideNavigation,appType: item.appType);
         newWebList.add(uiItemModel);
     }
 
     setState(() {
       findRootCellUIModel.items.insertAll(findRootCellUIModel.items.length - 1, newWebList);
     });
-
   }
 
   void _getBannerList(){
@@ -79,6 +89,14 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
     }
     }, (TLDError error){
       Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+  void _getPlatformWeb(){
+    _modelManager.getPlatform3rdWeb((List platformApps){
+      _addWebAppInPage(platformApps);
+    }, (error) {
+
     });
   }
 
@@ -156,16 +174,18 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
               }else{
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceLoginPage()));
               }
+            }else if (itemModel.title == I18n.of(context).sendRedEnvelope&& itemModel.url.length == 0){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRedEnvelopePage()));
             }else if (itemModel.title == I18n.of(context).rankLabel && itemModel.url.length == 0){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRankTabPage()));
             }else if (itemModel.title.length == 0 && itemModel.url.length == 0){
               _scanPhoto();
             }else if (itemModel.url.length > 0){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLD3rdPartWebPage(urlStr: itemModel.url,)));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLD3rdPartWebPage(urlStr: itemModel.url,isNeedHideNavigation: itemModel.isNeedHideNavigation,)));
             }
           },
           didLongClickItemCallBack: (TLDFindRootCellUIItemModel itemModel){
-            if (itemModel.url != null){
+            if (itemModel.url.length > 0 && itemModel.appType == 0){
               showDialog(context: context,builder : (context){
                 return TLDAlertView(
                   title: I18n.of(context).warning,
@@ -218,7 +238,7 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
                             Fluttertoast.showToast(msg: I18n.of(context).haveSameApplicationAlertDesc);
                           }else{
                             Fluttertoast.showToast(msg: I18n.of(context).jointhirdPartyApplictionAlertDesc);
-                            TLDFindRootCellUIItemModel uiItemModel = TLDFindRootCellUIItemModel(title: infoModel.name,iconUrl: infoModel.iconUrl,url: infoModel.url);
+                            TLDFindRootCellUIItemModel uiItemModel = TLDFindRootCellUIItemModel(title: infoModel.name,iconUrl: infoModel.iconUrl,url: infoModel.url,appType: 0,isNeedHideNavigation: infoModel.isNeedHideNavigation);
                             setState(() {
                               findRootCellUIModel.items.insert(findRootCellUIModel.items.length - 1,uiItemModel);
                             });

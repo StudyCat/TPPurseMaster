@@ -656,6 +656,44 @@ class I18n implements WidgetsLocalizations {
   String get areYouSureToDelete => "Are you sure to delete ";
   /// "Change Language"
   String get changeLanguage => "Change Language";
+  /// "Promotion Red Envelope"
+  String get promotionRedEnvelope => "Promotion Red Envelope";
+  /// "Red Envelop Number"
+  String get redEnvelopeNumber => "Red Envelop Number";
+  /// "Please enter red envelope amount"
+  String get pleaseEnterRedEnvelopeAmount => "Please enter red envelope amount";
+  /// "Enter number"
+  String get enterNumber => "Enter number";
+  /// "Entries"
+  String get entries => "Entries";
+  /// "Wish you a prosperous life"
+  String get wishYouAProsperousLife => "Wish you a prosperous life";
+  /// "Spell Luck"
+  String get spellLuck => "Spell Luck";
+  /// "Quota Red Envelope"
+  String get quotaRedEnvelope => "Quota Red Envelope";
+  /// "Create Red Envelope"
+  String get createRedEnvelope => "Create Red Envelope";
+  /// "Send Red Envelope"
+  String get sendRedEnvelope => "Send Red Envelope";
+  /// "Detail Red Envelope"
+  String get detailRedEnvelope => "Detail Red Envelope";
+  /// "Already received "
+  String get alreadyReceived => "Already received ";
+  /// "total"
+  String get total => "total";
+  /// "Red Envelope"
+  String get redEvelope => "Red Envelope";
+  /// "Can snatch"
+  String get canSnatch => "Can snatch";
+  /// "Quato Red Envelopes"
+  String get quatoRedEnvelopes => "Quato Red Envelopes";
+  /// "Random Red Envelopes"
+  String get randomRedEnvelopes => "Random Red Envelopes";
+  /// "Valid Until :"
+  String get validUntil => "Valid Until :";
+  /// "Create Promotion Red Envelope"
+  String get createPromotionRedEnvelope => "Create Promotion Red Envelope";
 }
 
 class _I18n_en_US extends I18n {
@@ -701,9 +739,9 @@ class _I18n_zh_CN extends I18n {
   /// "最低购买额度"
   @override
   String get minimumPurchaseAmountLabel => "最低购买额度";
-  /// "最低购买额度"
+  /// "最高购买额度"
   @override
-  String get maximumPurchaseAmountLabel => "最低购买额度";
+  String get maximumPurchaseAmountLabel => "最高购买额度";
   /// "请输入TLD数量"
   @override
   String get buySearchFieldPlaceholder => "请输入TLD数量";
@@ -1175,9 +1213,9 @@ class _I18n_zh_CN extends I18n {
   /// "请输入您的自定义账号"
   @override
   String get pleaseEnterYourCustomMethodAccount => "请输入您的自定义账号";
-  /// "Save"
+  /// "保存"
   @override
-  String get save => "Save";
+  String get save => "保存";
   /// "兑换比例"
   @override
   String get SubscriptionRatio => "兑换比例";
@@ -1226,15 +1264,15 @@ class _I18n_zh_CN extends I18n {
   /// "当前是最新版本"
   @override
   String get TheCurrentVersionIsTheLatest => "当前是最新版本";
-  /// "购买"
+  /// "钱包"
   @override
-  String get wallet => "购买";
+  String get wallet => "钱包";
   /// "消息"
   @override
   String get message => "消息";
-  /// "售卖"
+  /// "出售"
   @override
-  String get sale => "售卖";
+  String get sale => "出售";
   /// "TLD票据排行榜"
   @override
   String get tldBillRank => "TLD票据排行榜";
@@ -1601,6 +1639,63 @@ class _I18n_zh_CN extends I18n {
   /// "切换语言"
   @override
   String get changeLanguage => "切换语言";
+  /// "推广红包"
+  @override
+  String get promotionRedEnvelope => "推广红包";
+  /// "红包个数"
+  @override
+  String get redEnvelopeNumber => "红包个数";
+  /// "请输入红包金额"
+  @override
+  String get pleaseEnterRedEnvelopeAmount => "请输入红包金额";
+  /// "输入数量"
+  @override
+  String get enterNumber => "输入数量";
+  /// "个"
+  @override
+  String get entries => "个";
+  /// "恭喜发财，大吉大利"
+  @override
+  String get wishYouAProsperousLife => "恭喜发财，大吉大利";
+  /// "拼手气"
+  @override
+  String get spellLuck => "拼手气";
+  /// "定额红包"
+  @override
+  String get quotaRedEnvelope => "定额红包";
+  /// "生成红包"
+  @override
+  String get createRedEnvelope => "生成红包";
+  /// "发红包"
+  @override
+  String get sendRedEnvelope => "发红包";
+  /// "红包详情"
+  @override
+  String get detailRedEnvelope => "红包详情";
+  /// "已领取"
+  @override
+  String get alreadyReceived => "已领取";
+  /// "共"
+  @override
+  String get total => "共";
+  /// "红包"
+  @override
+  String get redEvelope => "红包";
+  /// "可抢"
+  @override
+  String get canSnatch => "可抢";
+  /// "定额红包"
+  @override
+  String get quatoRedEnvelopes => "定额红包";
+  /// "随机红包"
+  @override
+  String get randomRedEnvelopes => "随机红包";
+  /// "有效期至："
+  @override
+  String get validUntil => "有效期至：";
+  /// "生成推广红包"
+  @override
+  String get createPromotionRedEnvelope => "生成推广红包";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;

@@ -109,21 +109,7 @@ class _TLDNotPurseHomePageState extends State<TLDNotPurseHomePage> with WidgetsB
         heroTag: 'purse_page',
         transitionBetweenRoutes: false,
         middle: Text(I18n.of(context).commonPageTitle),
-        leading: Builder(builder: (BuildContext context) {
-          return CupertinoButton(
-              child: Icon(
-                IconData(0xe608, fontFamily: 'appIconFonts'),
-                color: Color.fromARGB(255, 51, 51, 51),
-              ),
-              padding: EdgeInsets.all(0),
-              minSize: 20,
-              onPressed: () {});
-        }),
         automaticallyImplyLeading: false,
-        trailing: MessageButton(didClickCallBack: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => TLDMessagePage()));
-        }),
       ),
     );
   }

@@ -43,16 +43,23 @@ class TLD3rdWebInfoModel{
   String url;
   String iconUrl;
   String name;
+  bool isNeedHideNavigation;
+  int appType;
 
    TLD3rdWebInfoModel(
       {this.url,
       this.iconUrl,
-      this.name,});
+      this.name,
+      this.isNeedHideNavigation,
+      this.appType
+      });
 
   TLD3rdWebInfoModel.fromJson(Map<String, dynamic> json) {
     url = json['url'];
     iconUrl = json['iconUrl'];
     name = json['name'];
+    isNeedHideNavigation = json["isNeedHideNavigation"];
+    appType = json["appType"];
   }
 
   Map<String, dynamic> toJson() {
@@ -60,6 +67,8 @@ class TLD3rdWebInfoModel{
     data['url'] = this.url;
     data['iconUrl'] = this.iconUrl;
     data['name'] = this.name;
+    data["isNeedHideNavigation"] = this.isNeedHideNavigation;
+    data["appType"] = this.appType;
     return data;
   }
 }
@@ -75,9 +84,11 @@ class TLDFindRootCellUIItemModel {
   String title;
   String imageAssest;
   bool isPlusIcon;
-  String url;
+  String url; //第三方应用地址
+  bool isNeedHideNavigation; //第三方应用是否需要导航栏
   String iconUrl;
-  TLDFindRootCellUIItemModel({this.imageAssest='', this.title='', this.isPlusIcon=false,this.url='',this.iconUrl=''});
+  int appType;
+  TLDFindRootCellUIItemModel({this.imageAssest='', this.title='', this.isPlusIcon=false,this.url='',this.iconUrl='',this.isNeedHideNavigation = false,this.appType = 1});
 }
 
 class TLDFindRootModelManager {
@@ -88,6 +99,8 @@ class TLDFindRootModelManager {
             title: I18n.of(navigatorKey.currentContext).tldBillLabel, imageAssest: 'assetss/images/icon_choose_accept.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(
             title: I18n.of(navigatorKey.currentContext).missionLabel, imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
+        TLDFindRootCellUIItemModel(
+            title: I18n.of(navigatorKey.currentContext).sendRedEnvelope, imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true)
       ]),
       TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).otherLabel, isHaveNotice: false,items: [
@@ -122,14 +135,27 @@ class TLDFindRootModelManager {
        }
        String iconUrl = uri.queryParameters['iconUrl'];
        String name = uri.queryParameters['name'];
+       String url = origin + path;
+       if (iconUrl == null || name == null || url == null){
+         TLDError error = TLDError(400,'无效的二维码');
+        failure(error);
+        return;
+       }
        TLD3rdWebInfoModel infoModel = TLD3rdWebInfoModel();
        infoModel.url = origin + path;
        infoModel.iconUrl = iconUrl;
+       infoModel.isNeedHideNavigation = false;
+       infoModel.appType = 0;
+       if (uri.queryParameters["isNeedHideNavigation"] != null){
+         if (uri.queryParameters["isNeedHideNavigation"] == "true"){
+           infoModel.isNeedHideNavigation = true;
+         }
+       }
        infoModel.name = name;
        success(infoModel);
        }else{
          TLDError error = TLDError(400,'无效的二维码');
-       failure(error);
+        failure(error);
        }
      }catch(e){
        TLDError error = TLDError(400,'二维码解析失败');
@@ -139,9 +165,23 @@ class TLDFindRootModelManager {
   
 
   void save3rdPartWeb(TLD3rdWebInfoModel infoModel ,Function success,Function(TLDError) failure){
-    TLDBaseRequest request = TLDBaseRequest({'appUrl':infoModel.url,'iconUrl':infoModel.iconUrl,"appName":infoModel.name},"play/saveApp");
+    TLDBaseRequest request = TLDBaseRequest({'appUrl':infoModel.url,'iconUrl':infoModel.iconUrl,"appName":infoModel.name,"isNeedHideNavigation":infoModel.isNeedHideNavigation},"play/saveApp");
     request.postNetRequest((value) {
       success();
+    }, (error){
+      failure(error);
+    } );
+  }
+
+
+  void getPlatform3rdWeb(Function success,Function(TLDError) failure){
+    TLDBaseRequest request = TLDBaseRequest({},"play/appList");
+    request.postNetRequest((value) {
+      List result = [];
+      for (var item in value) {
+        result.add(TLD3rdWebInfoModel.fromJson(item));
+      }
+      success(result);
     }, (error){
       failure(error);
     } );

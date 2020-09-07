@@ -14,11 +14,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_screenutil/screenutil.dart';
 
 class TLD3rdPartWebPage extends StatefulWidget {
-  TLD3rdPartWebPage({Key key,this.urlStr}) : super(key: key);
+  TLD3rdPartWebPage({Key key,this.urlStr,this.isNeedHideNavigation}) : super(key: key);
 
   final String urlStr;
+
+  final bool isNeedHideNavigation;
 
   @override
   _TLD3rdPartWebPageState createState() => _TLD3rdPartWebPageState();
@@ -100,20 +103,28 @@ class _TLD3rdPartWebPageState extends State<TLD3rdPartWebPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CupertinoNavigationBar(
-        border: Border.all(
+    if (widget.isNeedHideNavigation == false){
+       return Scaffold(
+        appBar: CupertinoNavigationBar(
+          border: Border.all(
           color : Color.fromARGB(0, 0, 0, 0),
+          ),
+          heroTag: 'web_page',
+          transitionBetweenRoutes: false,
+          middle: Text(_title),
+          backgroundColor: Color.fromARGB(255, 242, 242, 242),
+          actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
         ),
-        heroTag: 'web_page',
-        transitionBetweenRoutes: false,
-        middle: Text(_title),
+        body: widget.urlStr.length > 0 ? LoadingOverlay(isLoading: _loading, child: _getWebWidget()) : Container(),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
-        actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
-      ),
-      body: widget.urlStr.length > 0 ? LoadingOverlay(isLoading: _loading, child: _getWebWidget()) : Container(),
-      backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
+  }else{
+     return Scaffold(
+       body : Padding(
+       padding: EdgeInsets.only(top : MediaQuery.of(context).padding.top), 
+       child: widget.urlStr.length > 0 ? LoadingOverlay(isLoading: _loading, child: _getWebWidget()) : Container())
+     );
+  }
 
   }
 
@@ -137,8 +148,8 @@ class _TLD3rdPartWebPageState extends State<TLD3rdPartWebPage> {
       );
       },
       javascriptChannels: <JavascriptChannel>[
-              _getPayJSChannel(),_getWithdrawJSChannel()
-            ].toSet(),);
+              _getPayJSChannel(),_getWithdrawJSChannel(),_cloes3rdPartWebChannel()
+            ].toSet(),); 
   }
 
   JavascriptChannel _getPayJSChannel(){
@@ -177,6 +188,15 @@ class _TLD3rdPartWebPageState extends State<TLD3rdPartWebPage> {
                       });
                    },
                  )));
+                }
+              );
+  }
+
+  JavascriptChannel _cloes3rdPartWebChannel(){
+    return JavascriptChannel(
+                name: "cloesApp",
+                onMessageReceived: (JavascriptMessage message) {
+                  Navigator.of(context).pop();
                 }
               );
   }

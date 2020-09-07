@@ -139,7 +139,7 @@ class _TLD3rdPartWebPayPageState extends State<TLD3rdPartWebPayPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-         Text('充值',
+         Text('支付',
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(32),
                   fontWeight: FontWeight.w700,
