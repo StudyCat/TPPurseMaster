@@ -1,7 +1,10 @@
 import 'package:dragon_sword_purse/CommonWidget/tld_amount_text_input_fprmatter.dart';
+import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 
 enum TLDRedEnvelopType{
@@ -10,7 +13,17 @@ enum TLDRedEnvelopType{
 }
 
 class TLDSendRedEnvelopeInputeView extends StatefulWidget {
-  TLDSendRedEnvelopeInputeView({Key key}) : super(key: key);
+  TLDSendRedEnvelopeInputeView({Key key,this.amountDidChangedCallBack,this.numberDidChangedCallBack,this.descDidChangedCallBack,this.didChooseWalletCallBack,this.didChoosePolicyCallBack}) : super(key: key);
+
+  final Function amountDidChangedCallBack;
+
+  final Function numberDidChangedCallBack;
+
+  final Function descDidChangedCallBack;
+
+  final Function didChooseWalletCallBack;
+
+  final Function didChoosePolicyCallBack;
 
   @override
   _TLDSendRedEnvelopeInputeViewState createState() => _TLDSendRedEnvelopeInputeViewState();
@@ -18,10 +31,15 @@ class TLDSendRedEnvelopeInputeView extends StatefulWidget {
 
 class _TLDSendRedEnvelopeInputeViewState extends State<TLDSendRedEnvelopeInputeView> {
 
-  TLDRedEnvelopType _type;
+  TLDRedEnvelopType _type = TLDRedEnvelopType.spellLuck;
+
+  TLDWalletInfoModel _walletInfoModel;
+
+  String _amount;
 
   @override
   Widget build(BuildContext context) {
+    String amount = (_amount == null || _amount == "") ? "0" : _amount;
     return Padding(
        padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(10)),
        child:   Container(
@@ -42,12 +60,13 @@ class _TLDSendRedEnvelopeInputeViewState extends State<TLDSendRedEnvelopeInputeV
                top : ScreenUtil().setHeight(32),),
               child :Container(
                 width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(80),
-                child: Text("10000TLD",textAlign: TextAlign.center,style: TextStyle(
+                child: Text( amount + "TLD",textAlign: TextAlign.center,style: TextStyle(
                   color : Colors.white,
                   fontSize : ScreenUtil().setSp(72)
                 ),),
               )
-             )
+             ),
+             _getWalletWidget(),
            ],
          ),
        ),
@@ -83,6 +102,12 @@ class _TLDSendRedEnvelopeInputeViewState extends State<TLDSendRedEnvelopeInputeV
             placeholderStyle: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),
             textAlign: TextAlign.right,
             style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51)),
+            onChanged: (text) { 
+              widget.amountDidChangedCallBack(text);
+              setState(() {
+                _amount = text;
+              });
+              },
           ),
         )
       ],
@@ -121,6 +146,7 @@ class _TLDSendRedEnvelopeInputeViewState extends State<TLDSendRedEnvelopeInputeV
                  keyboardType: TextInputType.number,
                  textAlign: TextAlign.center,
                  style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51)),
+                 onChanged: (text)=> widget.descDidChangedCallBack(text),
                 ),
     ),
       );
@@ -137,8 +163,10 @@ class _TLDSendRedEnvelopeInputeViewState extends State<TLDSendRedEnvelopeInputeV
                  placeholder: I18n.of(context).enterNumber,
                  placeholderStyle: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 153, 153, 153)),
                  keyboardType: TextInputType.number,
+                 inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                  textAlign: TextAlign.right,
                  style: TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51)),
+                 onChanged: (text) => widget.numberDidChangedCallBack(text),
                 )
                 ),
                 Text( " " + I18n.of(context).entries,
@@ -179,7 +207,11 @@ class _TLDSendRedEnvelopeInputeViewState extends State<TLDSendRedEnvelopeInputeV
           setState(() {
             _type = value;
           });
-          // widget.didChooseCountCallBack(value);
+          if (value == TLDRedEnvelopType.spellLuck){
+            widget.didChoosePolicyCallBack(1);
+          }else{
+            widget.didChoosePolicyCallBack(2);
+          }
         },
       ),
       ),
@@ -192,6 +224,33 @@ class _TLDSendRedEnvelopeInputeViewState extends State<TLDSendRedEnvelopeInputeV
                 fontSize: ScreenUtil().setSp(24)),
           ))
     ]);
+  }
+
+  Widget _getWalletWidget(){
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDEchangeChooseWalletPage(didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
+          setState(() {
+            _walletInfoModel = infoModel;
+          });
+          widget.didChooseWalletCallBack(infoModel.walletAddress);
+        },)));
+      },
+      child: Padding(
+        padding: EdgeInsets.only(top : ScreenUtil().setHeight(10)),
+        child: Container(
+      decoration: BoxDecoration(color : Colors.white,borderRadius : BorderRadius.all(Radius.circular(4))),
+      height : ScreenUtil().setHeight(88),
+      child : Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(_walletInfoModel == null ? I18n.of(context).chooseWallet:_walletInfoModel.wallet.name,style: TextStyle(color:Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(28),fontWeight: FontWeight.bold),),
+        Icon(Icons.keyboard_arrow_right,color: Color.fromARGB(255, 51, 51, 51),)
+      ],
+    )
+    ),
+      ),
+    );
   }
 
 }

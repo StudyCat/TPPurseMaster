@@ -329,5 +329,10 @@
     "quatoRedEnvelopes" : "定额红包",
     "randomRedEnvelopes" : "随机红包",
     "validUntil" : "有效期至：",
-    "createPromotionRedEnvelope" : "生成推广红包"
+    "createPromotionRedEnvelope" : "生成推广红包",
+    "recieveRedEnvelope" : "红包领取",
+    "recieve" : "去领取",
+    "tldPromotionRedEnvelopeQRCode" : "TLD推广红包二维码",
+    "saveQRCodeCapture" : "保存二维码截图",
+    "openRedDenvelope" : "打开红包"
 }

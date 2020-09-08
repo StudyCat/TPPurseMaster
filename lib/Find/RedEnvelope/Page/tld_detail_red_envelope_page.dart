@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Find/RedEnvelope/View/tld_detail_red_envelope_content_cell.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/View/tld_detail_red_envelope_header_cell.dart';
+import 'package:dragon_sword_purse/Find/RedEnvelope/View/tld_detail_red_envelope_qrcode_cell.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,8 @@ class _TLDDetailRedEnvelopePageState extends State<TLDDetailRedEnvelopePage> {
             itemCount: 4,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0){
+                return TLDDetailRedEnvelopeQRCodeCell();
+              }else if (index == 1){
                 return TLDDetailRedEnvelopeHeaderCell();
               }else{
                 return TLDDetailRedEnvelopeContentCell();

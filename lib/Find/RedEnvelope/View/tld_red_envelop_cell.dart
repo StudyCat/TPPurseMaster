@@ -1,3 +1,5 @@
+import 'package:date_format/date_format.dart';
+import 'package:dragon_sword_purse/Find/RedEnvelope/Model/tld_red_envelope_model_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +11,30 @@ enum TLDRedEnvelopeCellType{
 }
 
 class TLDRedEnvelopeCell extends StatefulWidget {
-  TLDRedEnvelopeCell({Key key,this.type}) : super(key: key);
+  TLDRedEnvelopeCell({Key key,this.listModel}) : super(key: key);
 
-  final TLDRedEnvelopeCellType type;
+  final TLDRedEnevelopeListModel listModel;
 
   @override
   _TLDRedEnvelopeCellState createState() => _TLDRedEnvelopeCellState();
 }
 
 class _TLDRedEnvelopeCellState extends State<TLDRedEnvelopeCell> {
+  
+  TLDRedEnvelopeCellType _type;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if (widget.listModel.status == 1){
+      _type = TLDRedEnvelopeCellType.unFinished;
+    }else{
+      _type = TLDRedEnvelopeCellType.finished;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,7 +44,7 @@ class _TLDRedEnvelopeCellState extends State<TLDRedEnvelopeCell> {
         height: (MediaQuery.of(context).size.width - ScreenUtil().setWidth(60)) / 1059 * 312,
         child : Stack(
           children : <Widget>[
-            Image.asset(widget.type == TLDRedEnvelopeCellType.unFinished ? "assetss/images/unfinished_red_envelope.png" : "assetss/images/finished_red_envelope.png",fit: BoxFit.fill,),
+            Image.asset(_type == TLDRedEnvelopeCellType.unFinished ? "assetss/images/unfinished_red_envelope.png" : "assetss/images/finished_red_envelope.png",fit: BoxFit.fill,),
             _getContentWidget()
           ]
         )
@@ -59,17 +76,17 @@ class _TLDRedEnvelopeCellState extends State<TLDRedEnvelopeCell> {
             softWrap: true,
             text: TextSpan(
               text: 'TLD',
-              style: TextStyle(fontSize : ScreenUtil().setSp(20),fontWeight :FontWeight.bold,color: widget.type == TLDRedEnvelopeCellType.unFinished ? Colors.white : Color.fromARGB(255, 51, 51, 51)),
+              style: TextStyle(fontSize : ScreenUtil().setSp(20),fontWeight :FontWeight.bold,color: _type == TLDRedEnvelopeCellType.unFinished ? Colors.white : Color.fromARGB(255, 51, 51, 51)),
               children: <InlineSpan>[
                  TextSpan(
-                text : '100000',
-                style: TextStyle(fontSize : ScreenUtil().setSp(50),fontWeight :FontWeight.bold,color:  widget.type == TLDRedEnvelopeCellType.unFinished ? Colors.white : Color.fromARGB(255, 51, 51, 51)),
+                text : widget.listModel.tldCount,
+                style: TextStyle(fontSize : ScreenUtil().setSp(50),fontWeight :FontWeight.bold,color:  _type == TLDRedEnvelopeCellType.unFinished ? Colors.white : Color.fromARGB(255, 51, 51, 51)),
               ),
               
             ]
             ),
           ),
-          Text('可抢50份',style: TextStyle(fontSize : ScreenUtil().setSp(28),fontWeight :FontWeight.bold,color:  widget.type == TLDRedEnvelopeCellType.unFinished ? Colors.white : Color.fromARGB(255, 51, 51, 51)),)
+          Text(I18n.of(context).canSnatch + widget.listModel.redEnvelopeNum.toString() + I18n.of(context).part,style: TextStyle(fontSize : ScreenUtil().setSp(28),fontWeight :FontWeight.bold,color:  _type == TLDRedEnvelopeCellType.unFinished ? Colors.white : Color.fromARGB(255, 51, 51, 51)),)
         ],
       ),
     );
@@ -84,11 +101,15 @@ class _TLDRedEnvelopeCellState extends State<TLDRedEnvelopeCell> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-         Text(I18n.of(context).quatoRedEnvelopes,style: TextStyle(fontSize : ScreenUtil().setSp(28),fontWeight :FontWeight.bold,color: Color.fromARGB(255, 51, 51, 51)),),
-         Text('有效期至：2020-09-23',style: TextStyle(fontSize : ScreenUtil().setSp(28),color: widget.type == TLDRedEnvelopeCellType.unFinished ? Theme.of(context).hintColor : Color.fromARGB(255, 153, 153, 153)),)
+         Text(widget.listModel.policy == 1 ?I18n.of(context).spellLuck : I18n.of(context).quatoRedEnvelopes ,style: TextStyle(fontSize : ScreenUtil().setSp(28),fontWeight :FontWeight.bold,color: Color.fromARGB(255, 51, 51, 51)),),
+         Text( I18n.of(context).validUntil + _getDateTime(),style: TextStyle(fontSize : ScreenUtil().setSp(28),color: _type == TLDRedEnvelopeCellType.unFinished ? Theme.of(context).hintColor : Color.fromARGB(255, 153, 153, 153)),)
         ],
       ),
     );
+  }
+
+  String _getDateTime(){
+    return formatDate(DateTime.fromMillisecondsSinceEpoch(widget.listModel.expireTime), [yyyy,'-',mm,'-',dd]);
   }
 
 }

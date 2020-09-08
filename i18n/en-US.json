@@ -329,5 +329,10 @@
     "quatoRedEnvelopes" : "Quato Red Envelopes",
     "randomRedEnvelopes" : "Random Red Envelopes",
     "validUntil" : "Valid Until :",
-    "createPromotionRedEnvelope" : "Create Promotion Red Envelope"
+    "createPromotionRedEnvelope" : "Create Promotion Red Envelope",
+    "recieveRedEnvelope" : "Recieve Red Envelope",
+    "recieve" : "Recieve",
+    "tldPromotionRedEnvelopeQRCode" : "TLD Promotion Red Envelope QRCode",
+    "saveQRCodeCapture" : "Save QR Code Capture",
+    "openRedDenvelope" : "Open Red Envelope"
 }

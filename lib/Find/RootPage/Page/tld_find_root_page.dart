@@ -9,6 +9,7 @@ import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_log
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/TabbarPage/Page/tld_acceptance_tabbar_page.dart';
 import 'package:dragon_sword_purse/Find/Rank/Page/tld_rank_tab_page.dart';
+import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/Page/tld_recieve_red_envelope_page.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/Page/tld_red_envelope_page.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/Page/tld_send_red_envelope_page.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/View/tld_red_envelop_cell.dart';
@@ -176,6 +177,8 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
               }
             }else if (itemModel.title == I18n.of(context).sendRedEnvelope&& itemModel.url.length == 0){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRedEnvelopePage()));
+            }else if (itemModel.title == I18n.of(context).recieveRedEnvelope&& itemModel.url.length == 0){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRecieveRedEnvelopePage()));
             }else if (itemModel.title == I18n.of(context).rankLabel && itemModel.url.length == 0){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRankTabPage()));
             }else if (itemModel.title.length == 0 && itemModel.url.length == 0){

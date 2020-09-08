@@ -694,6 +694,16 @@ class I18n implements WidgetsLocalizations {
   String get validUntil => "Valid Until :";
   /// "Create Promotion Red Envelope"
   String get createPromotionRedEnvelope => "Create Promotion Red Envelope";
+  /// "Recieve Red Envelope"
+  String get recieveRedEnvelope => "Recieve Red Envelope";
+  /// "Recieve"
+  String get recieve => "Recieve";
+  /// "TLD Promotion Red Envelope QRCode"
+  String get tldPromotionRedEnvelopeQRCode => "TLD Promotion Red Envelope QRCode";
+  /// "Save QR Code Capture"
+  String get saveQRCodeCapture => "Save QR Code Capture";
+  /// "Open Red Envelope"
+  String get openRedDenvelope => "Open Red Envelope";
 }
 
 class _I18n_en_US extends I18n {
@@ -1696,6 +1706,21 @@ class _I18n_zh_CN extends I18n {
   /// "生成推广红包"
   @override
   String get createPromotionRedEnvelope => "生成推广红包";
+  /// "红包领取"
+  @override
+  String get recieveRedEnvelope => "红包领取";
+  /// "去领取"
+  @override
+  String get recieve => "去领取";
+  /// "TLD推广红包二维码"
+  @override
+  String get tldPromotionRedEnvelopeQRCode => "TLD推广红包二维码";
+  /// "保存二维码截图"
+  @override
+  String get saveQRCodeCapture => "保存二维码截图";
+  /// "打开红包"
+  @override
+  String get openRedDenvelope => "打开红包";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
