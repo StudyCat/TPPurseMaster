@@ -334,5 +334,7 @@
     "recieve" : "Recieve",
     "tldPromotionRedEnvelopeQRCode" : "TLD Promotion Red Envelope QRCode",
     "saveQRCodeCapture" : "Save QR Code Capture",
-    "openRedDenvelope" : "Open Red Envelope"
+    "openRedDenvelope" : "Open Red Envelope",
+    "itHasBeenDepositedInYourWallet" : "It has been deposited in your wallet",
+    "redEnvelopeRecieveRecord" : "Red Envelope Record"
 }

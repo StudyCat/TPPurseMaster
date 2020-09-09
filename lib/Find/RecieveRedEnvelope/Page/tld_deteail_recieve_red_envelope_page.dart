@@ -1,60 +1,57 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/Model/tld_deteail_recieve_red_envelope_model_manager.dart';
+import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/View/tld_detail_recieve_red_envelope_header_cell.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/Model/tld_detail_red_envelope_model_manager.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/View/tld_detail_red_envelope_content_cell.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/View/tld_detail_red_envelope_header_cell.dart';
-import 'package:dragon_sword_purse/Find/RedEnvelope/View/tld_detail_red_envelope_qrcode_cell.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
-class TLDDetailRedEnvelopePage extends StatefulWidget {
-  TLDDetailRedEnvelopePage({Key key,this.redEnvelopeId}) : super(key: key);
+class TLDDetailRecieveRedEnvelopePage extends StatefulWidget {
+  TLDDetailRecieveRedEnvelopePage({Key key,this.receiveLogId}) : super(key: key);
 
-  final String redEnvelopeId;
+  final int receiveLogId;
 
   @override
-  _TLDDetailRedEnvelopePageState createState() => _TLDDetailRedEnvelopePageState();
+  _TLDDetailRecieveRedEnvelopePageState createState() => _TLDDetailRecieveRedEnvelopePageState();
 }
 
-class _TLDDetailRedEnvelopePageState extends State<TLDDetailRedEnvelopePage> {
-
-  TLDDetailRedEnvelopeModelManager _modelManager;
-
+class _TLDDetailRecieveRedEnvelopePageState extends State<TLDDetailRecieveRedEnvelopePage> {
   bool _isLoading = false;
 
   TLDDetailRedEnvelopeModel _detailRedEnvelopeModel;
 
+  TLDDetailRecieveRedEnvelopeModelManager _modelManager;
   @override
   void initState() {
     // TODO: implement initState
-    
-    _modelManager = TLDDetailRedEnvelopeModelManager();
+    super.initState();
 
-    _getDetailRedEnvelopeInfo();
-
+    _modelManager = TLDDetailRecieveRedEnvelopeModelManager();
+    _getDetailInfo();
   }
 
-  void _getDetailRedEnvelopeInfo(){
+  void _getDetailInfo(){
     setState(() {
       _isLoading = true;
     });
-    _modelManager.getDetailRedEnvelope(widget.redEnvelopeId, (TLDDetailRedEnvelopeModel detailRedEnvelopeModel){
-      if (mounted){
+    _modelManager.getDetailInfo(widget.receiveLogId, (TLDDetailRedEnvelopeModel detailRedEnvelopeModel){
+      if(mounted){
         setState(() {
           _isLoading = false;
           _detailRedEnvelopeModel = detailRedEnvelopeModel;
         });
       }
     }, (TLDError error){
-      if (mounted){
+      if(mounted){
         setState(() {
           _isLoading = false;
         });
-        Fluttertoast.showToast(msg: error.msg);
       }
+      Fluttertoast.showToast(msg: error.msg);
     });
   }
 
@@ -91,7 +88,7 @@ class _TLDDetailRedEnvelopePageState extends State<TLDDetailRedEnvelopePage> {
             itemCount: _detailRedEnvelopeModel != null ? _detailRedEnvelopeModel.receiveList.length + 2 : 0,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0){
-                return TLDDetailRedEnvelopeQRCodeCell(detailRedEnvelopeModel: _detailRedEnvelopeModel,);
+                return TLDDetailRecieveRedEnvelopeHeaderCell(detailRedEnvelopeModel: _detailRedEnvelopeModel,);
               }else if (index == 1){
                 return TLDDetailRedEnvelopeHeaderCell(detailRedEnvelopeModel: _detailRedEnvelopeModel,);
               }else{
@@ -104,5 +101,4 @@ class _TLDDetailRedEnvelopePageState extends State<TLDDetailRedEnvelopePage> {
       ],
     );
   }
-
 }

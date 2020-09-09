@@ -1,8 +1,19 @@
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonModelManager/tld_qr_code_model_manager.dart';
+import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/Model/tld_revieve_red_envelope_model_manager.dart';
+import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/Page/tld_deteail_recieve_red_envelope_page.dart';
+import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/View/tld_revieve_red_envelope_cell.dart';
 import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/View/tld_unopen_red_envelope_alert_view.dart';
+import 'package:dragon_sword_purse/Find/RedEnvelope/Model/tld_detail_red_envelope_model_manager.dart';
+import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TLDRecieveRedEnvelopePage extends StatefulWidget {
   TLDRecieveRedEnvelopePage({Key key}) : super(key: key);
@@ -12,6 +23,107 @@ class TLDRecieveRedEnvelopePage extends StatefulWidget {
 }
 
 class _TLDRecieveRedEnvelopePageState extends State<TLDRecieveRedEnvelopePage> {
+
+  TLDQRCodeModelManager _qrCodeModelManager;
+
+  TLDRecieveRedEnvelopeModelManager _modelManager;
+
+  bool _isLoading = false;
+
+  RefreshController _refreshController;
+
+  int _page = 1;
+
+  List _dataSource = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _qrCodeModelManager = TLDQRCodeModelManager();
+
+    _modelManager = TLDRecieveRedEnvelopeModelManager();
+
+    _refreshController = RefreshController(initialRefresh: true);
+
+    _getRecieveList(_page);
+  }
+
+    void _getRecieveList(int page){
+    _modelManager.getRecieveRedEnvelopeList(page, (List result){
+      _refreshController.refreshCompleted();
+      _refreshController.loadComplete();
+      if(page == 1){
+        _dataSource = [];
+      }
+      if(mounted){
+        setState(() {
+          _dataSource.addAll(result);
+        });
+      }
+      if(result.length > 0){
+        _page = page + 1;
+      }
+    }, (TLDError error){
+      _refreshController.refreshCompleted();
+      _refreshController.loadComplete();
+      Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+  void _getRedEnvelopeInfo(String redEnvelopeId){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.getRedEnvelopeInfo(redEnvelopeId, (TLDDetailRedEnvelopeModel redEnvelopeModel){
+      if(mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      showDialog(context: context,builder:(context) => TLDUnopenRedEnvelopeAlertView(
+        redEnvelopeModel: redEnvelopeModel,
+        didClickOpenButtonCallBack: (String walletAddress){
+          _recieveRedEnvelope(walletAddress, redEnvelopeId);
+        },
+        ));
+    }, (TLDError error){
+      if(mounted){
+        setState(() {
+          _isLoading = false;
+        });
+        Fluttertoast.showToast(msg: error.msg);
+      }
+    });
+  }
+
+
+  void _recieveRedEnvelope(String walletAddress,String redEnvelopeId){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.recieveRedEnvelope(redEnvelopeId, walletAddress, (int recieveLogId){
+       if(mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailRecieveRedEnvelopePage(receiveLogId: recieveLogId,))).then((value){
+        _refreshController.requestRefresh();
+        _page = 1;
+        _getRecieveList(_page);
+      });
+    }, (TLDError error){
+       if(mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,14 +139,52 @@ class _TLDRecieveRedEnvelopePageState extends State<TLDRecieveRedEnvelopePage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getBodyWidget(),
+      body: LoadingOverlay(isLoading: _isLoading, child: _getRefreshWidget()),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
 
+  Widget _getRefreshWidget(){
+    return SmartRefresher(
+      enablePullUp: true,
+      enablePullDown: true,
+      controller: _refreshController,
+      child: _getBodyWidget(),
+      header: WaterDropHeader(
+        complete : Text(I18n.of(navigatorKey.currentContext).refreshComplete),
+      ),
+      footer: CustomFooter(
+          builder: (BuildContext context,LoadStatus mode){
+            Widget body ;
+            if(mode==LoadStatus.idle){
+              body =  Text(I18n.of(context).pullUpToLoad);
+            }
+            else if(mode==LoadStatus.loading){
+              body =  CupertinoActivityIndicator();
+            }
+            else if(mode == LoadStatus.canLoading){
+                body = Text(I18n.of(context).dropDownToLoadMoreData);
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child:body),
+            );
+          },
+        ),
+      onRefresh: (){
+        _page = 1;
+        _getRecieveList(_page);
+      },
+      onLoading: (){
+        _getRecieveList(_page);
+      },
+    );
+  }
+
+
   Widget _getBodyWidget(){
      return ListView.builder(
-      itemCount: 3,
+      itemCount: _dataSource.length + 1,
       itemBuilder: (BuildContext context, int index) {
         if (index == 0){
          return Padding(
@@ -54,23 +204,28 @@ class _TLDRecieveRedEnvelopePageState extends State<TLDRecieveRedEnvelopePage> {
               )),
               color: Theme.of(context).primaryColor,
               onPressed: (){
-                showDialog(context: context,builder :(context){
-                  return TLDUnopenRedEnvelopeAlertView();
-                });
+                Navigator.push(context, MaterialPageRoute(builder: (contenxt) => TLDScanQrCodePage(
+                  scanCallBack: (String qrCode){
+                    _qrCodeModelManager.scanQRCodeResult(qrCode, (TLDQRcodeCallBackModel callBackModel){
+                      if (callBackModel.type == QRCodeType.redEnvelope){
+                        _getRedEnvelopeInfo(callBackModel.data);
+                      }
+                    }, (TLDError error){
+                      Fluttertoast.showToast(msg: error.msg);
+                    });
+                  },
+                )));
               }),
           )
         );
         }else{
-          // TLDRedEnvelopeCellType type = TLDRedEnvelopeCellType.unFinished;
-          // if (index == 2){
-          //   type = TLDRedEnvelopeCellType.finished;
-          // }
-          // return GestureDetector(
-          //   onTap : (){
-          //     Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailRedEnvelopePage()));
-          //   },
-          //   child : TLDRedEnvelopeCell(type: type,)
-          // );
+          TLDRedEnvelopeReiceveModel reiceveModel = _dataSource[index - 1];
+          return GestureDetector(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailRecieveRedEnvelopePage(receiveLogId: reiceveModel.receiveLogId,)));
+            },
+            child: TLDRecieveRedEnvelopeCell(reiceveModel : reiceveModel),
+          );
         }
      },
     );

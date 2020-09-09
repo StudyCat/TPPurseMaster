@@ -4,17 +4,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TLDDetailRedEnvelopeContentCell extends StatefulWidget {
-  TLDDetailRedEnvelopeContentCell({Key key,this.reiceveModel}) : super(key: key);
+class TLDRecieveRedEnvelopeCell extends StatefulWidget {
+  TLDRecieveRedEnvelopeCell({Key key,this.reiceveModel}) : super(key: key);
 
   final TLDRedEnvelopeReiceveModel reiceveModel;
 
   @override
-  _TLDDetailRedEnvelopeContentCellState createState() => _TLDDetailRedEnvelopeContentCellState();
+  _TLDRecieveRedEnvelopeCellState createState() => _TLDRecieveRedEnvelopeCellState();
 }
 
-class _TLDDetailRedEnvelopeContentCellState extends State<TLDDetailRedEnvelopeContentCell> {
-  @override
+class _TLDRecieveRedEnvelopeCellState extends State<TLDRecieveRedEnvelopeCell> {
+   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30),bottom: ScreenUtil().setHeight(0)),
@@ -69,5 +69,4 @@ class _TLDDetailRedEnvelopeContentCellState extends State<TLDDetailRedEnvelopeCo
       ],
     );
   }
-
 }

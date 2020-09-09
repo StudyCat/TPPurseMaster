@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:dragon_sword_purse/Find/RedEnvelope/Model/tld_detail_red_envelope_model_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +15,9 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 
 class TLDDetailRedEnvelopeQRCodeCell extends StatefulWidget {
-  TLDDetailRedEnvelopeQRCodeCell({Key key}) : super(key: key);
+  TLDDetailRedEnvelopeQRCodeCell({Key key,this.detailRedEnvelopeModel}) : super(key: key);
+
+  final TLDDetailRedEnvelopeModel detailRedEnvelopeModel;
 
   @override
   _TLDDetailRedEnvelopeQRCodeCellState createState() => _TLDDetailRedEnvelopeQRCodeCellState();
@@ -47,7 +50,7 @@ class _TLDDetailRedEnvelopeQRCodeCellState extends State<TLDDetailRedEnvelopeQRC
                 Container(
                   width : width / 60 * 19,
                   height: width / 60 * 19,
-                  child: QrImage(data: '21312312312'),
+                  child: QrImage(data: widget.detailRedEnvelopeModel.qrCode),
                 )
               ]
             ),

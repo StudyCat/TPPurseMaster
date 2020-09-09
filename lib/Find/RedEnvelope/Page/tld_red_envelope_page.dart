@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/Page/tld_recieve_red_envelope_page.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/Model/tld_red_envelope_model_manager.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/Page/tld_detail_red_envelope_page.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/Page/tld_send_red_envelope_page.dart';
@@ -70,6 +71,9 @@ class _TLDRedEnvelopePageState extends State<TLDRedEnvelopePage> {
         middle: Text(
           I18n.of(context).redEvelope,
         ),
+        trailing: CupertinoButton(padding: EdgeInsets.zero,child: Text(I18n.of(context).redEnvelopeRecieveRecord,style: TextStyle(fontSize:ScreenUtil().setSp(28)),), onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDRecieveRedEnvelopePage(),));
+        }),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
@@ -131,7 +135,11 @@ class _TLDRedEnvelopePageState extends State<TLDRedEnvelopePage> {
               )),
               color: Theme.of(context).primaryColor,
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TLDSendRedEnvelopePage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TLDSendRedEnvelopePage())).then((value){
+                  _refreshController.requestRefresh();
+                  _page = 1;
+                  _getRedEnvelopeList(_page);
+                });
               }),
           )
         );
@@ -139,7 +147,7 @@ class _TLDRedEnvelopePageState extends State<TLDRedEnvelopePage> {
           TLDRedEnevelopeListModel model = _dataSource[index - 1];
           return GestureDetector(
             onTap : (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailRedEnvelopePage()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TLDDetailRedEnvelopePage(redEnvelopeId: model.redEnvelopeId,)));
             },
             child : TLDRedEnvelopeCell(listModel: model,)
           );

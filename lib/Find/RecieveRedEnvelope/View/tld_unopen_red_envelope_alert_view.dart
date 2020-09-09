@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
+import 'package:dragon_sword_purse/Find/RedEnvelope/Model/tld_detail_red_envelope_model_manager.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,7 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDUnopenRedEnvelopeAlertView extends StatefulWidget {
-  TLDUnopenRedEnvelopeAlertView({Key key}) : super(key: key);
+  TLDUnopenRedEnvelopeAlertView({Key key,this.redEnvelopeModel,this.didClickOpenButtonCallBack}) : super(key: key);
+
+  final TLDDetailRedEnvelopeModel redEnvelopeModel;
+
+  final Function didClickOpenButtonCallBack;
 
   @override
   _TLDUnopenRedEnvelopeAlertViewState createState() => _TLDUnopenRedEnvelopeAlertViewState();
@@ -15,6 +20,7 @@ class TLDUnopenRedEnvelopeAlertView extends StatefulWidget {
 class _TLDUnopenRedEnvelopeAlertViewState extends State<TLDUnopenRedEnvelopeAlertView> {
 
   TLDWalletInfoModel _walletInfoModel;
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +46,10 @@ class _TLDUnopenRedEnvelopeAlertViewState extends State<TLDUnopenRedEnvelopeAler
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top : ScreenUtil().setHeight(55)),
-          child: Text('恭喜发财，大吉大利',style : TextStyle(fontSize : ScreenUtil().setHeight(30),color: Color.fromARGB(255, 248, 231, 28),decoration: TextDecoration.none)),
+          child: Container(
+            width: ScreenUtil().setHeight(400),
+            child: Text(widget.redEnvelopeModel.rdesc,textAlign: TextAlign.center,softWrap: true,overflow: TextOverflow.ellipsis,style : TextStyle(fontSize : ScreenUtil().setHeight(30),color: Color.fromARGB(255, 248, 231, 28),decoration: TextDecoration.none)),
+          ),
         ),
         Padding(
           padding: EdgeInsets.only(top : ScreenUtil().setHeight(150)),
@@ -51,7 +60,7 @@ class _TLDUnopenRedEnvelopeAlertViewState extends State<TLDUnopenRedEnvelopeAler
               softWrap: true,
               overflow: TextOverflow.ellipsis,
               text: TextSpan(
-                text : "1000",
+                text : widget.redEnvelopeModel.tldCount,
                 style : TextStyle(fontSize : ScreenUtil().setHeight(60),color:Color.fromARGB(255, 248, 231, 28),decoration: TextDecoration.none),
                 children: <InlineSpan>[
                   TextSpan(
@@ -81,7 +90,8 @@ class _TLDUnopenRedEnvelopeAlertViewState extends State<TLDUnopenRedEnvelopeAler
               padding: EdgeInsets.zero,
               child: Text(I18n.of(context).openRedDenvelope,style : TextStyle(fontSize : ScreenUtil().setHeight(30),color:Color.fromARGB(255, 255,46 , 77),decoration: TextDecoration.none)), 
               onPressed: (){
-
+                widget.didClickOpenButtonCallBack(_walletInfoModel.walletAddress);
+                Navigator.of(context).pop();
               }),
           ),
           )

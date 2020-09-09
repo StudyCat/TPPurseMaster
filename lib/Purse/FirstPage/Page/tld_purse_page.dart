@@ -1,11 +1,17 @@
 import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonModelManager/tld_qr_code_model_manager.dart';
+import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/Page/tld_deteail_recieve_red_envelope_page.dart';
+import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/View/tld_unopen_red_envelope_alert_view.dart';
+import 'package:dragon_sword_purse/Find/RedEnvelope/Model/tld_detail_red_envelope_model_manager.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../View/message_button.dart';
@@ -42,7 +48,11 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
 
   // StreamSubscription _unreadSubscription;
 
+  TLDQRCodeModelManager _qrCodeModelManager;
+
   StreamSubscription _refreshSubscription;
+
+  bool _isLoading = false;
 
   // bool _haveUnreadMessage;
 
@@ -58,6 +68,8 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
     _totalAmount = 0.0;
 
     _controller = RefreshController(initialRefresh: true);
+
+    _qrCodeModelManager = TLDQRCodeModelManager();
 
     // _haveUnreadMessage = TLDIMManager.instance.unreadMessage.length > 0;
 
@@ -96,12 +108,15 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SmartRefresher(
+      body: LoadingOverlay(
+        isLoading: _isLoading,
+        child: SmartRefresher(
         controller: _controller,
         child: _getBodyWidget(context),
         header: WaterDropHeader(complete: Text(I18n.of(navigatorKey.currentContext).refreshComplete),),
         onRefresh:()=>_getPurseInfoList(context),
         ),
+      ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -124,11 +139,21 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
               });
         }),
         automaticallyImplyLeading: false,
-        trailing: MessageButton(color : Colors.white,didClickCallBack: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage()));
-        }),
+        trailing: IconButton(icon: Icon(IconData(0xe6fe,fontFamily: 'appIconFonts'),color: Colors.white,), onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (contenxt) => TLDScanQrCodePage(
+                  scanCallBack: (String qrCode){
+                    _qrCodeModelManager.scanQRCodeResult(qrCode, (TLDQRcodeCallBackModel callBackModel){
+                      if (callBackModel.type == QRCodeType.redEnvelope){
+                        _getRedEnvelopeInfo(callBackModel.data);
+                      }
+                    }, (TLDError error){
+                      Fluttertoast.showToast(msg: error.msg);
+                    });
+                  },
+                )));
+        },
       ),
-    );
+    ));
   }
 
   Widget _getBodyWidget(BuildContext context) {
@@ -221,6 +246,54 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
       _controller.refreshCompleted();
       Fluttertoast.showToast(msg: error.msg, toastLength: Toast.LENGTH_SHORT,
           timeInSecForIosWeb: 1);
+    });
+  }
+
+  void _getRedEnvelopeInfo(String redEnvelopeId){
+    setState(() {
+      _isLoading = true;
+    });
+    _manager.getRedEnvelopeInfo(redEnvelopeId, (TLDDetailRedEnvelopeModel redEnvelopeModel){
+      if(mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      showDialog(context: context,builder:(context) => TLDUnopenRedEnvelopeAlertView(
+        redEnvelopeModel: redEnvelopeModel,
+        didClickOpenButtonCallBack: (String walletAddress){
+          _recieveRedEnvelope(walletAddress, redEnvelopeId);
+        },
+        ));
+    }, (TLDError error){
+      if(mounted){
+        setState(() {
+          _isLoading = false;
+        });
+        Fluttertoast.showToast(msg: error.msg);
+      }
+    });
+  }
+
+
+  void _recieveRedEnvelope(String walletAddress,String redEnvelopeId){
+    setState(() {
+      _isLoading = true;
+    });
+    _manager.recieveRedEnvelope(redEnvelopeId, walletAddress, (int recieveLogId){
+       if(mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDDetailRecieveRedEnvelopePage(receiveLogId: recieveLogId,)));
+    }, (TLDError error){
+       if(mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Fluttertoast.showToast(msg: error.msg);
     });
   }
 

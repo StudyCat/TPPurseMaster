@@ -704,6 +704,10 @@ class I18n implements WidgetsLocalizations {
   String get saveQRCodeCapture => "Save QR Code Capture";
   /// "Open Red Envelope"
   String get openRedDenvelope => "Open Red Envelope";
+  /// "It has been deposited in your wallet"
+  String get itHasBeenDepositedInYourWallet => "It has been deposited in your wallet";
+  /// "Red Envelope Record"
+  String get redEnvelopeRecieveRecord => "Red Envelope Record";
 }
 
 class _I18n_en_US extends I18n {
@@ -1721,6 +1725,12 @@ class _I18n_zh_CN extends I18n {
   /// "打开红包"
   @override
   String get openRedDenvelope => "打开红包";
+  /// "已存入您的钱包"
+  @override
+  String get itHasBeenDepositedInYourWallet => "已存入您的钱包";
+  /// "红包领取记录"
+  @override
+  String get redEnvelopeRecieveRecord => "红包领取记录";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;

@@ -101,8 +101,6 @@ class TLDFindRootModelManager {
             title: I18n.of(navigatorKey.currentContext).missionLabel, imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(
             title: I18n.of(navigatorKey.currentContext).sendRedEnvelope, imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
-        TLDFindRootCellUIItemModel(
-            title: I18n.of(navigatorKey.currentContext).recieveRedEnvelope, imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true)
       ]),
       TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).otherLabel, isHaveNotice: false,items: [
