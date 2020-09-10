@@ -336,5 +336,10 @@
     "saveQRCodeCapture" : "Save QR Code Capture",
     "openRedDenvelope" : "Open Red Envelope",
     "itHasBeenDepositedInYourWallet" : "It has been deposited in your wallet",
-    "redEnvelopeRecieveRecord" : "Red Envelope Record"
+    "redEnvelopeRecieveRecord" : "Red Envelope Record",
+    "rollOut" : "Roll Out",
+    "rollOutLimitAmount" : "Roll Out Limit Amount",
+    "rollOutAward" : "Roll Out Award",
+    "totalToAccount" : "Total To Account",
+    "rollOutLimitAmountIs10000TLD" : "Notice:\n  Roll out limit amount is "
 }

@@ -336,5 +336,10 @@
     "saveQRCodeCapture" : "保存二维码截图",
     "openRedDenvelope" : "打开红包",
     "itHasBeenDepositedInYourWallet" : "已存入您的钱包",
-    "redEnvelopeRecieveRecord" : "红包领取记录"
+    "redEnvelopeRecieveRecord" : "红包领取记录",
+    "rollOut" : "转出",
+    "rollOutLimitAmount" : "转出限额",
+    "rollOutAward" : "转出奖励",
+    "totalToAccount" : "总计到账",
+    "rollOutLimitAmountIs10000TLD" : "注意：\n  转出起转额度单笔"
 }

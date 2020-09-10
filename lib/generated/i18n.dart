@@ -708,6 +708,16 @@ class I18n implements WidgetsLocalizations {
   String get itHasBeenDepositedInYourWallet => "It has been deposited in your wallet";
   /// "Red Envelope Record"
   String get redEnvelopeRecieveRecord => "Red Envelope Record";
+  /// "Roll Out"
+  String get rollOut => "Roll Out";
+  /// "Roll Out Limit Amount"
+  String get rollOutLimitAmount => "Roll Out Limit Amount";
+  /// "Roll Out Award"
+  String get rollOutAward => "Roll Out Award";
+  /// "Total To Account"
+  String get totalToAccount => "Total To Account";
+  /// "Notice:\n  Roll out limit amount is "
+  String get rollOutLimitAmountIs10000TLD => "Notice:\n  Roll out limit amount is ";
 }
 
 class _I18n_en_US extends I18n {
@@ -1731,6 +1741,21 @@ class _I18n_zh_CN extends I18n {
   /// "红包领取记录"
   @override
   String get redEnvelopeRecieveRecord => "红包领取记录";
+  /// "转出"
+  @override
+  String get rollOut => "转出";
+  /// "转出限额"
+  @override
+  String get rollOutLimitAmount => "转出限额";
+  /// "转出奖励"
+  @override
+  String get rollOutAward => "转出奖励";
+  /// "总计到账"
+  @override
+  String get totalToAccount => "总计到账";
+  /// "注意：\n  转出起转额度单笔"
+  @override
+  String get rollOutLimitAmountIs10000TLD => "注意：\n  转出起转额度单笔";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;

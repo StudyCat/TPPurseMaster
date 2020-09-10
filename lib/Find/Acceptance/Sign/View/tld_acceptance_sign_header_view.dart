@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAcceptanceSignHeaderView extends StatefulWidget {
-  TLDAcceptanceSignHeaderView({Key key,this.didClickLoginCallBack,this.userInfoModel,this.didClickWithdrawButtonCallBack,this.didClickProfitCallBack}) : super(key: key);
+  TLDAcceptanceSignHeaderView({Key key,this.didClickLoginCallBack,this.userInfoModel,this.didClickWithdrawButtonCallBack,this.didClickProfitCallBack,this.didClickRollOutCallBack}) : super(key: key);
 
   final Function(bool) didClickLoginCallBack; //回调是否为签到true为签到，false为登记
 
@@ -15,6 +15,8 @@ class TLDAcceptanceSignHeaderView extends StatefulWidget {
   final Function didClickWithdrawButtonCallBack;
 
   final Function(String) didClickProfitCallBack;
+
+  final Function didClickRollOutCallBack;
 
   @override
   _TLDAcceptanceSignHeaderViewState createState() => _TLDAcceptanceSignHeaderViewState();
@@ -123,19 +125,42 @@ class _TLDAcceptanceSignHeaderViewState extends State<TLDAcceptanceSignHeaderVie
         ]
         ),
         ), 
-        Container(
-              height : ScreenUtil().setHeight(60),
-              width : ScreenUtil().setWidth(130),
-              child: CupertinoButton(
-                onPressed: widget.didClickWithdrawButtonCallBack,
-                padding: EdgeInsets.zero,
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-                child: Text(I18n.of(context).withdraw,style: TextStyle(color : Theme.of(context).hintColor,fontSize:ScreenUtil().setSp(24)),),
-              ),
-          )
+        // Container(
+        //       height : ScreenUtil().setHeight(60),
+        //       width : ScreenUtil().setWidth(130),
+        //       child: CupertinoButton(
+        //         onPressed: widget.didClickWithdrawButtonCallBack,
+        //         padding: EdgeInsets.zero,
+        //         color: Theme.of(context).primaryColor,
+        //         borderRadius: BorderRadius.all(Radius.circular(30)),
+        //         child: Text(I18n.of(context).withdraw,style: TextStyle(color : Theme.of(context).hintColor,fontSize:ScreenUtil().setSp(24)),),
+        //       ),
+        //   )
+        _getRollOutAndWithdrawWidget()
       ],
     )
+    );
+  }
+
+  Widget _getRollOutAndWithdrawWidget(){
+    return Row(
+      children: <Widget>[
+        CupertinoButton(
+          child: Text(I18n.of(context).rollOut,style: TextStyle(fontSize:ScreenUtil().setSp(24),color: Color.fromARGB(255, 51, 51, 51)),),
+          onPressed: (){
+            widget.didClickRollOutCallBack();
+          },
+        ),
+        Padding(
+          padding: EdgeInsets.only(left : ScreenUtil().setWidth(30)),
+          child: CupertinoButton(
+          child: Text(I18n.of(context).withdraw,style: TextStyle(fontSize:ScreenUtil().setSp(24),color: Color.fromARGB(255, 51, 51, 51)),),
+          onPressed: (){
+            widget.didClickWithdrawButtonCallBack();
+          },
+        ),
+        )
+      ],
     );
   }
 
