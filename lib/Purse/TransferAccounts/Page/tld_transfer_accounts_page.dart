@@ -20,7 +20,7 @@ import 'package:flutter_qr_reader/flutter_qr_reader.dart';
 
 enum TLDTransferAccountsPageType{
   normal,
-  sureAmount
+  fromOtherPage
 }
 
 
@@ -98,15 +98,8 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
         _pramaterModel.chargeWalletAddress = _infoModel.chargeWalletAddress;
         _pramaterModel.fromWalletAddress = _infoModel.walletAddress;
         _pramaterModel.toWalletAddress = widget.thirdAppToWalletAddress;
-        if (widget.type == TLDTransferAccountsPageType.normal){
-          _pramaterModel.chargeValue = '0.0';
-          _pramaterModel.value = '0.0';
-        }else{
-          _pramaterModel.value = widget.amount;
-          _pramaterModel.chargeValue = (double.parse(widget.amount) *
-                                  double.parse(_infoModel.rate))
-                              .toStringAsFixed(2);
-        }
+        _pramaterModel.chargeValue = '0.0';
+        _pramaterModel.value = '0.0';
       });
     }, (TLDError error) {
       setState(() {
@@ -141,17 +134,15 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
           _loading = false;
         });
       }
-      if (widget.type == TLDTransferAccountsPageType.sureAmount){
-        Fluttertoast.showToast(
-          msg: '充值成功', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
-        Navigator.of(context)..pop()..pop(true);
-      }else{
         Fluttertoast.showToast(
           msg: '转账成功', toastLength: Toast.LENGTH_SHORT, timeInSecForIosWeb: 1);
       if (widget.transferSuccessCallBack != null) {
         widget.transferSuccessCallBack(_pramaterModel.value);
       }
-      Navigator.of(context).pop();
+      if (widget.type == TLDTransferAccountsPageType.normal){
+        Navigator.of(context).pop();
+      }else {
+        Navigator.of(context)..pop()..pop();
       }
     }, (TLDError error) {
       if (mounted) {
@@ -216,7 +207,7 @@ class _TLDTransferAccountsPageState extends State<TLDTransferAccountsPage> {
                     padding: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
                     child: TLDTransferAccountsInputRowView(
                       type: TLDTransferAccountsInputRowViewType.allTransfer,
-                      enable: widget.type == TLDTransferAccountsPageType.normal,
+                      enable:true,
                       content: _pramaterModel.value,
                       allAmount: _infoModel.value,
                       stringEditingCallBack: (String amount) {

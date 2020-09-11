@@ -98,7 +98,7 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
             widget.didChooseWalletCallBack(model);
             Navigator.of(context).pop();
           }else {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDTransferAccountsPage(type: TLDTransferAccountsPageType.sureAmount,amount: widget.transferAmount,thirdAppFromWalletAddress: model.walletAddress,thirdAppToWalletAddress: widget.transferWalletAddress,)));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDTransferAccountsPage(type: TLDTransferAccountsPageType.fromOtherPage,thirdAppFromWalletAddress: model.walletAddress,thirdAppToWalletAddress: widget.transferWalletAddress,)));
           }
         },);
   }

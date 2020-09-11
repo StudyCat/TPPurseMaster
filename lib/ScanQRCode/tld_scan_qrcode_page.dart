@@ -30,9 +30,9 @@ class _TLDScanQrCodePageState extends State<TLDScanQrCodePage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: QrcodeReaderView(key: qrViewKey, onScan: (String result)async{
-        await widget.scanCallBack(result);
+      body: QrcodeReaderView(key: qrViewKey, onScan: (String result){
         Navigator.of(context).pop();
+        widget.scanCallBack(result);
       }),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );

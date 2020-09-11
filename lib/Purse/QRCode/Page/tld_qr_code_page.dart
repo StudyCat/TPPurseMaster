@@ -1,10 +1,13 @@
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:dragon_sword_purse/Purse/QRCode/Model/tld_qr_code_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:typed_data';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/services.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class TLDQRCodePage extends StatefulWidget {
@@ -18,15 +21,40 @@ class TLDQRCodePage extends StatefulWidget {
 
 class _TLDQRCodePageState extends State<TLDQRCodePage> {
 
-  String qrCode;
+  String _qrCode;
+
+  TLDQrCodeModelManager _modelManager;
+
+  bool _isLoading = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    qrCode = 'http://www.tldollar.com?walletAddress=' + widget.infoModel.walletAddress;
+    _modelManager = TLDQrCodeModelManager();
+    _getQrCode();
+  }
 
+  void _getQrCode(){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.getTransferQrCode(widget.infoModel.walletAddress, (String qrCode){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+          _qrCode = qrCode;
+        });
+      }
+    }, (TLDError error){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Fluttertoast.showToast(msg: error.msg);
+    });
   }
 
   @override
@@ -42,7 +70,7 @@ class _TLDQRCodePageState extends State<TLDQRCodePage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getBodyWidget(context),
+      body: LoadingOverlay(isLoading: _isLoading, child: _qrCode == null ? Container() : _getBodyWidget(context)),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -67,7 +95,7 @@ class _TLDQRCodePageState extends State<TLDQRCodePage> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(50)),
-                child: qrCode.length != 0  ? QrImage(data: qrCode,size : ScreenUtil().setWidth(408)) : Container(width: ScreenUtil().setWidth(408),height: ScreenUtil().setHeight(408),color: Color.fromARGB(255, 103, 103, 103),),
+                child: _qrCode.length != 0  ? QrImage(data: _qrCode,size : ScreenUtil().setWidth(408)) : Container(width: ScreenUtil().setWidth(408),height: ScreenUtil().setHeight(408),color: Color.fromARGB(255, 103, 103, 103),),
               ),
               Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(50),left :ScreenUtil().setWidth(20),right : ScreenUtil().setWidth(20)),

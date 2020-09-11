@@ -3,7 +3,9 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 
 enum QRCodeType{
-  redEnvelope
+  redEnvelope,
+  transfer,
+  inviteCode
 }
 
 class TLDQRcodeCallBackModel{
@@ -26,6 +28,26 @@ class TLDQRCodeModelManager{
             String redEnvelopeId = url.queryParameters['redEnvelopeId'];
             
             success(TLDQRcodeCallBackModel(data:redEnvelopeId,type: type));
+          }else{
+            TLDError error = TLDError(500,'无法识别的二维码');
+            failure(error);
+          }
+        }else if (int.parse(url.queryParameters['codeType']) == 2){
+          type = QRCodeType.transfer;
+          if (url.queryParameters['walletAddress'] != null){
+            String walletAddress = url.queryParameters['walletAddress'];
+            
+            success(TLDQRcodeCallBackModel(data:walletAddress,type: type));
+          }else{
+            TLDError error = TLDError(500,'无法识别的二维码');
+            failure(error);
+          }
+        }else if (int.parse(url.queryParameters['codeType']) == 3){
+           type = QRCodeType.inviteCode;
+          if (url.queryParameters['inviteCode'] != null){
+            String inviteCode = url.queryParameters['inviteCode'];
+            
+            success(TLDQRcodeCallBackModel(data:inviteCode,type: type));
           }else{
             TLDError error = TLDError(500,'无法识别的二维码');
             failure(error);

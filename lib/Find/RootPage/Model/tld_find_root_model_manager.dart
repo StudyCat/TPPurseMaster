@@ -100,7 +100,7 @@ class TLDFindRootModelManager {
         TLDFindRootCellUIItemModel(
             title: I18n.of(navigatorKey.currentContext).missionLabel, imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(
-            title: I18n.of(navigatorKey.currentContext).sendRedEnvelope, imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
+            title: I18n.of(navigatorKey.currentContext).sendRedEnvelope, imageAssest: 'assetss/images/red_envelope_icon.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true)
       ]),
       TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).otherLabel, isHaveNotice: false,items: [

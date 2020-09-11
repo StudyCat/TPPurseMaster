@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonModelManager/tld_qr_code_model_manager.dart';
+import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_login_page.dart';
 import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/Page/tld_deteail_recieve_red_envelope_page.dart';
 import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/View/tld_unopen_red_envelope_alert_view.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/Model/tld_detail_red_envelope_model_manager.dart';
@@ -142,9 +144,23 @@ class _TLDPursePageState extends State<TLDPursePage> with AutomaticKeepAliveClie
         trailing: IconButton(icon: Icon(IconData(0xe6fe,fontFamily: 'appIconFonts'),color: Colors.white,), onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder: (contenxt) => TLDScanQrCodePage(
                   scanCallBack: (String qrCode){
-                    _qrCodeModelManager.scanQRCodeResult(qrCode, (TLDQRcodeCallBackModel callBackModel){
+                    _qrCodeModelManager.scanQRCodeResult(qrCode, (TLDQRcodeCallBackModel callBackModel) async {
                       if (callBackModel.type == QRCodeType.redEnvelope){
                         _getRedEnvelopeInfo(callBackModel.data);
+                      }else if(callBackModel.type == QRCodeType.transfer){
+                        String toWalletAddres = callBackModel.data;
+                         navigatorKey.currentState.push(MaterialPageRoute(builder: (context)=> TLDEchangeChooseWalletPage(
+                            transferWalletAddress: toWalletAddres,
+                            type: TLDEchangeChooseWalletPageType.transfer,
+                           ))).then((value) => _getPurseInfoList(context));
+                      }else if (callBackModel.type == QRCodeType.inviteCode){
+                        String inviteCode = callBackModel.data;
+                        String token = await TLDDataManager.instance.getAcceptanceToken();
+                        if (token == null){
+                          Navigator.push(context, MaterialPageRoute(builder:(context) => TLDAcceptanceLoginPage(inviteCode: inviteCode,)));
+                        }else{
+                          Fluttertoast.showToast(msg: '您已注册TLD票据');
+                        }
                       }
                     }, (TLDError error){
                       Fluttertoast.showToast(msg: error.msg);

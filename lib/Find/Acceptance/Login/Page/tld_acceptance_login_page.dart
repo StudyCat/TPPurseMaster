@@ -23,7 +23,9 @@ import 'package:permission_handler/permission_handler.dart';
 
 
 class TLDAcceptanceLoginPage extends StatefulWidget {
-  TLDAcceptanceLoginPage({Key key}) : super(key: key);
+  TLDAcceptanceLoginPage({Key key,this.inviteCode}) : super(key: key);
+
+  final String inviteCode;
 
   @override
   _TLDAcceptanceLoginPageState createState() => _TLDAcceptanceLoginPageState();
@@ -59,6 +61,7 @@ class _TLDAcceptanceLoginPageState extends State<TLDAcceptanceLoginPage> {
     super.initState();
 
     _pramater = TLDAcceptanceLoginPramater();
+    _pramater.inviteCode = widget.inviteCode;
     // _pramater.telCode = '123465';
 
     _cellPhone = ValueNotifier('');  

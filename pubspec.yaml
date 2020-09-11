@@ -130,6 +130,7 @@ flutter:
      - assetss/images/finished_red_envelope.png
      - assetss/images/red_denvelope_qrcode.png
      - assetss/images/unopen_red_envelope.png
+     - assetss/images/red_envelope_icon.png
     
 
   # To add assets to your application, add an assets section, like this:
