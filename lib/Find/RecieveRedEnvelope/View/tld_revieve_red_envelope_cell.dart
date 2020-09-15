@@ -56,7 +56,7 @@ class _TLDRecieveRedEnvelopeCellState extends State<TLDRecieveRedEnvelopeCell> {
 
   
   String _getDateTime(){
-    return formatDate(DateTime.fromMillisecondsSinceEpoch(widget.reiceveModel.createTime), [yyyy,'-',mm,'-',dd]);
+    return formatDate(DateTime.fromMillisecondsSinceEpoch(widget.reiceveModel.createTime), [yyyy,'-',mm,'-',dd,' ',hh,':',nn]);
   }
 
 

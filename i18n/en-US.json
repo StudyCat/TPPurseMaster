@@ -341,5 +341,7 @@
     "rollOutLimitAmount" : "Roll Out Limit Amount",
     "rollOutAward" : "Roll Out Award",
     "totalToAccount" : "Total To Account",
-    "rollOutLimitAmountIs10000TLD" : "Notice:\n  Roll out limit amount is "
+    "rollOutLimitAmountIs10000TLD" : "Notice:\n  Roll out limit amount is ",
+    "game" : "Game",
+    "tldRedEnvelope" : "TLD Red Envelope"
 }

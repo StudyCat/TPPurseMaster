@@ -14,6 +14,7 @@ import 'package:dragon_sword_purse/Find/RedEnvelope/Page/tld_red_envelope_page.d
 import 'package:dragon_sword_purse/Find/RedEnvelope/Page/tld_send_red_envelope_page.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/View/tld_red_envelop_cell.dart';
 import 'package:dragon_sword_purse/Find/RootPage/Model/tld_find_root_model_manager.dart';
+import 'package:dragon_sword_purse/Find/RootPage/Page/tld_game_page.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_ad_banner_view.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_page_cell.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
@@ -160,7 +161,7 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
       itemBuilder: (context,index){
         if (index == 0){
           return TLDFindRootADBannerView(bannerList: _bannerList,didClickBannerViewCallBack: (TLDBannerModel bannerModel){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDWebPage(title: '',urlStr: bannerModel.bannerHref,)));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLD3rdPartWebPage(isNeedHideNavigation: !bannerModel.isNeedNavigation,urlStr: bannerModel.bannerHref,)));
           },);
         }else{
           TLDFindRootCellUIModel uiModel = _iconDataSource[index - 1];
@@ -175,12 +176,14 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
               }else{
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceLoginPage()));
               }
-            }else if (itemModel.title == I18n.of(context).sendRedEnvelope&& itemModel.url.length == 0){
+            }else if (itemModel.title == I18n.of(context).tldRedEnvelope && itemModel.url.length == 0){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRedEnvelopePage()));
             }else if (itemModel.title == I18n.of(context).recieveRedEnvelope&& itemModel.url.length == 0){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRecieveRedEnvelopePage()));
             }else if (itemModel.title == I18n.of(context).rankLabel && itemModel.url.length == 0){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRankTabPage()));
+            }else if (itemModel.title == I18n.of(context).game && itemModel.url.length == 0){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDGamePage()));
             }else if (itemModel.title.length == 0 && itemModel.url.length == 0){
               _scanPhoto();
             }else if (itemModel.url.length > 0){

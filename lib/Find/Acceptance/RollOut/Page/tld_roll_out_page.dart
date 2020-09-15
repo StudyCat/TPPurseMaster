@@ -2,6 +2,7 @@
 
 import 'package:common_utils/common_utils.dart';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/View/tld_exchange_normalCell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/RollOut/Model/tld_roll_out_model_manager.dart';
@@ -115,6 +116,9 @@ class _TLDRollOutPageState extends State<TLDRollOutPage> {
         //   Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.cashDescUrl,title: '提现说明',)));
         // }),
         heroTag: 'exchange_page',
+        trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.transferOutUrl,title: '转出说明',)));
+        }),
         transitionBetweenRoutes: false,
         middle: Text(I18n.of(context).rollOut),
       ),

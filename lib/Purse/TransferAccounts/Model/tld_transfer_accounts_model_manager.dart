@@ -28,7 +28,7 @@ class TLDTransferAccountsModelManager {
       if (url.queryParameters['codeType'] != null) {
         if (int.parse(url.queryParameters['codeType']) == 2) {
           if (url.queryParameters['walletAddress'] != null) {
-            String redEnvelopeId = url.queryParameters['redEnvelopeId'];
+            String redEnvelopeId = url.queryParameters['walletAddress'];
             success(redEnvelopeId);
           } else {
             TLDError error = TLDError(500, '无法识别的二维码');

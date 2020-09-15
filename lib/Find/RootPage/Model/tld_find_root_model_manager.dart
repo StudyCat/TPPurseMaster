@@ -9,6 +9,7 @@ class TLDBannerModel {
   int bannerSort;
   int createTime;
   bool valid;
+  bool isNeedNavigation;
 
   TLDBannerModel(
       {this.bannerId,
@@ -16,7 +17,8 @@ class TLDBannerModel {
       this.bannerHref,
       this.bannerSort,
       this.createTime,
-      this.valid});
+      this.valid,
+      this.isNeedNavigation});
 
   TLDBannerModel.fromJson(Map<String, dynamic> json) {
     bannerId = json['bannerId'];
@@ -25,6 +27,7 @@ class TLDBannerModel {
     bannerSort = json['bannerSort'];
     createTime = json['createTime'];
     valid = json['valid'];
+    isNeedNavigation = json['isNeedNavigation'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +38,7 @@ class TLDBannerModel {
     data['bannerSort'] = this.bannerSort;
     data['createTime'] = this.createTime;
     data['valid'] = this.valid;
+    data['isNeedNavigation'] = this.isNeedNavigation;
     return data;
   }
 }
@@ -98,9 +102,11 @@ class TLDFindRootModelManager {
         TLDFindRootCellUIItemModel(
             title: I18n.of(navigatorKey.currentContext).tldBillLabel, imageAssest: 'assetss/images/icon_choose_accept.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(
-            title: I18n.of(navigatorKey.currentContext).missionLabel, imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
+            title: I18n.of(navigatorKey.currentContext).tldRedEnvelope, imageAssest: 'assetss/images/red_envelope_icon.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(
-            title: I18n.of(navigatorKey.currentContext).sendRedEnvelope, imageAssest: 'assetss/images/red_envelope_icon.png',isPlusIcon: false),
+            title: I18n.of(navigatorKey.currentContext).game, imageAssest: 'assetss/images/game_icon.png',isPlusIcon: false),
+        TLDFindRootCellUIItemModel(
+            title: I18n.of(navigatorKey.currentContext).missionLabel, imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true)
       ]),
       TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).otherLabel, isHaveNotice: false,items: [
@@ -185,6 +191,25 @@ class TLDFindRootModelManager {
     }, (error){
       failure(error);
     } );
+  }
+
+
+  void getGamePageInfo(Function success,Function failure){
+    TLDBaseRequest request = TLDBaseRequest({},'play/gameAppList');
+
+    request.postNetRequest((value) {
+      List bannerStrList = value['gameBannerList'];
+      List gameStrList = value['gameList'];
+      List bannerList = [];
+      List gameList = [];
+      for (var item in bannerStrList) {
+        bannerList.add(TLDBannerModel.fromJson(item));
+      }
+      for (var item in gameStrList) {
+        gameList.add(TLD3rdWebInfoModel.fromJson(item));
+      }
+      success(bannerList,gameList);
+    }, (error) => failure(error));
   }
 
 }

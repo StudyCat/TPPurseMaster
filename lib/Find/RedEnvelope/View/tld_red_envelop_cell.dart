@@ -109,7 +109,7 @@ class _TLDRedEnvelopeCellState extends State<TLDRedEnvelopeCell> {
   }
 
   String _getDateTime(){
-    return formatDate(DateTime.fromMillisecondsSinceEpoch(widget.listModel.expireTime), [yyyy,'-',mm,'-',dd]);
+    return formatDate(DateTime.fromMillisecondsSinceEpoch(widget.listModel.expireTime), [yyyy,'-',mm,'-',dd,' ',hh,':',nn]);
   }
 
 }

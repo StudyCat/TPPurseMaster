@@ -341,5 +341,7 @@
     "rollOutLimitAmount" : "转出限额",
     "rollOutAward" : "转出奖励",
     "totalToAccount" : "总计到账",
-    "rollOutLimitAmountIs10000TLD" : "注意：\n  转出起转额度单笔"
+    "rollOutLimitAmountIs10000TLD" : "注意：\n  转出起转额度单笔",
+    "game" : "小游戏",
+    "tldRedEnvelope" : "TLD红包"
 }

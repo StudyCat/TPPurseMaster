@@ -718,6 +718,10 @@ class I18n implements WidgetsLocalizations {
   String get totalToAccount => "Total To Account";
   /// "Notice:\n  Roll out limit amount is "
   String get rollOutLimitAmountIs10000TLD => "Notice:\n  Roll out limit amount is ";
+  /// "Game"
+  String get game => "Game";
+  /// "TLD Red Envelope"
+  String get tldRedEnvelope => "TLD Red Envelope";
 }
 
 class _I18n_en_US extends I18n {
@@ -1756,6 +1760,12 @@ class _I18n_zh_CN extends I18n {
   /// "注意：\n  转出起转额度单笔"
   @override
   String get rollOutLimitAmountIs10000TLD => "注意：\n  转出起转额度单笔";
+  /// "小游戏"
+  @override
+  String get game => "小游戏";
+  /// "TLD红包"
+  @override
+  String get tldRedEnvelope => "TLD红包";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;

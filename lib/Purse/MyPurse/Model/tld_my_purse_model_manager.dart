@@ -12,6 +12,7 @@ class TLDPurseTransferInfoModel {
   String toWalletAddress;
   String chargeValue;
   String value;
+  String remark;
 
   TLDPurseTransferInfoModel(
       {this.createTime,
@@ -19,7 +20,8 @@ class TLDPurseTransferInfoModel {
       this.fromWalletAddress,
       this.toWalletAddress,
       this.chargeValue,
-      this.value});
+      this.value,
+      this.remark});
 
   TLDPurseTransferInfoModel.fromJson(Map<String, dynamic> json) {
     createTime = json['createTime'];
@@ -28,6 +30,7 @@ class TLDPurseTransferInfoModel {
     toWalletAddress = json['toWalletAddress'];
     chargeValue = json['chargeValue'];
     value = json['value'];
+    remark = json['remark'];
   }
 
   Map<String, dynamic> toJson() {
@@ -38,6 +41,7 @@ class TLDPurseTransferInfoModel {
     data['toWalletAddress'] = this.toWalletAddress;
     data['chargeValue'] = this.chargeValue;
     data['value'] = this.value;
+    data['remark'] = this.remark;
     return data;
   }
 }
