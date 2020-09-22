@@ -343,5 +343,11 @@
     "totalToAccount" : "Total To Account",
     "rollOutLimitAmountIs10000TLD" : "Notice:\n  Roll out limit amount is ",
     "game" : "Game",
-    "tldRedEnvelope" : "TLD Red Envelope"
+    "tldRedEnvelope" : "TLD Red Envelope",
+    "mobileQuickRegistration" : "Mobile Quick Registration",
+    "registeredMobilePhoneNumbersAutomaticallyLogIn" : "Registered mobile phone Numbers automatically log in",
+    "pleaseEnterYourNickName" : "Please enter your nick name",
+    "register" : "Register",
+    "getVerifyCode" : "Get Verify Code",
+    "quickToBuy" : "Quick To Buy"
 }

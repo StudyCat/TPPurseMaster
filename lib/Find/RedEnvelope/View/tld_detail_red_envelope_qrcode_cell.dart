@@ -29,32 +29,45 @@ class _TLDDetailRedEnvelopeQRCodeCellState extends State<TLDDetailRedEnvelopeQRC
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width - ScreenUtil().setWidth(152);
+    double width = MediaQuery.of(context).size.width - ScreenUtil().setWidth(30);
+    double height = width / 965 * 1170;
     return Padding(
       padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(16),bottom: ScreenUtil().setHeight(2)),
       child: Column(
         children: <Widget>[
           Text(I18n.of(context).tldPromotionRedEnvelopeQRCode,style: TextStyle(fontSize:ScreenUtil().setSp(32),fontWeight:FontWeight.bold,color:Color.fromARGB(255, 51, 51, 51)),),
           Padding(
-            padding: EdgeInsets.only(left : ScreenUtil().setWidth(46),right:ScreenUtil().setWidth(46),top: ScreenUtil().setHeight(10)),
-            child: RepaintBoundary(
+            padding: EdgeInsets.only(top : ScreenUtil().setHeight(30)),
+            child:  RepaintBoundary(
               key: repainKey,
               child: Stack(
-              alignment: FractionalOffset(.5, .88),
               children : <Widget>[
                 Container(
                   width : width,
-                  height: width / 897 * 633,
+                  height: width / 965 * 1170,
                   child: Image.asset('assetss/images/red_denvelope_qrcode.png',fit: BoxFit.fill,),
                 ),
                 Container(
-                  width : width / 60 * 19,
-                  height: width / 60 * 19,
-                  child: QrImage(data: widget.detailRedEnvelopeModel.qrCode),
-                )
+                  width : width,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top : height / 15),
+                        child: Container(
+                          width : width,
+                          child : Text('${widget.detailRedEnvelopeModel.tldCount} TLD',overflow: TextOverflow.ellipsis,softWrap : true,style:TextStyle(fontSize : ScreenUtil().setSp(40),color : Color.fromARGB(255, 253, 239, 85)),textAlign: TextAlign.center,)
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top : height / 4),
+                        child: Container( width : width / 345 * 205,height: width / 345 * 205,child: QrImage(data: widget.detailRedEnvelopeModel.qrCode),),
+                      )
+                    ],
+                  ),
+                )               
               ]
             ),
-            )
+          ),
           ),
           Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(40)),

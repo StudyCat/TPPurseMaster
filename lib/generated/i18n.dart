@@ -722,6 +722,18 @@ class I18n implements WidgetsLocalizations {
   String get game => "Game";
   /// "TLD Red Envelope"
   String get tldRedEnvelope => "TLD Red Envelope";
+  /// "Mobile Quick Registration"
+  String get mobileQuickRegistration => "Mobile Quick Registration";
+  /// "Registered mobile phone Numbers automatically log in"
+  String get registeredMobilePhoneNumbersAutomaticallyLogIn => "Registered mobile phone Numbers automatically log in";
+  /// "Please enter your nick name"
+  String get pleaseEnterYourNickName => "Please enter your nick name";
+  /// "Register"
+  String get register => "Register";
+  /// "Get Verify Code"
+  String get getVerifyCode => "Get Verify Code";
+  /// "Quick To Buy"
+  String get quickToBuy => "Quick To Buy";
 }
 
 class _I18n_en_US extends I18n {
@@ -1766,6 +1778,24 @@ class _I18n_zh_CN extends I18n {
   /// "TLD红包"
   @override
   String get tldRedEnvelope => "TLD红包";
+  /// "手机快捷注册"
+  @override
+  String get mobileQuickRegistration => "手机快捷注册";
+  /// "已注册过的手机号自动登录"
+  @override
+  String get registeredMobilePhoneNumbersAutomaticallyLogIn => "已注册过的手机号自动登录";
+  /// "请输入您的昵称"
+  @override
+  String get pleaseEnterYourNickName => "请输入您的昵称";
+  /// "注册"
+  @override
+  String get register => "注册";
+  /// "获取验证码"
+  @override
+  String get getVerifyCode => "获取验证码";
+  /// "快捷购买"
+  @override
+  String get quickToBuy => "快捷购买";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;

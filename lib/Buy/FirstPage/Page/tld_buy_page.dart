@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Buy/FirstPage/View/tld_quick_buy_action_sheet.dart';
+import 'package:dragon_sword_purse/Buy/FirstPage/View/tld_quick_buy_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
@@ -247,11 +249,12 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
   Widget _getBodyWidget(double screenWidth){
     return Column(
       children: <Widget>[
-        Padding(padding: EdgeInsets.only(left : 15 , top : 5 ,right: 15),child: TLDBuySearchField(focusNode: _focusNode,textFieldDidChangeCallBack: (String text){
-          _keyword = text;
-        },didClickSearchBtnCallBack: (){
-           _page = 1;
-          _loadBuyList(_keyword, _page);
+        Padding(padding: EdgeInsets.only(left : 15 , top : 5 ,right: 15),child: TLDQuickBuyView(focusNode: _focusNode,textDidChange: (String text){
+          
+        },didClickDonehBtnCallBack: (){
+           showCupertinoModalPopup(context: context, builder: (BuildContext context){
+              return TLDQuickBuyActionSheet(count: '100',);
+            });
         },),),
         Expanded(child: TLDEmptyListView(getListViewCellCallBack:(int index){
         TLDBuyListInfoModel model = _dataSource[index];

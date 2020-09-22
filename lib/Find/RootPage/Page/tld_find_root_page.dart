@@ -4,6 +4,7 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
+import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/3rdPartWeb/Page/tld_3rdpart_web_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_login_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_page.dart';
@@ -28,6 +29,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,6 +46,8 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
   List _bannerList = [];
 
   List _iconDataSource = [];
+
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -102,10 +106,38 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
     });
   }
 
+  void _isHaveAcceptanceUser(){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.haveAcceptanceUser((bool isHave){
+      if (mounted){}
+      setState(() {
+      _isLoading = false;
+    });
+      if (isHave){
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) =>  TLDAcceptanceTabbarPage()
+        ));
+      }else{
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) =>  TLDEchangeChooseWalletPage(type: TLDEchangeChooseWalletPageType.binding,)
+        ));
+      }
+    }, (TLDError error){
+      if (mounted){
+        setState(() {
+      _isLoading = false;
+    });
+      }
+      Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      body: _getBodyWidget(),
+      body: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget(),),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
         backgroundColor: Colors.white,
@@ -170,12 +202,13 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
               Fluttertoast.showToast(msg: I18n.of(context).missionNotOpenAlertDesc);
               // Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDNewMissionFirstPage()));
             }else if (itemModel.title == I18n.of(context).tldBillLabel && itemModel.url.length == 0){
-              String acceptanceToken = TLDDataManager.instance.acceptanceToken;
-              if (acceptanceToken != null){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceTabbarPage()));
-              }else{
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceLoginPage()));
-              }
+              // String acceptanceToken = TLDDataManager.instance.acceptanceToken;
+              // if (acceptanceToken != null){
+              //   Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceTabbarPage()));
+              // }else{
+              //   Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceLoginPage()));
+              // }
+              _isHaveAcceptanceUser();
             }else if (itemModel.title == I18n.of(context).tldRedEnvelope && itemModel.url.length == 0){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRedEnvelopePage()));
             }else if (itemModel.title == I18n.of(context).recieveRedEnvelope&& itemModel.url.length == 0){

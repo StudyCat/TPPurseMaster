@@ -3,18 +3,21 @@ import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_empty_wallet_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/TabbarPage/Page/tld_acceptance_tabbar_page.dart';
 import 'package:dragon_sword_purse/Purse/TransferAccounts/Page/tld_transfer_accounts_page.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import '../../../Purse/FirstPage/View/purse_cell.dart';
 import '../../../Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import '../Model/tld_exchange_choose_wallet_model_manager.dart';
 
 enum TLDEchangeChooseWalletPageType{
   normal,
-  transfer
+  transfer,
+  binding
 }
 
 class TLDEchangeChooseWalletPage extends StatefulWidget {
@@ -39,6 +42,9 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
   StreamController _streamController;
 
   TLDExchangeChooseWalletModelManager _modelManager;
+
+  bool _isLoading = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -68,11 +74,11 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
         ),
         heroTag: 'exchange_choose_purse_page',
         transitionBetweenRoutes: false,
-        middle: Text(I18n.of(context).chooseWallet),
+        middle: widget.type == TLDEchangeChooseWalletPageType.binding ? Text('绑定钱包') : Text(I18n.of(context).chooseWallet),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getBodyWidget(context),
+      body: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget(context),),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
@@ -97,6 +103,8 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
           if (widget.type == TLDEchangeChooseWalletPageType.normal){
             widget.didChooseWalletCallBack(model);
             Navigator.of(context).pop();
+          }else if(widget.type == TLDEchangeChooseWalletPageType.binding){
+            _bindingWalletAddress(model.walletAddress);
           }else {
             Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDTransferAccountsPage(type: TLDTransferAccountsPageType.fromOtherPage,thirdAppFromWalletAddress: model.walletAddress,thirdAppToWalletAddress: widget.transferWalletAddress,)));
           }
@@ -112,6 +120,30 @@ class _TLDEchangeChooseWalletPageState extends State<TLDEchangeChooseWalletPage>
     }, (TLDError error){
       Fluttertoast.showToast(msg: error.msg, toastLength: Toast.LENGTH_SHORT,
                       timeInSecForIosWeb: 1);
+    });
+  }
+
+  void _bindingWalletAddress(String walletAddress){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.bindingWalletAddress(walletAddress, (){
+      if (mounted){
+        setState(() {
+        _isLoading = false;
+      });
+      }
+      Navigator.of(context).pop();
+      Navigator.push(context, MaterialPageRoute(
+        builder : (context) => TLDAcceptanceTabbarPage()
+      ));
+    }, (TLDError error){
+      if (mounted){
+        setState(() {
+        _isLoading = false;
+      });
+      }
+      Fluttertoast.showToast(msg: error.msg);
     });
   }
 }

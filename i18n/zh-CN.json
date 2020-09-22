@@ -343,5 +343,11 @@
     "totalToAccount" : "总计到账",
     "rollOutLimitAmountIs10000TLD" : "注意：\n  转出起转额度单笔",
     "game" : "小游戏",
-    "tldRedEnvelope" : "TLD红包"
+    "tldRedEnvelope" : "TLD红包",
+    "mobileQuickRegistration" : "手机快捷注册",
+    "registeredMobilePhoneNumbersAutomaticallyLogIn" : "已注册过的手机号自动登录",
+    "pleaseEnterYourNickName" : "请输入您的昵称",
+    "register" : "注册",
+    "getVerifyCode" : "获取验证码",
+    "quickToBuy" : "快捷购买"
 }

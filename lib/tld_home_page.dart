@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
+import 'package:dragon_sword_purse/register&login/Page/tld_register_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,6 +30,8 @@ class _TLDHomePageState extends State<TLDHomePage> {
 
   bool isHavePurse;
 
+  bool _isLogin;
+
   JPush jPush;
 
   @override
@@ -38,31 +41,17 @@ class _TLDHomePageState extends State<TLDHomePage> {
 
     _manager = TLDDataBaseManager();
 
+    _isLogin = true;
 
     isHavePurse = false;
 
-     _searchAllPurse();
+    // await _searchAllPurse();
+
+    _checkIsLogin();
+
+    _searchAllPurse();
 
     _openPermmision();
-    // jPush = JPush();
-    // if (Platform.isAndroid){
-    //   jPush.isNotificationEnabled().then((isOpen){
-    //   if (!isOpen){
-    //     Future.delayed(
-    //   Duration.zero,
-    //     (){
-    //       showDialog(context: context,builder:(context){
-    //         return TLDAlertView(title : '温馨提示',alertString:'未开启接收推送通知的权限，是否去开启？',type: TLDAlertViewType.normal,didClickSureBtn: (){
-    //           openAppSettings().then((value) => null);
-    //         },);
-    //       });
-    //     }
-    // );
-    //   }  
-    // });
-    // }else{
-      
-    // }
 
     _checkVersion();
   }
@@ -116,6 +105,13 @@ class _TLDHomePageState extends State<TLDHomePage> {
       }
   }
 
+  void _checkIsLogin() async {
+    var token = await TLDDataManager.instance.getAcceptanceToken();
+    setState(() {
+      _isLogin = token != null; 
+    });
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -127,10 +123,33 @@ class _TLDHomePageState extends State<TLDHomePage> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context, width: 750, height: 1334);
 
-    if(isHavePurse == false){
-      return TLDNotPurseHomePage();
+    if (_isLogin == true){
+      if (isHavePurse){
+        return TLDTabbarPage(); 
+      }else{
+        return TLDNotPurseHomePage();
+      }
     }else{
-       return TLDTabbarPage(); 
+      return TLDRegisterView();
     }
+
+    // FutureBuilder(
+    //   future: _searchAllPurse(),
+    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+    //     if (snapshot.hasData){
+    //       return Container(
+    //         width: 0,
+    //         height: 0,
+    //       );
+    //     }else{
+    //        bool isHavePurse = snapshot.data;
+    //     if(isHavePurse == false){
+    //       return TLDNotPurseHomePage();
+    //     }else{
+    //       return TLDTabbarPage(); 
+    //     }
+    //     }
+    //   },
+    // );
   }
 }

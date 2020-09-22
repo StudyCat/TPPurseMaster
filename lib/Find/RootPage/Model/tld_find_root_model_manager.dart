@@ -212,4 +212,11 @@ class TLDFindRootModelManager {
     }, (error) => failure(error));
   }
 
+  void haveAcceptanceUser(Function success,Function failure){
+     TLDBaseRequest request = TLDBaseRequest({},'acpt/user/existAcptAccount');
+    request.postNetRequest((value) {
+      success(value);
+    }, (error) => failure(error));
+  }
+
 }

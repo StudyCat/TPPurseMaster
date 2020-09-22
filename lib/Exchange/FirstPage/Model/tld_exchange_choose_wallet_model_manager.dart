@@ -43,4 +43,12 @@ class TLDExchangeChooseWalletModelManager{
        }, (error)=> failure(error));
   }
 
+
+  void bindingWalletAddress(String walletAddress, Function success,Function failure){
+    TLDBaseRequest request = TLDBaseRequest({'walletAddress' : walletAddress}, 'acpt/user/bindWallet');
+    request.postNetRequest((value) {
+      success();
+    }, (error) => failure(error));
+  }
+
 }

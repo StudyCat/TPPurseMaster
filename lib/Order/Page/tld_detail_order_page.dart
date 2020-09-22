@@ -100,6 +100,15 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       });
       }
       _detailOrderModel = detailModel;
+      if (_detailOrderModel.payMethodVO.type == 2 && _detailOrderModel.status == 0 && _detailOrderModel.amIBuyer){
+                      showDialog(context: context,builder: (context) => TLDDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
+                  }else if (_detailOrderModel.payMethodVO.type == 3 && isOpen == true){
+                      showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));                    
+                  }else if (_detailOrderModel.payMethodVO.type == 4 && isOpen == true){
+                    if (_detailOrderModel.payMethodVO.imageUrl.length > 0) {
+                      showDialog(context: context,builder: (context) => TLDDetailDiyQrcodeShowView(paymentName: _detailOrderModel.payMethodVO.myPayName,qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,)); 
+                    }
+          }
       _controller.sink.add(detailModel);
     }, (TLDError error){
       if (mounted){
@@ -343,23 +352,23 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
                 titleStyle: TextStyle(
                     fontSize: ScreenUtil().setSp(24),
                     color: Color.fromARGB(255, 51, 51, 51)),
-                isOpen: isOpen,
+                isOpen: true,
                 paymentModel: _detailOrderModel.payMethodVO,
                 didClickCallBack: (){
-                  setState(() {
-                    isOpen = !isOpen;
-                  });
-                  if (_detailOrderModel.payMethodVO.type == 2 && isOpen == true){
-                      showDialog(context: context,builder: (context) => TLDDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
-                  }else if (_detailOrderModel.payMethodVO.type == 3 && isOpen == true){
-                      showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));                    
-                  }else if (_detailOrderModel.payMethodVO.type == 4 && isOpen == true){
-                    if (_detailOrderModel.payMethodVO.imageUrl.length > 0) {
-                      showDialog(context: context,builder: (context) => TLDDetailDiyQrcodeShowView(paymentName: _detailOrderModel.payMethodVO.myPayName,qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,)); 
-                    }else{
-                      // Fluttertoast.showToast(msg: '未设置二维码');
-                    }
-                  }
+                  // setState(() {
+                  //   isOpen = !isOpen;
+                  // });
+                  // if (_detailOrderModel.payMethodVO.type == 2 && isOpen == true){
+                  //     showDialog(context: context,builder: (context) => TLDDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
+                  // }else if (_detailOrderModel.payMethodVO.type == 3 && isOpen == true){
+                  //     showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));                    
+                  // }else if (_detailOrderModel.payMethodVO.type == 4 && isOpen == true){
+                  //   if (_detailOrderModel.payMethodVO.imageUrl.length > 0) {
+                  //     showDialog(context: context,builder: (context) => TLDDetailDiyQrcodeShowView(paymentName: _detailOrderModel.payMethodVO.myPayName,qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,)); 
+                  //   }else{
+                  //     // Fluttertoast.showToast(msg: '未设置二维码');
+                  //   }
+                  // }
                 },
                 didClickQrCodeCallBack: (){
                   if (_detailOrderModel.payMethodVO.type == 2){

@@ -49,6 +49,12 @@ class TLDAcceptanceTabbarClickEvent{
   TLDAcceptanceTabbarClickEvent(this.index);
 }
 
+
+class TLDRegisterCellPhoneChangeEvent{
+  String cellPhoneNum;
+  TLDRegisterCellPhoneChangeEvent(this.cellPhoneNum);
+}
+
 //提现订单刷新
 class TLDAcceptaceWithDrawOrderListRefreshEvent{
   TLDAcceptaceWithDrawOrderListRefreshEvent();

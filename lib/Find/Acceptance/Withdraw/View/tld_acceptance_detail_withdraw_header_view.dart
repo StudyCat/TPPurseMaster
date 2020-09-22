@@ -88,15 +88,15 @@ class _TLDAcceptanceDetailWithdrawHeaderViewState extends State<TLDAcceptanceDet
     if (widget.detailModel != null){
       switch (widget.detailModel.cashStatus) {
         case 0 : {
-          if (widget.detailModel.amApply == false){
-             if (timer == null){
-              timer = Timer.periodic(duration, (timer) { 
-                timerFunction();
-              });
-            }
-          }else{
+          // if (widget.detailModel.amApply == false){
+          //    if (timer == null){
+          //     timer = Timer.periodic(duration, (timer) { 
+          //       timerFunction();
+          //     });
+          //   }
+          // }else{
             _subStr = '';
-          }
+          // }
           }
           break;
         case 1 :{
