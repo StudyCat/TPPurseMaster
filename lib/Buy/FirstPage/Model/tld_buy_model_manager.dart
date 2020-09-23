@@ -104,4 +104,11 @@ class TLDBuyModelManager{
       success(orderNo);
      }, (error) => failure(error));
   }
+
+  void quickBuy(String count,String walletAddress,Function success,Function failure){
+    TLDBaseRequest request = TLDBaseRequest({'buyCount':count,'buyerAddress':walletAddress},'order/quickBuy');
+    request.postNetRequest((value) {
+      success();
+    }, (error) => failure(error));
+  }
 }

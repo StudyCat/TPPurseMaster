@@ -2,12 +2,14 @@ import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Buy/FirstPage/View/tld_quick_buy_action_sheet.dart';
 import 'package:dragon_sword_purse/Buy/FirstPage/View/tld_quick_buy_view.dart';
+import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
+import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
@@ -51,6 +53,8 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
   List _dataSource;
 
   FocusNode _focusNode;
+
+  String _quickBuyCount = '';
    
   // StreamSubscription _unreadSubscription;
 
@@ -189,6 +193,47 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     });
   }
 
+  void quickBuyInputPassword(String count ,String walletAddress){
+     jugeHavePassword(context, (){
+       _quickBuy(count, walletAddress);
+    }, TLDCreatePursePageType.back, (){
+      _quickBuy(count,walletAddress);
+    });
+  }
+
+  void _quickBuy(String count ,String walletAddress){
+      setState(() {
+        _isLoading = true;
+      });
+    _modelManager.quickBuy(count, walletAddress, (){
+        if (mounted){
+              setState(() {
+        _isLoading = false;
+      });
+      }
+      Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).buySuccess,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      _focusNode.unfocus();
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDOrderListPage())).then((value){
+        _refreshController.requestRefresh();
+        _page = 1;
+        _loadBuyList(_keyword, _page);
+      });
+    }, (TLDError error){
+       if(mounted){
+              setState(() {
+        _isLoading = false;
+      });
+      }
+      if (error.code == 1000){
+        showDialog(context: context,builder : (context)=> TLDAlertView(type: TLDAlertViewType.normal,alertString: error.msg,title: '温馨提示',didClickSureBtn: (){},));
+      }else{
+        Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -250,11 +295,17 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
     return Column(
       children: <Widget>[
         Padding(padding: EdgeInsets.only(left : 15 , top : 5 ,right: 15),child: TLDQuickBuyView(focusNode: _focusNode,textDidChange: (String text){
-          
+          _quickBuyCount = text;
         },didClickDonehBtnCallBack: (){
+          if (_quickBuyCount.length > 0){
            showCupertinoModalPopup(context: context, builder: (BuildContext context){
-              return TLDQuickBuyActionSheet(count: '100',);
+              return TLDQuickBuyActionSheet(count: _quickBuyCount,didClickBuyCallBack: (String count,String walletAddress){
+                quickBuyInputPassword(count, walletAddress);
+              });
             });
+          }else{
+            Fluttertoast.showToast(msg: '请填写购买数量');
+          }
         },),),
         Expanded(child: TLDEmptyListView(getListViewCellCallBack:(int index){
         TLDBuyListInfoModel model = _dataSource[index];

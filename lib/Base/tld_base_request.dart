@@ -2,12 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
+import 'package:dragon_sword_purse/register&login/Page/tld_register_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
 import 'package:pointycastle/api.dart';
 import 'package:uuid_enhanced/uuid.dart';
 import 'package:web3dart/crypto.dart';
@@ -78,11 +82,10 @@ class TLDBaseRequest{
      String dataStr = responseMap['data'];
      if(int.parse(codeStr) == 200){
        success(dataStr);
-     }else if (int.parse(codeStr) ==  -2){
-       TLDDataManager.instance.deleteAcceptanceToken();
-       TLDError error = TLDError(int.parse(codeStr),responseMap['msg']);
-       failure(error);
      }else{
+        if (int.parse(codeStr) == -2 || int.parse(codeStr) == -4){
+         _logout(int.parse(codeStr), responseMap['msg']);
+       }
        TLDError error = TLDError(int.parse(codeStr),responseMap['msg']);
        failure(error);
      }
@@ -122,6 +125,9 @@ class TLDBaseRequest{
      if(int.parse(codeStr) == 200){
        success(dataStr);
      }else{
+      if (int.parse(codeStr) == -2 || int.parse(codeStr) == -4){
+         _logout(int.parse(codeStr), responseMap['msg']);
+       }
        TLDError error = TLDError(int.parse(codeStr),responseMap['msg']);
        failure(error);
      }
@@ -175,9 +181,21 @@ class TLDBaseRequest{
      if(int.parse(codeStr) == 200){
        success(fileUrlList);
      }else{
-       TLDError error = TLDError(int.parse(codeStr),responseMap['msg']);
+       if (int.parse(codeStr) == -2 || int.parse(codeStr) == -4){
+         _logout(int.parse(codeStr), responseMap['msg']);
+       }
+       TLDError error = TLDError(400,'网络接口出错');
        failure(error);
      }
+  }
+
+  void _logout(int code,String msg){
+    // showDialog(context: navigatorKey.currentContext,builder: (context){
+    //   return TLDAlertView(title: '警告',type: TLDAlertViewType.normal,alertString: msg,sureTitle: '重新登录',didClickSureBtn: (){
+        TLDDataManager.instance.deleteAcceptanceToken();
+        navigatorKey.currentState.pushAndRemoveUntil(MaterialPageRoute(builder: (context) => TLDRegisterView()), (route) => route == null);
+      // },);
+    // });
   }
 
   void cancelRequest(){

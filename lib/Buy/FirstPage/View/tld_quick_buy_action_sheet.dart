@@ -7,9 +7,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class TLDQuickBuyActionSheet extends StatefulWidget {
-  TLDQuickBuyActionSheet({Key key,this.count}) : super(key: key);
+  TLDQuickBuyActionSheet({Key key,this.count,this.didClickBuyCallBack}) : super(key: key);
 
   final String count;
+
+  final Function didClickBuyCallBack;
 
   @override
   _TLDQuickBuyActionSheetState createState() => _TLDQuickBuyActionSheetState();
@@ -72,12 +74,11 @@ class _TLDQuickBuyActionSheetState extends State<TLDQuickBuyActionSheet> {
                         timeInSecForIosWeb: 1);
                 return;
               }
-              // if (double.parse(_pramaterModel.buyCount) < double.parse(widget.model.max) && double.parse(widget.model.max) < double.parse(widget.model.totalCount)){
-              //   Fluttertoast.showToast(msg: '输入的购买数量低于最低购买额度',toastLength: Toast.LENGTH_SHORT,
-              //           timeInSecForIosWeb: 1);
-              //   return;
-              // }
-              // widget.didClickBuyBtnCallBack(_pramaterModel);
+              if (double.parse(widget.count) > 0){
+                widget.didClickBuyCallBack(widget.count,_wallsetAdress);
+              }else{
+                Fluttertoast.showToast(msg: '请输入正确数量');
+              }
               Navigator.of(context).pop();
             }
             ,color: Theme.of(context).primaryColor,padding: EdgeInsets.all(0),),

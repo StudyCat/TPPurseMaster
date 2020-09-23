@@ -6,6 +6,8 @@ import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/3rdPartWeb/Page/tld_3rdpart_web_page.dart';
+import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_person_center_page.dart';
+import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_tabbar_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_login_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/TabbarPage/Page/tld_acceptance_tabbar_page.dart';
@@ -218,7 +220,8 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
             }else if (itemModel.title == I18n.of(context).game && itemModel.url.length == 0){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDGamePage()));
             }else if (itemModel.title.length == 0 && itemModel.url.length == 0){
-              _scanPhoto();
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAAATabbarPage()));
+              // _scanPhoto();
             }else if (itemModel.url.length > 0){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLD3rdPartWebPage(urlStr: itemModel.url,isNeedHideNavigation: itemModel.isNeedHideNavigation,)));
             }
