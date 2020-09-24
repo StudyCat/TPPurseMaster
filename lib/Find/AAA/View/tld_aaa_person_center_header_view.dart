@@ -1,11 +1,16 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_change_user_info_model_manager.dart';
 import 'package:flutter/cupertino.dart'; 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAAAPersonCenterHeaderView extends StatefulWidget {
-  TLDAAAPersonCenterHeaderView({Key key}) : super(key: key);
+  TLDAAAPersonCenterHeaderView({Key key,this.didClickUpgradeButtonCallBack,this.userInfo}) : super(key: key);
+
+  final Function didClickUpgradeButtonCallBack;
+
+  final TLDAAAUserInfo userInfo;
 
   @override
   _TLDAAAPersonCenterHeaderViewState createState() => _TLDAAAPersonCenterHeaderViewState();
@@ -31,12 +36,12 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
            ),
            Padding(
              padding: EdgeInsets.only(top :ScreenUtil().setHeight(10)),
-             child: Text('23892.23 TLD',style: TextStyle(fontSize: ScreenUtil().setSp(70),color: Theme.of(context).hintColor),),
+             child: Text(widget.userInfo != null ? '${widget.userInfo.totalProfit} TLD' : '0 TLD',style: TextStyle(fontSize: ScreenUtil().setSp(70),color: Theme.of(context).hintColor),),
            ),
            _getAddressView(context),
            Padding(
              padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
-             child: Text('推荐人 weixin123',style: TextStyle(fontSize: ScreenUtil().setSp(24),color: Colors.white),),
+             child: Text(widget.userInfo != null ? '推荐人 ${widget.userInfo.inviteWechat}' : '推荐人',style: TextStyle(fontSize: ScreenUtil().setSp(24),color: Colors.white),),
            ),
            Padding(
              padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
@@ -48,7 +53,7 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
                  borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(40))),
                  child: Text('我要升级',style: TextStyle(fontSize: ScreenUtil().setSp(28),color: Color.fromARGB(255, 51, 51, 51))),
                  onPressed: (){
-
+                   widget.didClickUpgradeButtonCallBack();
                  },
                ),
              )
@@ -75,7 +80,7 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('张三BAOBAO',style : TextStyle(fontSize : ScreenUtil().setSp(32),color : Colors.white)),
+          Text(widget.userInfo != null ? widget.userInfo.nickName : '',style : TextStyle(fontSize : ScreenUtil().setSp(32),color : Colors.white)),
           Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(10)),
             child: RichText(
@@ -85,14 +90,14 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
                     child : Icon(IconData(0xe61d,fontFamily: 'appIconFonts'),color: Colors.white,size: ScreenUtil().setSp(24),),
                   ),
                   TextSpan(
-                    text: '  weixin123   ',
+                    text: widget.userInfo != null ? '  ${widget.userInfo.nickName}   ' : '     ',
                     style: TextStyle(fontSize: ScreenUtil().setSp(24),color: Colors.white)
                   ),
                    WidgetSpan(
                     child : Icon(IconData(0xe605,fontFamily: 'appIconFonts'),color: Colors.white,size: ScreenUtil().setSp(24)),
                   ),
                    TextSpan(
-                    text: '  187 2192 7328',
+                    text: widget.userInfo != null ? '  ${widget.userInfo.tel}' : "  ",
                     style: TextStyle(fontSize: ScreenUtil().setSp(24),color: Colors.white)
                   ),
                 ]
@@ -113,13 +118,13 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
           height : ScreenUtil().setHeight(96),
           child : ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(48)),
-             child: CachedNetworkImage(imageUrl:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600843055428&di=8429974600e80a8700e987ab57893a8c&imgtype=0&src=http%3A%2F%2Fpic43.photophoto.cn%2F20170506%2F0470102348231008_b.jpg',fit: BoxFit.fill,),
+             child: Image.asset('assetss/images/aaa_user_header.png',fit: BoxFit.fill,),
           )
         ),
         Container(
           width : ScreenUtil().setHeight(32),
           height : ScreenUtil().setHeight(32),
-          child: CachedNetworkImage(imageUrl:'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3303266263,407158830&fm=26&gp=0.jpg',fit: BoxFit.fill,),
+          child: widget.userInfo != null ? CachedNetworkImage(imageUrl:widget.userInfo.levelIcon,fit: BoxFit.fill,) : Container(),
         )
       ],
     );
@@ -145,25 +150,11 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
             width: size.width - ScreenUtil().setWidth(190),
             margin: EdgeInsets.only(left: ScreenUtil().setWidth(36)),
             child: Text(
-              '17dQNYkPb16G······re',
+              widget.userInfo != null ? widget.userInfo.walletAddress : '',
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(28),
                   color: Colors.white),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(
-                right: ScreenUtil().setWidth(50),
-                bottom: ScreenUtil().setHeight(20)),
-            height: ScreenUtil().setWidth(32),
-            width: ScreenUtil().setWidth(32),
-            child: IconButton(
-                icon: Icon(
-                  Icons.keyboard_arrow_right,
-                  size: ScreenUtil().setWidth(32),
-                  color: Colors.white,
-                ),
-                onPressed: () {}),
           )
         ],
       ),

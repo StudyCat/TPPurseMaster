@@ -1,10 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_friend_team_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAAAFriendTeamUnUpgradeCell extends StatefulWidget {
-  TLDAAAFriendTeamUnUpgradeCell({Key key}) : super(key: key);
+  TLDAAAFriendTeamUnUpgradeCell({Key key,this.teamModel,this.didClickUpgradeCallBack}) : super(key: key);
+
+  final TLDAAATeamModel teamModel;
+
+  final Function didClickUpgradeCallBack;
 
   @override
   _TLDAAAFriendTeamUnUpgradeCellState createState() =>
@@ -40,7 +45,7 @@ class _TLDAAAFriendTeamUnUpgradeCellState
                 WidgetSpan(
                   child: CachedNetworkImage(
                     imageUrl:
-                        'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3303266263,407158830&fm=26&gp=0.jpg',
+                        widget.teamModel.levelIcon,
                     width: ScreenUtil().setSp(48),
                     height: ScreenUtil().setSp(48),
                     fit: BoxFit.fill,
@@ -54,7 +59,9 @@ class _TLDAAAFriendTeamUnUpgradeCellState
               ])),
                 ),
               GestureDetector(
-                onTap: (){},
+                onTap: (){
+                  widget.didClickUpgradeCallBack();
+                },
                 child: Positioned(
                   left: ScreenUtil().setWidth(200),
                   right: ScreenUtil().setWidth(200),

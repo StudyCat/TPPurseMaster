@@ -36,6 +36,7 @@ class _TLDClipTitleInputCellState extends State<TLDClipTitleInputCell> {
 
   @override
   Widget build(BuildContext context) {
+    _controller.text = widget.content;
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(4)),
       child: Container(

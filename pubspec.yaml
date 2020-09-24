@@ -136,6 +136,9 @@ flutter:
      - assetss/images/aaa_person_center.png
      - assetss/images/icon_friend_team.png
      - assetss/images/icon_friend_team_unsel.png
+     - assetss/images/aaa_user_header.png
+
+     
     
 
   # To add assets to your application, add an assets section, like this:

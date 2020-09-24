@@ -1,12 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_friend_team_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAAAFriendTeamOpenCell extends StatefulWidget {
-  TLDAAAFriendTeamOpenCell({Key key,this.didClickOpenItem}) : super(key: key);
+  TLDAAAFriendTeamOpenCell({Key key,this.didClickOpenItem,this.teamModel,this.didClickTeamMemberCallBack}) : super(key: key);
 
   final Function didClickOpenItem;
+
+  final TLDAAATeamModel teamModel;
+
+  final Function didClickTeamMemberCallBack;
 
   @override
   _TLDAAAFriendTeamOpenCellState createState() => _TLDAAAFriendTeamOpenCellState();
@@ -46,7 +51,7 @@ class _TLDAAAFriendTeamOpenCellState extends State<TLDAAAFriendTeamOpenCell> {
                   left: ScreenUtil().setWidth(20),
                   right: ScreenUtil().setWidth(20),
                   top: ScreenUtil().setHeight(20)),
-                  child: 1 > 0 ? _getGridView() : Text('暂无数据',style : TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28)))),
+                  child: widget.teamModel.teamList.length > 0 ? _getGridView() : Text('暂无数据',style : TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28)))),
            GestureDetector(
              onTap:widget.didClickOpenItem,
              child : Padding(
@@ -72,11 +77,12 @@ class _TLDAAAFriendTeamOpenCellState extends State<TLDAAAFriendTeamOpenCell> {
             childAspectRatio: 2,
             crossAxisSpacing: ScreenUtil().setWidth(10),
             mainAxisSpacing: ScreenUtil().setHeight(10)),
-        itemCount: 12,
+        itemCount: widget.teamModel.teamList.length,
         itemBuilder: (context, index) {
+          TLDAAATeamListModel teamListModel = widget.teamModel.teamList[index];
           return GestureDetector(
             onTap :(){
-
+              widget.didClickTeamMemberCallBack(teamListModel.aaaUserId);
             },
             child :_getGridItem(index)
           );
@@ -84,13 +90,14 @@ class _TLDAAAFriendTeamOpenCellState extends State<TLDAAAFriendTeamOpenCell> {
   }
 
   Widget _getGridItem(int index){
+    TLDAAATeamListModel teamListModel = widget.teamModel.teamList[index];
     return Container(
       height : ScreenUtil().setHeight(72),
        decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(4)),
             color: Theme.of(context).hintColor),
         child: Center(
-          child: Text('321312',style: TextStyle(
+          child: Text(teamListModel.nickName,style: TextStyle(
               fontSize: ScreenUtil().setSp(24),
               color: Color.fromARGB(255, 143, 110, 68)),
         ),
@@ -105,7 +112,7 @@ class _TLDAAAFriendTeamOpenCellState extends State<TLDAAAFriendTeamOpenCell> {
         RichText(text: TextSpan(
           children : <InlineSpan>[
              WidgetSpan(
-                    child : CachedNetworkImage(imageUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3303266263,407158830&fm=26&gp=0.jpg',width: ScreenUtil().setSp(48),height: ScreenUtil().setSp(48),fit: BoxFit.fill,),
+                    child : CachedNetworkImage(imageUrl: widget.teamModel.levelIcon,width: ScreenUtil().setSp(48),height: ScreenUtil().setSp(48),fit: BoxFit.fill,),
                   ),
              TextSpan(
                text : '  团队',
@@ -114,7 +121,7 @@ class _TLDAAAFriendTeamOpenCellState extends State<TLDAAAFriendTeamOpenCell> {
           ]
         )),
         Text(
-              '100人',
+              '${widget.teamModel.teamList.length}人',
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(30),
                   color: Color.fromARGB(255, 51, 51, 51),

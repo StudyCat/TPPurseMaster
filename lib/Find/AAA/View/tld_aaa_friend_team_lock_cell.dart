@@ -1,10 +1,13 @@
+import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_friend_team_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class TLDAAAFriendTeamLockCell extends StatefulWidget {
-  TLDAAAFriendTeamLockCell({Key key}) : super(key: key);
+  TLDAAAFriendTeamLockCell({Key key,this.teamModel}) : super(key: key);
+
+  final TLDAAATeamModel teamModel;
 
   @override
   _TLDAAAFriendTeamLockCellState createState() => _TLDAAAFriendTeamLockCellState();
@@ -35,7 +38,7 @@ class _TLDAAAFriendTeamLockCellState extends State<TLDAAAFriendTeamLockCell> {
                 WidgetSpan(
                   child: CachedNetworkImage(
                     imageUrl:
-                        'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3303266263,407158830&fm=26&gp=0.jpg',
+                        widget.teamModel.levelIcon,
                     width: ScreenUtil().setSp(48),
                     height: ScreenUtil().setSp(48),
                     fit: BoxFit.fill,
