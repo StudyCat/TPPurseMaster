@@ -59,7 +59,7 @@ class _TLDAAAFriendTeamUnOpenCellState extends State<TLDAAAFriendTeamUnOpenCell>
         RichText(text: TextSpan(
           children : <InlineSpan>[
              WidgetSpan(
-                    child : CachedNetworkImage(imageUrl: widget.teamModel.levelIcon,width: ScreenUtil().setSp(48),height: ScreenUtil().setSp(48),fit: BoxFit.fill,),
+                    child : CachedNetworkImage(imageUrl: widget.teamModel.levelIcon,width: ScreenUtil().setSp(58),height: ScreenUtil().setSp(58),fit: BoxFit.fill,),
                   ),
              TextSpan(
                text : '  团队',

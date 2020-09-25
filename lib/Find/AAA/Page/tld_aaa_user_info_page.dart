@@ -121,8 +121,8 @@ class _TLDAAAUserInfoPageState extends State<TLDAAAUserInfoPage> {
                 child: CachedNetworkImage(
                     imageUrl:
                         iconUrl,
-                    width: ScreenUtil().setSp(48),
-                    height: ScreenUtil().setSp(48),
+                    width: ScreenUtil().setSp(58),
+                    height: ScreenUtil().setSp(58),
                     fit: BoxFit.fill,
                   ),
               )),

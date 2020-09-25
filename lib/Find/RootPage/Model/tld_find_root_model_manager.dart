@@ -107,7 +107,9 @@ class TLDFindRootModelManager {
             title: I18n.of(navigatorKey.currentContext).game, imageAssest: 'assetss/images/game_icon.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(
             title: I18n.of(navigatorKey.currentContext).missionLabel, imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
-        TLDFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true)
+        TLDFindRootCellUIItemModel(
+            title: I18n.of(navigatorKey.currentContext).promotion, imageAssest: 'assetss/images/icon_promotion.png',isPlusIcon: false),
+        TLDFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true),
       ]),
       TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).otherLabel, isHaveNotice: false,items: [
         TLDFindRootCellUIItemModel(
@@ -214,6 +216,14 @@ class TLDFindRootModelManager {
 
   void haveAcceptanceUser(Function success,Function failure){
      TLDBaseRequest request = TLDBaseRequest({},'acpt/user/existAcptAccount');
+    request.postNetRequest((value) {
+      success(value);
+    }, (error) => failure(error));
+  }
+
+
+  void haveAAAUserInfo(Function success,Function failure){
+      TLDBaseRequest request = TLDBaseRequest({},'aaa/isExistAccount');
     request.postNetRequest((value) {
       success(value);
     }, (error) => failure(error));

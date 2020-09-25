@@ -17,7 +17,8 @@ class TLDAAAUserInfo {
     this.inviteWechat,
     this.totalProfit,
     this.levelIcon,
-    this.aaaLevel
+    this.aaaLevel,
+    this.balance
   });
 
   factory TLDAAAUserInfo.fromJson(Map<String, dynamic> jsonRes) =>
@@ -31,13 +32,15 @@ class TLDAAAUserInfo {
               inviteWechat: asT<String>(jsonRes['inviteWechat']),
               totalProfit: asT<String>(jsonRes['totalProfit']),
               levelIcon: asT<String>(jsonRes['levelIcon']),
-              aaaLevel : asT<int>(jsonRes['aaaLevel'])
+              aaaLevel : asT<int>(jsonRes['aaaLevel']),
+              balance : asT<String>(jsonRes['balance'])
             );
 
   int aaaLevel;
   String levelIcon;
   String nickName;
   String wechat;
+  String balance;
   String tel;
   String walletAddress;
   String inviteWechat;
@@ -51,7 +54,8 @@ class TLDAAAUserInfo {
         'inviteWechat': inviteWechat,
         'totalProfit': totalProfit,
         'levelIcon' : levelIcon,
-        'aaaLevel' : aaaLevel
+        'aaaLevel' : aaaLevel,
+        'balance' : balance
       };
 
   @override

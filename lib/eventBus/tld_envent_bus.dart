@@ -55,6 +55,10 @@ class TLDRegisterCellPhoneChangeEvent{
   TLDRegisterCellPhoneChangeEvent(this.cellPhoneNum);
 }
 
+class TLDAAAUpgradeListRefreshEvent{
+  TLDAAAUpgradeListRefreshEvent();
+}
+
 //提现订单刷新
 class TLDAcceptaceWithDrawOrderListRefreshEvent{
   TLDAcceptaceWithDrawOrderListRefreshEvent();

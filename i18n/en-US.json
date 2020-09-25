@@ -349,5 +349,6 @@
     "pleaseEnterYourNickName" : "Please enter your nick name",
     "register" : "Register",
     "getVerifyCode" : "Get Verify Code",
-    "quickToBuy" : "Quick To Buy"
+    "quickToBuy" : "Quick To Buy",
+    "createNormalRedEnvelope" : "Create Normal Red Envelope"
 }

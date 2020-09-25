@@ -45,7 +45,7 @@ class _TLDRegisterVerifyCodeCellState extends State<TLDRegisterVerifyCodeCell> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: ScreenUtil().setHeight(110),
+      height: ScreenUtil().setHeight(120),
       padding: EdgeInsets.only(left: ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),
        child: Column(
          children : <Widget>[
@@ -145,6 +145,9 @@ class _TLDRegisterVerifyCodeCellState extends State<TLDRegisterVerifyCodeCell> {
       _timer.cancel();
       _timer = null;
     }
+
+    _cellPhoneSusbscription.cancel();
+    _cellPhoneSusbscription = null;
   }
 
 }

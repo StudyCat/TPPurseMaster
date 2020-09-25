@@ -37,6 +37,16 @@ class _TLDRedEnvelopeCellState extends State<TLDRedEnvelopeCell> {
 
   @override
   Widget build(BuildContext context) {
+    String imagePath;
+    if (_type == TLDRedEnvelopeCellType.unFinished){
+      if (widget.listModel.type == 1){
+        imagePath = 'assetss/images/normal_red_envelope.png';
+      }else{
+        imagePath = 'assetss/images/promotion_red_envelope.png';
+      }
+    }else{
+      imagePath = 'assetss/images/finished_red_envelope.png';
+    }
     return Padding(
       padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(10)),
       child: Container(
@@ -44,7 +54,7 @@ class _TLDRedEnvelopeCellState extends State<TLDRedEnvelopeCell> {
         height: (MediaQuery.of(context).size.width - ScreenUtil().setWidth(60)) / 1059 * 312,
         child : Stack(
           children : <Widget>[
-            Image.asset(_type == TLDRedEnvelopeCellType.unFinished ? "assetss/images/unfinished_red_envelope.png" : "assetss/images/finished_red_envelope.png",fit: BoxFit.fill,),
+            Image.asset(imagePath,fit: BoxFit.fill,),
             _getContentWidget()
           ]
         )

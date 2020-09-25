@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_person_center_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_person_center_list_cell.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,6 +30,8 @@ class _TLDAAAPersonCenterListPageState extends State<TLDAAAPersonCenterListPage>
 
   RefreshController _refreshController;
 
+  StreamSubscription _refreshSubscription;
+
   @override
   void initState() { 
     super.initState();
@@ -35,8 +40,22 @@ class _TLDAAAPersonCenterListPageState extends State<TLDAAAPersonCenterListPage>
 
     _refreshController = RefreshController(initialRefresh: false);
 
+    _refreshSubscription = eventBus.on<TLDAAAUpgradeListRefreshEvent>().listen((event) {
+        _page = 1;
+        _getUpgradeList(_page); 
+    });
+
     _modelManager = TLDAAAPersonCenterListModelManager();
     _getUpgradeList(_page);  
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _refreshSubscription.cancel();
+    _refreshSubscription = null;
   }
 
   void _getUpgradeList(int page){

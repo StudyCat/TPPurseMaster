@@ -67,14 +67,14 @@ class _TLDAAAPersonCenterListCellState extends State<TLDAAAPersonCenterListCell>
               children: <Widget>[
               Row(
                 children : <Widget>[
-                   CachedNetworkImage(imageUrl: widget.listModel.curLevelIcon,width: ScreenUtil().setSp(48),height: ScreenUtil().setSp(48),),
+                   CachedNetworkImage(imageUrl: widget.listModel.curLevelIcon,width: ScreenUtil().setSp(58),height: ScreenUtil().setSp(58),),
                    Padding(
                     padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
                     child : Icon(IconData(0xe632,fontFamily: 'appIconFonts'),color: Color.fromARGB(255, 102, 102, 102),size: ScreenUtil().setSp(24)),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
-                    child : CachedNetworkImage(imageUrl: widget.listModel.nextLevelIcon ,width: ScreenUtil().setSp(48),height: ScreenUtil().setSp(48),),
+                    child : CachedNetworkImage(imageUrl: widget.listModel.nextLevelIcon ,width: ScreenUtil().setSp(58),height: ScreenUtil().setSp(58),),
                   ),
                 ]
               ),

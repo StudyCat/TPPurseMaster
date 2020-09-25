@@ -57,7 +57,7 @@ class _TLDQuickBuyViewState extends State<TLDQuickBuyView> {
                     child: CupertinoButton(
                       borderRadius: BorderRadius.all(
                           Radius.circular(4)),
-                      color: Theme.of(context).primaryColor,
+                      color: Color.fromARGB(255, 126, 211, 33),
                       child: Text(
                         I18n.of(context).buyBtnTitle,
                         style: TextStyle(

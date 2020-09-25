@@ -22,7 +22,7 @@ class TLDAAAUpgradeActionSheet extends StatefulWidget {
 }
 
 class _TLDAAAUpgradeActionSheetState extends State<TLDAAAUpgradeActionSheet> {
-  TLDAAAUpgradeType _type = TLDAAAUpgradeType.noraml;
+  TLDAAAUpgradeType _type = TLDAAAUpgradeType.all;
 
   String _walletAddress;
 
@@ -180,11 +180,18 @@ class _TLDAAAUpgradeActionSheetState extends State<TLDAAAUpgradeActionSheet> {
       ),
       Padding(
           padding: EdgeInsets.only(left: ScreenUtil().setWidth(15)),
-          child: Text(
+          child: GestureDetector(
+            onTap: (){
+              setState(() {
+              _type = type;
+            });
+            },
+            child : Text(
             title,
             style: TextStyle(
                 color: Color.fromARGB(255, 51, 51, 51),
                 fontSize: ScreenUtil().setSp(24)),
+          )
           ))
     ]);
   }

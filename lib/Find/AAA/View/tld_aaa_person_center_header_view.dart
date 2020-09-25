@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAAAPersonCenterHeaderView extends StatefulWidget {
-  TLDAAAPersonCenterHeaderView({Key key,this.didClickUpgradeButtonCallBack,this.userInfo}) : super(key: key);
+  TLDAAAPersonCenterHeaderView({Key key,this.didClickUpgradeButtonCallBack,this.didClickWithdrawCallBack,this.userInfo}) : super(key: key);
 
   final Function didClickUpgradeButtonCallBack;
+
+  final Function didClickWithdrawCallBack;
 
   final TLDAAAUserInfo userInfo;
 
@@ -32,11 +34,37 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
            ),
            Padding(
              padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
-             child: Text('我的收益',style: TextStyle(fontSize: ScreenUtil().setSp(24),color: Colors.white),),
+             child: Text('待领取收益',style: TextStyle(fontSize: ScreenUtil().setSp(24),color: Colors.white),),
            ),
            Padding(
              padding: EdgeInsets.only(top :ScreenUtil().setHeight(10)),
-             child: Text(widget.userInfo != null ? '${widget.userInfo.totalProfit} TLD' : '0 TLD',style: TextStyle(fontSize: ScreenUtil().setSp(70),color: Theme.of(context).hintColor),),
+             child: Row(
+               children : <Widget>[
+                 Container(
+                   width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(260),
+                   child: Row(
+                     crossAxisAlignment: CrossAxisAlignment.end,
+                     children: <Widget>[
+                        Container(
+                          constraints : BoxConstraints(maxWidth:MediaQuery.of(context).size.width - ScreenUtil().setWidth(360)),
+                          child : Text(widget.userInfo != null ? '${widget.userInfo.balance}' : '0',softWrap: true,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: ScreenUtil().setSp(70),color: Theme.of(context).hintColor),)
+                        ),
+                        Text(' TLD',softWrap: true,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: ScreenUtil().setSp(32),color: Theme.of(context).hintColor),)
+                     ],
+                   ),
+                 ),
+                 Container(
+                   width: ScreenUtil().setWidth(180),
+                   height: ScreenUtil().setHeight(72),
+                   child: CupertinoButton(
+                     padding: EdgeInsets.zero,
+                     color: Theme.of(context).hintColor,
+                     onPressed : widget.didClickWithdrawCallBack,
+                     child: Text('领取到钱包',style : TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(30))),
+                   ),
+                 )
+               ]
+             ),
            ),
            _getAddressView(context),
            Padding(
@@ -49,9 +77,9 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
                height: ScreenUtil().setHeight(80),
                width: ScreenUtil.screenWidth - ScreenUtil().setWidth(60),
                child: CupertinoButton(
-                 color: Theme.of(context).hintColor,
+                 color: Color.fromARGB(255, 126, 211, 33),
                  borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(40))),
-                 child: Text('我要升级',style: TextStyle(fontSize: ScreenUtil().setSp(28),color: Color.fromARGB(255, 51, 51, 51))),
+                 child: Text('我要升级',style: TextStyle(fontSize: ScreenUtil().setSp(28),color: Colors.white)),
                  onPressed: (){
                    widget.didClickUpgradeButtonCallBack();
                  },
@@ -90,7 +118,7 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
                     child : Icon(IconData(0xe61d,fontFamily: 'appIconFonts'),color: Colors.white,size: ScreenUtil().setSp(24),),
                   ),
                   TextSpan(
-                    text: widget.userInfo != null ? '  ${widget.userInfo.nickName}   ' : '     ',
+                    text: widget.userInfo != null ? '  ${widget.userInfo.wechat}   ' : '     ',
                     style: TextStyle(fontSize: ScreenUtil().setSp(24),color: Colors.white)
                   ),
                    WidgetSpan(
@@ -110,24 +138,14 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
   }
 
   Widget _getUserHeaderWidget(){
-    return Stack(
-      alignment: FractionalOffset(0.9, 0.9),
-      children: <Widget>[
-        Container(
+    return Container(
           width : ScreenUtil().setHeight(96),
           height : ScreenUtil().setHeight(96),
           child : ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(48)),
-             child: Image.asset('assetss/images/aaa_user_header.png',fit: BoxFit.fill,),
+             child: widget.userInfo != null ? CachedNetworkImage(imageUrl:widget.userInfo.levelIcon,fit: BoxFit.fill,) : Container()
           )
-        ),
-        Container(
-          width : ScreenUtil().setHeight(32),
-          height : ScreenUtil().setHeight(32),
-          child: widget.userInfo != null ? CachedNetworkImage(imageUrl:widget.userInfo.levelIcon,fit: BoxFit.fill,) : Container(),
-        )
-      ],
-    );
+        );
   }
 
   Widget _getAddressView(BuildContext context) {
@@ -136,7 +154,9 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
       onTap: (){
         
       },
-      child: Container(
+      child: Padding(
+        padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
+        child: Container(
       height: ScreenUtil().setHeight(80),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(40)),
@@ -159,6 +179,7 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
         ],
       ),
     ),
+      ),
     );
   }
 

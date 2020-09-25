@@ -13,7 +13,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class TLDSendRedEnvelopePage extends StatefulWidget {
-  TLDSendRedEnvelopePage({Key key}) : super(key: key);
+  TLDSendRedEnvelopePage({Key key,this.type}) : super(key: key);
+
+  final int type;
 
   @override
   _TLDSendRedEnvelopePageState createState() => _TLDSendRedEnvelopePageState();
@@ -37,6 +39,7 @@ class _TLDSendRedEnvelopePageState extends State<TLDSendRedEnvelopePage> {
     _pramater.redEnvelopeNum = 0;
     _pramater.policy = 1;
     _pramater.desc = '恭喜发财，大吉大利';
+    _pramater.type = widget.type;
 
     _modelManager = TLDSendRedEnvelopeModelManager();
   }

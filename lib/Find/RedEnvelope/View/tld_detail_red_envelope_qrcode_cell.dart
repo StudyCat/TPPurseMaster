@@ -45,7 +45,7 @@ class _TLDDetailRedEnvelopeQRCodeCellState extends State<TLDDetailRedEnvelopeQRC
                 Container(
                   width : width,
                   height: width / 965 * 1170,
-                  child: Image.asset('assetss/images/red_denvelope_qrcode.png',fit: BoxFit.fill,),
+                  child: Image.asset(widget.detailRedEnvelopeModel.type == 1 ? 'assetss/images/red_denvelope_qrcode.png' : 'assetss/images/promotion_red_envelope_qrcode.png',fit: BoxFit.fill,),
                 ),
                 Container(
                   width : width,
@@ -59,7 +59,7 @@ class _TLDDetailRedEnvelopeQRCodeCellState extends State<TLDDetailRedEnvelopeQRC
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top : height / 4),
+                        padding: EdgeInsets.only(top : widget.detailRedEnvelopeModel.type == 1 ? height / 4 : height / 4.3),
                         child: Container( width : width / 345 * 205,height: width / 345 * 205,child: QrImage(data: widget.detailRedEnvelopeModel.qrCode),),
                       )
                     ],

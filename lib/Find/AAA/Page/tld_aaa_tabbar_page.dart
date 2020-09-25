@@ -15,6 +15,14 @@ class TLDAAATabbarPage extends StatefulWidget {
 class _TLDAAATabbarPageState extends State<TLDAAATabbarPage> {
   List<BottomNavigationBarItem> items = [
     BottomNavigationBarItem(
+      activeIcon: Image.asset('assetss/images/aaa_person_center.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      icon: Image.asset('assetss/images/aaa_person_center_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      title: Text('个人中心',
+          style: TextStyle(
+            fontSize: 10,
+          )),
+    ),
+    BottomNavigationBarItem(
       activeIcon: Image.asset('assetss/images/icon_friend_team.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_friend_team_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       title: Text(
@@ -22,14 +30,6 @@ class _TLDAAATabbarPageState extends State<TLDAAATabbarPage> {
         style: TextStyle(fontSize: 10),
       ),
     ),
-    BottomNavigationBarItem(
-      activeIcon: Image.asset('assetss/images/aaa_person_center.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      icon: Image.asset('assetss/images/aaa_person_center_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      title: Text('个人中心',
-          style: TextStyle(
-            fontSize: 10,
-          )),
-    )
   ];
 
   List pages;
@@ -48,7 +48,7 @@ class _TLDAAATabbarPageState extends State<TLDAAATabbarPage> {
 
     _pageController = PageController();
 
-    pages =  [TLDAAAFriendTeamPage(), TLDAAAPersonCenterPage()];
+    pages =  [TLDAAAPersonCenterPage(),TLDAAAFriendTeamPage()];
   }
 
   @override

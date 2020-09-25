@@ -81,7 +81,7 @@ class _TLDQuickBuyActionSheetState extends State<TLDQuickBuyActionSheet> {
               }
               Navigator.of(context).pop();
             }
-            ,color: Theme.of(context).primaryColor,padding: EdgeInsets.all(0),),
+            ,color:Color.fromARGB(255, 126, 211, 33),padding: EdgeInsets.all(0),),
           )
           )],
       ),

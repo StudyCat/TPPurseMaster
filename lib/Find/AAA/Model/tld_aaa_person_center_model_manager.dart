@@ -82,4 +82,12 @@ class TLDAAAPersonFriendCenterModelManager {
       success();
     }, (error) => failure(error));
   }
+
+  void recieve(Function success, Function failure){
+    TLDBaseRequest request = TLDBaseRequest(
+        {}, 'aaa/receive');
+    request.postNetRequest((value) {
+      success();
+    }, (error) => failure(error));
+  }
 }

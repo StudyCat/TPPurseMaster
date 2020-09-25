@@ -6,6 +6,7 @@ import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_change_user_info_page.d
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_person_center_header_bottom_view.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_person_center_header_view.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_upgrade_action_sheet.dart';
+import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -103,6 +104,29 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
       }
       Fluttertoast.showToast(msg: '升级成功');
       _getUserInfo();
+      eventBus.fire(TLDAAAUpgradeListRefreshEvent());
+    }, (TLDError error){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+  void _recieve(){
+     setState(() {
+      _isLoading = true;
+    });
+    _modelManager.recieve((){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Fluttertoast.showToast(msg: '领取成功');
+      _getUserInfo();
     }, (TLDError error){
       if (mounted){
         setState(() {
@@ -129,12 +153,12 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
   Widget _getAppBar(){
     return SliverAppBar(
       centerTitle: true,
-      expandedHeight: ScreenUtil().setHeight(720),
+      expandedHeight: ScreenUtil().setHeight(750),
       backgroundColor: Theme.of(context).primaryColor,
       actions: <Widget>[
         Padding(padding: EdgeInsets.only(right : ScreenUtil().setWidth(30)),
         child : IconButton(icon: Icon(IconData(0xe80a,fontFamily : 'appIconFonts')), onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDAAAChangeUserInfoPage(),));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDAAAChangeUserInfoPage(),)).then((value) => _getUserInfo());
         }))
       ],
       leading: Container(
@@ -160,6 +184,9 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
       flexibleSpace: FlexibleSpaceBar(
         background: TLDAAAPersonCenterHeaderView(
           userInfo: _userInfo,
+          didClickWithdrawCallBack: (){
+            _recieve();
+          },
           didClickUpgradeButtonCallBack: (){
            _getUpgradeInfo();
           },
@@ -213,8 +240,8 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
   Widget  _getBodyWidget(){
     return TabBarView(
       children: [
-      SafeArea(child: TLDAAAPersonCenterListPage(type: 1,)),
-      SafeArea(child: TLDAAAPersonCenterListPage(type: 2,))
+      SafeArea(child: TLDAAAPersonCenterListPage(type: 2,)),
+      SafeArea(child: TLDAAAPersonCenterListPage(type: 1,))
     ],
     controller:  _tabController,
     );

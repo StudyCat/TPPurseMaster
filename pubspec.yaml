@@ -137,6 +137,10 @@ flutter:
      - assetss/images/icon_friend_team.png
      - assetss/images/icon_friend_team_unsel.png
      - assetss/images/aaa_user_header.png
+     - assetss/images/normal_red_envelope.png
+     - assetss/images/promotion_red_envelope.png
+     - assetss/images/promotion_red_envelope_qrcode.png
+     - assetss/images/icon_promotion.png
 
      
     

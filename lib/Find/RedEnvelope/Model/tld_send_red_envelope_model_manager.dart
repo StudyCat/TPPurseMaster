@@ -8,11 +8,12 @@ class TLDSendRedEnvelopePramater{
   int redEnvelopeNum;
   String tldCount;
   String walletAddress;
+  int type;
 }
 
 class TLDSendRedEnvelopeModelManager{
   void sendRedEnvelope(TLDSendRedEnvelopePramater pramater,Function success,Function failure){
-    TLDBaseRequest request = TLDBaseRequest({'desc':pramater.desc,'policy':pramater.policy,'redEnvelopeNum':pramater.redEnvelopeNum,'tldCount':pramater.tldCount,'walletAddress':pramater.walletAddress}, 'redEnvelope/generateRedEnvelope');
+    TLDBaseRequest request = TLDBaseRequest({'desc':pramater.desc,'policy':pramater.policy,'redEnvelopeNum':pramater.redEnvelopeNum,'tldCount':pramater.tldCount,'walletAddress':pramater.walletAddress,'type':pramater.type}, 'redEnvelope/generateRedEnvelope');
     request.postNetRequest((value) {
       success();
     }, (error) => failure(error));

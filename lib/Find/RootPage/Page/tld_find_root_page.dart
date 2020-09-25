@@ -6,11 +6,13 @@ import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/3rdPartWeb/Page/tld_3rdpart_web_page.dart';
+import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_change_user_info_page.dart';
 import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_person_center_page.dart';
 import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_tabbar_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_login_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/TabbarPage/Page/tld_acceptance_tabbar_page.dart';
+import 'package:dragon_sword_purse/Find/Promotion/tld_promotion_page.dart';
 import 'package:dragon_sword_purse/Find/Rank/Page/tld_rank_tab_page.dart';
 import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/Page/tld_recieve_red_envelope_page.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/Page/tld_red_envelope_page.dart';
@@ -79,7 +81,11 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
     List newWebList = [];
     for (TLD3rdWebInfoModel item in webList) {
         TLDFindRootCellUIItemModel uiItemModel = TLDFindRootCellUIItemModel(title: item.name,iconUrl: item.iconUrl,url: item.url,isNeedHideNavigation: item.isNeedHideNavigation,appType: item.appType);
-        newWebList.add(uiItemModel);
+        if (uiItemModel.url == 'AAA'){
+           findRootCellUIModel.items.insert(2, uiItemModel);
+        }else{
+          newWebList.add(uiItemModel);
+        }
     }
 
     setState(() {
@@ -124,6 +130,34 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
       }else{
         Navigator.push(context, MaterialPageRoute(
           builder: (context) =>  TLDEchangeChooseWalletPage(type: TLDEchangeChooseWalletPageType.binding,)
+        ));
+      }
+    }, (TLDError error){
+      if (mounted){
+        setState(() {
+      _isLoading = false;
+    });
+      }
+      Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+  void _isHaveAAAUserInfo(){
+     setState(() {
+      _isLoading = true;
+    });
+    _modelManager.haveAAAUserInfo((bool isHave){
+      if (mounted){}
+      setState(() {
+      _isLoading = false;
+    });
+      if (isHave){
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) =>  TLDAAATabbarPage()
+        ));
+      }else{
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) =>  TLDAAAChangeUserInfoPage()
         ));
       }
     }, (TLDError error){
@@ -219,11 +253,16 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRankTabPage()));
             }else if (itemModel.title == I18n.of(context).game && itemModel.url.length == 0){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDGamePage()));
+            }else if (itemModel.title == I18n.of(context).promotion && itemModel.url.length == 0){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPromotionPage()));
             }else if (itemModel.title.length == 0 && itemModel.url.length == 0){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAAATabbarPage()));
-              // _scanPhoto();
+              _scanPhoto();
             }else if (itemModel.url.length > 0){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLD3rdPartWebPage(urlStr: itemModel.url,isNeedHideNavigation: itemModel.isNeedHideNavigation,)));
+              if (itemModel.url == 'AAA'){
+                _isHaveAAAUserInfo();
+              }else{
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLD3rdPartWebPage(urlStr: itemModel.url,isNeedHideNavigation: itemModel.isNeedHideNavigation,)));
+              }
             }
           },
           didLongClickItemCallBack: (TLDFindRootCellUIItemModel itemModel){

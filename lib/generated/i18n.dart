@@ -734,6 +734,8 @@ class I18n implements WidgetsLocalizations {
   String get getVerifyCode => "Get Verify Code";
   /// "Quick To Buy"
   String get quickToBuy => "Quick To Buy";
+  /// "Create Normal Red Envelope"
+  String get createNormalRedEnvelope => "Create Normal Red Envelope";
 }
 
 class _I18n_en_US extends I18n {
@@ -1796,6 +1798,9 @@ class _I18n_zh_CN extends I18n {
   /// "快捷购买"
   @override
   String get quickToBuy => "快捷购买";
+  /// "生成普通红包"
+  @override
+  String get createNormalRedEnvelope => "生成普通红包";
 
   @override
   TextDirection get textDirection => TextDirection.ltr;

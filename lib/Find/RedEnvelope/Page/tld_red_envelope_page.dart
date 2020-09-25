@@ -125,22 +125,12 @@ class _TLDRedEnvelopePageState extends State<TLDRedEnvelopePage> {
             right: ScreenUtil().setWidth(30),
             bottom: ScreenUtil().setHeight(20)
           ),
-          child: Container(
-            height : ScreenUtil().setHeight(96),
-            child :CupertinoButton(
-              padding: EdgeInsets.zero,
-              child: Text(I18n.of(context).createPromotionRedEnvelope,style : TextStyle(
-                fontSize : ScreenUtil().setSp(30),
-                color :Theme.of(context).hintColor
-              )),
-              color: Theme.of(context).primaryColor,
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TLDSendRedEnvelopePage())).then((value){
-                  _refreshController.requestRefresh();
-                  _page = 1;
-                  _getRedEnvelopeList(_page);
-                });
-              }),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children : <Widget>[
+              _redEnvelopeButton(I18n.of(context).createNormalRedEnvelope),
+              _redEnvelopeButton(I18n.of(context).createPromotionRedEnvelope)
+            ]
           )
         );
         }else{
@@ -153,6 +143,42 @@ class _TLDRedEnvelopePageState extends State<TLDRedEnvelopePage> {
           );
         }
      },
+    );
+  }
+
+
+  Widget _redEnvelopeButton(String title){
+    return Container(
+      width: (MediaQuery.of(context).size.width - ScreenUtil().setWidth(80)) / 2,
+      height: ScreenUtil().setHeight(96),
+      child: CupertinoButton(
+        color: Colors.white,
+        padding: EdgeInsets.zero,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Icon(IconData(0xe628,fontFamily : 'appIconFonts'),color: Color.fromARGB(255, 208, 2, 27),),
+            Text(title,style : TextStyle(
+                fontSize : ScreenUtil().setSp(30),
+                color :Color.fromARGB(255, 51, 51, 51)
+              ))
+          ],
+      ), onPressed: (){
+        if (title == I18n.of(context).createNormalRedEnvelope){
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) => TLDSendRedEnvelopePage(type: 1,)
+          )).then((value){
+            _page = 1;
+            _getRedEnvelopeList(_page);
+          });
+        }else{
+           Navigator.push(context, MaterialPageRoute(
+            builder: (context) => TLDSendRedEnvelopePage(type: 2,)
+          )).then((value){
+            _page = 1;
+            _getRedEnvelopeList(_page);
+          });
+      }}),
     );
   }
 
