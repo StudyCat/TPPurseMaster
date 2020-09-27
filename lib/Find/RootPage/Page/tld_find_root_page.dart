@@ -118,12 +118,12 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
     setState(() {
       _isLoading = true;
     });
-    _modelManager.haveAcceptanceUser((bool isHave){
+    _modelManager.haveAcceptanceUser((bool needBinding){
       if (mounted){}
       setState(() {
       _isLoading = false;
     });
-      if (isHave){
+      if (needBinding == false){
         Navigator.push(context, MaterialPageRoute(
           builder: (context) =>  TLDAcceptanceTabbarPage()
         ));
@@ -157,7 +157,7 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
         ));
       }else{
         Navigator.push(context, MaterialPageRoute(
-          builder: (context) =>  TLDAAAChangeUserInfoPage()
+          builder: (context) =>  TLDAAAChangeUserInfoPage(isFirstLogin: true,)
         ));
       }
     }, (TLDError error){

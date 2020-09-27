@@ -115,7 +115,7 @@ class _TLDAAAFriendTeamOpenCellState extends State<TLDAAAFriendTeamOpenCell> {
                     child : CachedNetworkImage(imageUrl: widget.teamModel.levelIcon,width: ScreenUtil().setSp(58),height: ScreenUtil().setSp(58),fit: BoxFit.fill,),
                   ),
              TextSpan(
-               text : '  团队',
+               text : '  好友圈',
                style: TextStyle(fontSize: ScreenUtil().setSp(30),color: Color.fromARGB(255, 51, 51, 51))
              )
           ]

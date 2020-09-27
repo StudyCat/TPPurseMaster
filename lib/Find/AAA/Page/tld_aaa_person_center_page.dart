@@ -1,4 +1,7 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
+import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_change_user_info_model_manager.dart';
 import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_person_center_model_manager.dart';
 import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_person_center_list_page.dart';
@@ -6,6 +9,7 @@ import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_change_user_info_page.d
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_person_center_header_bottom_view.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_person_center_header_view.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_upgrade_action_sheet.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +106,9 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
           _isLoading = false;
         });
       }
-      Fluttertoast.showToast(msg: '升级成功');
+      showDialog(context: context,builder : (context) => TLDAlertView(type:TLDAlertViewType.normal,title: '提示',alertString: '升级成功',didClickSureBtn: (){
+
+      },));
       _getUserInfo();
       eventBus.fire(TLDAAAUpgradeListRefreshEvent());
     }, (TLDError error){
@@ -115,17 +121,19 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
     });
   }
 
-  void _recieve(){
+  void _recieve(String walletAddress){
      setState(() {
       _isLoading = true;
     });
-    _modelManager.recieve((){
+    _modelManager.recieve(walletAddress,(){
       if (mounted){
         setState(() {
           _isLoading = false;
         });
       }
-      Fluttertoast.showToast(msg: '领取成功');
+      showDialog(context: context,builder : (context) => TLDAlertView(type:TLDAlertViewType.normal,title: '提示',alertString: '已领取TLD到钱包内',didClickSureBtn: (){
+
+      },));
       _getUserInfo();
     }, (TLDError error){
       if (mounted){
@@ -156,10 +164,15 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
       expandedHeight: ScreenUtil().setHeight(750),
       backgroundColor: Theme.of(context).primaryColor,
       actions: <Widget>[
-        Padding(padding: EdgeInsets.only(right : ScreenUtil().setWidth(30)),
-        child : IconButton(icon: Icon(IconData(0xe80a,fontFamily : 'appIconFonts')), onPressed: (){
+        IconButton(icon: Icon(IconData(0xe80a,fontFamily : 'appIconFonts')), onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder: (context) => TLDAAAChangeUserInfoPage(),)).then((value) => _getUserInfo());
-        }))
+        }),
+        Padding(
+          padding: EdgeInsets.only(right : ScreenUtil().setWidth(30)),
+          child:  IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts'),color: Colors.white,), onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.aaaUrl,title: 'AAA说明',)));
+        }),
+        ),
       ],
       leading: Container(
         height: ScreenUtil().setHeight(34),
@@ -185,7 +198,10 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
         background: TLDAAAPersonCenterHeaderView(
           userInfo: _userInfo,
           didClickWithdrawCallBack: (){
-            _recieve();
+            Navigator.push(context, MaterialPageRoute(
+              builder : (context) => TLDEchangeChooseWalletPage(didChooseWalletCallBack: (TLDWalletInfoModel walletInfoModel){
+                _recieve(walletInfoModel.walletAddress);
+              },)));
           },
           didClickUpgradeButtonCallBack: (){
            _getUpgradeInfo();

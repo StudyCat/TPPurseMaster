@@ -52,7 +52,7 @@ class _TLDAAAFriendTeamUnUpgradeCellState
                   ),
                 ),
                 TextSpan(
-                    text: '  团队',
+                    text: '  好友圈',
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(30),
                         color: Color.fromARGB(255, 51, 51, 51)))
@@ -62,14 +62,10 @@ class _TLDAAAFriendTeamUnUpgradeCellState
                 onTap: (){
                   widget.didClickUpgradeCallBack();
                 },
-                child: Positioned(
-                  left: ScreenUtil().setWidth(200),
-                  right: ScreenUtil().setWidth(200),
-                  child: Text('我要升级', textAlign: TextAlign.center,style: TextStyle(
+                child: Text('我要升级', textAlign: TextAlign.center,style: TextStyle(
                         fontSize: ScreenUtil().setSp(30),
                         color: Theme.of(context).hintColor)),
                 ),
-              ),
               Icon(IconData(0xe60b,fontFamily : 'appIconFonts'),color: Color.fromARGB(255, 153, 153, 153),size: ScreenUtil().setSp(28),)
             ]),
         ),

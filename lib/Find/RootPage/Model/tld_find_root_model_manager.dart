@@ -1,4 +1,6 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 
@@ -217,7 +219,25 @@ class TLDFindRootModelManager {
   void haveAcceptanceUser(Function success,Function failure){
      TLDBaseRequest request = TLDBaseRequest({},'acpt/user/existAcptAccount');
     request.postNetRequest((value) {
-      success(value);
+      String walletAddress = value['walletAddress'];
+      bool isExist = value['isExist'];
+      bool needBinding = false;
+      bool haveSameWallet = false;
+      List purseList = TLDDataManager.instance.purseList;
+      for (TLDWallet wallet in purseList) {
+        if (wallet.address == walletAddress){
+          haveSameWallet = true;
+          break;
+        }
+      }
+      if (isExist == true ){
+        if (haveSameWallet == false){
+          needBinding = true;
+        }
+      }else{
+        needBinding = true;
+      }
+      success(needBinding);
     }, (error) => failure(error));
   }
 

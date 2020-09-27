@@ -83,9 +83,9 @@ class TLDAAAPersonFriendCenterModelManager {
     }, (error) => failure(error));
   }
 
-  void recieve(Function success, Function failure){
+  void recieve(String walletAddress,Function success, Function failure){
     TLDBaseRequest request = TLDBaseRequest(
-        {}, 'aaa/receive');
+        {'walletAddress' : walletAddress}, 'aaa/receive');
     request.postNetRequest((value) {
       success();
     }, (error) => failure(error));

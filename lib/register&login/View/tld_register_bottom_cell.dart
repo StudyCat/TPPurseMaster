@@ -20,6 +20,7 @@ class _TLDRegisterBottomCellState extends State<TLDRegisterBottomCell> {
        child: Container(
          height : ScreenUtil().setHeight(80),
          child : CupertinoButton(
+           padding: EdgeInsets.zero,
            borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(40))),
            color: Theme.of(context).primaryColor,
            child: Text(I18n.of(context).next,style: TextStyle(fontSize : ScreenUtil().setSp(30),color :Colors.white),),

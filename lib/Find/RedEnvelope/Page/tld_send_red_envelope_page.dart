@@ -99,6 +99,7 @@ class _TLDSendRedEnvelopePageState extends State<TLDSendRedEnvelopePage> {
   }
 
   Widget _getBodyWidget(){
+    Widget bottomWidget = widget.type == 1 ? _getNormalBottomView() : _getPromotionBottomView();
     return SingleChildScrollView(
       child: Column(
       children : <Widget>[
@@ -119,7 +120,14 @@ class _TLDSendRedEnvelopePageState extends State<TLDSendRedEnvelopePage> {
             _pramater.policy = policy;
           },
         ),
-        Padding(
+       bottomWidget
+      ] 
+    ),
+    );
+  }
+
+  Widget _getNormalBottomView(){
+    return Padding(
           padding: EdgeInsets.only(
             top : ScreenUtil().setHeight(100),
           ),
@@ -137,10 +145,43 @@ class _TLDSendRedEnvelopePageState extends State<TLDSendRedEnvelopePage> {
                 _sendRedEnvelope();
               }),
           )
-        )
-      ] 
-    ),
-    );
+        );
+  }
+
+  Widget _getPromotionBottomView(){
+    return  Column(
+            children :<Widget>[
+              Padding(padding: EdgeInsets.only(top:ScreenUtil().setHeight(2),left: ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),
+              child : Container(
+                decoration: BoxDecoration(
+                  borderRadius : BorderRadius.all(Radius.circular(4)),
+                  color : Colors.white
+                ),
+                padding:  EdgeInsets.only(top:ScreenUtil().setHeight(20),left: ScreenUtil().setWidth(20),right: ScreenUtil().setWidth(20),bottom: ScreenUtil().setHeight(20)),
+                width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(60),
+                child: Text('声明：\n  推广红包只能新用户才可以领取。',style: TextStyle(
+                  fontSize : ScreenUtil().setSp(24),
+                  color: Color.fromARGB(255, 51, 51, 51)
+                ),),
+              ),
+              ),
+              Container(
+            margin : EdgeInsets.only(top : ScreenUtil().setHeight(100),left: ScreenUtil().setWidth(100),right: ScreenUtil().setWidth(100)),
+            width : ScreenUtil().setWidth(360),
+            height : ScreenUtil().setHeight(96),
+            child: CupertinoButton(
+              padding: EdgeInsets.zero,
+              child: Text(I18n.of(context).createRedEnvelope,style : TextStyle(
+                fontSize : ScreenUtil().setSp(30),
+                color :Colors.white
+              )),
+              color: Color.fromARGB(255, 210, 49, 67),
+              onPressed: (){
+                _sendRedEnvelope();
+              }),
+            )
+            ]
+          );
   }
 
 }

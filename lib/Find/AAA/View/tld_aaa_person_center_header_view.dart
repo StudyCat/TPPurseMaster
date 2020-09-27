@@ -1,5 +1,6 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_change_user_info_model_manager.dart';
 import 'package:flutter/cupertino.dart'; 
 import 'package:flutter/material.dart';
@@ -97,7 +98,6 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
       children: <Widget>[
         _getUserHeaderWidget(),
         _getUserInfoColumnWidget(),
-      
       ],
     );
   }

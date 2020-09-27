@@ -30,6 +30,43 @@ class _TLDAAAPersonCenterListCellState extends State<TLDAAAPersonCenterListCell>
     );
   }
 
+  Widget _getBottomRowWidget(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Row(
+                children : <Widget>[
+                   CachedNetworkImage(imageUrl: widget.listModel.curLevelIcon,width: ScreenUtil().setSp(80),height: ScreenUtil().setSp(80),),
+                   Padding(
+                    padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
+                    child : Icon(IconData(0xe632,fontFamily: 'appIconFonts'),color: Color.fromARGB(255, 102, 102, 102),size: ScreenUtil().setSp(24)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
+                    child : CachedNetworkImage(imageUrl: widget.listModel.nextLevelIcon ,width: ScreenUtil().setSp(80),height: ScreenUtil().setSp(80),),
+                  ),
+              ]
+            ),
+        _getBottomRightWidget()
+      ],
+    );
+  }
+
+  Widget _getBottomRightWidget(){
+    String plusString = widget.listModel.isAdd ? '+' : '-';
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+         Text(plusString + '${widget.listModel.tldCount}TLD',style: TextStyle(fontSize: ScreenUtil().setSp(36),color: widget.listModel.isAdd ? Color.fromARGB(255, 65, 117, 5) : Color.fromARGB(255, 220, 59, 79))),
+         Padding(
+            padding: EdgeInsets.only(top : ScreenUtil().setHeight(10)),
+            child: Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.listModel.createTime),[yyyy,'.',mm,'.',dd,' ',hh,':',nn,':',ss])
+            ,style: TextStyle(fontSize: ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153))),
+          ),
+      ],
+    );
+  }
+
   Widget _getContentWidget(){
     return Container(
       padding:  EdgeInsets.only(top :ScreenUtil().setHeight(20),bottom :ScreenUtil().setHeight(20),left: ScreenUtil().setWidth(20),right: ScreenUtil().setWidth(20)),
@@ -46,13 +83,8 @@ class _TLDAAAPersonCenterListCellState extends State<TLDAAAPersonCenterListCell>
           ),
           Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(10)),
-            child: _getInfoWidget(),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top : ScreenUtil().setHeight(10)),
-            child: Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.listModel.createTime),[yyyy,'.',mm,'.',dd,' ',hh,':',nn,':',ss])
-            ,style: TextStyle(fontSize: ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153))),
-          ),
+            child: _getBottomRowWidget(),
+          )
         ],
       ),
     );

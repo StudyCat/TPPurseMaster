@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_friend_team_model_manager.dart';
 import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_person_center_model_manager.dart';
 import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_user_info_page.dart';
@@ -96,7 +97,9 @@ class _TLDAAAFriendTeamPageState extends State<TLDAAAFriendTeamPage> {
           _isLoading = false;
         });
       }
-      Fluttertoast.showToast(msg: '升级成功');
+       showDialog(context: context,builder : (context) => TLDAlertView(type:TLDAlertViewType.normal,title: '提示',alertString: '升级成功',didClickSureBtn: (){
+
+      },));
       _refreshController.requestRefresh();
       _getTeamList();
     }, (TLDError error){

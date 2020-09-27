@@ -26,7 +26,7 @@ class _TLDAAATabbarPageState extends State<TLDAAATabbarPage> {
       activeIcon: Image.asset('assetss/images/icon_friend_team.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_friend_team_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       title: Text(
-        '好友团队',
+        '好友圈',
         style: TextStyle(fontSize: 10),
       ),
     ),

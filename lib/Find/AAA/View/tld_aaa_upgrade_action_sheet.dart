@@ -78,6 +78,7 @@ class _TLDAAAUpgradeActionSheetState extends State<TLDAAAUpgradeActionSheet> {
     return Padding(
       padding: EdgeInsets.only(top: ScreenUtil().setHeight(30)),
       child: RichText(
+        textAlign: TextAlign.center,
         text: TextSpan(
             text: '恭喜您即将升级为V${widget.upgradeInfoModel.nextLevel}  ',
             style: TextStyle(
@@ -86,8 +87,8 @@ class _TLDAAAUpgradeActionSheetState extends State<TLDAAAUpgradeActionSheet> {
             children: [
               WidgetSpan(
                   child: Container(
-                width: ScreenUtil().setHeight(32),
-                height: ScreenUtil().setHeight(32),
+                width: ScreenUtil().setHeight(60),
+                height: ScreenUtil().setHeight(60),
                 child: CachedNetworkImage(
                   imageUrl:
                       widget.upgradeInfoModel.nextLevelIcon,

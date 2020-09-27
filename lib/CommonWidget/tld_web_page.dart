@@ -12,7 +12,8 @@ enum TLDWebPageType{
   tldWalletAgreement,
   orderDescUrl,
   playDescUrl,
-  transferOutUrl
+  transferOutUrl,
+  aaaUrl
 }
 
 class TLDWebPage extends StatefulWidget {
@@ -60,7 +61,9 @@ class _TLDWebPageState extends State<TLDWebPage> {
          url = value['playDescUrl'];
       }else if(widget.type == TLDWebPageType.transferOutUrl){
         url = value['transferOutUrl'];
-      } 
+      }else if(widget.type == TLDWebPageType.aaaUrl){
+        url = value['aaaUrl'];
+      }
       if (mounted) {
         setState(() {
           _url = url;

@@ -3,6 +3,7 @@ import 'package:dragon_sword_purse/CommonWidget/tld_clip_common_cell.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_clip_title_input_cell.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_change_user_info_model_manager.dart';
+import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_tabbar_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 class TLDAAAChangeUserInfoPage extends StatefulWidget {
-  TLDAAAChangeUserInfoPage({Key key}) : super(key: key);
+  TLDAAAChangeUserInfoPage({Key key,this.isFirstLogin = false}) : super(key: key);
+
+  final bool isFirstLogin;
 
   @override
   _TLDAAAChangeUserInfoPageState createState() => _TLDAAAChangeUserInfoPageState();
@@ -101,6 +104,10 @@ class _TLDAAAChangeUserInfoPageState extends State<TLDAAAChangeUserInfoPage> {
         });
       }
       Fluttertoast.showToast(msg: '保存成功');
+      if (widget.isFirstLogin == true){
+        Navigator.of(context).pop();
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TLDAAATabbarPage(),));
+      }
     }, (TLDError error){
             if (mounted){
         setState(() {
