@@ -32,6 +32,7 @@ class TLDWithdrawPramaterModel {
   int cashType;
   String cashCount;
   TLDPaymentModel paymentModel;
+  String walletAddress;
 }
 
 class TLDAcceptanceWithdrawModelManager {
@@ -44,7 +45,7 @@ class TLDAcceptanceWithdrawModelManager {
   }
 
   void withdraw(TLDWithdrawPramaterModel pramaterModel,Function(String) success,Function(TLDError) failure){
-    TLDBaseRequest request = TLDBaseRequest({'cashCount':pramaterModel.cashCount,'cashType':pramaterModel.cashType,'payId':pramaterModel.paymentModel.payId},'acpt/cash/cash');
+    TLDBaseRequest request = TLDBaseRequest({'cashCount':pramaterModel.cashCount,'cashType':pramaterModel.cashType,'payId':pramaterModel.paymentModel.payId,'walletAddress' : pramaterModel.walletAddress},'acpt/cash/newCash');
     request.postNetRequest((value) {
       success(value);
     }, (error) => failure(error));

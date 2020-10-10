@@ -12,6 +12,8 @@ import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_tabbar_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_login_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/TabbarPage/Page/tld_acceptance_tabbar_page.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_withdraw_page.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_withdraw_tab_page.dart';
 import 'package:dragon_sword_purse/Find/Promotion/tld_promotion_page.dart';
 import 'package:dragon_sword_purse/Find/Rank/Page/tld_rank_tab_page.dart';
 import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/Page/tld_recieve_red_envelope_page.dart';
@@ -22,6 +24,7 @@ import 'package:dragon_sword_purse/Find/RootPage/Model/tld_find_root_model_manag
 import 'package:dragon_sword_purse/Find/RootPage/Page/tld_game_page.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_ad_banner_view.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_page_cell.dart';
+import 'package:dragon_sword_purse/Find/YLB/Page/tld_ylb_tab_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
 import 'package:dragon_sword_purse/NewMission/FirstPage/Page/tld_new_mission_first_page.dart';
 import 'package:dragon_sword_purse/Notification/tld_more_btn_click_notification.dart';
@@ -260,6 +263,12 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
             }else if (itemModel.url.length > 0){
               if (itemModel.url == 'AAA'){
                 _isHaveAAAUserInfo();
+              }else if (itemModel.url == 'CASH'){
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>  TLDAcceptanceWithdrawPage(),));
+              }else if (itemModel.url == 'CASH_LOG'){
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>  TLDAcceptanceWithdrawTabPage(),));
+              }else if (itemModel.url == 'TLD_YLB'){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TLDYLBTabPage()));
               }else{
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLD3rdPartWebPage(urlStr: itemModel.url,isNeedHideNavigation: itemModel.isNeedHideNavigation,)));
               }

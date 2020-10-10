@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_change_user_info_model_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 
 class TLDSignModel{
@@ -158,6 +159,18 @@ class TLDAcceptanceSignModelManager{
         }
       }
       success(userInfoModel);
+    }, (error) => failure(error));
+  }
+
+  void getAAAUserInfo(Function(TLDAAAUserInfo) success,Function(TLDError) failure){
+      TLDBaseRequest request = TLDBaseRequest({}, 'aaa/accountInfo');
+    request.postNetRequest((value) {
+      Map valueMap = value;
+      if (valueMap.length == 0){
+        success(TLDAAAUserInfo());
+      }else{
+        success(TLDAAAUserInfo.fromJson(valueMap));
+      }
     }, (error) => failure(error));
   }
 

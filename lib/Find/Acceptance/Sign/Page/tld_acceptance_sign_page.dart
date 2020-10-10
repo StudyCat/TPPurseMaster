@@ -111,12 +111,12 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
         middle: Text(I18n.of(context).tldBillAccount,style: TextStyle(color:Colors.white),),
         backgroundColor: Theme.of(context).primaryColor,
         actionsForegroundColor: Colors.white,
-        trailing: GestureDetector(
-          onTap :(){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceWithdrawTabPage()));
-          },
-          child : Text(I18n.of(context).withdrawRecord,style: TextStyle(color:Colors.white,))
-        ),
+        // trailing: GestureDetector(
+        //   onTap :(){
+        //     Navigator.push(context, MaterialPageRoute(builder: (context)=>TLDAcceptanceWithdrawTabPage()));
+        //   },
+        //   child : Text(I18n.of(context).withdrawRecord,style: TextStyle(color:Colors.white,))
+        // ),
       ),
       body: _getBody(),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
@@ -134,7 +134,7 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
       children: <Widget>[
         TLDAcceptanceSignHeaderView(userInfoModel: _userInfoModel,didClickLoginCallBack: (bool isSign){
           if (isSign) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>TLDAcceptanceSignSonPage(userInfoModel: _userInfoModel,)));
+            // Navigator.push(context, MaterialPageRoute(builder: (context) =>TLDAcceptanceSignSonPage(userInfoModel: _userInfoModel,)));
           }else{
             Navigator.push(context, MaterialPageRoute(builder: (context) =>TLDAcceptanceLoginPage()));
           }
@@ -166,34 +166,34 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
             ),
           ),
         ),
-         Padding(
-            padding: EdgeInsets.only(
-                left: ScreenUtil().setWidth(50),
-                right: ScreenUtil().setWidth(50),
-                top: ScreenUtil().setHeight(20)),
-            child: TabBar(
-              tabs: _tabTitles.map((title) {
-                return Tab(text: title);
-              }).toList(),
-              labelStyle: TextStyle(
-                  fontSize: ScreenUtil().setSp(32),
-                  fontWeight: FontWeight.bold),
-              unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(24)),
-              indicatorColor: Theme.of(context).hintColor,
-              labelColor: Color.fromARGB(255, 51, 51, 51),
-              unselectedLabelColor: Color.fromARGB(255, 153, 153, 153),
-              controller: _tabController,
-              indicatorSize: TabBarIndicatorSize.label,
-            ),
-          ),
-          Expanded(
-              child: TabBarView(
-            children: [
-              TLDAcceptanceWithdrawListPage(type: TLDAcceptanceProfitListPageType.waitPay,),
-              TLDAcceptanceWithdrawListPage(type: TLDAcceptanceProfitListPageType.waitSentTLD,)
-            ],
-            controller: _tabController,
-          ))
+        //  Padding(
+        //     padding: EdgeInsets.only(
+        //         left: ScreenUtil().setWidth(50),
+        //         right: ScreenUtil().setWidth(50),
+        //         top: ScreenUtil().setHeight(20)),
+        //     child: TabBar(
+        //       tabs: _tabTitles.map((title) {
+        //         return Tab(text: title);
+        //       }).toList(),
+        //       labelStyle: TextStyle(
+        //           fontSize: ScreenUtil().setSp(32),
+        //           fontWeight: FontWeight.bold),
+        //       unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(24)),
+        //       indicatorColor: Theme.of(context).hintColor,
+        //       labelColor: Color.fromARGB(255, 51, 51, 51),
+        //       unselectedLabelColor: Color.fromARGB(255, 153, 153, 153),
+        //       controller: _tabController,
+        //       indicatorSize: TabBarIndicatorSize.label,
+        //     ),
+        //   ),
+          // Expanded(
+          //     child: TabBarView(
+          //   children: [
+          //     TLDAcceptanceWithdrawListPage(type: TLDAcceptanceProfitListPageType.waitPay,),
+          //     TLDAcceptanceWithdrawListPage(type: TLDAcceptanceProfitListPageType.waitSentTLD,)
+          //   ],
+          //   controller: _tabController,
+          // ))
         // TLDAcceptanceSignBodyView(userInfoModel: _userInfoModel,didClickSignButton: (){
         //   _sign();
         // },

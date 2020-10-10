@@ -139,11 +139,11 @@ class TLDCreatePurseModelManager {
     String walletAddree = wallet.address;
     String userToken = TLDDataManager.instance.userToken;
     Map pramater;
-    if (userToken.length == 0){
+    // if (userToken.length == 0){
       pramater = {'walletAddress':walletAddree};
-    }else{
-      pramater = {'walletAddress':walletAddree,'userToken':userToken};
-    }
+    // }else{
+    //   pramater = {'walletAddress':walletAddree,'userToken':userToken};
+    // }
     TLDBaseRequest request = TLDBaseRequest(pramater,'wallet/createWallet');
     request.postNetRequest((dynamic data) {
       success(wallet);
@@ -157,11 +157,11 @@ class TLDCreatePurseModelManager {
     String walletAddree = wallet.address;
     String userToken = TLDDataManager.instance.userToken;
     Map pramater;
-    if (userToken.length == 0){
+    // if (userToken.length == 0){
       pramater = {'walletAddress':walletAddree};
-    }else{
-      pramater = {'walletAddress':walletAddree,'userToken':userToken};
-    }
+    // }else{
+    //   pramater = {'walletAddress':walletAddree,'userToken':userToken};
+    // }
     TLDBaseRequest request = TLDBaseRequest(pramater,'wallet/importWallet');
     request.postNetRequest((dynamic data) {
       success(wallet);

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_change_user_info_model_manager.dart';
 import 'dart:convert' show json;
@@ -63,6 +65,13 @@ class TLDAAAPersonFriendCenterModelManager {
       } else {
         success(TLDAAAUserInfo.fromJson(valueMap));
       }
+    }, (error) => failure(error));
+  }
+
+  void getFutureProfit(Function success, Function failure){
+     TLDBaseRequest request = TLDBaseRequest({}, 'aaa/loadingFutureProfit');
+    request.postNetRequest((value) {
+      success(value);
     }, (error) => failure(error));
   }
 

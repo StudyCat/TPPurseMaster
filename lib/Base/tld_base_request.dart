@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:pointycastle/api.dart';
 import 'package:uuid_enhanced/uuid.dart';
 import 'package:web3dart/crypto.dart';
@@ -30,7 +31,7 @@ class TLDBaseRequest{
   //120.92.141.131 测试环境
   //192.168.1.120 本地环境
   //139.224.83.9:8030 生成环境
-  static String baseUrl = 'http://192.168.1.120:8030/';
+  static String baseUrl = 'http://139.224.83.9:8030/';
   Map pramatersMap;
   String subUrl;
   CancelToken cancelToken;
@@ -65,12 +66,14 @@ class TLDBaseRequest{
         contentType : 'application/json', 
         receiveDataWhenStatusError: false,
      );
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String version = packageInfo.version;
       if (userToken != null){
         int time = DateTime.now().millisecondsSinceEpoch;
         String uuid = Uuid.randomUuid().toString();
         String authorization = _authorizationEncode(userToken, time, uuid);
         String language = TLDDataManager.instance.currentLocal.languageCode;
-        options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':'1.0.1',"Language" : language};
+        options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':version,"Language" : language};
       }
       if (acceptanceToken != null){
         options.headers.addEntries({'jwtToken':acceptanceToken}.entries);
@@ -90,7 +93,7 @@ class TLDBaseRequest{
        failure(error);
      }
     }catch(e){
-      TLDError error = TLDError(400,'网络接口出错');
+      TLDError error = TLDError(400,'您的网络异常');
        failure(error);
     }
   }
@@ -103,12 +106,14 @@ class TLDBaseRequest{
         contentType : 'application/json',
         receiveDataWhenStatusError: false
      );
+       PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String version = packageInfo.version;
        if (userToken != null){
         int time = DateTime.now().millisecondsSinceEpoch;
         String uuid = Uuid.randomUuid().toString();
         String authorization = _authorizationEncode(userToken, time, uuid);
         String language = TLDDataManager.instance.currentLocal.languageCode;
-        options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':'1.0.1',"Language" : language};
+        options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':version,"Language" : language};
       }
       if (acceptanceToken != null){
         options.headers.addEntries({'jwtToken':acceptanceToken}.entries);
@@ -132,7 +137,7 @@ class TLDBaseRequest{
        failure(error);
      }
     }catch(e){
-      TLDError error = TLDError(400,'网络接口出错');
+      TLDError error = TLDError(400,'您的网络异常');
        failure(error);
     }
   }
@@ -184,7 +189,7 @@ class TLDBaseRequest{
        if (int.parse(codeStr) == -2 || int.parse(codeStr) == -4){
          _logout(int.parse(codeStr), responseMap['msg']);
        }
-       TLDError error = TLDError(400,'网络接口出错');
+       TLDError error = TLDError(400,'您的网络异常');
        failure(error);
      }
   }

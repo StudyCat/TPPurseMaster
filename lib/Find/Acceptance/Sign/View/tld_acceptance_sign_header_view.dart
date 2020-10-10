@@ -72,14 +72,13 @@ class _TLDAcceptanceSignHeaderViewState
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         _getTopLeftRowWidget(),
-        Container(
+        Offstage(
+          offstage:  token != null,
+          child: Container(
           height: ScreenUtil().setHeight(60),
           width: ScreenUtil().setWidth(130),
           child: CupertinoButton(
-            child: Text(
-                token != null
-                    ? I18n.of(context).signIn
-                    : I18n.of(context).login,
+            child: Text( I18n.of(context).signIn,
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(24),
                     color: Theme.of(context).hintColor)),
@@ -89,6 +88,7 @@ class _TLDAcceptanceSignHeaderViewState
                 BorderRadius.all(Radius.circular(ScreenUtil().setHeight(30))),
             onPressed: () => widget.didClickLoginCallBack(token != null),
           ),
+        ),
         )
       ],
     );
@@ -204,29 +204,29 @@ class _TLDAcceptanceSignHeaderViewState
             },
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(left: ScreenUtil().setWidth(30)),
-          child: Container(
-            width: ScreenUtil().setWidth(80),
-            height: ScreenUtil().setHeight(40),
-            decoration: BoxDecoration(
-                border:
-                    Border.all(color: Theme.of(context).hintColor, width: 1),
-                borderRadius: BorderRadius.all(Radius.circular(2))),
-            child: CupertinoButton(
-              padding: EdgeInsets.zero,
-              child: Text(
-                I18n.of(context).withdraw,
-                style: TextStyle(
-                    fontSize: ScreenUtil().setSp(24),
-                    color: Theme.of(context).hintColor),
-              ),
-              onPressed: () {
-                widget.didClickWithdrawButtonCallBack();
-              },
-            ),
-          ),
-        )
+        // Padding(
+        //   padding: EdgeInsets.only(left: ScreenUtil().setWidth(30)),
+        //   child: Container(
+        //     width: ScreenUtil().setWidth(80),
+        //     height: ScreenUtil().setHeight(40),
+        //     decoration: BoxDecoration(
+        //         border:
+        //             Border.all(color: Theme.of(context).hintColor, width: 1),
+        //         borderRadius: BorderRadius.all(Radius.circular(2))),
+        //     child: CupertinoButton(
+        //       padding: EdgeInsets.zero,
+        //       child: Text(
+        //         I18n.of(context).withdraw,
+        //         style: TextStyle(
+        //             fontSize: ScreenUtil().setSp(24),
+        //             color: Theme.of(context).hintColor),
+        //       ),
+        //       onPressed: () {
+        //         widget.didClickWithdrawButtonCallBack();
+        //       },
+        //     ),
+        //   ),
+        // )
       ],
     );
   }

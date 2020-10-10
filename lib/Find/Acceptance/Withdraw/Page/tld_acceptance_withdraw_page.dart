@@ -3,6 +3,7 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_choose_payment_page.dart';
+import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/View/tld_exchange_input_slider_cell.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/View/tld_exchange_normalCell.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/View/tld_exchange_payment_cell.dart';
@@ -11,7 +12,9 @@ import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/View/tld_acceptance_withdraw_bottom_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/View/tld_acceptance_withdraw_choose_type_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/View/tld_acceptance_withdraw_slider_input.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,17 +43,19 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
 
   bool _isLoading = false;
 
-  List _platformTitleList = [I18n.of(navigatorKey.currentContext).walletBalance, I18n.of(navigatorKey.currentContext).exchangeAmount, I18n.of(navigatorKey.currentContext).expectedToAccount, I18n.of(navigatorKey.currentContext).recommendSeller, I18n.of(navigatorKey.currentContext).serviceChargeRateLabel, I18n.of(navigatorKey.currentContext).serviceChargeLabel, I18n.of(navigatorKey.currentContext).collectionMethod];
+  List _platformTitleList = [I18n.of(navigatorKey.currentContext).wallet,I18n.of(navigatorKey.currentContext).walletBalance, I18n.of(navigatorKey.currentContext).exchangeAmount, I18n.of(navigatorKey.currentContext).expectedToAccount, I18n.of(navigatorKey.currentContext).recommendSeller, I18n.of(navigatorKey.currentContext).serviceChargeRateLabel, I18n.of(navigatorKey.currentContext).serviceChargeLabel, I18n.of(navigatorKey.currentContext).collectionMethod];
   
-  List _referrerTitleList = [I18n.of(navigatorKey.currentContext).walletBalance, I18n.of(navigatorKey.currentContext).exchangeAmount, I18n.of(navigatorKey.currentContext).expectedToAccount, I18n.of(navigatorKey.currentContext).recommendSeller,I18n.of(navigatorKey.currentContext).referrerContactWay, I18n.of(navigatorKey.currentContext).collectionMethod];
+  List _referrerTitleList = [I18n.of(navigatorKey.currentContext).wallet,I18n.of(navigatorKey.currentContext).walletBalance, I18n.of(navigatorKey.currentContext).exchangeAmount, I18n.of(navigatorKey.currentContext).expectedToAccount, I18n.of(navigatorKey.currentContext).recommendSeller,I18n.of(navigatorKey.currentContext).referrerContactWay, I18n.of(navigatorKey.currentContext).collectionMethod];
 
   TLDAcceptanceWithdrawPageType _type = TLDAcceptanceWithdrawPageType.referrer;
 
   FocusNode _withdrawInputNode;
 
-  TLDAceeptanceWithdrawUsefulInfoModel _usefulInfoModel;
-
   TLDWithdrawPramaterModel _pramaterModel;
+
+  TLDWalletInfoModel _walletInfoModel;
+
+  TLDAceeptanceWithdrawUsefulInfoModel _usefulInfoModel;
   @override
   void initState() {
     // TODO: implement initState
@@ -129,7 +134,7 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
         }),
         heroTag: 'exchange_page',
         transitionBetweenRoutes: false,
-        middle: Text(I18n.of(context).withdrawTLDBillProfit),
+        middle: Text('TLD钱包提现'),
       ),
     );
   }
@@ -144,12 +149,33 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
      return ListView.builder(
       itemCount: _titleList.length + 1,
       itemBuilder: (BuildContext context, int index) {
-        if (index == 0 || index == 2) {
+        if (index == 0){
+           return GestureDetector(
+             onTap: (){
+               Navigator.push(context, MaterialPageRoute(builder: (context) => TLDEchangeChooseWalletPage(
+                 didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
+                   setState(() {
+                     _walletInfoModel = infoModel;
+                     _pramaterModel.walletAddress = _walletInfoModel.walletAddress;
+                   });
+                 },
+               ),));
+             },
+             child: TLDExchangeNormalCell(
+            type: TLDExchangeNormalCellType.normalArrow,
+            title: _titleList[index],
+            content: _walletInfoModel != null ? _walletInfoModel.wallet.name : I18n.of(context).chooseWalletLabel,
+            contentStyle: TextStyle(
+                fontSize: 12, color: Color.fromARGB(255, 153, 153, 153)),
+            top: ScreenUtil().setHeight(2),
+          ),
+           );
+        } else if (index == 1 || index == 3) {
           double top;
           String content;
-          if (index == 0){
+          if (index == 1){
             top = ScreenUtil().setHeight(2);
-            content = _usefulInfoModel != null ? _usefulInfoModel.value : '0.0';
+            content = _walletInfoModel != null ? _walletInfoModel.value : '0.0';
           }else{
             top = ScreenUtil().setHeight(10);
             if (_pramaterModel.cashType == 1){
@@ -168,10 +194,10 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
                 fontSize: 12, color: Color.fromARGB(255, 153, 153, 153)),
             top: top,
           );
-        } else if (index == 1) {
+        } else if (index == 2) {
           return TLDAcceptanceWithdrawSliderInputCell(
             title: _titleList[index],
-            maxValue: _usefulInfoModel != null ? _usefulInfoModel.value : null,
+            maxValue: _walletInfoModel != null ? _walletInfoModel.value : null,
             focusNode: _withdrawInputNode,
             inputCallBack: (String text) {
               setState(() {
@@ -179,7 +205,7 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
               });
             },
           );
-        }else if (index == 3){
+        }else if (index == 4){
           return TLDAcceptanceWithdrawChooseTypeCell(
             didVoteCallBack: (int index){
               if (index == 1){
@@ -198,9 +224,9 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
           );
         }
         if (_type == TLDAcceptanceWithdrawPageType.platform){
-          if (index == 4 || index == 5){
+          if (index == 5 || index == 6){
             String content = '';
-            if (index == 4){
+            if (index == 5){
               double rate = _usefulInfoModel != null ? double.parse(_usefulInfoModel.acptPlatformCachRate) * 100 : 0;
               String rateStr = (NumUtil.getNumByValueDouble(rate, 4)).toStringAsFixed(4);
               content = '${rateStr}%';
@@ -216,7 +242,7 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
                 fontSize: 12, color: Color.fromARGB(255, 153, 153, 153)),
             top: ScreenUtil().setHeight(2),
           );
-          }else if(index == 6){
+          }else if(index == 7){
             return TLDExchangePaymentCell(paymentModel:_pramaterModel.paymentModel,didClickItemCallBack: (){
             _withdrawInputNode.unfocus();
             // if (_formModel.infoModel != null){
@@ -228,7 +254,7 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
             },);
           }
         }else{
-          if (index == 5){
+          if (index == 6){
             return TLDExchangePaymentCell(paymentModel:_pramaterModel.paymentModel,didClickItemCallBack: (){
             _withdrawInputNode.unfocus();
             // if (_formModel.infoModel != null){
@@ -238,7 +264,7 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
                 });
               },)));
             },);
-          }else if(index == 4){
+          }else if(index == 5){
           return TLDExchangeNormalCell(
             type: TLDExchangeNormalCellType.normal,
             title: _titleList[index],

@@ -1,6 +1,7 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
+import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_change_user_info_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_sign_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_body_view.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
@@ -13,9 +14,11 @@ import 'package:loading_overlay/loading_overlay.dart';
 
 
 class TLDAcceptanceSignSonPage extends StatefulWidget {
-  TLDAcceptanceSignSonPage({Key key,this.userInfoModel}) : super(key: key);
+  TLDAcceptanceSignSonPage({Key key,this.userInfo}) : super(key: key);
 
-  final TLDAcceptanceUserInfoModel userInfoModel;
+  // final TLDAcceptanceUserInfoModel userInfoModel;
+
+  final TLDAAAUserInfo userInfo;
 
   @override
   _TLDAcceptanceSignSonPageState createState() => _TLDAcceptanceSignSonPageState();
@@ -26,19 +29,19 @@ class _TLDAcceptanceSignSonPageState extends State<TLDAcceptanceSignSonPage> {
 
     bool _isLoading = false;
     
-    TLDAcceptanceUserInfoModel _userInfoModel;
+    TLDAAAUserInfo _userInfoModel;
     @override
     void initState() { 
       super.initState();
       
-      _userInfoModel = widget.userInfoModel;
+      _userInfoModel = widget.userInfo;
 
       _modelManager = TLDAcceptanceSignModelManager();
     }
 
     
   void _getUserInfo(){
-    _modelManager.getUserInfo((TLDAcceptanceUserInfoModel userInfoModel){
+    _modelManager.getAAAUserInfo((TLDAAAUserInfo userInfoModel){
       if(mounted){
       setState(() {
        _userInfoModel = userInfoModel;
@@ -75,28 +78,6 @@ class _TLDAcceptanceSignSonPageState extends State<TLDAcceptanceSignSonPage> {
     });
   }
 
-    void _changeWallet(TLDWalletInfoModel infoModel){
-        setState(() {
-      _isLoading = true;
-    });
-    _modelManager.changeWallet(infoModel.walletAddress, (){
-      if(mounted){
-        setState(() {
-          _isLoading = false;
-          _userInfoModel.walletAddress = infoModel.walletAddress;
-          _userInfoModel.wallet = infoModel.wallet;
-        });
-      }
-    }, (TLDError error){
-      if(mounted){
-        setState(() {
-          _isLoading = false;
-        });
-      }
-      Fluttertoast.showToast(msg: error.msg);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,7 +104,6 @@ class _TLDAcceptanceSignSonPageState extends State<TLDAcceptanceSignSonPage> {
         didClickWalletButton: (){
           Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDEchangeChooseWalletPage(
             didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
-              _changeWallet(infoModel);
             },
           )));
         }

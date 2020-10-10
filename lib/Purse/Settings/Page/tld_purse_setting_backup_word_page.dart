@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
+import 'package:dragon_sword_purse/register&login/Page/tld_register_page.dart';
 import 'package:dragon_sword_purse/tld_tabbar_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +39,8 @@ class _TLDPurseSeetingBackWordPageState extends State<TLDPurseSeetingBackWordPag
 
   GlobalKey repainKey = GlobalKey();
 
+  bool _isLogin;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -44,6 +48,14 @@ class _TLDPurseSeetingBackWordPageState extends State<TLDPurseSeetingBackWordPag
     
     _words = widget.wallet.mnemonic.split(' ');
 
+    _checkIsLogin();
+  }
+
+  void _checkIsLogin() async {
+    var token = await TLDDataManager.instance.getAcceptanceToken();
+    setState(() {
+      _isLogin = token != null; 
+    });
   }
 
   @override
@@ -108,7 +120,8 @@ class _TLDPurseSeetingBackWordPageState extends State<TLDPurseSeetingBackWordPag
               if (widget.type == TLDBackWordType.create) {
                 Uint8List data = await _capturePng();
                 await _saveQrCodeImage(data);
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TLDTabbarPage()), (route) => route == null);
+                Widget nextPage = _isLogin ? TLDTabbarPage() : TLDRegisterView();
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => nextPage), (route) => route == null);
               }else{
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TLDVerifyWordPage(words: _words,type: widget.type,verifySuccessCallBack: widget.verifySuccessCallBack,)));
               }

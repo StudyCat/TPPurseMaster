@@ -175,15 +175,6 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
   }
 
   void _registerUser(){
-    setState(() {
-      _isLoading = true;
-    });
-    _manager.createSafeSecretPasswordRegisterUser(_password,(String username){
-      if (mounted){
-        setState(() {
-          _isLoading = false;
-        });
-      }
       _savePassword();
       if (widget.type == TLDCreatePursePageType.create){
           Navigator.push(context, MaterialPageRoute(builder: (context) => TLDCreatingPursePage(type: TLDCreatingPursePageType.create,)));
@@ -195,15 +186,6 @@ class _TLDCreatePursePageState extends State<TLDCreatePursePage> {
           }
           Navigator.pop(context);
       }
-    }, (TLDError error){
-      if (mounted){
-        setState(() {
-          _isLoading = false;
-        });
-      }
-      Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
-                        timeInSecForIosWeb: 1);
-    });
   }
 
   void _savePassword() async{

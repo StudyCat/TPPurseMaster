@@ -1,4 +1,6 @@
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/register&login/Page/tld_register_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,24 @@ class TLDImportPurseSuccessPage extends StatefulWidget {
 }
 
 class _TLDImportPurseSuccessPageState extends State<TLDImportPurseSuccessPage> {
+
+  bool _isLogin;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _checkIsLogin();
+  }
+
+    void _checkIsLogin() async {
+    var token = await TLDDataManager.instance.getAcceptanceToken();
+    setState(() {
+      _isLogin = token != null; 
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +52,8 @@ class _TLDImportPurseSuccessPageState extends State<TLDImportPurseSuccessPage> {
           ),
           padding: EdgeInsets.all(0),
           onPressed: () {
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TLDTabbarPage()), (route) => route == null);
+            Widget nextPage = _isLogin ? TLDTabbarPage() : TLDRegisterView();
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => nextPage), (route) => route == null);
           },
         ),
        ),
@@ -83,7 +104,8 @@ class _TLDImportPurseSuccessPageState extends State<TLDImportPurseSuccessPage> {
               padding: EdgeInsets.all(0),
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TLDTabbarPage()), (route) => route == null);
+                Widget nextPage = _isLogin ? TLDTabbarPage() : TLDRegisterView();
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => nextPage), (route) => route == null);
               }),
         ),
       ],

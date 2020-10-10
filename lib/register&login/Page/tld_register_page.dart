@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/register&login/Model/tld_register_model_manager.dart';
 import 'package:dragon_sword_purse/register&login/Page/tld_register_invite_code_page.dart';
@@ -34,9 +35,19 @@ class _TLDRegisterViewState extends State<TLDRegisterView> {
     // TODO: implement initState
     super.initState();
 
+    _getPurseList();
+
     _pramater = TLDRegisterPramater();
 
     _modelManager = TLDRegisterModelManager();
+  }
+
+  void _getPurseList() async{
+    TLDDataBaseManager manager = TLDDataBaseManager();
+     await manager.openDataBase();
+     List allPurse = await manager.searchAllWallet();
+    await manager.closeDataBase();
+    allPurse == null ? TLDDataManager.instance.purseList = [] : TLDDataManager.instance.purseList = List.from(allPurse);
   }
 
   void _sendTelCode(){

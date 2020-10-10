@@ -122,16 +122,15 @@ class _TLDHomePageState extends State<TLDHomePage> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, width: 750, height: 1334);
-
-    if (_isLogin == true){
       if (isHavePurse){
-        return TLDTabbarPage(); 
+        if (_isLogin){
+          return TLDTabbarPage();
+        }else{
+          return TLDRegisterView();
+        } 
       }else{
         return TLDNotPurseHomePage();
       }
-    }else{
-      return TLDRegisterView();
-    }
 
     // FutureBuilder(
     //   future: _searchAllPurse(),

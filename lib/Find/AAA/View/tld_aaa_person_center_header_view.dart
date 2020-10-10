@@ -2,18 +2,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_change_user_info_model_manager.dart';
+import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart'; 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAAAPersonCenterHeaderView extends StatefulWidget {
-  TLDAAAPersonCenterHeaderView({Key key,this.didClickUpgradeButtonCallBack,this.didClickWithdrawCallBack,this.userInfo}) : super(key: key);
+  TLDAAAPersonCenterHeaderView({Key key,this.didClickUpgradeButtonCallBack,this.didClickWithdrawCallBack,this.userInfo,this.didClickSignButton,this.futureProfit}) : super(key: key);
 
   final Function didClickUpgradeButtonCallBack;
 
   final Function didClickWithdrawCallBack;
 
+  final Function didClickSignButton;
+
   final TLDAAAUserInfo userInfo;
+
+  final String futureProfit;
 
   @override
   _TLDAAAPersonCenterHeaderViewState createState() => _TLDAAAPersonCenterHeaderViewState();
@@ -67,6 +72,7 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
                ]
              ),
            ),
+           _getProfitRowWidget(),
            _getAddressView(context),
            Padding(
              padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
@@ -92,13 +98,66 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
     );
   }
 
+  Widget _getProfitRowWidget(){
+    return Padding(
+      padding: EdgeInsets.only(top : ScreenUtil().setHeight(14)),
+      child: Row(
+        children: <Widget>[
+          _getProfitWidget('预计收益', widget.futureProfit.length > 0 ?'${widget.futureProfit}TLD' : '计算中'),
+          Padding(
+            padding: EdgeInsets.only(left :ScreenUtil().setWidth(20)),
+            child :  _getProfitWidget('总收益', widget.userInfo!= null ? widget.userInfo.totalProfit + 'TLD' : '0TLD')
+            )
+        ],
+      ), 
+      );
+  }
+
+  Widget _getProfitWidget(String title,String content){
+    return Container(
+      height : ScreenUtil().setHeight(110),
+      width: (MediaQuery.of(context).size.width - ScreenUtil().setWidth(80)) / 2,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(40)),
+        color: Color.fromARGB(255, 82, 82, 82),
+      ),
+      child:  Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(title,style: TextStyle(color : Colors.white,fontSize : ScreenUtil().setSp(24))),
+          Padding(
+            padding: EdgeInsets.only(top : ScreenUtil().setHeight(4)),
+            child :  Text(content,style: TextStyle(color : Colors.white,fontSize : ScreenUtil().setSp(32))),
+          )
+        ],
+      ), 
+    );
+  }
+
   Widget _getUserInfoWidget(){
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _getUserHeaderWidget(),
         _getUserInfoColumnWidget(),
       ],
+    );
+  }
+
+  Widget _getNickNameLabelSignButton(){
+    return Container(
+      width : MediaQuery.of(context).size.width - (ScreenUtil().setHeight(96) + ScreenUtil().setWidth(90)),
+      height: ScreenUtil().setHeight(50),
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(widget.userInfo != null ? widget.userInfo.nickName : '',style : TextStyle(fontSize : ScreenUtil().setSp(32),color : Colors.white)),
+        CupertinoButton(padding: EdgeInsets.zero,child: Text(I18n.of(context).signIn,style: TextStyle(color : Theme.of(context).hintColor,fontSize : ScreenUtil().setSp(30)),), onPressed: (){
+          widget.didClickSignButton();
+        })
+      ],
+    ),
     );
   }
 
@@ -108,7 +167,7 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(widget.userInfo != null ? widget.userInfo.nickName : '',style : TextStyle(fontSize : ScreenUtil().setSp(32),color : Colors.white)),
+          _getNickNameLabelSignButton(),
           Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(10)),
             child: RichText(

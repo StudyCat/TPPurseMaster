@@ -1,6 +1,8 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'dart:convert' show json;
 
+import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_sign_model_manager.dart';
+
 T asT<T>(dynamic value) {
   if (value is T) {
     return value;
@@ -18,13 +20,28 @@ class TLDAAAUserInfo {
     this.totalProfit,
     this.levelIcon,
     this.aaaLevel,
-    this.balance
+    this.balance,
+    this.signList,
+    this.curTime
   });
 
-  factory TLDAAAUserInfo.fromJson(Map<String, dynamic> jsonRes) =>
-      jsonRes == null
-          ? null
-          : TLDAAAUserInfo(
+  factory TLDAAAUserInfo.fromJson(Map<String, dynamic> jsonRes) {
+    if (jsonRes == null){
+      return null;
+    }
+
+    final List<TLDSignModel> signList =
+        jsonRes['signList'] is List ? <TLDSignModel>[] : null;
+    if (signList != null) {
+      for (final dynamic item in jsonRes['signList']) {
+        if (item != null) {
+          signList.add(
+              TLDSignModel.fromJson(asT<Map<String, dynamic>>(item)));
+        }
+      }
+    }
+
+    return  TLDAAAUserInfo(
               nickName: asT<String>(jsonRes['nickName']),
               wechat: asT<String>(jsonRes['wechat']),
               tel: asT<String>(jsonRes['tel']),
@@ -33,8 +50,11 @@ class TLDAAAUserInfo {
               totalProfit: asT<String>(jsonRes['totalProfit']),
               levelIcon: asT<String>(jsonRes['levelIcon']),
               aaaLevel : asT<int>(jsonRes['aaaLevel']),
-              balance : asT<String>(jsonRes['balance'])
+              balance : asT<String>(jsonRes['balance']),
+              curTime: asT<int>(jsonRes['curTime']),
+              signList: signList
             );
+  }
 
   int aaaLevel;
   String levelIcon;
@@ -45,6 +65,8 @@ class TLDAAAUserInfo {
   String walletAddress;
   String inviteWechat;
   String totalProfit;
+  List signList;
+  int curTime;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'nickName': nickName,
@@ -55,7 +77,8 @@ class TLDAAAUserInfo {
         'totalProfit': totalProfit,
         'levelIcon' : levelIcon,
         'aaaLevel' : aaaLevel,
-        'balance' : balance
+        'balance' : balance,
+        'curTime' : curTime
       };
 
   @override

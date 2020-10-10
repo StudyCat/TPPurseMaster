@@ -2,6 +2,7 @@
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TLDRegisterPramater {
@@ -14,22 +15,36 @@ class TLDRegisterPramater {
 class TLDRegisterModelManager{
 
   void register(TLDRegisterPramater pramater,Function success,Function failure){
-    Map pramaterMap = {'code':pramater.telCode,'nickName':pramater.nickname,'tel':pramater.tel};
+    String registerId = TLDDataManager.instance.registrationID;
+    String password = TLDDataManager.instance.password;
+    TLDWallet wallet = TLDDataManager.instance.purseList.first;
+    Map pramaterMap = {'code':pramater.telCode,'nickName':pramater.nickname,'registrationId' : registerId,'password' : password,'tel':pramater.tel,'type' : wallet.type,'walletAddress' : wallet.address};
     if (pramater.inviteCode != null){
       pramaterMap.addEntries({'inviteCode' : pramater.inviteCode}.entries);
     }
     TLDBaseRequest request = TLDBaseRequest(pramaterMap,'tldUser/registerTldUser');
     request.postNetRequest((value) async {
       String token = value['jwtToken'];
+
+      String userToken = value['token'];
+      String username = value['imUserName'];
+      SharedPreferences perference = await SharedPreferences.getInstance();
+      perference.setString('userToken',userToken);
+      TLDDataManager.instance.userToken = userToken;
+      perference.setString('username', username);
+
       success(token);
     }, (error) => failure(error));
   }
 
     void getMessageCode(String cellPhoneNum,
       Function() success, Function(TLDError) failure) {
+    TLDWallet wallet = TLDDataManager.instance.purseList.first;
     TLDBaseRequest request = TLDBaseRequest(
-        {'tel': cellPhoneNum},
+        {'tel': cellPhoneNum,'walletAddress' : wallet.address},
         'common/getRegisterTelCode');
+    request.isNeedSign = true;
+    request.walletAddress = wallet.address;
     request.postNetRequest((value) {
       success();
     }, (error) => failure(error));

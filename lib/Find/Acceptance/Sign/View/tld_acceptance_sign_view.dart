@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_change_user_info_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_sign_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_day_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_custom_calendar/flutter_custom_calendar.dart';
 class TLDAcceptanceSignView extends StatefulWidget {
   TLDAcceptanceSignView({Key key, this.userInfoModel,this.didClickItemToSignCallBack}) : super(key: key);
 
-  final TLDAcceptanceUserInfoModel userInfoModel;
+  final TLDAAAUserInfo userInfoModel;
 
   final Function didClickItemToSignCallBack;
 
@@ -49,7 +50,7 @@ class _TLDAcceptanceSignViewState extends State<TLDAcceptanceSignView> {
   @override
   Widget build(BuildContext context) {
     if (widget.userInfoModel != null){
-      _todayDateModel = DateModel.fromDateTime(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.userInfoModel.curTime)));
+      _todayDateModel = DateModel.fromDateTime(DateTime.fromMillisecondsSinceEpoch(widget.userInfoModel.curTime));
       _calendarController.changeExtraData({});
     }
     return Column(children: <Widget>[_getDateHeaderView(), _getDateView(),]);

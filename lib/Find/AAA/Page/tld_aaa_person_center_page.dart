@@ -9,6 +9,7 @@ import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_change_user_info_page.d
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_person_center_header_bottom_view.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_person_center_header_view.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_upgrade_action_sheet.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_son_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,6 +37,8 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
   TLDAAAPersonFriendCenterModelManager _modelManager;
 
   TLDAAAUserInfo _userInfo;
+
+  String _futureProfit = '';
   @override
   void initState() {
     // TODO: implement initState
@@ -45,6 +48,7 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
 
     _modelManager = TLDAAAPersonFriendCenterModelManager();
     _getUserInfo();
+    _getFutureProfit();
   }
 
   void _getUserInfo(){
@@ -65,6 +69,16 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
         });
       }
       Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+  void _getFutureProfit(){
+    _modelManager.getFutureProfit((String profit){
+      setState(() {
+        _futureProfit = profit;
+      });
+    }, (TLDError error){
+
     });
   }
 
@@ -161,7 +175,7 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
   Widget _getAppBar(){
     return SliverAppBar(
       centerTitle: true,
-      expandedHeight: ScreenUtil().setHeight(750),
+      expandedHeight: ScreenUtil().setHeight(870),
       backgroundColor: Theme.of(context).primaryColor,
       actions: <Widget>[
         IconButton(icon: Icon(IconData(0xe80a,fontFamily : 'appIconFonts')), onPressed: (){
@@ -197,6 +211,7 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
       flexibleSpace: FlexibleSpaceBar(
         background: TLDAAAPersonCenterHeaderView(
           userInfo: _userInfo,
+          futureProfit: _futureProfit,
           didClickWithdrawCallBack: (){
             Navigator.push(context, MaterialPageRoute(
               builder : (context) => TLDEchangeChooseWalletPage(didChooseWalletCallBack: (TLDWalletInfoModel walletInfoModel){
@@ -205,6 +220,11 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
           },
           didClickUpgradeButtonCallBack: (){
            _getUpgradeInfo();
+          },
+          didClickSignButton: (){
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) => TLDAcceptanceSignSonPage(userInfo: _userInfo,),
+            )).then((value) => _getUserInfo());
           },
         ),
       ),

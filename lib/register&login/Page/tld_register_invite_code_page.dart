@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 class TLDRegisterInviteCodePage extends StatefulWidget {
   TLDRegisterInviteCodePage({Key key,this.pramater}) : super(key: key);
@@ -73,8 +74,9 @@ class _TLDRegisterInviteCodePageState extends State<TLDRegisterInviteCodePage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
-      body: _getBodyWidget(),
+      body: LoadingOverlay(isLoading: _isLoading,child: _getBodyWidget(),),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
