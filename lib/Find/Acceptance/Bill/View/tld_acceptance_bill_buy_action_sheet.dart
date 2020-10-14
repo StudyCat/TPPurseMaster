@@ -1,5 +1,7 @@
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/Model/tld_acceptance_bill_list_model_manager.dart';
+import 'package:dragon_sword_purse/Find/YLB/Model/tld_ylb_choose_type_model_manager.dart';
+import 'package:dragon_sword_purse/Find/YLB/Page/tld_ylb_choose_type_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class TLDAcceptanceBillBuyActionSheet extends StatefulWidget {
-  TLDAcceptanceBillBuyActionSheet({Key key,this.infoListModel,this.didClickChooseWallet,this.didChooseCountCallBack,this.didClickBuyButtonCallBack}) : super(key: key);
+  TLDAcceptanceBillBuyActionSheet({Key key,this.infoListModel,this.didClickChooseWallet,this.didChooseCountCallBack,this.didClickBuyButtonCallBack,this.didChooseYLBType,this.didChoosePaymentType}) : super(key: key);
 
   final TLDBillInfoListModel infoListModel;
 
@@ -18,6 +20,9 @@ class TLDAcceptanceBillBuyActionSheet extends StatefulWidget {
 
   final Function(int) didChooseCountCallBack;
 
+  final Function didChoosePaymentType;
+
+  final Function didChooseYLBType; 
 
   @override
   _TLDAcceptanceBillBuyActionSheetState createState() =>
@@ -28,75 +33,106 @@ class _TLDAcceptanceBillBuyActionSheetState
     extends State<TLDAcceptanceBillBuyActionSheet> {
   int _vote = 0;
 
+  int _paymentType = 1;
+
   TLDWalletInfoModel _infoModel;
+
+  TLDYLBTypeModel _ylbTypeModel;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: Container(
-        height: ScreenUtil().setHeight(600),
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(
-            top: ScreenUtil().setHeight(40),
-            left: ScreenUtil().setWidth(30),
-            right: ScreenUtil().setWidth(30)),
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(I18n.of(context).buyBill,
-                style: TextStyle(
-                    fontSize: ScreenUtil().setSp(32),
-                    fontWeight: FontWeight.w700,
-                    color: Color.fromARGB(255, 51, 51, 51),
-                    decoration: TextDecoration.none)),
-            Padding(
-                padding: EdgeInsets.only(top: ScreenUtil().setHeight(40)),
-                child: _getBillInfoView()),
-            Padding(
-              padding: EdgeInsets.only(top: ScreenUtil().setHeight(40)),
-              child: _getChooseWidgetView(),
+    return AnimatedPadding(
+        //showModalBottomSheet 键盘弹出时自适应
+        padding: MediaQuery.of(context).viewInsets, //边距（必要）
+        duration: const Duration(milliseconds: 100), //时常 （必要）
+        child: Container(
+            // height: 180,
+            constraints: BoxConstraints(
+              minHeight: 90.w, //设置最小高度（必要）
+              maxHeight: MediaQuery.of(context).size.height, //设置最大高度（必要）
             ),
-            Padding(
-                padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
-                child: _getRealAmount()),
-            Padding(
-              padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
-              child: _getChooseWalletRowWidget(),
-            ),
-            Padding(
-                padding: EdgeInsets.only(top: ScreenUtil().setHeight(28)),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: ScreenUtil().setHeight(80),
-                  child: CupertinoButton(
-                    child: Text(
-                      I18n.of(context).submitOrder,
-                      style: TextStyle(fontSize: ScreenUtil().setSp(28)),
+            padding: EdgeInsets.only(top: 0, bottom: 0),
+            child: ListView(shrinkWrap: true, //防止状态溢出 自适应大小
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.only(
+                          top: ScreenUtil().setHeight(40),
+                          left: ScreenUtil().setWidth(30),
+                          right: ScreenUtil().setWidth(30),
+                          bottom: ScreenUtil().setHeight(30)),
+                      color: Colors.white,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(I18n.of(context).buyBill,
+                              style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(32),
+                                  fontWeight: FontWeight.w700,
+                                  color: Color.fromARGB(255, 51, 51, 51),
+                                  decoration: TextDecoration.none)),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  top: ScreenUtil().setHeight(40)),
+                              child: _getBillInfoView()),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: ScreenUtil().setHeight(40)),
+                            child: _getChooseWidgetView(),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  top: ScreenUtil().setHeight(32)),
+                              child: _getRealAmount()),
+                          _getChoicePayMethodWidget(),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: ScreenUtil().setHeight(32)),
+                            child: _getChooseWalletRowWidget(),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  top: ScreenUtil().setHeight(28)),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: ScreenUtil().setHeight(80),
+                                child: CupertinoButton(
+                                  child: Text(
+                                    I18n.of(context).submitOrder,
+                                    style: TextStyle(
+                                        fontSize: ScreenUtil().setSp(28)),
+                                  ),
+                                  onPressed: () {
+                                    if (_vote == 0) {
+                                      Fluttertoast.showToast(msg: '请先选择份数');
+                                      return;
+                                    }
+                                    if (_paymentType == 1 &&
+                                        _infoModel == null) {
+                                      Fluttertoast.showToast(msg: '请先选择钱包');
+                                      return;
+                                    }
+                                    if (_paymentType == 2 &&
+                                        _ylbTypeModel == null) {
+                                      Fluttertoast.showToast(msg: '请先选择余利宝类型');
+                                      return;
+                                    }
+                                    widget.didClickBuyButtonCallBack();
+                                    Navigator.of(context).pop();
+                                  },
+                                  color: Theme.of(context).primaryColor,
+                                  padding: EdgeInsets.all(0),
+                                ),
+                              ))
+                        ],
+                      ),
                     ),
-                    onPressed: (){
-                      if (_vote == 0){
-                        Fluttertoast.showToast(msg: '请先选择份数');
-                        return;
-                      }
-                      if (_infoModel == null){
-                        Fluttertoast.showToast(msg: '请先选择钱包');
-                        return;
-                      }
-                      widget.didClickBuyButtonCallBack();
-                      Navigator.of(context).pop();
-                    },
-                    color: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.all(0),
-                  ),
-                ))
-          ],
-        ),
-      ),
-    );
+                  )
+                ])));
   }
 
   Widget _getBillInfoView() {
@@ -130,6 +166,63 @@ class _TLDAcceptanceBillBuyActionSheetState
     );
   }
 
+  Widget _getChoicePayMethodWidget(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top : ScreenUtil().setHeight(12)),
+          child : Text('选择支付方式',style : TextStyle(color: Color.fromARGB(255, 51, 51, 51),fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(32),decoration: TextDecoration.none))
+        ),
+        Padding(padding: EdgeInsets.only(top : ScreenUtil().setHeight(12)),
+          child: Material(
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: _getPaymentChoiceList(),
+        )),
+        )
+      ],
+    );
+  }
+
+  List<Widget> _getPaymentChoiceList(){
+    List<Widget> result = [];
+    for(int i = 1 ; i < 3; i++){
+      result.add(_getPaymentSingleChoiceWidget(i));
+    }
+    return result;
+  }
+
+  Widget _getPaymentSingleChoiceWidget(int type){
+     String text;
+    if (type == 1) {
+      text = '钱包支付';
+    } else if (type == 2) {
+      text = '余利宝支付';
+    }
+    return Row(children: <Widget>[
+      Radio(
+        value: type,
+        groupValue: _paymentType,
+        onChanged: (value) {
+          setState(() {
+            _paymentType = value;
+          });
+          widget.didChoosePaymentType(_paymentType);
+        },
+      ),
+      Padding(
+          padding: EdgeInsets.only(left: ScreenUtil().setWidth(0)),
+          child: Text(
+            text,
+            style: TextStyle(
+                color: Color.fromARGB(255, 51, 51, 51),
+                fontSize: ScreenUtil().setSp(28)),
+          ))
+    ]);
+  }
+
   Widget _getChooseWidgetView() {
     return Material(
         color: Colors.white,
@@ -152,6 +245,8 @@ class _TLDAcceptanceBillBuyActionSheetState
     }
     return result;
   }
+
+
 
   Widget _getSingleChoiceWidget(int type) {
     String text;
@@ -207,9 +302,16 @@ class _TLDAcceptanceBillBuyActionSheetState
   }
 
   Widget _getChooseWalletRowWidget(){
+    String title = '';
+    if (_paymentType == 1){
+      title = _infoModel != null ? _infoModel.wallet.name : I18n.of(context).chooseWalletLabel;
+    }else {
+      title = _ylbTypeModel != null ? _ylbTypeModel.typeName : '选择余利宝类型';
+    }
     return GestureDetector(
       onTap: (){
-        Navigator.push(context,MaterialPageRoute(builder: (context) =>TLDEchangeChooseWalletPage(
+        if (_paymentType == 1){
+                  Navigator.push(context,MaterialPageRoute(builder: (context) =>TLDEchangeChooseWalletPage(
                                       didChooseWalletCallBack:(TLDWalletInfoModel infoModel) {
                                         setState(() {
                                           _infoModel = infoModel;
@@ -217,13 +319,23 @@ class _TLDAcceptanceBillBuyActionSheetState
                                         widget.didClickChooseWallet(infoModel.walletAddress);
                                       },
                                     )));
+        }else{
+                  Navigator.push(context,MaterialPageRoute(builder: (context) =>TLDYLBChooseTypePage(
+                                      didChooseTypeCallBack:(TLDYLBTypeModel typeModel) {
+                                        setState(() {
+                                          _ylbTypeModel = typeModel;
+                                        });
+                                        widget.didChooseYLBType(_ylbTypeModel.type);
+                                      },
+                                    )));
+        }
       },
       child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Container(
           width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(150),
-          child :Text(_infoModel != null ? _infoModel.wallet.name : I18n.of(context).chooseWalletLabel,
+          child :Text(title,
               style: TextStyle(
                   color: Color.fromARGB(255, 51, 51, 51),
                   fontSize: ScreenUtil().setSp(28),

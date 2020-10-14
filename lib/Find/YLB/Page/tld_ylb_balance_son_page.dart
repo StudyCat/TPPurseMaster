@@ -13,7 +13,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 class TLDYLBBalanceSonPage extends StatefulWidget {
   TLDYLBBalanceSonPage({Key key,this.type}) : super(key: key);
 
-  final int type;
+  final int type; // 1,日结 2 周结  3 月结  4 票据结算  
 
   @override
   _TLDYLBBalanceSonPageState createState() => _TLDYLBBalanceSonPageState();
@@ -60,14 +60,18 @@ class _TLDYLBBalanceSonPageState extends State<TLDYLBBalanceSonPage> {
     setState(() {
       _isLoading = true;
     });
-    _modelManager.rollIn(type, walletAddress, amount, (){
+    _modelManager.rollIn(type, walletAddress, amount, (String msg){
       if (mounted){
         setState(() {
           _isLoading = false;
         });
       }
       _getDetailProfitInfo();
-      Fluttertoast.showToast(msg: '转入余利宝成功');
+      if (msg.length > 0){
+        Fluttertoast.showToast(msg : msg);
+      }else{
+        Fluttertoast.showToast(msg: '转入余利宝成功');
+      }
     }, (TLDError error){
       if (mounted){
         setState(() {
@@ -90,6 +94,72 @@ class _TLDYLBBalanceSonPageState extends State<TLDYLBBalanceSonPage> {
       }
       _getDetailProfitInfo();
       Fluttertoast.showToast(msg: '转出余利宝成功');
+    }, (TLDError error){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+  void _getMaxRollOut(){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.getMaxRollOut(widget.type,(String maxAmount){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      showModalBottomSheet(context: context, builder: (context){
+              return TLDYLBRollOutActionSheet(
+                maxValue: maxAmount,
+                type: widget.type,
+                 didClickRollOut: (int type,String walletAddress, String amount){
+                  jugeHavePassword(context, (){
+                    _rollOut(type, walletAddress, amount);
+                  }, TLDCreatePursePageType.back, (){
+                    _rollOut(type, walletAddress, amount);
+                  });
+                },
+              );
+      });
+    }, (TLDError error){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+
+  void _getProfitRate(){
+     setState(() {
+      _isLoading = true;
+    });
+    _modelManager.getProfitRate((List profitRate){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+     showModalBottomSheet(context: context, builder: (context){
+              return TLDYLBRollInActionSheet(
+                profitRateList: profitRate,
+                didClickRollIn: (int type,String walletAddress, String amount){
+                  jugeHavePassword(context, (){
+                    _rollIn(type, walletAddress, amount);
+                  }, TLDCreatePursePageType.back, (){
+                    _rollIn(type, walletAddress, amount);
+                  });
+                },
+              );
+            });
     }, (TLDError error){
       if (mounted){
         setState(() {
@@ -130,6 +200,7 @@ class _TLDYLBBalanceSonPageState extends State<TLDYLBBalanceSonPage> {
       ),
       );
   }
+
 
   Widget _getTotalWidget(){
     return Column(
@@ -183,48 +254,35 @@ class _TLDYLBBalanceSonPageState extends State<TLDYLBBalanceSonPage> {
   }
 
   Widget _getButtonRowWidget(){
-    return Row(
+    // if (widget.type != 4){
+       return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Container(
           width : (MediaQuery.of(context).size.width - ScreenUtil().setWidth(220)) / 2,
           height: ScreenUtil().setHeight(80),
           child: CupertinoButton(child: Text('转入',style : TextStyle(color: Theme.of(context).hintColor,fontSize: ScreenUtil().setSp(30))),padding: EdgeInsets.zero,color: Theme.of(context).primaryColor, onPressed: (){
-            showModalBottomSheet(context: context, builder: (context){
-              return TLDYLBRollInActionSheet(
-                profitRate: _detailProfitModel.profitRate,
-                didClickRollIn: (int type,String walletAddress, String amount){
-                  jugeHavePassword(context, (){
-                    _rollIn(type, walletAddress, amount);
-                  }, TLDCreatePursePageType.back, (){
-                    _rollIn(type, walletAddress, amount);
-                  });
-                },
-              );
-            });
+            _getProfitRate();
           }),
         ),
         Container(
           width : (MediaQuery.of(context).size.width - ScreenUtil().setWidth(220)) / 2,
           height: ScreenUtil().setHeight(80),
           child: CupertinoButton(child: Text('转出',style : TextStyle(color: Theme.of(context).primaryColor,fontSize: ScreenUtil().setSp(30))),padding: EdgeInsets.zero,color: Theme.of(context).hintColor, onPressed: (){
-            showModalBottomSheet(context: context, builder: (context){
-              return TLDYLBRollOutActionSheet(
-                maxValue: _detailProfitModel.totalCount,
-                type: widget.type,
-                 didClickRollOut: (int type,String walletAddress, String amount){
-                  jugeHavePassword(context, (){
-                    _rollOut(type, walletAddress, amount);
-                  }, TLDCreatePursePageType.back, (){
-                    _rollOut(type, walletAddress, amount);
-                  });
-                },
-              );
-            });
+            _getMaxRollOut();
           }),
         )
       ],
     );
+    // } else {
+    //   return Container(
+    //       width : (MediaQuery.of(context).size.width - ScreenUtil().setWidth(110)),
+    //       height: ScreenUtil().setHeight(80),
+    //       child: CupertinoButton(child: Text('转出',style : TextStyle(color: Theme.of(context).primaryColor,fontSize: ScreenUtil().setSp(30))),padding: EdgeInsets.zero,color: Theme.of(context).hintColor, onPressed: (){
+    //        _getMaxRollOut();
+    //       }),
+    //     );
+    // }
   }
 
 }

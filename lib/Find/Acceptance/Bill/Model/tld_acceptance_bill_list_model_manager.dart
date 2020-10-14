@@ -5,6 +5,8 @@ class TLDBillBuyPramaterModel{
   int billId;
   String walletAddress;
   String walletName;
+  int payType;
+  int ylbType;
 }
 
 class TLDBillInfoListModel {
@@ -146,7 +148,14 @@ class TLDAcceptanceBillListModelManager {
   }
 
   void buyBill(TLDBillBuyPramaterModel pramaterModel,Function(String) success,Function(TLDError) failure){
-    TLDBaseRequest request = TLDBaseRequest({'billCount':pramaterModel.count,'billId':pramaterModel.billId,'walletAddress':pramaterModel.walletAddress},'acpt/bill/buyBill');
+    Map pramaterMap = {'billCount':pramaterModel.count,'billId':pramaterModel.billId,'payType':pramaterModel.payType};
+    if (pramaterModel.payType == 1){
+      pramaterMap.addEntries({'walletAddress':pramaterModel.walletAddress}.entries);
+    }else{
+      pramaterMap.addEntries({'ylbType':pramaterModel.ylbType}.entries);
+    }
+
+    TLDBaseRequest request = TLDBaseRequest(pramaterMap,'acpt/bill/buyBill');
     request.postNetRequest((value) {
       success(value);
     }, (error) => failure(error));

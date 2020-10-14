@@ -1,12 +1,15 @@
+import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Model/tld_acceptance_with_draw_model_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TLDAcceptanceWithdrawChooseTypeCell extends StatefulWidget {
-  TLDAcceptanceWithdrawChooseTypeCell({Key key,this.didVoteCallBack,this.title}) : super(key: key);
+  TLDAcceptanceWithdrawChooseTypeCell({Key key,this.didVoteCallBack,this.title,@required this.usefulInfoModel}) : super(key: key);
 
   final Function(int) didVoteCallBack;
+
+  final TLDAceeptanceWithdrawUsefulInfoModel usefulInfoModel;
 
   final String title;
 
@@ -56,7 +59,8 @@ class _TLDAcceptanceWithdrawChooseTypeCellState extends State<TLDAcceptanceWithd
   }
 
   Widget _getVoteRowView(){
-    return Row(
+    if (widget.usefulInfoModel.showPlatform == true){
+      return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Radio(value: 1,groupValue: _vote,
@@ -88,5 +92,24 @@ class _TLDAcceptanceWithdrawChooseTypeCellState extends State<TLDAcceptanceWithd
         ),
       ],
     );
+    }else {
+       return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Radio(value: 1,groupValue: _vote,
+          onChanged: (value) {
+            setState(() {
+              _vote = value;
+            });
+            widget.didVoteCallBack(value);              
+          },
+        ),
+        Padding(
+          padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
+          child: Text(I18n.of(context).referrer,style:TextStyle(fontSize : ScreenUtil().setSp(28),color:Color.fromARGB(255, 51, 51, 51))),
+        )
+      ],
+    );
+    }
   }
 }

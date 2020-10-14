@@ -164,6 +164,7 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
               }
               _pramaterModel = TLDBillBuyPramaterModel();
               _pramaterModel.billId = billModel.billId;
+              _pramaterModel.payType = 1;
               showCupertinoModalPopup(
                   context: context,
                   builder: (context) {
@@ -171,6 +172,12 @@ class _TLDAcceptanceBillListPageState extends State<TLDAcceptanceBillListPage> {
                       infoListModel: billModel,
                       didChooseCountCallBack: (int count) {
                         _pramaterModel.count = count;
+                      },
+                      didChoosePaymentType: (int paymentType){
+                        _pramaterModel.payType = paymentType;
+                      },
+                      didChooseYLBType: (int ylbType){
+                        _pramaterModel.ylbType = ylbType;
                       },
                       didClickBuyButtonCallBack: (){
                         _buyBill(_pramaterModel);

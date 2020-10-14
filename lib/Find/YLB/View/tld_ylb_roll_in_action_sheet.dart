@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/CommonWidget/tld_amount_text_input_fprmatter.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
+import 'package:dragon_sword_purse/Find/YLB/Model/tld_ylb_balance_son_model_manager.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +8,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class TLDYLBRollInActionSheet extends StatefulWidget {
-  TLDYLBRollInActionSheet({Key key,this.didClickRollIn,this.profitRate}) : super(key: key);
+  TLDYLBRollInActionSheet({Key key,this.didClickRollIn,this.profitRateList,this.typeList}) : super(key: key);
 
   final Function didClickRollIn;
 
-  final String profitRate;
+  final List profitRateList;
+
+  final List typeList;
 
   @override
   _TLDYLBRollInActionSheetState createState() => _TLDYLBRollInActionSheetState();
@@ -38,6 +41,13 @@ class _TLDYLBRollInActionSheetState extends State<TLDYLBRollInActionSheet> {
   @override
   Widget build(BuildContext context) {
    Size size = MediaQuery.of(context).size;
+   String rate = '';
+   for (TLDYLBProfitRateModel rateModel in widget.profitRateList) {
+     if (_type == rateModel.type){
+       rate = rateModel.rate;
+       break;
+     }
+   }
     return SingleChildScrollView(
         child: Padding(
       padding:
@@ -87,7 +97,7 @@ class _TLDYLBRollInActionSheetState extends State<TLDYLBRollInActionSheet> {
             ),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-              child: _getNormalView('收益率','${widget.profitRate}%'),
+              child: _getNormalView('收益率','$rate%'),
             ),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
@@ -251,8 +261,9 @@ class _TLDYLBRollInActionSheetState extends State<TLDYLBRollInActionSheet> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         _singleChoiceButton(1, '日结算'),
-        _singleChoiceButton(2, '周结算'),
-        _singleChoiceButton(3, '月结算')
+        _singleChoiceButton(2, '7天结算'),
+        _singleChoiceButton(3, '30天结算'),
+        _singleChoiceButton(4, '60天结算')
       ],
     );
   }
@@ -265,7 +276,7 @@ class _TLDYLBRollInActionSheetState extends State<TLDYLBRollInActionSheet> {
         });
       },
       child: Container(
-        width : (MediaQuery.of(context).size.width - ScreenUtil().setWidth(120)) / 3,
+        width : (MediaQuery.of(context).size.width - ScreenUtil().setWidth(140)) / 4,
         height: ScreenUtil().setHeight(72),
         decoration: BoxDecoration(
           border : Border.all(color : Theme.of(context).hintColor,width : ScreenUtil().setHeight(2)),

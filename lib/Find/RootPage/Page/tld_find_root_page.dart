@@ -86,6 +86,8 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
         TLDFindRootCellUIItemModel uiItemModel = TLDFindRootCellUIItemModel(title: item.name,iconUrl: item.iconUrl,url: item.url,isNeedHideNavigation: item.isNeedHideNavigation,appType: item.appType);
         if (uiItemModel.url == 'AAA'){
            findRootCellUIModel.items.insert(2, uiItemModel);
+        }else if (uiItemModel.url == 'TLD_YLB'){
+          findRootCellUIModel.items.insert(2, uiItemModel);
         }else{
           newWebList.add(uiItemModel);
         }

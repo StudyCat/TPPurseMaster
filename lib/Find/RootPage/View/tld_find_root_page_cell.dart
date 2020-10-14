@@ -69,7 +69,7 @@ class _TLDFindRootPageCellState extends State<TLDFindRootPageCell> {
               ),
               Container(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
-                height: ScreenUtil().setHeight(50 + 150 * cloumnNum),
+                height: ScreenUtil().setHeight(50 + 160 * cloumnNum),
                   child: GridView.builder(
                       physics: new NeverScrollableScrollPhysics(), //增加
                       shrinkWrap: true,

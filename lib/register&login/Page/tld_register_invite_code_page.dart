@@ -145,7 +145,7 @@ class _TLDRegisterInviteCodePageState extends State<TLDRegisterInviteCodePage> {
                   decoration: BoxDecoration(
                     border: Border.all(color: Color.fromARGB(0, 0, 0, 0)),
                   ),
-                  placeholder: I18n.of(context).pleaseEnterVerifyCode,
+                  placeholder: '请输入邀请码',
                   onChanged: (str){
                     widget.pramater.inviteCode = str;
                   },
@@ -155,9 +155,9 @@ class _TLDRegisterInviteCodePageState extends State<TLDRegisterInviteCodePage> {
                 padding: EdgeInsets.only(left : ScreenUtil().setWidth(10),right:0,top: 0,bottom: 0),
                 child: Container(
                  width: ScreenUtil().setWidth(100),
-                 height: ScreenUtil().setHeight(60),
+                 height: ScreenUtil().setHeight(80),
                  child: CupertinoButton(
-                   padding: EdgeInsets.all(0),
+                   padding: EdgeInsets.all(0),  
                    child: Icon(IconData(0xe606,fontFamily : 'appIconFonts'),color: Theme.of(context).primaryColor,),
                    onPressed: () async{
                      await _scanPhoto();

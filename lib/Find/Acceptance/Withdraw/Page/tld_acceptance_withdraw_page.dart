@@ -140,13 +140,13 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
   }
 
   Widget _getBody(){
-    List _titleList = [];
+     List _titleList = [];
     if (_type == TLDAcceptanceWithdrawPageType.referrer){
       _titleList.addAll(_referrerTitleList);
     }else{
       _titleList.addAll(_platformTitleList);
     }
-     return ListView.builder(
+     return _usefulInfoModel != null ? ListView.builder(
       itemCount: _titleList.length + 1,
       itemBuilder: (BuildContext context, int index) {
         if (index == 0){
@@ -207,6 +207,7 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
           );
         }else if (index == 4){
           return TLDAcceptanceWithdrawChooseTypeCell(
+            usefulInfoModel: _usefulInfoModel,
             didVoteCallBack: (int index){
               if (index == 1){
                 setState(() {
@@ -289,7 +290,7 @@ class _TLDAcceptanceWithdrawPageState extends State<TLDAcceptanceWithdrawPage> {
           },
         );
         }
-    );
+    ) : Container();
   }
 
 }

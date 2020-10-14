@@ -7,6 +7,7 @@ class TLDAceeptanceWithdrawUsefulInfoModel {
   String walletAddress;
   String value;
   String inviteTel;
+  bool showPlatform;
 
   TLDAceeptanceWithdrawUsefulInfoModel(
       {this.acptPlatformCachRate, this.walletAddress, this.value,this.inviteTel});
@@ -16,6 +17,7 @@ class TLDAceeptanceWithdrawUsefulInfoModel {
     walletAddress = json['walletAddress'];
     value = json['value'];
     inviteTel = json['inviteTel'];
+    showPlatform = json['showPlatform'];
   }
 
   Map<String, dynamic> toJson() {
@@ -24,6 +26,7 @@ class TLDAceeptanceWithdrawUsefulInfoModel {
     data['walletAddress'] = this.walletAddress;
     data['value'] = this.value;
     data['inviteTel'] = this.inviteTel;
+    data['showPlatform'] = this.showPlatform;
     return data;
   }
 }
