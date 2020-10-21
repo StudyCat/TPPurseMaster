@@ -60,7 +60,7 @@ class _TLDAAAPersonCenterListCellState extends State<TLDAAAPersonCenterListCell>
          Text(plusString + '${widget.listModel.tldCount}TLD',style: TextStyle(fontSize: ScreenUtil().setSp(36),color: widget.listModel.isAdd ? Color.fromARGB(255, 65, 117, 5) : Color.fromARGB(255, 220, 59, 79))),
          Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(10)),
-            child: Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.listModel.createTime),[yyyy,'.',mm,'.',dd,' ',hh,':',nn,':',ss])
+            child: Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.listModel.createTime),[yyyy,'.',mm,'.',dd,' ',HH,':',nn,':',ss])
             ,style: TextStyle(fontSize: ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153))),
           ),
       ],

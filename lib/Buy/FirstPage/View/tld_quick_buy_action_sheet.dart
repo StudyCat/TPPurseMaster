@@ -24,13 +24,26 @@ class _TLDQuickBuyActionSheetState extends State<TLDQuickBuyActionSheet> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      height: ScreenUtil().setHeight(500),
+    return AnimatedPadding(
+        //showModalBottomSheet 键盘弹出时自适应
+        padding: MediaQuery.of(context).viewInsets, //边距（必要）
+        duration: const Duration(milliseconds: 100), //时常 （必要）
+        child: Container(
+            // height: 180,
+            constraints: BoxConstraints(
+              minHeight: 90.w, //设置最小高度（必要）
+              maxHeight: MediaQuery.of(context).size.height, //设置最大高度（必要）
+            ),
+            padding: EdgeInsets.only(top: 0, bottom: 0),
+            child: ListView(shrinkWrap: true, //防止状态溢出 自适应大小
+                children: <Widget>[Container(
       width: size.width,
       padding: EdgeInsets.only(
           top: ScreenUtil().setHeight(40),
           left: ScreenUtil().setWidth(30),
-          right: ScreenUtil().setWidth(30)),
+          right: ScreenUtil().setWidth(30),
+          bottom: ScreenUtil().setHeight(40)
+          ),
       color: Colors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -85,7 +98,7 @@ class _TLDQuickBuyActionSheetState extends State<TLDQuickBuyActionSheet> {
           )
           )],
       ),
-    );
+    )])));
   }
 
     Widget getNormalView(String title, String content) {

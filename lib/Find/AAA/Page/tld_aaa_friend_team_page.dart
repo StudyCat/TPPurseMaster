@@ -72,8 +72,8 @@ class _TLDAAAFriendTeamPageState extends State<TLDAAAFriendTeamPage> {
       showModalBottomSheet(context: context, builder: (context){
         return TLDAAAUpgradeActionSheet(
           upgradeInfoModel: upgradeInfoModel,
-          didClickUpgrade: (int type,String walletAddress){
-            _upgrade(type, walletAddress);
+          didClickUpgrade: (int type,String walletAddress,int paymentType,int ylbType){
+            _upgrade(type, walletAddress,paymentType,ylbType);
           },
         );
       });
@@ -87,11 +87,11 @@ class _TLDAAAFriendTeamPageState extends State<TLDAAAFriendTeamPage> {
     });
   }
 
-  void _upgrade(int type,String walletAddress){
+  void _upgrade(int type,String walletAddress,int paymentType,int ylbType){
       setState(() {
       _isLoading = true;
     });
-    _modelManager.upgrade(type, walletAddress, (){
+    _modelManager.upgrade(type, walletAddress,paymentType,ylbType, (){
       if (mounted){
         setState(() {
           _isLoading = false;

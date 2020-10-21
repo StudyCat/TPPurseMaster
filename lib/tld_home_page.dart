@@ -60,7 +60,8 @@ class _TLDHomePageState extends State<TLDHomePage> {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.camera,
       Permission.storage,
-      Permission.notification
+      Permission.notification,
+      Permission.phone
       ].request();
     print(statuses[Permission.location]);
   }

@@ -31,7 +31,7 @@ class TLDBaseRequest{
   //120.92.141.131 测试环境
   //192.168.1.120 本地环境
   //139.224.83.9:8030 生成环境
-  static String baseUrl = 'http://192.168.1.120:8030/';
+  static String baseUrl = 'http://139.224.83.9:8030/';
   Map pramatersMap;
   String subUrl;
   CancelToken cancelToken;
@@ -68,13 +68,15 @@ class TLDBaseRequest{
      );
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       String version = packageInfo.version;
-      if (userToken != null){
+      Map<String, dynamic> headers = {'version':version,};
+       if (userToken != null){
+        String language = TLDDataManager.instance.currentLocal.languageCode;
         int time = DateTime.now().millisecondsSinceEpoch;
         String uuid = Uuid.randomUuid().toString();
         String authorization = _authorizationEncode(userToken, time, uuid);
-        String language = TLDDataManager.instance.currentLocal.languageCode;
-        options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':version,"Language" : language};
+        headers.addEntries({'authorization':authorization,'uuid':uuid,'userToken':userToken,"Language" : language,'time':time}.entries);
       }
+      options.headers.addEntries(headers.entries);
       if (acceptanceToken != null){
         options.headers.addEntries({'jwtToken':acceptanceToken}.entries);
       }
@@ -106,15 +108,17 @@ class TLDBaseRequest{
         contentType : 'application/json',
         receiveDataWhenStatusError: false
      );
-       PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
       String version = packageInfo.version;
+      Map<String, dynamic> headers = {'version':version,};
        if (userToken != null){
+        String language = TLDDataManager.instance.currentLocal.languageCode;
         int time = DateTime.now().millisecondsSinceEpoch;
         String uuid = Uuid.randomUuid().toString();
         String authorization = _authorizationEncode(userToken, time, uuid);
-        String language = TLDDataManager.instance.currentLocal.languageCode;
-        options.headers = {'authorization':authorization,'time':time ,'uuid':uuid,'userToken':userToken,'version':version,"Language" : language};
+        headers.addEntries({'authorization':authorization,'uuid':uuid,'userToken':userToken,"Language" : language,'time':time}.entries);
       }
+      options.headers.addEntries(headers.entries);
       if (acceptanceToken != null){
         options.headers.addEntries({'jwtToken':acceptanceToken}.entries);
       }

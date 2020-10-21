@@ -140,10 +140,18 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
     }, (TLDError error){
       if (mounted){
         setState(() {
-      _isLoading = false;
-    });
+        _isLoading = false;
+        });
       }
-      Fluttertoast.showToast(msg: error.msg);
+      if (error.code == -1000){
+        showDialog(context: context,builder: (context){
+          return TLDAlertView(title : '温馨提示',type: TLDAlertViewType.normal,alertString :error.msg,didClickSureBtn :(){
+
+          });
+        });
+      }else{
+        Fluttertoast.showToast(msg: error.msg);
+      }
     });
   }
 

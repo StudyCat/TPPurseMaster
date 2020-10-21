@@ -30,7 +30,7 @@ class _TLDYLBRecorderProfitCellState extends State<TLDYLBRecorderProfitCell> {
             _amountWidget(),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(14)),
-              child: Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.listModel.createTime), [yyyy,'-',mm,'-',dd,' ',hh,':',nn]),textAlign: TextAlign.center,style : TextStyle(color: Color.fromARGB(255, 153, 153, 153),fontSize: ScreenUtil().setSp(24))),
+              child: Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.listModel.createTime), [yyyy,'-',mm,'-',dd,' ',HH,':',nn]),textAlign: TextAlign.center,style : TextStyle(color: Color.fromARGB(255, 153, 153, 153),fontSize: ScreenUtil().setSp(24))),
             ),
             Padding(
               padding: EdgeInsets.only(top : ScreenUtil().setHeight(14),left: ScreenUtil().setWidth(20),right: ScreenUtil().setWidth(20)),

@@ -56,7 +56,7 @@ class _TLDDetailRedEnvelopeContentCellState extends State<TLDDetailRedEnvelopeCo
 
   
   String _getDateTime(){
-    return formatDate(DateTime.fromMillisecondsSinceEpoch(widget.reiceveModel.createTime), [yyyy,'-',mm,'-',dd,' ',hh,':',nn]);
+    return formatDate(DateTime.fromMillisecondsSinceEpoch(widget.reiceveModel.createTime), [yyyy,'-',mm,'-',dd,' ',HH,':',nn]);
   }
 
 

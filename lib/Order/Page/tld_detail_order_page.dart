@@ -37,7 +37,7 @@ class TLDDetailOrderPage extends StatefulWidget {
 
 class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
   List titles = [I18n.of(navigatorKey.currentContext).orderNumLabel, I18n.of(navigatorKey.currentContext).countLabel, I18n.of(navigatorKey.currentContext).shouldPayAmountLabel, I18n.of(navigatorKey.currentContext).paymentTermLabel, I18n.of(navigatorKey.currentContext).receiveAddressLabel];
-  bool isOpen = false;
+  bool isOpen = true;
   TLDDetailOrderModelManager _modelManager;
   TLDDetailOrderModel _detailOrderModel;
   StreamController _controller;
@@ -100,11 +100,11 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
       });
       }
       _detailOrderModel = detailModel;
-      if (_detailOrderModel.payMethodVO.type == 2 && _detailOrderModel.status == 0 && _detailOrderModel.amIBuyer){
+      if ((_detailOrderModel.payMethodVO.type == 2 && _detailOrderModel.status == 0 && _detailOrderModel.amIBuyer)){
                       showDialog(context: context,builder: (context) => TLDDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
-                  }else if (_detailOrderModel.payMethodVO.type == 3 && isOpen == true){
-                      showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));                    
-                  }else if (_detailOrderModel.payMethodVO.type == 4 && isOpen == true){
+                  }else if (_detailOrderModel.payMethodVO.type == 3  && _detailOrderModel.status == 0 && _detailOrderModel.amIBuyer){
+                    showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
+                  }else if (_detailOrderModel.payMethodVO.type == 4 && _detailOrderModel.status == 0 && _detailOrderModel.amIBuyer){
                     if (_detailOrderModel.payMethodVO.imageUrl.length > 0) {
                       showDialog(context: context,builder: (context) => TLDDetailDiyQrcodeShowView(paymentName: _detailOrderModel.payMethodVO.myPayName,qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,)); 
                     }
@@ -373,9 +373,9 @@ class _TLDDetailOrderPageState extends State<TLDDetailOrderPage> {
                 didClickQrCodeCallBack: (){
                   if (_detailOrderModel.payMethodVO.type == 2){
                       showDialog(context: context,builder: (context) => TLDDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
-                  }else if (_detailOrderModel.payMethodVO.type == 3 && isOpen == true){
+                  }else if (_detailOrderModel.payMethodVO.type == 3){
                       showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));                    
-                  }else if (_detailOrderModel.payMethodVO.type == 4 && isOpen == true){
+                  }else if (_detailOrderModel.payMethodVO.type == 4){
                     if (_detailOrderModel.payMethodVO.imageUrl.length > 0) {
                       showDialog(context: context,builder: (context) => TLDDetailDiyQrcodeShowView(paymentName: _detailOrderModel.payMethodVO.myPayName,qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,)); 
                     }else{

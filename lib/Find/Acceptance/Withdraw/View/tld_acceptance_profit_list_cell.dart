@@ -84,7 +84,7 @@ class _TLDAcceptanceProfitListCellState extends State<TLDAcceptanceProfitListCel
 
   Widget _getDateWidget(){
     return Container(
-      child: Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.profitListModel.createTime), [yyyy,'-',mm,'-',dd,' ',hh,':',nn]),style:TextStyle(fontSize : ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153)),textAlign: TextAlign.end,),
+      child: Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.profitListModel.createTime), [yyyy,'-',mm,'-',dd,' ',HH,':',nn]),style:TextStyle(fontSize : ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153)),textAlign: TextAlign.end,),
     );
   }
 

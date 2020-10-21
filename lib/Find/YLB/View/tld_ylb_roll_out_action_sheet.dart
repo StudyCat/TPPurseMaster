@@ -7,7 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class TLDYLBRollOutActionSheet extends StatefulWidget {
-  TLDYLBRollOutActionSheet({Key key,this.maxValue,this.type,this.didClickRollOut}) : super(key: key);
+  TLDYLBRollOutActionSheet(
+      {Key key, this.maxValue, this.type, this.didClickRollOut})
+      : super(key: key);
 
   final String maxValue;
 
@@ -21,7 +23,6 @@ class TLDYLBRollOutActionSheet extends StatefulWidget {
 }
 
 class _TLDYLBRollOutActionSheetState extends State<TLDYLBRollOutActionSheet> {
-
   TLDWalletInfoModel _infoModel;
 
   TextEditingController _editingController;
@@ -39,69 +40,102 @@ class _TLDYLBRollOutActionSheetState extends State<TLDYLBRollOutActionSheet> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-        child: Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: Container(
-        height: ScreenUtil().setHeight(380),
-        width: size.width,
-        padding: EdgeInsets.only(
-            top: ScreenUtil().setHeight(40),
-            left: ScreenUtil().setWidth(30),
-            right: ScreenUtil().setWidth(30)),
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text('转出',
-                style: TextStyle(
-                    fontSize: ScreenUtil().setSp(32),
-                    fontWeight: FontWeight.w700,
-                    color: Color.fromARGB(255, 51, 51, 51),
-                    decoration: TextDecoration.none)),
-            Padding(
-              padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-              child: _getInputField(),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-              child: GestureDetector(
-                onTap : (){
-                  Navigator.push(context, MaterialPageRoute(builder : (context) => TLDEchangeChooseWalletPage(didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
-                    setState(() {
-                      _infoModel = infoModel;
-                    });
-                  },)));
-                },
-                child : _getArrowView('选择钱包',_infoModel != null ? _infoModel.wallet.name : '请选择钱包')
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top : ScreenUtil().setHeight(24)),
-              child: Container(
-                width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(60),
-                height : ScreenUtil().setHeight(80),
-                child : CupertinoButton(child: Text('确认转出',style: TextStyle(fontSize : ScreenUtil().setSp(28)),), onPressed: (){
-                    if (_infoModel == null){
-                    Fluttertoast.showToast(msg: '请选择钱包');
-                    return;
-                  }
-                  if (_rollInAmount == null){
-                    Fluttertoast.showToast(msg: '请输入转入金额');
-                    return;
-                  }
-                  widget.didClickRollOut(widget.type,_infoModel.walletAddress,_rollInAmount);
-                  Navigator.of(context).pop();
-            }
-            ,color: Theme.of(context).primaryColor,padding: EdgeInsets.all(0),)
-              ),
-            )
-          ],
-        ),
-      ),
-    ));
+    return AnimatedPadding(
+        //showModalBottomSheet 键盘弹出时自适应
+        padding: MediaQuery.of(context).viewInsets, //边距（必要）
+        duration: const Duration(milliseconds: 100), //时常 （必要）
+        child: Container(
+          // height: 180,
+          constraints: BoxConstraints(
+            minHeight: 90.w, //设置最小高度（必要）
+            maxHeight: MediaQuery.of(context).size.height, //设置最大高度（必要）
+          ),
+          padding: EdgeInsets.only(top: 0, bottom: 0),
+          child: ListView(shrinkWrap: true, //防止状态溢出 自适应大小
+              children: <Widget>[
+                Container(
+                  width: size.width,
+                  padding: EdgeInsets.only(
+                    top: ScreenUtil().setHeight(40),
+                    left: ScreenUtil().setWidth(30),
+                    right: ScreenUtil().setWidth(30),
+                    bottom: ScreenUtil().setHeight(40),
+                  ),
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('转出',
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(32),
+                              fontWeight: FontWeight.w700,
+                              color: Color.fromARGB(255, 51, 51, 51),
+                              decoration: TextDecoration.none)),
+                      Padding(
+                        padding:
+                            EdgeInsets.only(top: ScreenUtil().setHeight(24)),
+                        child: _getInputField(),
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsets.only(top: ScreenUtil().setHeight(24)),
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          TLDEchangeChooseWalletPage(
+                                            didChooseWalletCallBack:
+                                                (TLDWalletInfoModel infoModel) {
+                                              setState(() {
+                                                _infoModel = infoModel;
+                                              });
+                                            },
+                                          )));
+                            },
+                            child: _getArrowView(
+                                '选择钱包',
+                                _infoModel != null
+                                    ? _infoModel.wallet.name
+                                    : '请选择钱包')),
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsets.only(top: ScreenUtil().setHeight(24)),
+                        child: Container(
+                            width: MediaQuery.of(context).size.width -
+                                ScreenUtil().setWidth(60),
+                            height: ScreenUtil().setHeight(80),
+                            child: CupertinoButton(
+                              child: Text(
+                                '确认转出',
+                                style:
+                                    TextStyle(fontSize: ScreenUtil().setSp(28)),
+                              ),
+                              onPressed: () {
+                                if (_infoModel == null) {
+                                  Fluttertoast.showToast(msg: '请选择钱包');
+                                  return;
+                                }
+                                if (_rollInAmount == null) {
+                                  Fluttertoast.showToast(msg: '请输入转入金额');
+                                  return;
+                                }
+                                widget.didClickRollOut(widget.type,
+                                    _infoModel.walletAddress, _rollInAmount);
+                                Navigator.of(context).pop();
+                              },
+                              color: Theme.of(context).primaryColor,
+                              padding: EdgeInsets.all(0),
+                            )),
+                      )
+                    ],
+                  ),
+                )
+              ]),
+        ));
   }
 
   Widget _getInputField() {
@@ -109,46 +143,54 @@ class _TLDYLBRollOutActionSheetState extends State<TLDYLBRollOutActionSheet> {
       width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(60),
       height: ScreenUtil().setHeight(72),
       decoration: BoxDecoration(
-        color : Color.fromARGB(255, 216, 216, 216),
-        borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(36)))
-      ),
+          color: Color.fromARGB(255, 216, 216, 216),
+          borderRadius:
+              BorderRadius.all(Radius.circular(ScreenUtil().setHeight(36)))),
       padding: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Container(
-            width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(274),
+            width:
+                MediaQuery.of(context).size.width - ScreenUtil().setWidth(274),
             child: CupertinoTextField(
-            style: TextStyle(
-                fontSize: ScreenUtil().setSp(24),
-                color: Color.fromARGB(255, 51, 51, 51)),
-            decoration: BoxDecoration(
-                border: Border.all(color: Color.fromARGB(0, 0, 0, 0))),
-            placeholder: '本次可最多转出${widget.maxValue}TLD',
-            controller: _editingController,
-             onChanged: (String text){
-              _rollInAmount = text;
-            },
-            placeholderStyle: TextStyle(
-                fontSize: ScreenUtil().setSp(24),
-                color: Color.fromARGB(255, 153, 153, 153),
-                height: 1.1),
-            inputFormatters: [TLDAmountTextInputFormatter()],
-          ),
+              style: TextStyle(
+                  fontSize: ScreenUtil().setSp(24),
+                  color: Color.fromARGB(255, 51, 51, 51)),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Color.fromARGB(0, 0, 0, 0))),
+              placeholder: '本次可最多转出${widget.maxValue}TLD',
+              controller: _editingController,
+              onChanged: (String text) {
+                _rollInAmount = text;
+              },
+              placeholderStyle: TextStyle(
+                  fontSize: ScreenUtil().setSp(24),
+                  color: Color.fromARGB(255, 153, 153, 153),
+                  height: 1.1),
+              inputFormatters: [TLDAmountTextInputFormatter()],
+            ),
           ),
           Container(
-            width : ScreenUtil().setWidth(186),
-            height : ScreenUtil().setHeight(72),
-            child: CupertinoButton(child: Text('全部转出',style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28)),),
-            color: Theme.of(context).hintColor,
-            padding: EdgeInsets.zero,
-            borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(36))), 
-            onPressed: (){
+            width: ScreenUtil().setWidth(186),
+            height: ScreenUtil().setHeight(72),
+            child: CupertinoButton(
+              child: Text(
+                '全部转出',
+                style: TextStyle(
+                    color: Color.fromARGB(255, 51, 51, 51),
+                    fontSize: ScreenUtil().setSp(28)),
+              ),
+              color: Theme.of(context).hintColor,
+              padding: EdgeInsets.zero,
+              borderRadius:
+                  BorderRadius.all(Radius.circular(ScreenUtil().setHeight(36))),
+              onPressed: () {
                 setState(() {
-                _editingController.text = widget.maxValue;
-                _rollInAmount = widget.maxValue; 
+                  _editingController.text = widget.maxValue;
+                  _rollInAmount = widget.maxValue;
                 });
-            },
+              },
             ),
           )
         ],
@@ -158,37 +200,35 @@ class _TLDYLBRollOutActionSheetState extends State<TLDYLBRollOutActionSheet> {
 
   Widget _getArrowView(String title, String content) {
     return Container(
-      width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(60), 
-      child : Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          title,
-          style: TextStyle(
-              fontSize: ScreenUtil().setSp(28),
-              decoration: TextDecoration.none,
-              fontWeight: FontWeight.w400,
-              color: Color.fromARGB(255, 51, 51, 51)),
-        ),
-        Row(children: <Widget>[
-          Container(
-            width : ScreenUtil().setWidth(280),
-            child : Text(
-            content,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.end,
-            style: TextStyle(
-                fontSize: ScreenUtil().setSp(28),
-                decoration: TextDecoration.none,
-                fontWeight: FontWeight.w400,
-                color: Color.fromARGB(255, 153, 153, 153)),
-          )),
-          Icon(Icons.keyboard_arrow_right)
-        ])
-      ],
-    )
-    );
+        width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(60),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              title,
+              style: TextStyle(
+                  fontSize: ScreenUtil().setSp(28),
+                  decoration: TextDecoration.none,
+                  fontWeight: FontWeight.w400,
+                  color: Color.fromARGB(255, 51, 51, 51)),
+            ),
+            Row(children: <Widget>[
+              Container(
+                  width: ScreenUtil().setWidth(280),
+                  child: Text(
+                    content,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                        fontSize: ScreenUtil().setSp(28),
+                        decoration: TextDecoration.none,
+                        fontWeight: FontWeight.w400,
+                        color: Color.fromARGB(255, 153, 153, 153)),
+                  )),
+              Icon(Icons.keyboard_arrow_right)
+            ])
+          ],
+        ));
   }
-
 }

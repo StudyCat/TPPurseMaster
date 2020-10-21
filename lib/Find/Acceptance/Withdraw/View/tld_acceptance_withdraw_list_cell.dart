@@ -132,7 +132,7 @@ class _TLDAcceptanceWithdrawListCellState extends State<TLDAcceptanceWithdrawLis
         ),
         Padding(
           padding: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
-          child : Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.orderListModel.createTime), [yyyy,'-',mm,'-',dd,' ',hh,':',nn]),style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153)))
+          child : Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.orderListModel.createTime), [yyyy,'-',mm,'-',dd,' ',HH,':',nn]),style:TextStyle(fontSize:ScreenUtil().setSp(24),color:Color.fromARGB(255, 153, 153, 153)))
           )
       ]
     ),

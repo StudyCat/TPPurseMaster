@@ -73,9 +73,9 @@ class _TLDAcceptanceDetailWithdrawPageState extends State<TLDAcceptanceDetailWit
         _detailModel = detailModel;
          if (_detailModel.payMethodVO.type == 2 && _detailModel.cashStatus == 0 && !_detailModel.amApply){
                       showDialog(context: context,builder: (context) => TLDDetailWechatQrCodeShowView(qrCode: _detailModel.payMethodVO.imageUrl,amount: _detailModel.cashPrice,));
-                  }else if (_detailModel.payMethodVO.type == 3){
+                  }else if (_detailModel.payMethodVO.type == 3  && _detailModel.cashStatus == 0 && !_detailModel.amApply){
                       showDialog(context: context,builder: (context) => TLDDetailAlipayQrCodeShowView(qrCode: _detailModel.payMethodVO.imageUrl,amount: _detailModel.cashPrice,));                    
-                  }else if (_detailModel.payMethodVO.type == 4){
+                  }else if (_detailModel.payMethodVO.type == 4  && _detailModel.cashStatus == 0 && !_detailModel.amApply){
                     if (_detailModel.payMethodVO.imageUrl.length > 0) {
                       showDialog(context: context,builder: (context) => TLDDetailDiyQrcodeShowView(paymentName: _detailModel.payMethodVO.myPayName,qrCode: _detailModel.payMethodVO.imageUrl,amount: _detailModel.cashPrice,)); 
                     }else{

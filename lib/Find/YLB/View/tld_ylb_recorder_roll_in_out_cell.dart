@@ -67,7 +67,7 @@ class _TLDYLBRecorderRollInOutCellState extends State<TLDYLBRecorderRollInOutCel
         Text(widget.profitListModel.typeName,textAlign: TextAlign.center,style : TextStyle(color: Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(24))),
         Padding(
           padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
-          child: Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.profitListModel.createTime), [yyyy,'-',mm,'-',dd,' ',hh,':',ss]),style : TextStyle(color: Color.fromARGB(255, 153, 153, 153),fontSize: ScreenUtil().setSp(24))),
+          child: Text(formatDate(DateTime.fromMillisecondsSinceEpoch(widget.profitListModel.createTime), [yyyy,'-',mm,'-',dd,' ',HH,':',ss]),style : TextStyle(color: Color.fromARGB(255, 153, 153, 153),fontSize: ScreenUtil().setSp(24))),
         ),
       ]
     );

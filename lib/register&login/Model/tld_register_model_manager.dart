@@ -10,6 +10,7 @@ class TLDRegisterPramater {
   String tel;
   String telCode;
   String nickname;
+  String mobileOperators;
 }
 
 class TLDRegisterModelManager{
@@ -21,6 +22,9 @@ class TLDRegisterModelManager{
     Map pramaterMap = {'code':pramater.telCode,'nickName':pramater.nickname,'registrationId' : registerId,'password' : password,'tel':pramater.tel,'type' : wallet.type,'walletAddress' : wallet.address};
     if (pramater.inviteCode != null){
       pramaterMap.addEntries({'inviteCode' : pramater.inviteCode}.entries);
+    }
+    if (pramater.mobileOperators != null){
+      pramaterMap.addEntries({'mobileOperators' : pramater.mobileOperators}.entries);
     }
     TLDBaseRequest request = TLDBaseRequest(pramaterMap,'tldUser/registerTldUser');
     request.postNetRequest((value) async {

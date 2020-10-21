@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/3rdPartWeb/Model/tld_3rdpart_web_model_manager.dart';
 import 'package:dragon_sword_purse/Find/3rdPartWeb/Page/tld_3rdpart_web_pay_page.dart';
@@ -148,7 +149,7 @@ class _TLD3rdPartWebPageState extends State<TLD3rdPartWebPage> {
       );
       },
       javascriptChannels: <JavascriptChannel>[
-              _getPayJSChannel(),_getWithdrawJSChannel(),_cloes3rdPartWebChannel()
+              _getPayJSChannel(),_getWithdrawJSChannel(),_cloes3rdPartWebChannel(),_getLoginUserTokenChannel()
             ].toSet(),); 
   }
 
@@ -175,6 +176,18 @@ class _TLD3rdPartWebPageState extends State<TLD3rdPartWebPage> {
                   });
                 }
               );
+  }
+
+
+  JavascriptChannel _getLoginUserTokenChannel(){
+    return JavascriptChannel(
+      name: 'tldLogin', 
+      onMessageReceived: (JavascriptMessage message){
+        String userToken = TLDDataManager.instance.userToken;
+        _controller?.evaluateJavascript("getUserToken('$userToken')")
+                            ?.then((result) {
+                      });
+      });
   }
 
   JavascriptChannel _getWithdrawJSChannel(){

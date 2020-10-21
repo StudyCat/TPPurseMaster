@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
@@ -10,7 +11,9 @@ import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_person_center_header_bo
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_person_center_header_view.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_upgrade_action_sheet.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_son_page.dart';
+import 'package:dragon_sword_purse/Find/YLB/Model/tld_ylb_choose_type_model_manager.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -95,8 +98,8 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
       showModalBottomSheet(context: context, builder: (context){
         return TLDAAAUpgradeActionSheet(
           upgradeInfoModel: upgradeInfoModel,
-          didClickUpgrade: (int type,String walletAddress){
-            _upgrade(type, walletAddress);
+          didClickUpgrade: (int type,String walletAddress,int paymentType,int ylbType){
+            _upgrade(type, walletAddress,paymentType,ylbType);
           },
         );
       });
@@ -110,11 +113,11 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
     });
   }
 
-  void _upgrade(int type,String walletAddress){
+  void _upgrade(int type,String walletAddress,int paymentType,int ylbType){
       setState(() {
       _isLoading = true;
     });
-    _modelManager.upgrade(type, walletAddress, (){
+    _modelManager.upgrade(type, walletAddress, paymentType,ylbType,(){
       if (mounted){
         setState(() {
           _isLoading = false;
@@ -215,7 +218,11 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
           didClickWithdrawCallBack: (){
             Navigator.push(context, MaterialPageRoute(
               builder : (context) => TLDEchangeChooseWalletPage(didChooseWalletCallBack: (TLDWalletInfoModel walletInfoModel){
-                _recieve(walletInfoModel.walletAddress);
+                jugeHavePassword(context, (){
+                  _recieve(walletInfoModel.walletAddress);
+                }, TLDCreatePursePageType.back, (){
+                  _recieve(walletInfoModel.walletAddress);
+                });
               },)));
           },
           didClickUpgradeButtonCallBack: (){

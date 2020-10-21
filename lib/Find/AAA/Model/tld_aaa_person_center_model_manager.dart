@@ -84,9 +84,15 @@ class TLDAAAPersonFriendCenterModelManager {
   }
 
   void upgrade(
-      int type, String walletAddress, Function success, Function failure) {
+      int type, String walletAddress,int paymentType,int ylbType,Function success, Function failure) {
+    Map pramaters;
+    if (paymentType == 1){
+      pramaters = {'type': type, 'walletAddress': walletAddress,'payType':paymentType};
+    }else{
+      pramaters = {'type': type, 'ylbType': ylbType,'payType':paymentType};
+    }
     TLDBaseRequest request = TLDBaseRequest(
-        {'type': type, 'walletAddress': walletAddress}, 'aaa/upgrade');
+        pramaters, 'aaa/upgrade');
     request.postNetRequest((value) {
       success();
     }, (error) => failure(error));

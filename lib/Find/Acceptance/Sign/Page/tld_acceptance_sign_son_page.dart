@@ -3,6 +3,7 @@ import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_change_user_info_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_sign_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_sign_list_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_body_view.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
@@ -87,6 +88,14 @@ class _TLDAcceptanceSignSonPageState extends State<TLDAcceptanceSignSonPage> {
         ),
         heroTag: 'sign_son_page',
         transitionBetweenRoutes: false,
+        trailing: GestureDetector(
+          child: Text('签到记录'),
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) => TLDSignListPage()
+            ));
+          },
+        ),
         middle: Text(I18n.of(context).signIn),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),

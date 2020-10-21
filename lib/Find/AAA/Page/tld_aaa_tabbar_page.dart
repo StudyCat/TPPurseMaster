@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_friend_team_page.dart';
 import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_person_center_page.dart';
+import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_plus_star_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,6 +23,14 @@ class _TLDAAATabbarPageState extends State<TLDAAATabbarPage> {
             fontSize: 10,
           )),
     ),
+    // BottomNavigationBarItem(
+    //   activeIcon: Image.asset('assetss/images/aaa_person_center.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+    //   icon: Image.asset('assetss/images/aaa_person_center_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+    //   title: Text('团队升星',
+    //       style: TextStyle(
+    //         fontSize: 10,
+    //       )),
+    // ),
     BottomNavigationBarItem(
       activeIcon: Image.asset('assetss/images/icon_friend_team.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_friend_team_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
@@ -48,7 +57,11 @@ class _TLDAAATabbarPageState extends State<TLDAAATabbarPage> {
 
     _pageController = PageController();
 
-    pages =  [TLDAAAPersonCenterPage(),TLDAAAFriendTeamPage()];
+    pages =  [
+      TLDAAAPersonCenterPage(),
+      // TLDAAAPlusStarPage(),
+      TLDAAAFriendTeamPage()
+      ];
   }
 
   @override
