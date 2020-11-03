@@ -81,7 +81,7 @@ class _TLDAAAPlusStarCellState extends State<TLDAAAPlusStarCell> {
                  child : RichText(
                    textAlign: TextAlign.start,
                    text: TextSpan(
-                     text: '${widget.starModel.teamLevel}级好友圈,每升一级，签到额外获得',
+                     text: '${widget.starModel.teamLevel}级好友圈,每升一星,好友成功签到,可额外获取',
                      style: TextStyle(fontSize: ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153)),
                      children: <InlineSpan>[
                      TextSpan(

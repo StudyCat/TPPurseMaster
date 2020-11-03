@@ -21,6 +21,7 @@ import 'package:dragon_sword_purse/Find/RedEnvelope/Page/tld_red_envelope_page.d
 import 'package:dragon_sword_purse/Find/RedEnvelope/Page/tld_send_red_envelope_page.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/View/tld_red_envelop_cell.dart';
 import 'package:dragon_sword_purse/Find/RootPage/Model/tld_find_root_model_manager.dart';
+import 'package:dragon_sword_purse/Find/RootPage/Page/tld_bill_Repaying_page.dart';
 import 'package:dragon_sword_purse/Find/RootPage/Page/tld_game_page.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_ad_banner_view.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_page_cell.dart';
@@ -32,6 +33,7 @@ import 'package:dragon_sword_purse/Order/Page/tld_order_list_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
 import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
+import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -88,6 +90,8 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
            findRootCellUIModel.items.insert(2, uiItemModel);
         }else if (uiItemModel.url == 'TLD_YLB'){
           findRootCellUIModel.items.insert(2, uiItemModel);
+        }else if (uiItemModel.url == 'TLD_BILL'){
+          findRootCellUIModel.items.insert(0, uiItemModel);
         }else{
           newWebList.add(uiItemModel);
         }
@@ -95,6 +99,29 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
 
     setState(() {
       findRootCellUIModel.items.insertAll(findRootCellUIModel.items.length - 1, newWebList);
+    });
+  }
+
+  void _isOpenMission(){
+     setState(() {
+      _isLoading = true;
+    });
+    _modelManager.isOpenMission((bool isOpen){
+       if (mounted){}
+      setState(() {
+      _isLoading = false;
+    });
+    if (isOpen){
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDNewMissionFirstPage()));
+    }else{
+      Fluttertoast.showToast(msg: I18n.of(context).missionNotOpenAlertDesc);
+    }
+    }, (TLDError error){
+       if (mounted){}
+      setState(() {
+      _isLoading = false;
+    });
+    Fluttertoast.showToast(msg: error.msg);
     });
   }
 
@@ -148,6 +175,16 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
           return TLDAlertView(title : '温馨提示',type: TLDAlertViewType.normal,alertString :error.msg,didClickSureBtn :(){
 
           });
+        });
+      }else if (error.code == -1001){
+        Navigator.push(context, MaterialPageRoute(builder : (context){
+          return TLDBillRepayingPage();
+        })).then((value){
+            _iconDataSource =  TLDFindRootModelManager.uiModelList;
+
+            _get3rdWebList();
+
+            _getPlatformWeb();
         });
       }else{
         Fluttertoast.showToast(msg: error.msg);
@@ -248,16 +285,7 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
           TLDFindRootCellUIModel uiModel = _iconDataSource[index - 1];
           return TLDFindRootPageCell(uiModel: uiModel,didClickItemCallBack: (TLDFindRootCellUIItemModel itemModel){
             if (itemModel.title == I18n.of(context).missionLabel && itemModel.url.length == 0){
-              Fluttertoast.showToast(msg: I18n.of(context).missionNotOpenAlertDesc);
-              // Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDNewMissionFirstPage()));
-            }else if (itemModel.title == I18n.of(context).tldBillLabel && itemModel.url.length == 0){
-              // String acceptanceToken = TLDDataManager.instance.acceptanceToken;
-              // if (acceptanceToken != null){
-              //   Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceTabbarPage()));
-              // }else{
-              //   Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDAcceptanceLoginPage()));
-              // }
-              _isHaveAcceptanceUser();
+              _isOpenMission();
             }else if (itemModel.title == I18n.of(context).tldRedEnvelope && itemModel.url.length == 0){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRedEnvelopePage()));
             }else if (itemModel.title == I18n.of(context).recieveRedEnvelope&& itemModel.url.length == 0){
@@ -279,6 +307,8 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) =>  TLDAcceptanceWithdrawTabPage(),));
               }else if (itemModel.url == 'TLD_YLB'){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TLDYLBTabPage()));
+              }else if (itemModel.url == 'TLD_BILL'){
+                _isHaveAcceptanceUser();
               }else{
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLD3rdPartWebPage(urlStr: itemModel.url,isNeedHideNavigation: itemModel.isNeedHideNavigation,)));
               }

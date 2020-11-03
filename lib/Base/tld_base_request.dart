@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
-import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
-import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:dragon_sword_purse/register&login/Page/tld_register_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,9 +11,9 @@ import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
-import 'package:pointycastle/api.dart';
 import 'package:uuid_enhanced/uuid.dart';
 import 'package:web3dart/crypto.dart';
+import 'package:simple_rsa2/simple_rsa2.dart';
 
 class TLDError{
   int code;
@@ -27,16 +25,20 @@ class TLDError{
   }
 }
 
+
 class TLDBaseRequest{
   //120.92.141.131 测试环境
   //192.168.1.120 本地环境
   //139.224.83.9:8030 生成环境
-  static String baseUrl = 'http://139.224.83.9:8030/';
+  static String baseUrl = 'http://192.168.1.120:8030/';
   Map pramatersMap;
   String subUrl;
   CancelToken cancelToken;
   bool isNeedSign;
   String walletAddress;
+
+  final String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCF2Bviwh62uKqlN5uVETTzJEvfulFINwzm3RvKAl8APIe3uEQgt6CHAlzx40yMXqGMvsc+cUcAFRRoyKkvjUDlw5cELn2eBtvZ660uGxL/YB7y9zXLNisrJNu+lcqYBqwbIL3iMrpPXkOqwiiRfDkpvypwLMUl+1fAcWF+iS9BJQIDAQAB";
+
 
   TLDBaseRequest(Map pramatersMap,String subUrl){
     this.pramatersMap = pramatersMap;
@@ -80,7 +82,10 @@ class TLDBaseRequest{
       if (acceptanceToken != null){
         options.headers.addEntries({'jwtToken':acceptanceToken}.entries);
       }
-     Response response = await dio.get(baseUrl+this.subUrl,queryParameters: this.pramatersMap,options: options,cancelToken: cancelToken);
+
+      String pramaterStr = await _encryptPramater();
+
+     Response response = await dio.get(baseUrl+this.subUrl,queryParameters:{'parameter':pramaterStr} ,options: options,cancelToken: cancelToken);
      String jsonString = response.data;
      Map responseMap = jsonDecode(jsonString);
      String codeStr = responseMap['code'];
@@ -127,7 +132,10 @@ class TLDBaseRequest{
       }
       Dio dio = Dio(options);
      String url = baseUrl + this.subUrl;
-     Response response = await dio.post(url,queryParameters: Map<String, dynamic>.from(this.pramatersMap),cancelToken: cancelToken);
+
+     String pramaterStr = await _encryptPramater();
+
+     Response response = await dio.post(url,queryParameters: {'parameter':pramaterStr},cancelToken: cancelToken);
      Map responseMap = response.data;
      String codeStr = responseMap['code'];
      dynamic dataStr = responseMap['data'];
@@ -144,6 +152,14 @@ class TLDBaseRequest{
       TLDError error = TLDError(400,'您的网络异常');
        failure(error);
     }
+  }
+
+  Future<String> _encryptPramater() async {
+    String pramaterJson = jsonEncode(this.pramatersMap);
+
+    
+    return await encryptString(pramaterJson, publicKey);
+       
   }
 
 

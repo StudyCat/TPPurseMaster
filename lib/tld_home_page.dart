@@ -63,7 +63,6 @@ class _TLDHomePageState extends State<TLDHomePage> {
       Permission.notification,
       Permission.phone
       ].request();
-    print(statuses[Permission.location]);
   }
 
   void _checkVersion(){

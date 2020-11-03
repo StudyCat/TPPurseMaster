@@ -102,8 +102,6 @@ class TLDFindRootModelManager {
     return [
       TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).playingMethodLabel, isHaveNotice: true, items: [
         TLDFindRootCellUIItemModel(
-            title: I18n.of(navigatorKey.currentContext).tldBillLabel, imageAssest: 'assetss/images/icon_choose_accept.png',isPlusIcon: false),
-        TLDFindRootCellUIItemModel(
             title: I18n.of(navigatorKey.currentContext).tldRedEnvelope, imageAssest: 'assetss/images/red_envelope_icon.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(
             title: I18n.of(navigatorKey.currentContext).game, imageAssest: 'assetss/images/game_icon.png',isPlusIcon: false),
@@ -196,6 +194,17 @@ class TLDFindRootModelManager {
       failure(error);
     } );
   }
+
+
+  void isOpenMission(Function success,Function(TLDError) failure){
+    TLDBaseRequest request = TLDBaseRequest({},"common/isOpenTask");
+    request.postNetRequest((value) {
+      success(value);
+    }, (error){
+      failure(error);
+    } );
+  }
+
 
 
   void getGamePageInfo(Function success,Function failure){

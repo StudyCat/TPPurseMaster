@@ -6,6 +6,8 @@ import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_w
 import 'package:dragon_sword_purse/Find/Acceptance/Login/Page/tld_acceptance_login_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/RollOut/Page/tld_roll_out_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Model/tld_acceptance_sign_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_person_center_invite_person_profit.dart';
+import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_person_center_my_profit_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_profit_spill_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_son_page.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/View/tld_acceptance_sign_body_view.dart';
@@ -47,8 +49,8 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
   TabController _tabController;
 
   List<String> _tabTitles = [
-    I18n.of(navigatorKey.currentContext).withdrawWaitPay,
-    I18n.of(navigatorKey.currentContext).withdrawWaitRelease
+    '我的收益情况',
+    '上家收益情况'
   ];
 
 
@@ -166,34 +168,34 @@ class _TLDAcceptanceSignPageState extends State<TLDAcceptanceSignPage> with Auto
             ),
           ),
         ),
-        //  Padding(
-        //     padding: EdgeInsets.only(
-        //         left: ScreenUtil().setWidth(50),
-        //         right: ScreenUtil().setWidth(50),
-        //         top: ScreenUtil().setHeight(20)),
-        //     child: TabBar(
-        //       tabs: _tabTitles.map((title) {
-        //         return Tab(text: title);
-        //       }).toList(),
-        //       labelStyle: TextStyle(
-        //           fontSize: ScreenUtil().setSp(32),
-        //           fontWeight: FontWeight.bold),
-        //       unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(24)),
-        //       indicatorColor: Theme.of(context).hintColor,
-        //       labelColor: Color.fromARGB(255, 51, 51, 51),
-        //       unselectedLabelColor: Color.fromARGB(255, 153, 153, 153),
-        //       controller: _tabController,
-        //       indicatorSize: TabBarIndicatorSize.label,
-        //     ),
-        //   ),
-          // Expanded(
-          //     child: TabBarView(
-          //   children: [
-          //     TLDAcceptanceWithdrawListPage(type: TLDAcceptanceProfitListPageType.waitPay,),
-          //     TLDAcceptanceWithdrawListPage(type: TLDAcceptanceProfitListPageType.waitSentTLD,)
-          //   ],
-          //   controller: _tabController,
-          // ))
+         Padding(
+            padding: EdgeInsets.only(
+                left: ScreenUtil().setWidth(50),
+                right: ScreenUtil().setWidth(50),
+                top: ScreenUtil().setHeight(20)),
+            child: TabBar(
+              tabs: _tabTitles.map((title) {
+                return Tab(text: title);
+              }).toList(),
+              labelStyle: TextStyle(
+                  fontSize: ScreenUtil().setSp(32),
+                  fontWeight: FontWeight.bold),
+              unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(24)),
+              indicatorColor: Theme.of(context).hintColor,
+              labelColor: Color.fromARGB(255, 51, 51, 51),
+              unselectedLabelColor: Color.fromARGB(255, 153, 153, 153),
+              controller: _tabController,
+              indicatorSize: TabBarIndicatorSize.label,
+            ),
+          ),
+          Expanded(
+              child: TabBarView(
+            children: [
+              TLDAcceptancePersonCenterMyProfitPage(),
+              TLDAcceptancePersonCenterInvitePersonProfitPage()
+            ],
+            controller: _tabController,
+          ))
         // TLDAcceptanceSignBodyView(userInfoModel: _userInfoModel,didClickSignButton: (){
         //   _sign();
         // },

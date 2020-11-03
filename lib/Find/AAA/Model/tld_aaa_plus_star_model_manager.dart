@@ -48,6 +48,16 @@ class TLDTeamStarModel {
   }
 }
 
+class TLDAAAPlusStarPramater{
+  String walletAddress;
+  int payType;
+  int starNum;
+  int teamLevel;
+  int ylbType;
+
+  TLDAAAPlusStarPramater({this.payType = 1,this.walletAddress = '',this.starNum = 0});
+}
+
 class TLDAAAPlusStarModelManager {
   void getStarList(Function success, Function failure) {
     TLDBaseRequest request = TLDBaseRequest({}, 'aaa/upgradeStarDetail');
@@ -58,6 +68,29 @@ class TLDAAAPlusStarModelManager {
         result.add(TLDTeamStarModel.fromJson(item));
       }
       success(result);
+    }, (error) => failure(error));
+  }
+
+
+  void getStarAmount(int teamLevel,int starNum,Function success, Function failure){
+    TLDBaseRequest request = TLDBaseRequest({'teamLevel':teamLevel,'starNum' : starNum}, 'aaa/upgradeCondition');
+    request.postNetRequest((value) {
+      success(value['totalPrice']);
+    }, (TLDError error) => failure(error));
+  }
+
+
+  void upgrade(TLDAAAPlusStarPramater pramater,Function success,Function failure){
+    Map pramaters;
+    if (pramater.payType == 1){
+      pramaters = {'teamLevel': pramater.teamLevel, 'walletAddress': pramater.walletAddress,'payType':pramater.payType,'starNum':pramater.starNum};
+    }else{
+      pramaters = {'teamLevel': pramater.teamLevel, 'ylbType': pramater.ylbType,'payType':pramater.payType,'starNum':pramater.starNum};
+    }
+    TLDBaseRequest request = TLDBaseRequest(
+        pramaters, 'aaa/upgradeStarLevel');
+    request.postNetRequest((value) {
+      success();
     }, (error) => failure(error));
   }
 }

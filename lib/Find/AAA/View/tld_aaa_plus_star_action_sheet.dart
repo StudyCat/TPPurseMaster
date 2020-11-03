@@ -1,16 +1,24 @@
 import 'dart:io';
 
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
+import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_plus_star_model_manager.dart';
 import 'package:dragon_sword_purse/Find/YLB/Model/tld_ylb_choose_type_model_manager.dart';
 import 'package:dragon_sword_purse/Find/YLB/Page/tld_ylb_choose_type_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 class TLDAAAPlusStarActionSheet extends StatefulWidget {
-  TLDAAAPlusStarActionSheet({Key key}) : super(key: key);
+  TLDAAAPlusStarActionSheet({Key key,this.teamLevel,this.didClickUpgrade}) : super(key: key);
+
+  final int teamLevel;
+
+  final Function didClickUpgrade;
 
   @override
   _TLDAAAPlusStarActionSheetState createState() => _TLDAAAPlusStarActionSheetState();
@@ -18,8 +26,6 @@ class TLDAAAPlusStarActionSheet extends StatefulWidget {
 
 class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> with WidgetsBindingObserver  {
    int _paymentType = 1;
-
-   String _walletAddress;
 
    TLDYLBTypeModel _typeModel;
 
@@ -29,6 +35,14 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
 
    TextEditingController _textEditingController;
 
+   TLDAAAPlusStarModelManager _modelManager;
+
+   bool _isLoading = false;
+
+   String _amount  = '0';
+
+   TLDAAAPlusStarPramater _pramater;
+
    @override
   void initState() {
     // TODO: implement initState
@@ -36,12 +50,44 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
 
     _focusNode = FocusNode();
 
+    _pramater = TLDAAAPlusStarPramater();
+    _pramater.teamLevel = widget.teamLevel;
+
     _textEditingController = TextEditingController();
 
     // 监听输入框焦点变化
     _focusNode.addListener(_onFocus);
     // 创建一个界面变化的观察者
     WidgetsBinding.instance.addObserver(this);
+
+    _modelManager = TLDAAAPlusStarModelManager();
+  }
+
+
+  void _getStarAmount(int starNum){
+    if (starNum < 1){
+      return;
+    }
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.getStarAmount(widget.teamLevel, starNum, (String amount){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+          _amount = amount;
+        });
+      }
+      _pramater.starNum = starNum;
+    }, (TLDError error){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Fluttertoast.showToast(msg: error.msg);
+      _textEditingController.text = '${_pramater.starNum}';
+    });
   }
 
   @override
@@ -64,13 +110,13 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
    // 焦点变化时触发的函数
   void _onFocus() {
     if (_focusNode.hasFocus) {
-      
       return;
     }
     
     // 失去焦点时候的操作
     isKeyboardActived = false;
-
+    int starNum = int.parse(_textEditingController.text);
+    _getStarAmount(starNum);
   }
 
    // 既然有监听当然也要有卸载，防止内存泄漏嘛
@@ -85,7 +131,7 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
   Widget build(BuildContext context) {
     String content = "";
     if (_paymentType == 1){
-      content = _walletAddress == null ? '请选择钱包' : _walletAddress;
+      content = _pramater.walletAddress.length == 0 ? '请选择钱包' : _pramater.walletAddress;
     }else{
       content = _typeModel == null ? '请选择支付方式' : _typeModel.typeName;
     }
@@ -93,7 +139,7 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
         //showModalBottomSheet 键盘弹出时自适应
         padding: MediaQuery.of(context).viewInsets, //边距（必要）
         duration: const Duration(milliseconds: 100), //时常 （必要）
-        child: Container(
+        child: LoadingOverlay(isLoading: _isLoading, child: Container(
             // height: 180,
             constraints: BoxConstraints(
               minHeight: 90, //设置最小高度（必要）
@@ -133,7 +179,7 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
                                       didChooseWalletCallBack:
                                           (TLDWalletInfoModel infoModel) {
                                         setState(() {
-                                          _walletAddress =
+                                          _pramater.walletAddress =
                                               infoModel.walletAddress;
                                         });
                                       },
@@ -149,6 +195,7 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
                                         setState(() {
                                           _typeModel =
                                               typeModel;
+                                          _pramater.ylbType = typeModel.type;
                                         });
                                       },
                                     )));
@@ -159,7 +206,7 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
                     ),
                     _bottomWidget()
                   ])
-                ])));
+                ]))));
   }
 
     
@@ -223,13 +270,12 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
             ),
             child: CupertinoTextField(
               focusNode: _focusNode,
+              controller: _textEditingController,
               textInputAction: TextInputAction.done,
+              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
               decoration: BoxDecoration(
                 border : Border.all(color :Color.fromARGB(0, 0, 0, 0))
               ),
-              onChanged: (String text){
-                
-              },
             ),
           ),
         )
@@ -286,6 +332,7 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
           onChanged: (value) {
             setState(() {
                 _paymentType = value;
+                _pramater.payType = value;
             });
           },
         ),
@@ -296,6 +343,7 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
               onTap: () {
                 setState(() {
                 _paymentType = type;
+                _pramater.payType = type;
             });
               },
               child: Text(
@@ -320,7 +368,7 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
               padding: EdgeInsets.only(left: ScreenUtil().setWidth(30)),
               child: RichText(
                 text: TextSpan(
-                    text: '20',
+                    text: _amount,
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(48),
                         color: Color.fromARGB(255, 74, 74, 74),
@@ -350,17 +398,19 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
                         color: Color.fromARGB(255, 51, 51, 51),
                       )),
                   onPressed: () {
-                    if (_paymentType == 1 && _walletAddress == null) {
+                    if (_paymentType == 1 && _pramater.walletAddress.length == 0) {
                       Fluttertoast.showToast(msg: '请先选择钱包');
                       return;
                     }
-                    if (_paymentType == 2 && _typeModel == null){
+                    if (_paymentType == 2 && _pramater.ylbType == null){
                       Fluttertoast.showToast(msg: '请先选择余利宝支付方式');
                       return;
                     }
-                    String walletAddress =  _walletAddress == null ? '' : _walletAddress;
-                    int ylbType = _typeModel == null ? 0 : _typeModel.type;
-                    
+                    if (_pramater.starNum < 1){
+                      Fluttertoast.showToast(msg: '升级星数必须大于0');
+                      return;
+                    }
+                    widget.didClickUpgrade(_pramater);
                     Navigator.of(context).pop();
                   },
                 ),

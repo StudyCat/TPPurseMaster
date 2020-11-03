@@ -44,13 +44,21 @@ class TLDRegisterModelManager{
     void getMessageCode(String cellPhoneNum,
       Function() success, Function(TLDError) failure) {
     TLDWallet wallet = TLDDataManager.instance.purseList.first;
+    String regsterId = TLDDataManager.instance.registrationID;
     TLDBaseRequest request = TLDBaseRequest(
-        {'tel': cellPhoneNum,'walletAddress' : wallet.address},
+        {'tel': cellPhoneNum,'walletAddress' : wallet.address,'registrationId' : regsterId},
         'common/getRegisterTelCode');
     request.isNeedSign = true;
     request.walletAddress = wallet.address;
     request.postNetRequest((value) {
       success();
+    }, (error) => failure(error));
+  }
+
+  void openSimVerify(Function success,Function failure){
+    TLDBaseRequest request = TLDBaseRequest({},'common/isOpenSimVerify');
+    request.postNetRequest((value) {
+      success(value);
     }, (error) => failure(error));
   }
 

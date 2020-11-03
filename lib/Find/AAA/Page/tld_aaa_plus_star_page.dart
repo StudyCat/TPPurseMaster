@@ -7,6 +7,7 @@ import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TLDAAAPlusStarPage extends StatefulWidget {
@@ -23,6 +24,8 @@ class _TLDAAAPlusStarPageState extends State<TLDAAAPlusStarPage> {
   TLDAAAPlusStarModelManager _modelManager;
 
   List _dataSource = [];
+
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -50,6 +53,29 @@ class _TLDAAAPlusStarPageState extends State<TLDAAAPlusStarPage> {
     });
   }
 
+  void _upgrade(TLDAAAPlusStarPramater pramater){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.upgrade(pramater, (){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Fluttertoast.showToast(msg: '升级成功');
+      _refreshController.requestRefresh();
+      _getStarList();
+    }, (TLDError error){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+       Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +89,7 @@ class _TLDAAAPlusStarPageState extends State<TLDAAAPlusStarPage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getRefreshWidget(),
+      body: LoadingOverlay(isLoading: _isLoading, child: _getRefreshWidget()),
       backgroundColor: Color.fromARGB(255, 242, 242, 242));
   }
 
@@ -85,7 +111,7 @@ class _TLDAAAPlusStarPageState extends State<TLDAAAPlusStarPage> {
       itemCount: _dataSource.length + 1,
       itemBuilder: (BuildContext context, int index) {
       if (index == 0){
-        return TLDAAAPlusStarNoticeCell();
+        return TLDAAAPlusStarNoticeCell(noticeCotent: '如果您的连续签到中断，团队星级将会重置。',);
       }else{
         TLDTeamStarModel model = _dataSource[index - 1];
         return TLDAAAPlusStarCell(
@@ -93,7 +119,9 @@ class _TLDAAAPlusStarPageState extends State<TLDAAAPlusStarPage> {
           didClickPlusStarButton: (){
             showModalBottomSheet(
               context: context,
-              builder: (context) => TLDAAAPlusStarActionSheet()
+              builder: (context) => TLDAAAPlusStarActionSheet(teamLevel: model.teamLevel,didClickUpgrade:(TLDAAAPlusStarPramater pramater){
+                _upgrade(pramater);
+              },)
             );
           },
         );

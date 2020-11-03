@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TLDAAAPlusStarNoticeCell extends StatefulWidget {
-  TLDAAAPlusStarNoticeCell({Key key}) : super(key: key);
+  TLDAAAPlusStarNoticeCell({Key key,@required this.noticeCotent}) : super(key: key);
+
+  final String noticeCotent;
 
   @override
   _TLDAAAPlusStarNoticeCellState createState() => _TLDAAAPlusStarNoticeCellState();
@@ -21,7 +23,7 @@ class _TLDAAAPlusStarNoticeCellState extends State<TLDAAAPlusStarNoticeCell> {
            Icon(IconData(0xe62b,fontFamily: 'appIconFonts'),size: ScreenUtil().setHeight(32),),
            Padding(
              padding: EdgeInsets.only(left : ScreenUtil().setWidth(20),),
-             child : Text('如果您的连续签到中断，团队星级将会重置。',style : TextStyle(fontSize :ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51)))
+             child : Text(widget.noticeCotent,style : TextStyle(fontSize :ScreenUtil().setSp(24),color : Color.fromARGB(255, 51, 51, 51)))
           )
          ],
        ),

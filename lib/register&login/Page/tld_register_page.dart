@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:mobile_number/mobile_number.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -54,26 +55,69 @@ class _TLDRegisterViewState extends State<TLDRegisterView> {
     allPurse == null ? TLDDataManager.instance.purseList = [] : TLDDataManager.instance.purseList = List.from(allPurse);
   }
 
-  void _sendTelCode()async{
-    bool isHavePermission = await MobileNumber.hasPhonePermission;
-    if (!isHavePermission){
-      await MobileNumber.requestPhonePermission;
+  void _sendTelCode(bool isVerify)async{
+    var status = await Permission.phone.status;
+    if (status == PermissionStatus.denied) {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.phone,
+      ].request();
+      return;
+    }else if(status == PermissionStatus.permanentlyDenied){
+      Fluttertoast.showToast(msg: '请开启手机电话权限');
       return;
     }
 
     try{
+    if (isVerify){
     List<SimCard> simCards = await MobileNumber.getSimCards;
+    bool allHaveNumber = true;
+    if (simCards == null){
+       Fluttertoast.showToast(msg: '非法设备，你的手机未插入电话卡，请插入电话卡后再试。');
+       return;
+    }
+    
+    if (simCards.length == 0){
+       Fluttertoast.showToast(msg: '非法设备，你的手机未插入电话卡，请插入电话卡后再试。');
+       return;
+    }
+
+    for (SimCard item in simCards) {
+        if (item.number == null){
+          allHaveNumber = false;
+          break;
+        }
+
+        if (item.number.length == 0){
+          allHaveNumber = false;
+          break;
+        }
+    }
+
+    if (allHaveNumber){
      bool haveNumber = false;
-     for (SimCard simcard in simCards) {
-       if (simcard.number.contains(_pramater.tel)){
+     String cardNumStr= '';
+     for (int i = 0; i < simCards.length;i++ ) {
+       SimCard simCard = simCards[i];
+       if (simCard.number.contains(_pramater.tel)){
          haveNumber = true;
-         _pramater.mobileOperators = simcard.carrierName;
+         _pramater.mobileOperators = simCard.carrierName;
        }
+       int cardNum = i + 1;
+       String sonNumStr = '卡$cardNum :${simCard.number},';
+       cardNumStr = cardNumStr + sonNumStr;
      }
      if (haveNumber == false){
-       Fluttertoast.showToast(msg: '此设备非法，请更换设备');
+       Fluttertoast.showToast(msg: '您当前手机的电话卡为：$cardNumStr  与你输入的不符合，请插入电话卡后再注册或者登录。');
       return;
      }
+
+    }else{
+      if (simCards.length == 0){
+        Fluttertoast.showToast(msg: '非法设备，你的手机未插入电话卡，请插入电话卡后再试。');
+        return;
+      }
+      }
+    }
 
     setState(() {
       _isLoading = true;
@@ -94,7 +138,7 @@ class _TLDRegisterViewState extends State<TLDRegisterView> {
       }
     });
     }catch(e){
-      Fluttertoast.showToast(msg: '此设备非法，请更换设备');
+      Fluttertoast.showToast(msg: '非法设备，你的手机未插入电话卡，请插入电话卡后再试。');
     }
   }
 
@@ -142,6 +186,14 @@ class _TLDRegisterViewState extends State<TLDRegisterView> {
     });
   }
 
+  void _getSimVerify(){
+    _modelManager.openSimVerify((bool isVerify){
+      _sendTelCode(isVerify);
+    },(TLDError error){
+      _sendTelCode(true);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -182,7 +234,7 @@ class _TLDRegisterViewState extends State<TLDRegisterView> {
         },);
       }else if (index == 3){
         return TLDRegisterVerifyCodeCell(didClickSendCodeBtnCallBack: (){
-          _sendTelCode();
+          _getSimVerify();
         },codeDidChangeCallBack: (str){
           _pramater.telCode = str;
         },
